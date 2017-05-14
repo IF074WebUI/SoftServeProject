@@ -1,31 +1,21 @@
-<div class="text-center" style="padding:50px 0">
-  <div class="logo">login</div>
-  <!-- Main Form -->
-  <div class="login-form-1">
-    <form id="login-form" class="text-left" (ngSubmit)="login()">
-      <div class="login-form-main-message"></div>
-      <div class="main-login-form">
-        <div class="login-group">
-          <div class="form-group">
-            <label for="lg_username" class="sr-only">Username</label>
-            <input type="text" class="form-control" id="lg_username" name="lg_username" placeholder="username">
-          </div>
-          <div class="form-group">
-            <label for="lg_password" class="sr-only">Password</label>
-            <input type="password" class="form-control" id="lg_password" name="lg_password" placeholder="password">
-          </div>
-          <div class="form-group login-group-checkbox">
-            <input type="checkbox" id="lg_remember" name="lg_remember">
-            <label for="lg_remember">remember</label>
-          </div>
-        </div>
-        <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
+<section class="container login-form">
+  <section>
+    <form #loginForm="ngForm" method="post" (ngSubmit)="login(loginForm)">
+      <div class="form-group">
+        <input #name="ngModel" ngModel type="text" name="name" required class="form-control" placeholder="Введіть ім'я" />
+        <span class="glyphicon glyphicon-user"></span>
+        <span *ngIf="name.touched && name.invalid" class="validate_message">Вкажіть ім'я</span>
       </div>
-      <div class="etc-login-form">
-        <p>forgot your password? <a href="#">click here</a></p>
-        <p>new user? <a href="#">create new account</a></p>
+      <div class="form-group">
+        <input #password="ngModel" ngModel type="password" name="password" required class="form-control" placeholder="Введіть пароль" />
+        <span class="glyphicon glyphicon-lock"></span>
+        <span *ngIf="password.touched && password.invalid" class="validate_message">Вкажіть пароль</span>
       </div>
+      <div class="form-group">
+        <input ngModel type="checkbox" name="remember" id="remember">
+        <label for="remember">Запам'ятати мене</label>
+      </div>
+      <button [disabled]="!loginForm.valid" type="submit" name="go" class="btn btn-primary btn-block">Логін</button>
     </form>
-  </div>
-  <!-- end:Main Form -->
-</div>
+  </section>
+</section>
