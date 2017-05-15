@@ -18,6 +18,9 @@ export class LoginService {
   }
 
   logout(): Observable<Response> {
-    return this.http.get('http://' + HOST + '/login/logout').map(resp => resp.json())
+    return this.http.get('http://' + HOST + '/login/logout').map(resp => resp.json());
+  }
+  checkLogged(): Observable<Response> {
+    return this.http.get('http://' + HOST + '/login/isLogged').map(resp => resp.json());
   }
 }

@@ -1,20 +1,31 @@
-import {CanLoad, Route, Router} from "@angular/router";
-import {Injectable} from "@angular/core";
+import {CanLoad, Route, Router} from '@angular/router';
+import {Injectable} from '@angular/core';
+import {LoginService} from "../login/login.service";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class AdminGuard implements CanLoad {
-  constructor(private router: Router) {
+  constructor(private router: Router, private loginService: LoginService) {
   }
 
-  canLoad(route: Route): boolean {
-    let role = localStorage.getItem('role') || sessionStorage.getItem('role');
-    if (role === 'admin') {
-      return true;
-    } else if (role === 'student') {
-      this.router.navigate(['/denied']);
-    } else {
-      this.router.navigate((['/login']));
-    }
-    return false;
+  canLoad(route: Route): Observable<boolean> {
+    return this.loginService.checkLogged().map(resp => {
+      console.log((resp));
+      let logged: string = resp['response'];
+      if (logged !== 'logged') {
+        return false;
+      } else {
+        let role = resp['roles'][1];
+        console.log('roles');
+        if (role === 'admin') {
+          console.log('true');
+          return true;
+        } else if (role === 'student') {
+          this.router.navigate((['/denied']));
+        }
+        return false;
+      }
+    });
   }
 }
+

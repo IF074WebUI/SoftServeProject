@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {LoginService} from './login.service';
 import {Router} from "@angular/router";
 import {FormGroup} from "@angular/forms";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   templateUrl: './login.component.html',
@@ -16,23 +17,22 @@ export class LoginComponent implements OnInit {
   }
 
   login(form: FormGroup) {
-    this.loginService.login(form.controls['name'].value, form.controls['password'].value).subscribe(response => {
-      if (form.controls['remember'].value) {
-        localStorage.setItem('role', response['roles'][1]);
-      } else {
-        sessionStorage.setItem('role', response['roles'][1]);
-      }
-      this.checkIfLogged();
+    this.loginService.login(form.controls['name'].value, form.controls['password'].value).mergeMap(this.checkIfLogged()).subscribe(response => {console.log(response);
     });
   }
 
-  checkIfLogged() {
-    let role = localStorage.getItem('role') || sessionStorage.getItem('role');
-    if (role === 'admin') {
-      this.router.navigate(['/admin']);
-    }
-    if (role === 'student') {
-      this.router.navigate(['/student']);
-    }
+  checkIfLogged(): Observable<boolean> {
+    return this.loginService.checkLogged().map(resp => {
+      let logged: string = resp['response'];
+      if (logged === 'logged') {
+        let role = resp['roles'][1];
+        if (role === 'student') {
+          this.router.navigate((['/student']));
+        } else if (role === 'admin') {
+          this.router.navigate((['/admin']));
+        }
+        return true;
+      }
+    });
   }
 }
