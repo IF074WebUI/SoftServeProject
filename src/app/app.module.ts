@@ -6,13 +6,17 @@ import { AppComponent } from './app.component';
 import {RouterModule} from '@angular/router';
 import {routes} from './app.routes';
 import { LoginComponent } from './login/login.component';
-import { MenuComponent } from './admin/menu/menu.component';
+import {LoginService} from './login/login.service';
+import {AdminGuard} from './guards/admin.guard';
+import {StudentGuard} from './guards/student.guard';
+import { AccessDeniedComponent } from './error_pages/access-denied/access-denied.component';
+import {LoginGuard} from './guards/login.guard';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    MenuComponent
+    AccessDeniedComponent
   ],
   imports: [
     BrowserModule,
@@ -20,7 +24,7 @@ import { MenuComponent } from './admin/menu/menu.component';
     HttpModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [],
+  providers: [LoginService, AdminGuard, StudentGuard, LoginGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

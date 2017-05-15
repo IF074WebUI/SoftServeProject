@@ -1,1 +1,22 @@
+<section class="container login-form">
+  <section>
+    <form #loginForm="ngForm" method="post" (ngSubmit)="login(loginForm)">
+      <div class="form-group">
+        <input #name="ngModel" ngModel type="text" name="name" required class="form-control" placeholder="Введіть ім'я" />
+        <span class="glyphicon glyphicon-user"></span>
+        <span *ngIf="name.touched && name.invalid" class="validate_message">Вкажіть ім'я</span>
+      </div>
+      <div class="form-group">
+        <input #password="ngModel" ngModel type="password" name="password" required class="form-control" placeholder="Введіть пароль" />
+        <span class="glyphicon glyphicon-lock"></span>
+        <span *ngIf="password.touched && password.invalid" class="validate_message">Вкажіть пароль</span>
+      </div>
+      <div class="form-group">
+        <input ngModel type="checkbox" name="remember" id="remember">
+        <label for="remember">Запам'ятати мене</label>
+      </div>
+      <button [disabled]="!loginForm.valid" type="submit" name="go" class="btn btn-primary btn-block">Логін</button>
+    </form>
+  </section>
+</section>
 
