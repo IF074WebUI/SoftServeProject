@@ -10,15 +10,12 @@ export class AdminGuard implements CanLoad {
 
   canLoad(route: Route): Observable<boolean> {
     return this.loginService.checkLogged().map(resp => {
-      console.log((resp));
       let logged: string = resp['response'];
       if (logged !== 'logged') {
         return false;
       } else {
         let role = resp['roles'][1];
-        console.log('roles');
         if (role === 'admin') {
-          console.log('true');
           return true;
         } else if (role === 'student') {
           this.router.navigate((['/denied']));

@@ -3,6 +3,8 @@ import {LoginService} from './login.service';
 import {Router} from "@angular/router";
 import {FormGroup} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
+import "rxjs/add/operator/mergeMap";
+
 
 @Component({
   templateUrl: './login.component.html',
@@ -17,7 +19,8 @@ export class LoginComponent implements OnInit {
   }
 
   login(form: FormGroup) {
-    this.loginService.login(form.controls['name'].value, form.controls['password'].value).mergeMap(this.checkIfLogged()).subscribe(response => {console.log(response);
+    this.loginService.login(form.controls['name'].value, form.controls['password'].value)
+      .mergeMap(res => this.checkIfLogged()).subscribe(response => {console.log(response);
     });
   }
 
