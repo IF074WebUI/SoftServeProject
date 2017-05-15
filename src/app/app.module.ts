@@ -22,7 +22,7 @@ import {LoginGuard} from './guards/login.guard';
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, {enableTracing: true})
   ],
   providers: [LoginService, AdminGuard, StudentGuard, LoginGuard],
   bootstrap: [AppComponent]
