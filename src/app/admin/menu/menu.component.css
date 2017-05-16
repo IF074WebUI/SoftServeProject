@@ -8,6 +8,14 @@ li:hover{
   color: white;
 }
 
+li.active{
+  background-color: #0c56a9;
+}
+
+li.active a{
+  color: white;
+}
+
 .logout{
   background-color: lightcoral;
   color: white;
