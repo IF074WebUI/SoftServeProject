@@ -5,4 +5,4 @@ export class Group {
   faculty_name: string;
   speciality_id: number;
   speciality_name: string;
-}
+ }
