@@ -1,0 +1,21 @@
+ul{
+  border: 1px solid lightblue;
+  height: 100%;
+}
+
+li:hover{
+  background-color: lightblue;
+  color: white;
+}
+
+.logout{
+  background-color: lightcoral;
+  color: white;
+}
+
+.logout:hover{
+  background-color: indianred;
+  cursor: pointer;
+}
+
+

@@ -1,6 +1,5 @@
-import {Component} from '@angular/core';
-import {LoginService} from '../login/login.service';
-import {Router} from '@angular/router';
+import {Component} from "@angular/core";
+
 
 @Component({
   templateUrl: './admin.component.html',
@@ -8,13 +7,5 @@ import {Router} from '@angular/router';
 })
 export class AdminComponent {
 
-  constructor(private loginService: LoginService, private router: Router) {
-  }
 
-  logout() {
-    this.loginService.logout().subscribe(response => {
-      this.router.navigate(['/login']);
-    });
-
-  }
 }
