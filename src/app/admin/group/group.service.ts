@@ -14,4 +14,3 @@ export class GroupService {
     return this.http.get('http://' + HOST + '/group/getRecords')
   }
 }
-git
