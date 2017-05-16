@@ -7,14 +7,18 @@ import { StatisticsService } from './statistics.service';
   styleUrls: ['./statistics.component.css']
 })
 export class StatisticsComponent implements OnInit {
-  countFacultyRecords = {};
+  entities: string[] = ['user', 'speciality', 'group', 'subject', 'test', 'student', 'question', 'log'];
+  entitiesNumber = {};
+
 
   constructor(private statistics: StatisticsService) { }
 
   ngOnInit() {
-    this.statistics.countFacultyRecords().subscribe((data) => {
-      this.countFacultyRecords = data;
-      console.log(this.countFacultyRecords);
-    });
+    for (let i = 0; i < this.entities.length; i++) {
+      this.statistics.countFacultyRecords(this.entities[i]).subscribe((data) => {
+        this.entitiesNumber[this.entities[i]] = data.numberOfRecords;
+      });
+    }
+    console.log(this.entitiesNumber);
   }
 }
