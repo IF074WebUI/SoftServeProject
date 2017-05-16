@@ -9,10 +9,14 @@ import { Group } from './group';
   providers: [GroupService]
 })
 export class GroupComponent implements OnInit {
+  groups: any ;
 
-  constructor() { }
-
+  constructor(private getGroups: GroupService) { }
+  getGroups(): Promise<Group[]> {
+    return Promise.resolve(GROUPS);
+  }
   ngOnInit() {
+
   }
 
 }
