@@ -11,6 +11,8 @@ import "rxjs/add/operator/mergeMap";
 })
 export class LoginComponent implements OnInit {
 
+  invalidCredentials: boolean = false;
+
   constructor(private loginService: LoginService, private router: Router) {
   }
 
@@ -21,7 +23,12 @@ export class LoginComponent implements OnInit {
     this.loginService.login(form.controls['name'].value, form.controls['password'].value)
       .mergeMap(res => this.checkIfLogged()).subscribe(response => {
       console.log(response);
-    });
+    }, err => {
+        if (JSON.parse(err['_body'])['response'] === 'Invalid login or password') {
+          this.invalidCredentials = true;
+        }
+      }
+    );
   }
 
   checkIfLogged(): Observable<boolean> {
