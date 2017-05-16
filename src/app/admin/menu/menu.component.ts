@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LoginService} from "../../login/login.service";
 import {Router} from "@angular/router";
 
@@ -19,7 +19,5 @@ export class MenuComponent implements OnInit {
     this.loginService.logout().subscribe(response => {
       this.router.navigate(['/login']);
     });
-
   }
-
 }
