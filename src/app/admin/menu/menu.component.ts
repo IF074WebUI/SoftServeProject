@@ -17,8 +17,6 @@ export class MenuComponent implements OnInit {
 
   logout() {
     this.loginService.logout().subscribe(response => {
-      localStorage.removeItem('role');
-      sessionStorage.removeItem('role');
       this.router.navigate(['/login']);
     });
 
