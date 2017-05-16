@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Response} from '@angular/http';
 import { GroupService } from './group.service';
 import { Group } from './group';
 
@@ -9,14 +10,12 @@ import { Group } from './group';
   providers: [GroupService]
 })
 export class GroupComponent implements OnInit {
-  groups: any ;
+  groups: Group[]= [] ;
 
   constructor(private getGroups: GroupService) { }
-  getGroups(): Promise<Group[]> {
-    return Promise.resolve(GROUPS);
-  }
   ngOnInit() {
-
+    this.getGroups.getGroups()
+      .subscribe((data: Response) => this.groups = data.json());
   }
 
 }
