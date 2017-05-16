@@ -12,7 +12,6 @@ export class AdminComponent {
 
   logout() {
     this.loginService.logout().subscribe(response => {
-      sessionStorage.removeItem('role');
       this.router.navigate(['/login']);
     });
 
