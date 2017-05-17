@@ -11,4 +11,6 @@ export const routes: Route[] = [
   {path: 'admin', loadChildren: './admin/admin.module#AdminModule', canLoad: [AdminGuard]},
   {path: 'student', loadChildren: './student/student.module#StudentModule', canLoad: [StudentGuard]},
   {path: 'denied', component: AccessDeniedComponent}
+
 ];
+

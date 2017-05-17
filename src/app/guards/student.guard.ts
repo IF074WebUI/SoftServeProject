@@ -23,5 +23,5 @@ export class StudentGuard implements CanLoad {
         return false;
       }
     });
-     }
+  }
 }

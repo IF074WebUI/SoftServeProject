@@ -1,18 +1,20 @@
 <ul class="nav flex-column">
   <li class="nav-item">
-    <a class="nav-link active" href="#">Факультети</a>
+    <a class="nav-link">Групи та студенти</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Спеціальності</a>
+    <a class="nav-link">Предмети</a>
+  </li>
+  <li class="nav-item" routerLinkActive="active">
+    <a class="nav-link" [routerLink]="['group']">Групи</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Групи</a>
+    <a class="nav-link">Результати</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Студенти</a>
+  <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    <a class="nav-link" [routerLink]="['statistics']">Статистика</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Результати</a>
+  <li class="nav-item logout" (click)="logout()">
+     <span class="nav-link">Вихід</span>
   </li>
 </ul>
-

@@ -10,8 +10,8 @@ export class LoginGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.loginService.checkLogged().map(resp => {
-    let logged: string = resp['response'];
-       if (logged !== 'logged') {
+      let logged: string = resp['response'];
+      if (logged !== 'logged') {
         return true;
       } else {
         let role = resp['roles'][1];

@@ -5,12 +5,13 @@ import {FormGroup} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/mergeMap";
 
-
 @Component({
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
+  invalidCredentials: boolean = false;
 
   constructor(private loginService: LoginService, private router: Router) {
   }
@@ -20,8 +21,14 @@ export class LoginComponent implements OnInit {
 
   login(form: FormGroup) {
     this.loginService.login(form.controls['name'].value, form.controls['password'].value)
-      .mergeMap(res => this.checkIfLogged()).subscribe(response => {console.log(response);
-    });
+      .mergeMap(res => this.checkIfLogged()).subscribe(response => {
+      console.log(response);
+    }, err => {
+        if (JSON.parse(err['_body'])['response'] === 'Invalid login or password') {
+          this.invalidCredentials = true;
+        }
+      }
+    );
   }
 
   checkIfLogged(): Observable<boolean> {
