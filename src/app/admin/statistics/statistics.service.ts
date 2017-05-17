@@ -6,7 +6,7 @@ import {HOST} from '../../constants';
 export class StatisticsService {
   constructor(private http: Http) {}
 
-  countFacultyRecords(entity){
+  getCountRecords(entity) {
     return this.http.get('http://' + HOST + '/' +  entity + '/countRecords').map(resp => resp.json());
   }
 
