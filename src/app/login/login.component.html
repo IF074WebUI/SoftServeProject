@@ -1,17 +1,17 @@
 <section class="container login-form">
   <section>
-    <form #loginForm="ngForm" method="post" (ngSubmit)="login(loginForm)" (change)="hideMessage()">
+    <form #loginForm="ngForm" role="login" method="post" (ngSubmit)="login(loginForm)" (change)="hideMessage()">
       <div class="input-group">
-        <input #name="ngModel" ngModel type="text" name="name" required class="form-control" placeholder="Введіть ім'я"/>
         <span class="input-group-addon"><i class="fa fa-user"></i></span>
+        <input #name="ngModel" ngModel type="text" name="name" required class="form-control" placeholder="Введіть ім'я"/>
+        <span *ngIf="name.touched && name.invalid" class="validate_message">Вкажіть ім'я</span>
+        <span *ngIf="invalidCredentials " class="validate_message">Неправильний логін або пароль</span>
       </div>
-      <span *ngIf="name.touched && name.invalid" class="validate_message">Вкажіть ім'я</span>
-      <span *ngIf="invalidCredentials " class="validate_message">Неправильний логін або пароль</span>
       <div class="input-group">
-        <input #password="ngModel" ngModel type="password" name="password" required class="form-control" placeholder="Введіть пароль" />
         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+        <input #password="ngModel" ngModel type="password" name="password" required class="form-control" placeholder="Введіть пароль" />
+        <span *ngIf="password.touched && password.invalid" class="validate_message">Вкажіть пароль</span>
       </div>
-      <span *ngIf="password.touched && password.invalid" class="validate_message">Вкажіть пароль</span>
       <button [disabled]="!loginForm.valid" type="submit" name="go" class="btn btn-primary btn-block">Логін</button>
     </form>
   </section>
