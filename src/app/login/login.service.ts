@@ -23,4 +23,8 @@ export class LoginService {
   checkLogged(): Observable<Response> {
     return this.http.get('http://' + HOST + '/login/isLogged').map(resp => resp.json());
   }
+
+  post() {
+    this.http.get('http://' + HOST + '/Group/getRecords').map(resp => resp.json()).subscribe(resp => console.log(resp));
+  }
 }
