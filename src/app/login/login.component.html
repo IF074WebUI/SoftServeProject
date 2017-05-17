@@ -1,8 +1,8 @@
 <section class="container login-form">
   <section>
-    <form #loginForm="ngForm" method="post" (ngSubmit)="login(loginForm)">
+    <form #loginForm="ngForm" method="post" (ngSubmit)="login(loginForm)" (change)="hideMessage()">
       <div class="input-group">
-        <input #name="ngModel" ngModel type="text" name="name" required class="form-control" placeholder="Введіть ім'я" />
+        <input #name="ngModel" ngModel type="text" name="name" required class="form-control" placeholder="Введіть ім'я"/>
         <span class="input-group-addon"><i class="fa fa-user"></i></span>
       </div>
       <span *ngIf="name.touched && name.invalid" class="validate_message">Вкажіть ім'я</span>
