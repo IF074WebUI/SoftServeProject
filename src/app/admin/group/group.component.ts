@@ -7,15 +7,23 @@ import { Group } from './group';
   selector: 'app-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.css'],
-  providers: [GroupService]
 })
 export class GroupComponent implements OnInit {
-  groups: Group[]= [] ;
+  groupsOnPage: Group[] = [];
+  groups: Group = new Group();
+  ItemforEdit: Group;
+  ItemforDelete: Group;
 
-  constructor(private getGroups: GroupService) { }
+  constructor(private getGroupsService: GroupService) { }
+
   ngOnInit() {
-    this.getGroups.getGroups()
-      .subscribe((data: Response) => this.groups = data.json());
+    this.getGroupsService
+      .getGroups()
+      .subscribe((data) => {
+        this.groupsOnPage = <Group[]>data;
+        for (let i =0; i< this.groupsOnPage.length; i++){
+        console.log(this.groupsOnPage[i].group_name);}
+      });
   }
 
 }

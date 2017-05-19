@@ -1,3 +1,14 @@
-<ul >
-  {{groups[0].group_name}}
-</ul>
+<table>
+  <tr class="col">
+    <td>Number</td>
+    <td>Group name</td>
+    <td colspan="3">Admin</td>
+  </tr>
+     <tr *ngFor="let group of this.groupsOnPage">
+        <td></td>
+       <td>{{group.group_name}}</td>
+       <td>Edit</td>
+       <td>Delete</td>
+       <td>Students</td>
+    </tr>
+</table>
