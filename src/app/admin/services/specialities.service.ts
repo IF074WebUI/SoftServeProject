@@ -21,4 +21,9 @@ export class SpecialitiesService {
     return this.http.post(`http://${HOST}/speciality/update/${speciality['speciality_id']}`, JSON.stringify(speciality))
       .map((resp: Response) => resp.json());
   }
+
+  save(speciality: Speciality): Observable<Speciality> {
+    return this.http.post(`http://${HOST}/speciality/insertData`, JSON.stringify(speciality))
+      .map((resp: Response) => resp.json());
+  }
 }

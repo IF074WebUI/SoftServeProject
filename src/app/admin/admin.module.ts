@@ -16,7 +16,9 @@ import { FormsModule } from '@angular/forms';
 import { SpecialitiesComponent } from './specialities/specialities.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { CommonComponent } from './common/common.component';
-import {SpecialitiesService } from "./services/specialities.service"
+import { SpecialitiesService } from "./services/specialities.service";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
