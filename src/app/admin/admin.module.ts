@@ -12,6 +12,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { CommonComponent } from './common/common.component';
 import {SpecialitiesService} from "./services/specialities.service";
 import {CommonModule} from "@angular/common";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import {CommonModule} from "@angular/common";
     SpecialitiesComponent,
     PaginationComponent,
     CommonComponent],
-  imports: [RouterModule.forChild(adminRoutes), CommonModule],
+  imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule],
   providers: [StatisticsService, SpecialitiesService]
 
 })
