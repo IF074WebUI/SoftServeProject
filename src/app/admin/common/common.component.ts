@@ -18,7 +18,6 @@ export class CommonComponent implements OnInit {
   }
 
   getProperties(entity: Object): string[] {
-    Object.getOwnPropertyNames(entity);
     return Object.getOwnPropertyNames(entity);
   }
 

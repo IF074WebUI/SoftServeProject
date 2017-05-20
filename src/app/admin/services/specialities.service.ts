@@ -13,6 +13,20 @@ export class SpecialitiesService {
     return this.http.get(`http://${HOST}/speciality/getRecords`).map((resp: Response) => resp.json());
   }
 
+  getPaginated(limit: number, offset: number): Observable<Speciality[]> {
+  return this.http.get(`http://${HOST}/speciality/getRecordsRange/${limit}/${offset}`).map((resp: Response) => resp.json());
+  }
+
+  getSearched(criteria: string): Observable<Speciality[]> {
+    return this.http.get(`http://${HOST}/speciality/getRecordsBySearch/${criteria}`).map((resp: Response) => resp.json());
+  }
+
+
+
+  getCount(): Observable<number> {
+    return this.http.get(`http://${HOST}/speciality/countRecords`).map((resp: Response) => resp.json()['numberOfRecords']);
+  }
+
   delete(id: number): Observable<Speciality> {
     return this.http.delete(`http://${HOST}/speciality/del/${id}`).map((resp: Response) => resp.json());
   }
