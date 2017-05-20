@@ -20,10 +20,10 @@ export class GroupService {
       .map((data: Response) => data.json());
   }
 
-  addGroup() {
-    return this.http.post('http://' + HOST + this.entity + '/insertData')
-      .map((data) => data.json());
-  }
+  // addGroup() {
+  //   return this.http.post('http://' + HOST + this.entity + '/insertData')
+  //     .map((data) => data.json());
+  // }
    // private extractData (res: Response) {
    //  return res.json();
   // }
