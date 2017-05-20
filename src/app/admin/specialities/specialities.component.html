@@ -1,6 +1,11 @@
 <h3 class="text-center">Спеціальності</h3>
 <button title="Додати спеціальність" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
-
+<select #s (change)="changePerPage(s.value)">
+  <option>5</option>
+  <option>10</option>
+  <option>20</option>
+</select>
+<input [formControl]="search" type="text" placeholder="пошук...">
 <!-- Modal -->
 <div class="modal fade" #modal id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -33,4 +38,4 @@
 
 <dtester-common [entities]="specialities" [headers]="headers" (deleteEntity)="delete($event)"
                 (editEntity)="edit($event)"></dtester-common>
-<dtester-pagination></dtester-pagination>
+<dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page" (pageChanged)="changePage($event)"></dtester-pagination>
