@@ -32,4 +32,8 @@ export class GroupService {
     return this.http.post('http://' + HOST + this.entity + '/insertData', bodyForSendingNewGroups)
       .map((resp: Response) => resp.json());
   }
+  deleteGroup(id: number) {
+   return this.http.delete('http://' + HOST + this.entity + '/del/' + id)
+     .map((resp: Response) => resp.json());
+  }
 }

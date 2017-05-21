@@ -4,7 +4,7 @@ import { GroupService } from './group.service';
 import { Group } from './group';
 import {Faculty} from './Faculty';
 import {Speciality} from './speciality';
-import { Ng2CompleterModule } from "ng2-completer";
+import { Ng2CompleterModule } from 'ng2-completer';
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',
@@ -55,12 +55,15 @@ export class GroupComponent implements OnInit {
         this.groupsOnPage = <Group[]>data;
       });
   }
-  // >>>>>>>>>EDIDTING<<<<<<<<<<
+  // >>>>>>>>>SELECT FOR EDITING<<<<<<<<<<
   selectedGroup(group: Group) {
     this.GroupforDelete = group;
     this.GroupforEdit = group;
   }
-
-
-
+  // >>>>>>>>>>>>>DELETING<<<<<<<<<<<<<<
+  deleteGroup() {
+    this.getGroupsService.deleteGroup(this.GroupforDelete['group_id']).subscribe((data) => console.log(data));
+    this.pageReload();
+    console.log(this.GroupforDelete['group_id']);
+  }
 }

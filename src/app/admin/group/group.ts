@@ -1,6 +1,6 @@
 export class Group {
-  group_id: string;
+  group_id: number;
   group_name: string;
-  faculty_id: string;
-  speciality_id: string;
+  faculty_id: number;
+  speciality_id: number;
 }

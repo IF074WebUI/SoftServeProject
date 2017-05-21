@@ -10,7 +10,7 @@
         <td>{{group.group_id}}</td>
        <td>{{group.group_name}}</td>
        <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#editModal" data-whatever="@mdo">edit</button></td>
-       <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">delete</button></td>
+       <td><button (click)=" selectedGroup(group)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">delete</button></td>
        <td>Students</td>
     </tr>
 </table><br>
@@ -81,7 +81,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Скасувати</button>
-        <button type="button" class="btn btn-primary">Видалити</button>
+        <button (click)="deleteGroup()" type="button" class="btn btn-primary">Видалити</button>
       </div>
     </div>
   </div>
@@ -118,7 +118,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-        <button type="button" class="btn btn-primary" >Редагувати</button>
+        <button  type="button" class="btn btn-primary" >Редагувати</button>
       </div>
     </div>
   </div>
