@@ -17,8 +17,9 @@ import { SpecialitiesComponent } from './specialities/specialities.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { CommonComponent } from './common/common.component';
 import { SpecialitiesService } from "./services/specialities.service";
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { CommonModule} from "@angular/common";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -30,8 +31,9 @@ import { FormsModule } from "@angular/forms";
     TimetableComponent,
     SpecialitiesComponent,
     PaginationComponent,
-    CommonComponent],
-  imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule],
+    CommonComponent,
+    SearchComponent],
+  imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule, ReactiveFormsModule],
   providers: [StatisticsService, SpecialitiesService, TimetableService, GetRecordsByIdService, GroupService ]
 })
 export class AdminModule {}

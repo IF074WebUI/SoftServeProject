@@ -5,27 +5,27 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
   templateUrl: './common.component.html',
   styleUrls: ['./common.component.css']
 })
-export class CommonComponent implements OnInit {
+export class CommonComponent<T> implements OnInit {
 
-  @Input() entities: Object[];
-  @Input() headers: string[];
-  @Output() deleteEntity: EventEmitter<Object> = new EventEmitter();
-  @Output() editEntity: EventEmitter<Object> = new EventEmitter();
+  @Input() entities: T[];
+  @Input() headers: string[] = [];
+  @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
+  @Output() editEntity: EventEmitter<T> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  getProperties(entity: Object): string[] {
+  getProperties(entity: T): string[] {
     return Object.getOwnPropertyNames(entity);
   }
 
-  edit(entity: Object) {
+  edit(entity: T) {
     this.editEntity.emit(entity);
   }
 
-  delete(entity: Object) {
+  delete(entity: T) {
     this.deleteEntity.emit(entity);
   }
 }
