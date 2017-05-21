@@ -23,11 +23,7 @@
         "../node_modules/font-awesome/css/font-awesome.css",
         "styles.css"
       ],
-      "scripts": [
-        "../node_modules/bootstrap/dist/js/modal.js/",
-        "../node_modules/bootstrap/dist/js/button.js/",
-        "../node_modules/jquery/dist/jquery.slim.js"
-      ],
+      "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

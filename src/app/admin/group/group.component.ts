@@ -40,4 +40,11 @@ export class GroupComponent implements OnInit {
       });
   }
 
+  createCroup(facultyId, specialytyId, groupname) {
+    this.getGroupsService.createCroup(facultyId, specialytyId, groupname)
+      .subscribe((data) => {
+        console.log(data);
+      });
+  }
+
 }

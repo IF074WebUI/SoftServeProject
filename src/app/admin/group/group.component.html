@@ -44,31 +44,22 @@
       </div>
       <div class="modal-body">
         <form>
-          <div class="form-group">
             <label for="recipient-name" class="form-control-label">Назва факультету:</label>
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                виберіть факультет
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
-                <p class="dropdown-item" *ngFor="let item of this.facultiesOnPage">{{item.faculty_name}}</p>
-              </div>
-            </div>
-          </div>
+            <input [(ngModel)]="facultyId" name="facultyId" class="form-control" id="spec-name">
           <div class="form-group">
             <label for="spec-text" class="form-control-label">Назва спеціальності:</label>
-            <input class="form-control" id="spec-name">
+            <input [(ngModel)]="specialityId" name="specialityId" class="form-control" id="spec-name">
           </div>
           <div class="form-group">
             <label for="group-text" class="form-control-label">Назва групи:</label>
-            <input class="form-control" id="group-name">
+            <input [(ngModel)]="groupName" name="groupName" class="form-control" id="group-name">
           </div>
 
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Send message</button>
+        <button (click)="createCroup(groupName, specialityId, facultyId)" type="button" class="btn btn-primary">Send message</button>
       </div>
     </div>
   </div>
@@ -127,9 +118,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-        <button type="button" class="btn btn-primary">Редагувати</button>
+        <button type="button" class="btn btn-primary" >Редагувати</button>
       </div>
     </div>
   </div>
 </div>
-543txc
+

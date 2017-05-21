@@ -27,17 +27,9 @@ export class GroupService {
     return this.http.get('http://' + HOST + '/Speciality/getRecords')
       .map((resp: Response) => resp.json());
   }
-  //
-  //  createGroup(group_name: string,
-  //    faculty_id: string,
-  //    speciality_id: string ): Observable<Response> { {
-  //   let bodyForCreating = JSON.stringify('group_name': groupName, 'faculty_id': facultyId, 'speciality_id': specialityId);
-  //   return.this.http.post('http://' + HOST + this.entity + '/insertData', bodyForCreating)
-  //      .map((resp) => resp.json());
-  //  }
-  //
-  //  // private extractData (res: Response) {
-  //  //  return res.json();
-  // // }
-  //
+  createCroup(groupname: string, specialytyId: number, facultyId: number ): Observable<Response> {
+    const bodyForSendingNewGroups = JSON.stringify({group_name: groupname, faculty_id: facultyId, speciality_id: specialytyId})
+    return this.http.post('http://' + HOST + this.entity + '/insertData', bodyForSendingNewGroups)
+      .map((resp: Response) => resp.json());
+  }
 }
