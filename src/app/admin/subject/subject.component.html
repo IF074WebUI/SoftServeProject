@@ -1,0 +1,20 @@
+<h4>Предмети</h4>
+<ul>
+  <li *ngFor = 'let subject of subjects'
+      [class.selected]='subject === selectedSubject'
+      (click)='onSelect(subject)'>{{subject.subject_name}}
+  </li>
+</ul>
+<div>
+  <label>Додати предмет</label> <input #subjectName>
+  <label>Опис предмета </label><input #subjectDescription>
+  <button (click)="addSubject(subjectName.value, subjectDescription.value); subjectName.value='';
+   subjectDescription.value=''">
+    Додати
+  </button>
+</div>
+<app-subject-detail [subject]='selectedSubject'></app-subject-detail>
+
+
+
+
