@@ -15,8 +15,8 @@ export class GroupComponent implements OnInit {
   facultiesOnPage: Faculty[] = [];
   specialitiesOnPage: Speciality[] = [];
   groups: Group = new Group();
-  ItemforEdit: Group;
-  ItemforDelete: Group;
+  GroupforEdit: Group;
+  GroupforDelete: Group;
 
   constructor(private getGroupsService: GroupService) { }
 
@@ -45,6 +45,22 @@ export class GroupComponent implements OnInit {
       .subscribe((data) => {
         console.log(data);
       });
+      this.pageReload();
   }
+  // >>>>>>>>>>>>>>Page Reload<<<<<<<<<<
+  pageReload() {
+    this.getGroupsService
+      .getGroups()
+      .subscribe((data) => {
+        this.groupsOnPage = <Group[]>data;
+      });
+  }
+  // >>>>>>>>>EDIDTING<<<<<<<<<<
+  selectedGroup(group: Group) {
+    this.GroupforDelete = group;
+    this.GroupforEdit = group;
+  }
+
+
 
 }
