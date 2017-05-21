@@ -1,3 +1,81 @@
-<p>
-скоро буде
-</p>
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+    <td>Номер</td>
+    <td>Назва факультету</td>
+    <td>Опис факультету</td>
+    <td>Редагувати назву</td>
+    <td>Видалити</td>
+    </thead>
+    <tr *ngFor="let item of faculties">
+      <td>{{item['faculty_id']}}</td>
+      <td>{{item['faculty_name']}}</td>
+      <td>{{item['faculty_description']}}</td>
+      <td (click)="selectedItem(item)" (click)="edit(editContent)"><i class="fa fa-pencil-square-o"></i></td>
+      <td (click)="selectedItem(item)" (click)="delete(delContent)"><i class="fa fa-trash"></i></td>
+    </tr>
+  </table>
+
+  <ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
+
+  <ng-template #addContent let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Створити новий факультет</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form method="post">
+        <input [(ngModel)]="faculty.name" ngModel type="text" name="name" required class="form-control"/>
+        <textarea [(ngModel)]="faculty.description" ngModel type="text" name="description" required
+                  class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
+       </textarea>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Створити</button>
+    </div>
+  </ng-template>
+
+  <button class="btn btn-lg btn-outline-primary" (click)="add(addContent)"> Створити новий факультет</button>
+
+
+  <ng-template #delContent let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Видалення факультету</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Ви підтверджуєте видалення даного факультету?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Підтвердити</button>
+    </div>
+  </ng-template>
+
+
+  <ng-template #editContent let-c="close" let-d="dismiss">
+
+    <div class="modal-header">
+      <h4 class="modal-title">Редагувати</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <form method="post">
+        <input [(ngModel)]="ItemforEdit['faculty_name']" ngModel type="text" name="name" required class="form-control"/>
+        <textarea [(ngModel)]="ItemforEdit['faculty_description']" ngModel type="text" name="description" required
+                  class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
+       </textarea>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Підтвердити</button>
+    </div>
+
+  </ng-template>

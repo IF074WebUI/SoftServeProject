@@ -1,6 +1,6 @@
 import {Route} from '@angular/router';
 import {AdminComponent} from './admin.component';
-import {GroupComponent} from "./group/group.component";
+import {GroupComponent} from './group/group.component';
 import {StatisticsComponent} from './statistics/statistics.component';
 import {FacultiesComponent} from './faculties/faculties.component';
 export const adminRoutes: Route[] = [

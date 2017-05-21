@@ -11,6 +11,7 @@ import {AdminGuard} from './guards/admin.guard';
 import {StudentGuard} from './guards/student.guard';
 import { AccessDeniedComponent } from './error_pages/access-denied/access-denied.component';
 import {LoginGuard} from './guards/login.guard';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {LoginGuard} from './guards/login.guard';
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    NgbModule.forRoot()
   ],
   providers: [LoginService, AdminGuard, StudentGuard, LoginGuard],
   bootstrap: [AppComponent]
