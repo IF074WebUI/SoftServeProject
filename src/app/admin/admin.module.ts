@@ -12,7 +12,8 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { CommonComponent } from './common/common.component';
 import {SpecialitiesService} from "./services/specialities.service";
 import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { SearchComponent } from './search/search.component';
 
 
 @NgModule({
@@ -24,8 +25,13 @@ import {FormsModule} from "@angular/forms";
     FacultiesComponent,
     SpecialitiesComponent,
     PaginationComponent,
-    CommonComponent],
-  imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule],
+    CommonComponent,
+    SearchComponent],
+  imports: [
+    RouterModule.forChild(adminRoutes),
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule],
   providers: [StatisticsService, SpecialitiesService]
 
 })
