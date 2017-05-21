@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Response} from '@angular/http';
 import { GroupService } from './group.service';
 import { Group } from './group';
-
+import {Faculty} from './Faculty';
+import {Speciality} from './speciality';
+import { Ng2CompleterModule } from "ng2-completer";
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',
@@ -10,6 +12,8 @@ import { Group } from './group';
 })
 export class GroupComponent implements OnInit {
   groupsOnPage: Group[] = [];
+  facultiesOnPage: Faculty[] = [];
+  specialitiesOnPage: Speciality[] = [];
   groups: Group = new Group();
   ItemforEdit: Group;
   ItemforDelete: Group;
@@ -21,8 +25,18 @@ export class GroupComponent implements OnInit {
       .getGroups()
       .subscribe((data) => {
         this.groupsOnPage = <Group[]>data;
-        for (let i =0; i< this.groupsOnPage.length; i++){
-        console.log(this.groupsOnPage[i].group_name);}
+      });
+
+    this.getGroupsService
+      .getFaculties()
+      .subscribe((data) => {
+        this.facultiesOnPage = <Faculty[]>data;
+      });
+
+    this.getGroupsService
+      .getSpeciality()
+      .subscribe((data) => {
+        this.specialitiesOnPage = <Speciality[]>data;
       });
   }
 

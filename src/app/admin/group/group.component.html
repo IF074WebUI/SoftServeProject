@@ -1,27 +1,43 @@
-<table>
-  <tr class="col">
-    <td>Number</td>
+<table class="table table-hover table-bordered">
+  <thead class="thead-inverse">
+  <tr>
+    <td>#</td>
     <td>Group name</td>
     <td colspan="3">Admin</td>
   </tr>
+  </thead>
      <tr *ngFor="let group of this.groupsOnPage">
-        <td></td>
+        <td>{{group.group_id}}</td>
        <td>{{group.group_name}}</td>
-       <td>Edit</td>
-       <td>Delete</td>
+       <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#editModal" data-whatever="@mdo">edit</button></td>
+       <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">delete</button></td>
        <td>Students</td>
     </tr>
-</table>
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Open modal for @fat</button>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>
+</table><br>
+<!--&gt;>>>>>>>>>>>>>>>>>>>>>>>>>>>Pagination view<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+
+
+<!--&gt;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Creating new GROUP<<<<<<<<<<<<<<<<<<<<<<<<<<-->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Додати нову групу</button>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Додавання групи</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -29,13 +45,25 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="recipient-name" class="form-control-label">Recipient:</label>
-            <input type="text" class="form-control" id="recipient-name">
+            <label for="recipient-name" class="form-control-label">Назва факультету:</label>
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                виберіть факультет
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+                <p class="dropdown-item" *ngFor="let item of this.facultiesOnPage">{{item.faculty_name}}</p>
+              </div>
+            </div>
           </div>
           <div class="form-group">
-            <label for="message-text" class="form-control-label">Message:</label>
-            <textarea class="form-control" id="message-text"></textarea>
+            <label for="spec-text" class="form-control-label">Назва спеціальності:</label>
+            <input class="form-control" id="spec-name">
           </div>
+          <div class="form-group">
+            <label for="group-text" class="form-control-label">Назва групи:</label>
+            <input class="form-control" id="group-name">
+          </div>
+
         </form>
       </div>
       <div class="modal-footer">
@@ -45,3 +73,63 @@
     </div>
   </div>
 </div>
+
+
+<!-->>>>>>>>>>>>>>>>>>>>>>CONFIRM DELETE MODAL<<<<<<<<<<<<<<<<<<<<<<<<-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModal">Видалення</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h2>Ви впевнені що хочете видалити групу?</h2>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Скасувати</button>
+        <button type="button" class="btn btn-primary">Видалити</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-->>>>>>>>>>>>>>>>>>>>>>EDIT MODAL<<<<<<<<<<<<<<<<<<<<<<<<-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModal">Редагування групи</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="form-control-label">Назва факультету:</label>
+            <input type="text" class="form-control" id="faculty-name-name">
+          </div>
+          <div class="form-group">
+            <label for="spec-text" class="form-control-label">Назва спеціальності:</label>
+            <input class="form-control" id="spec-name">
+          </div>
+          <div class="form-group">
+            <label for="group-text" class="form-control-label">Назва групи:</label>
+            <input class="form-control" id="group-name">
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
+        <button type="button" class="btn btn-primary">Редагувати</button>
+      </div>
+    </div>
+  </div>
+</div>
+543txc
