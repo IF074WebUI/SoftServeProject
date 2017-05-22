@@ -1,33 +1,43 @@
-<table class="table table-hover table-bordered">
+<h1>Групи</h1>
+<dtester-pagination></dtester-pagination>
+<table class="table table-hover table-bordered ">
   <thead class="thead-inverse">
-  <tr>
-    <td>#</td>
-    <td>Group name</td>
-    <td colspan="3">Admin</td>
-  </tr>
+    <tr>
+      <td>ID групи</td>
+      <td>Назва групи</td>
+      <td colspan="3">Адміністрування</td>
+    </tr>
   </thead>
      <tr *ngFor="let group of this.groupsOnPage">
         <td>{{group.group_id}}</td>
        <td>{{group.group_name}}</td>
-       <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#editModal" data-whatever="@mdo">edit</button></td>
-       <td><button (click)=" selectedGroup(group)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">delete</button></td>
+       <td><button type="button" class="fa fa-pencil" data-toggle="modal" data-target="#editModal" data-whatever="@mdo"></button></td>
+       <td><button (click)=" selectedGroup(group)" type="button" class="fa fa-trash" data-toggle="modal" data-target="#deleteModal"></button></td>
        <td>Students</td>
     </tr>
 </table><br>
 <!--&gt;>>>>>>>>>>>>>>>>>>>>>>>>>>>Pagination view<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
-<nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link" href="#" tabindex="-1" (click)="changePage(pageNumberForLoad - 1, numberPagesForTheLoad )">previous</a>
-    </li>
-    <li class="page-item"><a class="page-link" (click)="changePage(pageNumberForLoad, numberPagesForTheLoad )">{{pageNumberForLoad}}</a></li>
-    <li class="page-item"><a class="page-link" (click)="changePage(pageNumberForLoad + 1, numberPagesForTheLoad )">{{pageNumberForLoad + 1 }}</a></li>
-    <li class="page-item"><a class="page-link" (click)="changePage(pageNumberForLoad + 2, numberPagesForTheLoad )">{{pageNumberForLoad + 2}}</a></li>
+<div class="text-center">
+<nav>
+  <ul class="pagination">
     <li class="page-item">
-      <a class="page-link" (click)="changePage(pageNumberForLoad + 3, numberPagesForTheLoad )">Next</a>
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" (click)="changePage(pageNumberForLoad, numberPagesForTheLoad)">{{pageNumberForLoad}}</a></li>
+    <li class="page-item"><a class="page-link" (click)="changePage(pageNumberForLoad + 1, numberPagesForTheLoad)">{{pageNumberForLoad + 1}}</a></li>
+    <li class="page-item"><a class="page-link" (click)="changePage(pageNumberForLoad + 2, numberPagesForTheLoad)">{{pageNumberForLoad + 2}}</a></li>
+    <li class="page-item">
+      <a class="page-link" aria-label="Next">
+        <span aria-hidden="true" (click)="nextPage('Group')" >&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
     </li>
   </ul>
 </nav>
+</div>
 
 
 <!--&gt;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Creating new GROUP<<<<<<<<<<<<<<<<<<<<<<<<<<-->

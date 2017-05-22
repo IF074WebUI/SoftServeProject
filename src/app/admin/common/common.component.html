@@ -1,0 +1,16 @@
+<table class="table table-inverse">
+  <thead>
+  <tr>
+    <th *ngFor="let header of headers">{{header}}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let entity of entities">
+    <td *ngFor="let name of getProperties(entity)">{{entity[name]}}</td>
+    <td>
+      <button (click)="edit(entity)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+      <button (click)="delete(entity)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+    </td>
+  </tr>
+  </tbody>
+</table>

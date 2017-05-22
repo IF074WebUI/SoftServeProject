@@ -17,17 +17,12 @@ export class GroupComponent implements OnInit {
   groups: Group = new Group();
   GroupforEdit: Group;
   GroupforDelete: Group;
-  numberOfrecords: any;
+  numberOfrecords: number;
   pageNumberForLoad = 1;
   numberPagesForTheLoad = 3;
   constructor(private getGroupsService: GroupService, private statictic: StatisticsService) { }
   ngOnInit() {
-    this.getGroupsService
-      .getGroups()
-      .subscribe((data) => {
-        this.groupsOnPage = <Group[]>data;
-      });
-    this.getGroupsService.getPaginatedPage(this.pageNumberForLoad, this.numberPagesForTheLoad)
+     this.getGroupsService.getPaginatedPage(this.pageNumberForLoad, this.numberPagesForTheLoad)
       .subscribe((data) => {
       this.groupsOnPage = <Group[]> data;
     })
@@ -50,16 +45,9 @@ export class GroupComponent implements OnInit {
       .subscribe((data) => {
         console.log(data);
       });
-      this.pageReload();
+    this.changePage(this.pageNumberForLoad, this.numberPagesForTheLoad);
   }
-  // >>>>>>>>>>>>>>Page Reload<<<<<<<<<<
-  pageReload() {
-    this.getGroupsService
-      .getGroups()
-      .subscribe((data) => {
-        this.groupsOnPage = <Group[]>data;
-      });
-  }
+
   // >>>>>>>>>SELECT FOR EDITING<<<<<<<<<<
   selectedGroup(group: Group) {
     this.GroupforDelete = group;
@@ -68,19 +56,25 @@ export class GroupComponent implements OnInit {
   // >>>>>>>>>>>>>DELETING<<<<<<<<<<<<<<
   deleteGroup() {
     this.getGroupsService.deleteGroup(this.GroupforDelete['group_id']).subscribe((data) => console.log(data));
-    this.pageReload();
+    this.changePage(this.pageNumberForLoad, this.numberPagesForTheLoad);
     console.log(this.GroupforDelete['group_id']);
   }
   // >>>>>pagination<<<<<<<<
     getCountRecords(entity) {
-      this.statictic.getCountRecords(entity).subscribe((data) => this.numberOfrecords = data.numberOfRecords);
-      return this.numberOfrecords;
+      this.statictic.getCountRecords(entity).subscribe((data) =>  {this.numberOfrecords = data.numberOfRecords; } );
+
     }
     changePage(pageNumberForLoad, numberPagesForTheLoad) {
       this.getGroupsService.getPaginatedPage(pageNumberForLoad, numberPagesForTheLoad)
         .subscribe((data) => {
           this.groupsOnPage = <Group[]> data;
     });
+    }
+
+    nextPage(entity) {
+    this.getCountRecords(entity);
+    if (this.numberOfrecords / this.numberPagesForTheLoad < this.pageNumberForLoad) {} else { this.numberOfrecords += 1;  };
+    this.changePage(this.pageNumberForLoad, this.numberPagesForTheLoad);
     }
 }
 

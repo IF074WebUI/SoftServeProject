@@ -3,6 +3,7 @@ import {AdminComponent} from './admin.component';
 import {GroupComponent} from "./group/group.component";
 import {StatisticsComponent} from './statistics/statistics.component';
 import {FacultiesComponent} from './faculties/faculties.component';
+import {SpecialitiesComponent} from "./specialities/specialities.component";
 export const adminRoutes: Route[] = [
   {
     path: '', component: AdminComponent,
@@ -10,6 +11,7 @@ export const adminRoutes: Route[] = [
       /*тут, в дітях вписуємо свої роути*/
       {path: 'group', component: GroupComponent},
       {path: 'statistics', component: StatisticsComponent},
-      {path: 'faculties', component: FacultiesComponent}
+      {path: 'faculties', component: FacultiesComponent},
+      {path: 'specialities', component: SpecialitiesComponent}
     ]
   }];
