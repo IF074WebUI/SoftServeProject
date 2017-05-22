@@ -3,6 +3,8 @@ import {Faculty} from './Faculty';
 import {FacultyService} from './faculty.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
+import {Subscription} from 'rxjs/Subscription';
+import { ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-faculties',
@@ -12,6 +14,7 @@ import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/form
 })
 export class FacultiesComponent implements OnInit {
   faculties: Faculty[] = [];
+  selecfaculties: Faculty;
   page: number = 1;
   count: number;
   ItemforEdit: Faculty;
@@ -21,9 +24,15 @@ export class FacultiesComponent implements OnInit {
   facultyName: FormControl;
   facultyDescription: FormControl;
   array: Array<number>;
+  private id: number;
+  private subscription: Subscription;
 
-  constructor(private http: FacultyService, private modalService: NgbModal) {
-  }
+  constructor(private http: FacultyService, private modalService: NgbModal, private activateRoute: ActivatedRoute ) {
+    this.subscription = activateRoute.params.subscribe(params=>this.id=params['id']);
+    this.http.getFacultyById(this.id).subscribe((resp) => {
+      this.selecfaculties = resp;
+      console.log(this.selecfaculties);  })
+}
 
   ngOnInit() {
     this.facultyName = new FormControl('', Validators.required, this.asyncValidator.bind(this));
@@ -34,13 +43,13 @@ export class FacultiesComponent implements OnInit {
     })
     this.http.getPaginatedPage(1).subscribe((resp) => {
       this.faculties = <Faculty[]> resp;
-      console.log(this.faculties);
     })
 
     this.http.countAllRecords().subscribe((resp) => {
       this.count = resp['numberOfRecords'];
     });
   }
+
 
   getCount() {
     this.http.countAllRecords().subscribe((resp) => {

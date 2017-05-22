@@ -40,5 +40,8 @@ export class FacultyService {
   searchByName(name: string) {
     return this.http.get(`http://${HOST}/Faculty/getRecordsBySearch/${name}`).map((resp: Response) => resp.json());
   }
+  getFacultyById(id: number){
+    return this.http.get(`http://${HOST}/Faculty/getRecords/${id}`).map((resp: Response) => resp.json());
+  }
 
 }

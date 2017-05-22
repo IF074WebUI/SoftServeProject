@@ -15,7 +15,7 @@
       <td (click)="selectedItem(item)" (click)="delete(delContent)"><i class="fa fa-trash"></i></td>
     </tr>
   </table>
-  <ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
+  <ngb-pagination  [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
   <!-- Modal popup for adding -->
   <ng-template #addContent let-c="close" let-d="dismiss">
     <div class="modal-header">
@@ -116,3 +116,4 @@
     </div>
   </ng-template>
 
+  <p>{{selecfaculties}}</p>
