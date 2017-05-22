@@ -15,9 +15,8 @@
       <td (click)="selectedItem(item)" (click)="delete(delContent)"><i class="fa fa-trash"></i></td>
     </tr>
   </table>
-
   <ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
-
+  <!-- Modal popup for adding -->
   <ng-template #addContent let-c="close" let-d="dismiss">
     <div class="modal-header">
       <h4 class="modal-title">Створити новий факультет</h4>
@@ -26,19 +25,27 @@
       </button>
     </div>
     <div class="modal-body">
-      <form method="post">
-        <input [(ngModel)]="faculty.name" ngModel type="text" name="name" required class="form-control"/>
-        <textarea [(ngModel)]="faculty.description" ngModel type="text" name="description" required
+      <form method="post"  [formGroup]="facultyForm">
+        <input formControlName="name"  type="text" name="name" required class="form-control"/>
+        <span
+          *ngIf="facultyForm.controls['name'].hasError('required') && facultyForm.controls['name'].touched"
+          class="validate_message">Вкажіть назву факультету</span>
+        <span
+          *ngIf="facultyForm.controls['name'].hasError('exists') && facultyForm.controls['name'].dirty"
+          class="validate_message">Факультет з такою назвою вже існує</span>
+        <textarea formControlName="description" type="text" name="description" required
                   class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
        </textarea>
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Створити</button>
+      <button type="button" class="btn btn-secondary"  [disabled]="!facultyForm.valid" (click)="c('Close click')">Створити</button>
     </div>
   </ng-template>
 
   <button class="btn btn-lg btn-outline-primary" (click)="add(addContent)"> Створити новий факультет</button>
+
+  <!-- Modal popup for deleting -->
 
 
   <ng-template #delContent let-c="close" let-d="dismiss">
@@ -56,6 +63,7 @@
     </div>
   </ng-template>
 
+  <!-- Modal popup for editing -->
 
   <ng-template #editContent let-c="close" let-d="dismiss">
 
@@ -68,8 +76,8 @@
     <div class="modal-body">
 
       <form method="post">
-        <input [(ngModel)]="ItemforEdit['faculty_name']" ngModel type="text" name="name" required class="form-control"/>
-        <textarea [(ngModel)]="ItemforEdit['faculty_description']" ngModel type="text" name="description" required
+        <input  [(ngModel)]="ItemforEdit['faculty_name']" ngModel type="text" name="name" required class="form-control"/>
+        <textarea   [(ngModel)]="ItemforEdit['faculty_description']" ngModel type="text" name="description" required
                   class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
        </textarea>
       </form>
@@ -79,3 +87,32 @@
     </div>
 
   </ng-template>
+
+
+<!--test template-->
+  <ng-template #addContent let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Створити новий факультет</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form method="post"  [formGroup]="facultyForm">
+        <input formControlName="name"  type="text" name="name" required class="form-control"/>
+        <span
+          *ngIf="facultyForm.controls['name'].hasError('required') && facultyForm.controls['name'].touched"
+          class="validate_message">Вкажіть назву факультету</span>
+        <span
+          *ngIf="facultyForm.controls['name'].hasError('exists') && facultyForm.controls['name'].dirty"
+          class="validate_message">Факультет з такою назвою вже існує</span>
+        <textarea formControlName="description" type="text" name="description" required
+                  class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
+       </textarea>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary"  [disabled]="!facultyForm.valid" (click)="c('Close click')">Створити</button>
+    </div>
+  </ng-template>
+

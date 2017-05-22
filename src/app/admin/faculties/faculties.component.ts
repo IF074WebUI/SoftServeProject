@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Faculty} from './Faculty';
 import {FacultyService} from './faculty.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
 
 @Component({
   selector: 'app-faculties',
@@ -16,14 +17,21 @@ export class FacultiesComponent implements OnInit {
   ItemforEdit: Faculty;
   ItemforDelete: Faculty;
   faculty: Faculty = new Faculty();
-  closeResult: string;
-
+  facultyForm: FormGroup;
+  facultyName: FormControl;
+  facultyDescription: FormControl;
+  array: Array<number>;
 
   constructor(private http: FacultyService, private modalService: NgbModal) {
   }
 
   ngOnInit() {
-
+    this.facultyName = new FormControl('', Validators.required, this.asyncValidator.bind(this));
+    this.facultyDescription = new FormControl('', Validators.required);
+    this.facultyForm = new FormGroup({
+      'name': this.facultyName,
+      'description': this.facultyDescription
+    })
     this.http.getPaginatedPage(1).subscribe((resp) => {
       this.faculties = <Faculty[]> resp;
       console.log(this.faculties);
@@ -32,7 +40,6 @@ export class FacultiesComponent implements OnInit {
     this.http.countAllRecords().subscribe((resp) => {
       this.count = resp['numberOfRecords'];
     });
-
   }
 
   getCount() {
@@ -72,11 +79,11 @@ export class FacultiesComponent implements OnInit {
   confirmEdit() {
     this.http.editItem(this.ItemforEdit['faculty_id'], this.ItemforEdit['faculty_name'], this.ItemforEdit['faculty_description']).subscribe((resp) => {
       this.uploadAllPages(this.page);
-    });
+    })
   }
 
   confirmAdd() {
-    this.http.addItem(this.faculty.name, this.faculty.description).subscribe(response => {
+    this.http.addItem(this.facultyName.value, this.facultyDescription.value).subscribe(response => {
       this.getCount();
       (this.count % 10 === 0) ? this.page = this.page + 1 : this.page = this.page;
       this.uploadAllPages(this.page);
@@ -86,29 +93,49 @@ export class FacultiesComponent implements OnInit {
   }
 
   add(content) {
+ //   this.facultyName.setValue("hi");
+ //   this.facultyName.setValue("hello");
     this.modalService.open(content).result.then((result) => {
       this.confirmAdd();
-      this.closeResult = `aded`;
     }, (reason) => {
-      this.closeResult = `Dismissed `;
+      console.log(`Dismissed`);
     });
   }
 
   delete(content) {
     this.modalService.open(content).result.then((result) => {
       this.confirmDelete();
-      this.closeResult = `deleted`;
+      alert('Факультет було успішно видалено');
     }, (reason) => {
-      this.closeResult = `Dismissed`;
+      console.log(`Dismissed`);
     });
   }
 
   edit(content) {
+    let n = this.ItemforEdit['faculty_name'];
+    let d = this.ItemforEdit['faculty_description'];
     this.modalService.open(content).result.then((result) => {
       this.confirmEdit();
-      this.closeResult = `aded`;
+      alert('Факультет було успішно відредаговано');
     }, (reason) => {
-      this.closeResult = `Dismissed `;
+      this.ItemforEdit['faculty_name'] = n;
+      this.ItemforEdit['faculty_description'] = d;
+      console.log(`Dismissed`);
     });
+  };
+
+  asyncValidator(control: AbstractControl) {
+    return this.http.searchByName(control.value).map((resp: Faculty[]) => {
+        for (let key of resp) {
+          if (key['faculty_name'] === control.value.trim()) {
+            return {exists: true};
+          }
+        }
+        return null;
+      }
+    )
   }
+
+
 }
+

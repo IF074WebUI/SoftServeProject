@@ -37,5 +37,8 @@ export class FacultyService {
     let body1 = JSON.stringify({'faculty_name': name, 'faculty_description': description})
     return this.http.post('http://' + HOST + '/Faculty/insertData', body1).map((resp: Response) => resp.json());
   }
+  searchByName(name: string) {
+    return this.http.get(`http://${HOST}/Faculty/getRecordsBySearch/${name}`).map((resp: Response) => resp.json());
+  }
 
 }

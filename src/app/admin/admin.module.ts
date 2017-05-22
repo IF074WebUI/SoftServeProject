@@ -8,11 +8,13 @@ import {StatisticsComponent} from './statistics/statistics.component';
 import {StatisticsService} from './statistics/statistics.service';
 import { FacultiesComponent } from './faculties/faculties.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {CommonModule} from '@angular/common';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
   declarations: [AdminComponent, MenuComponent, StatisticsComponent, GroupComponent, FacultiesComponent],
-  imports: [RouterModule.forChild(adminRoutes), NgbModule],
+  imports: [RouterModule.forChild(adminRoutes), NgbModule,  CommonModule, FormsModule, ReactiveFormsModule],
   providers: [StatisticsService]
 
 })
