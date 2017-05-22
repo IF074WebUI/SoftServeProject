@@ -4,7 +4,7 @@ import { GroupService } from './group.service';
 import { Group } from './group';
 import {Faculty} from './Faculty';
 import {Speciality} from './speciality';
-import { Ng2CompleterModule } from 'ng2-completer';
+import {StatisticsService} from '../statistics/statistics.service';
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',
@@ -17,15 +17,20 @@ export class GroupComponent implements OnInit {
   groups: Group = new Group();
   GroupforEdit: Group;
   GroupforDelete: Group;
-
-  constructor(private getGroupsService: GroupService) { }
-
+  numberOfrecords: any;
+  pageNumberForLoad = 1;
+  numberPagesForTheLoad: number = 10;
+  constructor(private getGroupsService: GroupService, private statictic: StatisticsService) { }
   ngOnInit() {
     this.getGroupsService
       .getGroups()
       .subscribe((data) => {
         this.groupsOnPage = <Group[]>data;
       });
+    this.getGroupsService.getPaginatedPage(1, this.numberPagesForTheLoad)
+      .subscribe((data) => {
+      this.groupsOnPage = <Group[]> data;
+    })
 
     this.getGroupsService
       .getFaculties()
@@ -66,4 +71,10 @@ export class GroupComponent implements OnInit {
     this.pageReload();
     console.log(this.GroupforDelete['group_id']);
   }
+  // >>>>>pagination<<<<<<<<
+    getCountRecords(entity) {
+      this.statictic.getCountRecords(entity).subscribe((data) => this.numberOfrecords = data.numberOfRecords);
+      return this.numberOfrecords;
+    }
 }
+

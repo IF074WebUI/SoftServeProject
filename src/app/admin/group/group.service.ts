@@ -6,6 +6,7 @@ import 'rxjs/add/operator/catch';
 import {Observable} from 'rxjs/Observable';
 
 
+
 import {HOST} from '../../constants';
 import {Group} from './group';
 
@@ -15,8 +16,15 @@ export class GroupService {
   private entity: string = '/Group';
   constructor(private http: Http) { }
 
+
+
   getGroups() {
     return this.http.get('http://' + HOST + this.entity + '/getRecords')
+      .map((resp: Response) => resp.json());
+  }
+
+  getPaginatedPage(pageNumber: number, numbersOfRecordOnPpage: number) {
+    return this.http.get('http://' + HOST + this.entity + '/getRecordsRange/' + numbersOfRecordOnPpage + '/' + (pageNumber - 1) * numbersOfRecordOnPpage )
       .map((resp: Response) => resp.json());
   }
   getFaculties() {
