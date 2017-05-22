@@ -41,16 +41,18 @@ export class SpecialitiesComponent implements OnInit {
   }
 
   getSpecialities(): void {
-    if (this.count < (this.page - 1) * this.countPerPage) {
+    if (this.count <= (this.page - 1) * this.countPerPage) {
       --this.page;
     }
 
     this.specialitiesService.paginate(this.countPerPage, (this.page - 1) * this.countPerPage)
-      .subscribe(resp => this.specialities = resp, err => this.router.navigate(['/bad_request']));
+      .subscribe(resp => {this.specialities = resp;
+        console.log(this.count + " " + this.countPerPage + " " + this.page);}, err => this.router.navigate(['/bad_request']));
   }
 
   getCount(): void {
-    this.specialitiesService.getCount().subscribe(resp => this.count = resp,
+    this.specialitiesService.getCount().subscribe(resp => {this.count = resp;
+        console.log(this.count + " " + this.countPerPage + " " + this.page);},
       err => this.router.navigate(['/bad_request']));
   }
 
@@ -80,6 +82,7 @@ export class SpecialitiesComponent implements OnInit {
       this.specialitiesService.save(speciality).subscribe(resp => {
         $('#myModal').modal('hide');
         this.getSpecialities();
+        this.getCount();
       },
         err => this.router.navigate(['/bad_request']));
     }
@@ -95,8 +98,9 @@ export class SpecialitiesComponent implements OnInit {
   delete(speciality: Speciality) {
     if (confirm('Ви справді бажаєте видалити цю спеціальність?'))
       this.specialitiesService.delete(speciality['speciality_id']).subscribe(resp => {
-        console.log(resp);
-        this.getCount();
+        --this.count;
+        this.getSpecialities();
+        console.log(this.count + " " + this.countPerPage + " " + this.page);
       },
         err => this.router.navigate(['/bad_request']));
   }
