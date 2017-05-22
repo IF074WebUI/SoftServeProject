@@ -13,4 +13,10 @@ export class TimetableService {
   getTimeTablesForSubject(subject_id) {
     return this.http.get('http://' + HOST + '/timeTable/getTimeTablesForSubject/' + subject_id).map(resp => resp.json());
   }
+
+  getAllTimeTables() {
+    return this.http.get('http://' + HOST + '/timeTable/getRecords/').map(resp => resp.json());
+  }
+
+
 }

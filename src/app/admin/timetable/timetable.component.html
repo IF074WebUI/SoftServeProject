@@ -1,4 +1,4 @@
-<h2>Розклад проведення тестевуння</h2>
+<h2>Розклад проведення тестування</h2>
 <table class="table-responsive">
   <tr>
     <th>ID</th>
@@ -8,8 +8,8 @@
   </tr>
   <tr *ngFor="let td of timeTable">
     <td>{{td?.timetable_id}}</td>
-    <td>{{td?.group_id}}</td>
-    <td>{{td?.subject_id}}</td>
-    <td>{{td?.event_date}}</td>
+    <td>{{td?.group_name}}</td>
+    <td>{{td?.subject_name}}</td>
+    <td>{{td?.start_date}}</td>
   </tr>
 </table>
