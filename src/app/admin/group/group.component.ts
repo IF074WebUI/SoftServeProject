@@ -19,7 +19,7 @@ export class GroupComponent implements OnInit {
   GroupforDelete: Group;
   numberOfrecords: number;
   pageNumberForLoad = 1;
-  numberPagesForTheLoad = 3;
+  numberPagesForTheLoad = 20;
   constructor(private getGroupsService: GroupService, private statictic: StatisticsService) { }
   ngOnInit() {
      this.getGroupsService.getPaginatedPage(this.pageNumberForLoad, this.numberPagesForTheLoad)
@@ -75,6 +75,10 @@ export class GroupComponent implements OnInit {
     this.getCountRecords(entity);
     if (this.numberOfrecords / this.numberPagesForTheLoad < this.pageNumberForLoad) {} else { this.numberOfrecords += 1;  };
     this.changePage(this.pageNumberForLoad, this.numberPagesForTheLoad);
+    }
+
+    deleteGroupsBySpecialyty(id) {
+    this.getGroupsService.deleteGroupsBySpesialytyId(id);
     }
 }
 
