@@ -10,12 +10,18 @@ import { FacultiesComponent } from './faculties/faculties.component';
 import {GroupService} from "./group/group.service";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {MdDialogModule, MdButtonModule} from '@angular/material';
 
+import {StudentsComponent} from './students/students.component';
+import {AddStudentComponent} from './students/add-student/add-student.component';
+import {EditStudentComponent} from './students/edit-student/edit-student.component';
+import {DeleteStudentComponent} from './students/delete-student/delete-student.component';
 
 @NgModule({
-  declarations: [AdminComponent, MenuComponent, StatisticsComponent, GroupComponent, FacultiesComponent],
-  imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule],
-  providers: [StatisticsService, GroupService]
-
+  declarations: [AdminComponent, MenuComponent, StatisticsComponent, GroupComponent, FacultiesComponent, StudentsComponent,
+  AddStudentComponent, EditStudentComponent, DeleteStudentComponent],
+  imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule, MdDialogModule, MdButtonModule],
+  providers: [StatisticsService, GroupService],
+  entryComponents: [AddStudentComponent, EditStudentComponent, DeleteStudentComponent]
 })
 export class AdminModule {}
