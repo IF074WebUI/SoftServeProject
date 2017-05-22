@@ -1,11 +1,12 @@
-<table class="table table-inverse">
+<table *ngIf="entities?.length; else empty" class="table table-striped">
   <thead>
   <tr>
     <th *ngFor="let header of headers">{{header}}</th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let entity of entities">
+  <tr *ngFor="let entity of entities; let i = index">
+    <td>{{i + itemsPerPage * (page - 1) + 1}}</td>
     <td *ngFor="let name of getProperties(entity)">{{entity[name]}}</td>
     <td>
       <button (click)="edit(entity)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
@@ -14,3 +15,7 @@
   </tr>
   </tbody>
 </table>
+<ng-template #empty>
+  <div class="text-center">Сутності відсутні</div>
+</ng-template>
+
