@@ -19,7 +19,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Додати (редагувати) спеціальність</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" (click)="cancel()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -27,7 +27,7 @@
         <form [formGroup]="specialitiesForm" (ngSubmit)="save()">
           <div class="form-group">
             <label for="name">Назва спеціальності</label>
-            <input formControlName="name" [(ngModel)]="speciality['speciality_name']" name="speciality_name" type="text"
+            <input formControlName="name" name="speciality_name" type="text"
                    class="form-control"
                    id="name">
             <span
@@ -39,7 +39,7 @@
           </div>
           <div class="form-group">
             <label for="code">Код спеціальності</label>
-            <input formControlName="code" [(ngModel)]="speciality['speciality_code']" name="speciality_code" type="text"
+            <input formControlName="code" name="speciality_code" type="text"
                    class="form-control"
                    id="code">
             <span
@@ -56,7 +56,7 @@
   </div>
 </div>
 <!--Common component to display entnties-->
-<dtester-common [entities]="specialities" [headers]="headers" (deleteEntity)="delete($event)"
+<dtester-common [entities]="specialities" [headers]="headers" (deleteEntity)="delete($event)" [page]="page" [itemsPerPage]="countPerPage"
                 (editEntity)="edit($event)"></dtester-common>
 <!--Pagination component-->
 <div class="text-center">

@@ -7,10 +7,13 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 })
 export class CommonComponent<T> implements OnInit {
 
-  @Input() entities: T[];
+  @Input() itemsPerPage: number = 5;
+  @Input() page: number = 1;
+  @Input() entities: T[] = [];
   @Input() headers: string[] = [];
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
   @Output() editEntity: EventEmitter<T> = new EventEmitter();
+  indexArray: number[] = [];
 
   constructor() { }
 
@@ -18,7 +21,7 @@ export class CommonComponent<T> implements OnInit {
   }
 
   getProperties(entity: T): string[] {
-    return Object.getOwnPropertyNames(entity);
+    return Object.getOwnPropertyNames(entity).slice(1);
   }
 
   edit(entity: T) {
@@ -27,5 +30,11 @@ export class CommonComponent<T> implements OnInit {
 
   delete(entity: T) {
     this.deleteEntity.emit(entity);
+  }
+  getIndexArray() {
+    for (let i = (this.page - 1) * this.itemsPerPage - 1; i <= this.entities.length; i++) {
+      this.indexArray.push(i);
+    }
+    return this.indexArray;
   }
 }

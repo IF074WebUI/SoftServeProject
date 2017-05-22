@@ -3,6 +3,7 @@ import {SpecialitiesService} from "../services/specialities.service";
 import {Speciality} from "./speciality";
 import {SPECIALITIES_HEADERS} from "../../constants";
 import {FormControl, FormGroup, Validators, AbstractControl} from "@angular/forms";
+import {Router} from "@angular/router";
 
 
 declare var $: any;
@@ -19,13 +20,12 @@ export class SpecialitiesComponent implements OnInit {
   count: number;
   countPerPage: number = 5;
   headers: string[];
-  speciality: Speciality = new Speciality('', '');
-  canEdit: boolean = false;
+  editId: number = 0;
   specialitiesForm: FormGroup;
   specialitiesName: FormControl;
   specialitiesCode: FormControl;
 
-  constructor(private specialitiesService: SpecialitiesService) {
+  constructor(private specialitiesService: SpecialitiesService, private router: Router) {
   }
 
   ngOnInit() {
@@ -45,41 +45,50 @@ export class SpecialitiesComponent implements OnInit {
       --this.page;
     }
 
-    this.specialitiesService.paginate(this.countPerPage, (this.page - 1) * this.countPerPage).subscribe(resp => this.specialities = resp);
+    this.specialitiesService.paginate(this.countPerPage, (this.page - 1) * this.countPerPage)
+      .subscribe(resp => this.specialities = resp, err => this.router.navigate(['/bad_request']));
   }
 
   getCount(): void {
-    this.specialitiesService.getCount().subscribe(resp => this.count = resp);
+    this.specialitiesService.getCount().subscribe(resp => this.count = resp,
+      err => this.router.navigate(['/bad_request']));
   }
 
   add() {
-    this.speciality = new Speciality('', '');
+    this.editId = 0;
+    this.specialitiesForm.reset();
     $('#myModal').modal('show');
   }
 
   edit(speciality: Speciality) {
-    this.canEdit = true;
-    this.speciality = speciality;
+    this.editId = speciality.speciality_id;
+    this.specialitiesName.setValue(speciality.speciality_name);
+    this.specialitiesCode.setValue(speciality.speciality_code);
     $('#myModal').modal('show');
   }
 
   save() {
-    if (this.canEdit) {
-      this.specialitiesService.edit(this.speciality).subscribe(resp => {
+    let speciality: Speciality = new Speciality(this.specialitiesName.value, this.specialitiesCode.value);
+    if (this.editId) {
+      speciality['speciality_id'] = this.editId;
+      this.specialitiesService.edit(speciality).subscribe(resp => {
         $('#myModal').modal('hide');
-        this.canEdit = false;
-      });
-    } else {
-      this.specialitiesService.save(this.speciality).subscribe(resp => {
         this.getSpecialities();
+      },
+        err => this.router.navigate(['/bad_request']));
+    } else {
+      this.specialitiesService.save(speciality).subscribe(resp => {
         $('#myModal').modal('hide');
-      });
+        this.getSpecialities();
+      },
+        err => this.router.navigate(['/bad_request']));
     }
   }
 
   cancel() {
     if (confirm('Зіни будуть втрачені, продовжити?')) {
       $('#myModal').modal('hide');
+      this.specialitiesForm.reset();
     }
   }
 
@@ -87,13 +96,14 @@ export class SpecialitiesComponent implements OnInit {
     if (confirm('Ви справді бажаєте видалити цю спеціальність?'))
       this.specialitiesService.delete(speciality['speciality_id']).subscribe(resp => {
         console.log(resp);
-        this.getCount()
-      });
+        this.getCount();
+      },
+        err => this.router.navigate(['/bad_request']));
   }
 
   changePage(page: number) {
     this.page = page;
-    this.getSpecialities()
+    this.getSpecialities();
   }
 
   changePerPage(itemsPerPage: number) {
@@ -102,11 +112,20 @@ export class SpecialitiesComponent implements OnInit {
   }
 
   startSearch(criteria: string) {
-    console.log(criteria);
     this.specialitiesService.searchByName(criteria).subscribe(resp => {
-      this.specialities = resp;
-      this.count = resp.length;
-    });
+      console.log(resp);
+      if (resp['response'] === 'no records') {
+        this.specialities = [];
+        this.count = this.specialities.length;
+      } else {
+        this.count = resp.length;
+        this.specialities = resp.slice(0, this.countPerPage);
+        console.log(this.count);
+      }
+
+
+    },
+      err => this.router.navigate(['/bad_request']));
   }
 }
 
@@ -118,5 +137,5 @@ function asyncValidator(control: AbstractControl) {
       }
     }
     return null;
-  })
+  });
 }
