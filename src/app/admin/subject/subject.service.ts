@@ -7,15 +7,16 @@ import {Subject} from './subject.component';
 
 @Injectable()
 export class SubjectService {
-  constructor(private http: Http) {}
-
   private headers = new Headers({'Content-Type': 'application/json'});
+
+  constructor(private http: Http) {
+  }
 
   getSubjects() {
     return this.http.get('http://' + HOST + '/Subject/getRecords')
       .map((response: Response) => response.json());
-      // .catch(this.handleError);
   }
+
   create(subject_name: string, subject_description: string): Promise<Subject> {
     return this.http
       .post('http://' + HOST + '/Subject/insertData',
@@ -24,6 +25,7 @@ export class SubjectService {
       .toPromise()
       .then(res => res.json().data as Subject);
   }
+
   update(subject: Subject): Promise<Subject> {
     return this.http
       .post('http://' + HOST + '/Subject/update/' + subject.subject_id,
@@ -31,10 +33,25 @@ export class SubjectService {
         {headers: this.headers})
       .toPromise()
       .then(() => subject);
-       }
+  }
+
+  delete(subject_id: number): Promise<void> {
+    return this.http
+      .delete('http://' + HOST + '/Subject/del/' + subject_id, {headers: this.headers})
+      .toPromise()
+      .then(() => null);
+  }
+  getPagenationSubjects(page: number, limit: number) {
+    let offset: number;
+    offset = (page - 1) * 3;
+    return this.http.get('http://' + HOST + '/Subject/getRecordsRange/' + limit + '/' + offset)
+      .map((response: Response) => response.json());
+  }
+  getNumberOfRecords(){
+    return this.http.get('http://' + HOST + '/Subject/countRecords/')
+      .map((response: Response) => response.json());
+  }
 }
-
-
 
 
 

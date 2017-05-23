@@ -13,12 +13,13 @@ import { CommonModule } from '@angular/common';
 import { SubjectDetailComponent } from './subject/subject-detail/subject-detail.component';
 import { SubjectSearchComponent } from './subject/subject-search/subject-search.component';
 import {SubjectService} from './subject/subject.service';
+import { SubjectUpdateComponent } from './subject/subject-update/subject-update.component';
 
 
 
 @NgModule({
   declarations: [AdminComponent, MenuComponent, StatisticsComponent, GroupComponent, FacultiesComponent,
-    SubjectComponent, SubjectDetailComponent, SubjectSearchComponent],
+    SubjectComponent, SubjectDetailComponent, SubjectSearchComponent, SubjectUpdateComponent],
   imports: [RouterModule.forChild(adminRoutes), FormsModule, CommonModule],
   providers: [StatisticsService, SubjectService]
 

@@ -16,20 +16,27 @@ export class Subject {
 export class SubjectComponent implements OnInit {
   subjects: Subject[];
   selectedSubject: Subject;
+  updatedSubject: Subject;
+  page: number;
+  pageCount: number;
+  limit = 3;
 
   constructor(private subjectService: SubjectService) {
   }
 
   getSubjects(): void {
-    this.subjectService.getSubjects().subscribe(data => {
+    this.subjectService.getPagenationSubjects(this.page, this.limit).subscribe(data => {
       this.subjects = data;
     });
   }
-  ngOnInit(): void {
-    this.getSubjects();
-  }
-    onSelect(subject: Subject): void {
-    this.selectedSubject = subject;
+  getNumberOfPages(): void {
+    let a: number;
+    this.subjectService.getNumberOfRecords().subscribe(data => {
+      a = data['numberOfRecords'];
+      this.pageCount = Math.ceil( a / this.limit);
+      console.log(this.pageCount);
+    });
+
   }
   addSubject(subject_name: string, subject_description: string): void {
     subject_name = subject_name.trim();
@@ -41,6 +48,39 @@ export class SubjectComponent implements OnInit {
         this.selectedSubject = null;
       });
   }
+  deleteSubject(subject: Subject): void {
+    this.subjectService
+      .delete(subject.subject_id)
+      .then(() => {
+        this.subjects = this.subjects.filter(h => h !== subject);
+        if (this.selectedSubject === subject) { this.selectedSubject = null; }
+      });
+  }
+  ngOnInit(): void {
+    this.page = 1;
+    this.getSubjects();
+    this.getNumberOfPages();
+  }
+  onSelect(subject: Subject): void {
+    this.selectedSubject = subject;
+  }
+  onUpdate(subject: Subject): void {
+    this.updatedSubject = subject;
+  }
+  increasePage(): void {
+    if (this.page < this.pageCount) {
+      this.page += 1;
+      this.getSubjects();
+    }
+  }
+  decreasePage(): void {
+    if (this.page > 1) {
+      this.page -= 1;
+      this.getSubjects();
+    }
+  }
+
+
 }
 
 
