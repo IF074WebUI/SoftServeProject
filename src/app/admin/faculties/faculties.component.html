@@ -7,18 +7,18 @@
     <td>Редагувати назву</td>
     <td>Видалити</td>
     </thead>
-    <tr *ngFor="let item of faculties" >
-      <td>{{item['faculty_id']}}</td>
+    <tr *ngFor="let item of faculties">
+      <td> {{faculties.indexOf(item)+ (page - 1) * 10 + 1}}</td>
       <td>{{item['faculty_name']}}</td>
       <td>{{item['faculty_description']}}</td>
       <td (click)="selectedItem(item)" (click)="edit(editContent)"><i class="fa fa-pencil-square-o"></i></td>
       <td (click)="selectedItem(item)" (click)="delete(delContent)"><i class="fa fa-trash"></i></td>
     </tr>
   </table>
-  <ngb-pagination  [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
+  <ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
   <!-- Modal popup for adding  -->
 
-   <ng-template #addContent let-c="close" let-d="dismiss">
+  <ng-template #addContent let-c="close" let-d="dismiss">
     <div class="modal-header">
       <h4 class="modal-title">{{modalHeader}}</h4>
       <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
@@ -26,8 +26,8 @@
       </button>
     </div>
     <div class="modal-body">
-      <form method="post"  [formGroup]="facultyAddForm">
-        <input formControlName="name"  type="text" name="name" required class="form-control"/>
+      <form method="post" [formGroup]="facultyAddForm">
+        <input formControlName="name" type="text" name="name" required class="form-control"/>
         <span
           *ngIf="facultyAddForm.controls['name'].hasError('required') && facultyAddForm.controls['name'].touched"
           class="validate_message">Вкажіть назву факультету</span>
@@ -40,7 +40,9 @@
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary"  [disabled]="!facultyAddForm.valid" (click)="c('Close click')">Створити</button>
+      <button type="button" class="btn btn-secondary" [disabled]="!facultyAddForm.valid" (click)="c('Close click')">
+        Створити
+      </button>
     </div>
   </ng-template>
 
@@ -70,14 +72,14 @@
 
   <ng-template #editContent let-c="close" let-d="dismiss">
     <div class="modal-header">
-      <h4 class="modal-title" >{{modalHeader}}</h4>
+      <h4 class="modal-title">{{modalHeader}}</h4>
       <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <form method="post"  [formGroup]="facultyEditForm">
-        <input formControlName="name"  type="text" name="name" required class="form-control"/>
+      <form method="post" [formGroup]="facultyEditForm">
+        <input formControlName="name" type="text" name="name" required class="form-control"/>
         <span
           *ngIf="facultyEditForm.controls['name'].hasError('required') && facultyEditForm.controls['name'].touched"
           class="validate_message">Вкажіть назву факультету</span>
@@ -87,23 +89,29 @@
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary"  [disabled]="facultyEditForm.invalid" (click)="c('Close click')">Створити</button>
+      <button type="button" class="btn btn-secondary" [disabled]="facultyEditForm.invalid" (click)="c('Close click')">
+        Створити
+      </button>
     </div>
   </ng-template>
 
- <!-- <nav aria-label="Page navigation">
-    <ul class="pagination" >
-      <li>
-        <a href="#" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      <li *ngFor="let number of PaginationList()" ><a href="#">{{number}}</a></li>
-      <li>
-        <a href="#" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
--->
+  <!-- <nav aria-label="Page navigation">
+     <ul class="pagination" >
+       <li>
+         <a href="#" aria-label="Previous">
+           <span aria-hidden="true">&laquo;</span>
+         </a>
+       </li>
+       <li *ngFor="let number of PaginationList()" ><a href="#">{{number}}</a></li>
+       <li>
+         <a href="#" aria-label="Next">
+           <span aria-hidden="true">&raquo;</span>
+         </a>
+       </li>
+     </ul>
+   </nav>
+     <ul *ngFor="let number of   ArrayOfN()" >
+     <li></li>
+   </ul>
+
+ -->

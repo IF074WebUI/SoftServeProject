@@ -10,7 +10,6 @@ export const adminRoutes: Route[] = [
       /*тут, в дітях вписуємо свої роути*/
       {path: 'group', component: GroupComponent},
       {path: 'statistics', component: StatisticsComponent},
-      {path: 'faculties', component: FacultiesComponent},
-      { path: 'faculties/:id', component: FacultiesComponent},
+      {path: 'faculties', component: FacultiesComponent}
     ]
   }];

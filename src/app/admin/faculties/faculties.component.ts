@@ -28,8 +28,8 @@ export class FacultiesComponent implements OnInit {
   facultyAddName: FormControl;
   facultyAddDescription: FormControl;
   modalHeader: string;
-  list: Array<number> = [];
 
+  list: Array<number>;
 
   constructor(private http: FacultyService, private modalService: NgbModal,
               private route: ActivatedRoute,
@@ -55,15 +55,13 @@ export class FacultiesComponent implements OnInit {
 
     this.http.getPaginatedPage(1).subscribe((resp) => {
       this.faculties = <Faculty[]> resp;
+      console.log(this.faculties);
     })
 
     this.http.countAllRecords().subscribe((resp) => {
       this.count = resp['numberOfRecords'];
     });
 
-    this.route.params
-      .switchMap((params: Params) => this.http.getFacultyById(+params['id']))
-      .subscribe(resp => this.faculties = resp);
   }
 
   getCount() {
@@ -133,13 +131,11 @@ export class FacultiesComponent implements OnInit {
     });
   }
 
-
-
   edit(content) {
     this.modalHeader = 'Редагування факультету';
     this.facultyEditId.setValue(this.ItemforEdit['faculty_id']);
     this.facultyEditName.setValue(this.ItemforEdit['faculty_name']);
-      this.facultyEditDescription.setValue(this.ItemforEdit['faculty_description']);
+    this.facultyEditDescription.setValue(this.ItemforEdit['faculty_description']);
     this.modalService.open(content).result.then((result) => {
       this.confirmEdit();
       alert('Факультет було успішно відредаговано');
@@ -147,7 +143,6 @@ export class FacultiesComponent implements OnInit {
       console.log(`Dismissed`);
     });
   };
-
 
   asyncValidator(control: AbstractControl) {
     return this.http.searchByName(control.value).map((resp: Faculty[]) => {
@@ -160,12 +155,6 @@ export class FacultiesComponent implements OnInit {
       }
     )
   }
-
- // PaginationList(){
-//    this.list.push(this.count/10 + 1);
- //   return this.list;
- // }
-
 
 }
 
