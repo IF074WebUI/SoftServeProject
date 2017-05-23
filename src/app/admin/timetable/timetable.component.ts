@@ -13,6 +13,10 @@ export class TimetableComponent implements OnInit {
   constructor(private timetableservice: TimetableService, private recordsById: GetRecordsByIdService) { }
 
   ngOnInit() {
+    this.getTimetables();
+  }
+
+  getTimetables() {
     this.timetableservice.getAllTimeTables().subscribe((data) => {
       this.timeTables = data;
       console.log(this.timeTables);
@@ -35,11 +39,15 @@ export class TimetableComponent implements OnInit {
   }
 
   createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime) {
-    this.timeTables.createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)
+    this.timetableservice.createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)
       .subscribe((data) => {
         console.log(data);
       });
-    this.pageReload();
+    this.getTimetables();
   }
+
+
+
+
 
 }

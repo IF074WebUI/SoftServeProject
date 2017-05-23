@@ -30,7 +30,7 @@
       <div class="modal-body">
         <form>
           <label class="form-control-label">Група:</label>
-          <input [(ngModel)]="facultyId" name="groupId" class="form-control">
+          <input [(ngModel)]="groupId" name="groupId" class="form-control">
           <div class="form-group">
             <label class="form-control-label"> Предмет:</label>
             <input [(ngModel)]="subjectId" name="subjectId" class="form-control">
@@ -55,7 +55,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-        <button  type="button" class="btn btn-primary">Запланувати</button>
+        <button  type="button" class="btn btn-primary" (click)="createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)">Запланувати</button>
       </div>
     </div>
   </div>
