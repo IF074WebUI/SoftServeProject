@@ -7,7 +7,9 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 })
 export class CommonComponent<T> implements OnInit {
 
-  @Input() entities: T[];
+  @Input() itemsPerPage: number = 5;
+  @Input() page: number = 1;
+  @Input() entities: T[] = [];
   @Input() headers: string[] = [];
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
   @Output() editEntity: EventEmitter<T> = new EventEmitter();
@@ -18,7 +20,7 @@ export class CommonComponent<T> implements OnInit {
   }
 
   getProperties(entity: T): string[] {
-    return Object.getOwnPropertyNames(entity);
+    return Object.getOwnPropertyNames(entity).slice(1);
   }
 
   edit(entity: T) {

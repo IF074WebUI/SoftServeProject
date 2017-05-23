@@ -1,7 +1,5 @@
-<button (click)="deleteGroupsBySpecialyty(1)">delete</button>
 <h1>Групи</h1>
-<dtester-pagination></dtester-pagination>
-<table class="table table-hover table-bordered ">
+<table class="table table-hover table-bordered">
   <thead class="thead-inverse">
     <tr>
       <td>ID групи</td>
@@ -18,28 +16,6 @@
     </tr>
 </table><br>
 <!--&gt;>>>>>>>>>>>>>>>>>>>>>>>>>>>Pagination view<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
-<div class="text-center">
-<nav>
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-        <span class="sr-only">Previous</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" (click)="changePage(pageNumberForLoad, numberPagesForTheLoad)">{{pageNumberForLoad}}</a></li>
-    <li class="page-item"><a class="page-link" (click)="changePage(pageNumberForLoad + 1, numberPagesForTheLoad)">{{pageNumberForLoad + 1}}</a></li>
-    <li class="page-item"><a class="page-link" (click)="changePage(pageNumberForLoad + 2, numberPagesForTheLoad)">{{pageNumberForLoad + 2}}</a></li>
-    <li class="page-item">
-      <a class="page-link" aria-label="Next">
-        <span aria-hidden="true" (click)="nextPage('Group')" >&raquo;</span>
-        <span class="sr-only">Next</span>
-      </a>
-    </li>
-  </ul>
-</nav>
-</div>
-
 
 <!--&gt;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Creating new GROUP<<<<<<<<<<<<<<<<<<<<<<<<<<-->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Додати нову групу</button>
@@ -55,11 +31,17 @@
       </div>
       <div class="modal-body">
         <form>
-            <label for="recipient-name" class="form-control-label">Назва факультету:</label>
-            <input [(ngModel)]="facultyId" name="facultyId" class="form-control" id="spec-name">
           <div class="form-group">
-            <label for="spec-text" class="form-control-label">Назва спеціальності:</label>
-            <input [(ngModel)]="specialityId" name="specialityId" class="form-control" id="spec-name">
+            <label for="recipient-name" class="form-control-label">Назва факультету:</label>
+            <select class="form-control" [(ngModel)]="selectedFacultyValue" name="selectedFacultyValue">
+              <option *ngFor="let faculty of facultiesOnPage" [ngValue]="faculty.faculty_id">{{faculty.faculty_name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="form-control-label">Назва факультету:</label>
+            <select class="form-control" [(ngModel)]="selectedSpesailutyValue" name="selectedSpesailutyValue">
+              <option *ngFor="let specialyty of specialitiesOnPage" [ngValue]="specialyty.speciality_id">{{specialyty.speciality_name}}</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="group-text" class="form-control-label">Назва групи:</label>
@@ -70,7 +52,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button (click)="createCroup(groupName, specialityId, facultyId)" type="button" class="btn btn-primary">Send message</button>
+        <button (click)="createCroup(groupName)" type="button" class="btn btn-primary">Send message</button>
       </div>
     </div>
   </div>
@@ -90,7 +72,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Скасувати</button>
-        <button (click)="deleteGroup()" type="button" class="btn btn-primary">Видалити</button>
+        <button (click)="deleteGroup()" type="button" class="btn btn-primary" data-dismiss="modal">Видалити</button>
       </div>
     </div>
   </div>

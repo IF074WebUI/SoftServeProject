@@ -20,6 +20,11 @@ export class GroupComponent implements OnInit {
   numberOfrecords: number;
   pageNumberForLoad = 1;
   numberPagesForTheLoad = 20;
+  selectedValue: number;
+  selectedFacultyValue: number;
+  selectedSpesailutyValue: number;
+
+
   constructor(private getGroupsService: GroupService, private statictic: StatisticsService) { }
   ngOnInit() {
      this.getGroupsService.getPaginatedPage(this.pageNumberForLoad, this.numberPagesForTheLoad)
@@ -40,8 +45,11 @@ export class GroupComponent implements OnInit {
       });
   }
 
-  createCroup(facultyId, specialytyId, groupname) {
-    this.getGroupsService.createCroup(facultyId, specialytyId, groupname)
+  createCroup(groupName: string)
+  {
+        console.log(this.selectedValue);
+
+    this.getGroupsService.createCroup(groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
       .subscribe((data) => {
         console.log(data);
       });
@@ -69,16 +77,6 @@ export class GroupComponent implements OnInit {
         .subscribe((data) => {
           this.groupsOnPage = <Group[]> data;
     });
-    }
-
-    nextPage(entity) {
-    this.getCountRecords(entity);
-    if (this.numberOfrecords / this.numberPagesForTheLoad < this.pageNumberForLoad) {} else { this.numberOfrecords += 1;  };
-    this.changePage(this.pageNumberForLoad, this.numberPagesForTheLoad);
-    }
-
-    deleteGroupsBySpecialyty(id) {
-    this.getGroupsService.deleteGroupsBySpesialytyId(id);
     }
 }
 
