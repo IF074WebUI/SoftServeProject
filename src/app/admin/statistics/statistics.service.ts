@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {Http } from '@angular/http';
-import {HOST} from '../../constants';
+import { Http } from '@angular/http';
+import { HOST } from '../../constants';
 
 @Injectable()
 export class StatisticsService {

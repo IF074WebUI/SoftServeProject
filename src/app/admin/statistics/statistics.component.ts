@@ -14,9 +14,9 @@ export class StatisticsComponent implements OnInit {
   constructor(private statistics: StatisticsService) { }
 
   ngOnInit() {
-    for (let i = 0; i < this.entities.length; i++) {
-      this.statistics.getCountRecords(this.entities[i]).subscribe((data) => {
-        this.entitiesNumber[this.entities[i]] = data.numberOfRecords;
+    for (const entity of this.entities) {
+      this.statistics.getCountRecords(entity).subscribe((data) => {
+        this.entitiesNumber[entity] = data.numberOfRecords;
       });
     }
     console.log(this.entitiesNumber);

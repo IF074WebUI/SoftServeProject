@@ -19,20 +19,27 @@ export class TimetableComponent implements OnInit {
       for (const timetable of this.timeTables) {
         /*get names of groups*/
         this.recordsById.getRecordsById('group', timetable.group_id).subscribe((groupData) => {
-          console.log(groupData);
+          /*console.log(groupData);*/
           timetable.group_name = groupData[0].group_name;
         });
         /*get names of subjects*/
         this.recordsById.getRecordsById('subject', timetable.subject_id).subscribe((subjectData) => {
-          console.log(subjectData);
+          /*console.log(subjectData);*/
           timetable.subject_name = subjectData[0].subject_name;
         });
         /*edit date*/
         timetable.end_time = timetable.end_time.slice(0, 5);
         timetable.start_time = timetable.start_time.slice(0, 5);
-        /*edit time*/
-
       }
     });
   }
+
+  createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime) {
+    this.timeTables.createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)
+      .subscribe((data) => {
+        console.log(data);
+      });
+    this.pageReload();
+  }
+
 }

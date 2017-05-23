@@ -11,13 +11,14 @@ import { TimetableComponent } from './timetable/timetable.component';
 import { TimetableService } from './timetable/timetable.service';
 import {CommonModule} from '@angular/common';
 import {GetRecordsByIdService} from './services/get-records-by-id.service';
-
-
+import {GroupService} from './group/group.service';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [AdminComponent, MenuComponent, StatisticsComponent, GroupComponent, FacultiesComponent, TimetableComponent],
-  imports: [RouterModule.forChild(adminRoutes), CommonModule],
-  providers: [StatisticsService, TimetableService, GetRecordsByIdService]
+  imports: [RouterModule.forChild(adminRoutes), CommonModule , FormsModule],
+  providers: [StatisticsService, TimetableService, GetRecordsByIdService, GroupService ]
+
 
 })
 export class AdminModule {}
