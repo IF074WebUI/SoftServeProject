@@ -8,29 +8,31 @@ import { GetRecordsByIdService } from '../services/get-records-by-id.service';
   styleUrls: ['./timetable.component.css']
 })
 export class TimetableComponent implements OnInit {
-  timeTable = [];
+  timeTables = [];
 
   constructor(private timetableservice: TimetableService, private recordsById: GetRecordsByIdService) { }
 
   ngOnInit() {
     this.timetableservice.getAllTimeTables().subscribe((data) => {
-      this.timeTable = data;
-      console.log(this.timeTable);
-      /*get names of groups*/
-      for (let i = 0; i < this.timeTable.length; i++){
-        this.recordsById.getRecordsById('group', this.timeTable[i].group_id).subscribe((groupData) => {
+      this.timeTables = data;
+      console.log(this.timeTables);
+      for (const timetable of this.timeTables) {
+        /*get names of groups*/
+        this.recordsById.getRecordsById('group', timetable.group_id).subscribe((groupData) => {
           console.log(groupData);
-          this.timeTable[i].group_name = groupData[0].group_name;
+          timetable.group_name = groupData[0].group_name;
         });
-      }
-      /*get names of subjects*/
-      for (let i = 0; i < this.timeTable.length; i++){
-        this.recordsById.getRecordsById('subject', this.timeTable[i].subject_id).subscribe((subjectData) => {
+        /*get names of subjects*/
+        this.recordsById.getRecordsById('subject', timetable.subject_id).subscribe((subjectData) => {
           console.log(subjectData);
-          this.timeTable[i].subject_name = subjectData[0].subject_name;
+          timetable.subject_name = subjectData[0].subject_name;
         });
+        /*edit date*/
+        timetable.end_time = timetable.end_time.slice(0, 5);
+        timetable.start_time = timetable.start_time.slice(0, 5);
+        /*edit time*/
+
       }
     });
   }
-
 }

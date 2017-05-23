@@ -1,15 +1,17 @@
 <h2>Розклад проведення тестування</h2>
-<table class="table-responsive">
+<table class="table">
   <tr>
     <th>ID</th>
-    <th>Група</th>
+    <th>Навчальна група</th>
     <th>Предмет</th>
-    <th>Дата</th>
+    <th>Час початку тестування</th>
+    <th>Час закінчення тестування</th>
   </tr>
-  <tr *ngFor="let td of timeTable">
+  <tr *ngFor="let td of timeTables">
     <td>{{td?.timetable_id}}</td>
     <td>{{td?.group_name}}</td>
     <td>{{td?.subject_name}}</td>
-    <td>{{td?.start_date}}</td>
+    <td><span>{{td?.start_time}}</span><br><span>{{td?.start_date}}</span></td>
+    <td><span>{{td?.end_time}}</span><br><span>{{td?.end_date}}</span></td>
   </tr>
 </table>
