@@ -1,7 +1,7 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import 'rxjs/add/operator/debounceTime';
-import {FormControl} from '@angular/forms';
-import {Router} from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'dtester-search',

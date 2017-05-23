@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {SpecialitiesService} from '../services/specialities.service';
-import {Speciality} from './speciality';
-import {SPECIALITIES_HEADERS} from '../../constants';
-import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { SpecialitiesService } from '../services/specialities.service';
+import { Speciality } from './speciality';
+import { SPECIALITIES_HEADERS } from '../../constants';
+import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 declare var $: any;
 
@@ -13,7 +13,6 @@ declare var $: any;
   styleUrls: ['./specialities.component.css']
 })
 export class SpecialitiesComponent implements OnInit {
-
 
   specialities: Speciality[];   /* array of specialities that will be displayed on current page */
   page = 1;                     /* current page */

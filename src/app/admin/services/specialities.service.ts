@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Http, RequestOptions, Response, Headers} from '@angular/http';
-import {Observable} from 'rxjs';
-import {Speciality} from '../specialities/speciality';
-import {HOST} from '../../constants';
+import { Http, RequestOptions, Response, Headers } from '@angular/http';
+import { Observable } from 'rxjs';
+import { Speciality } from '../specialities/speciality';
+import { HOST } from '../../constants';
 
 @Injectable()
 export class SpecialitiesService {
