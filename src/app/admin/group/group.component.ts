@@ -15,11 +15,11 @@ export class GroupComponent implements OnInit {
   facultiesOnPage: Faculty[] = [];
   specialitiesOnPage: Speciality[] = [];
   groups: Group = new Group();
-  GroupforEdit: Group;
+  groupforEdit: Group;
   GroupforDelete: Group;
   numberOfrecords: number;
-  pageNumberForLoad = 1;
-  numberPagesForTheLoad = 20;
+  pageNumber = 1;
+  offset = 5;
   selectedValue: number;
   selectedFacultyValue: number;
   selectedSpesailutyValue: number;
@@ -27,7 +27,7 @@ export class GroupComponent implements OnInit {
 
   constructor(private getGroupsService: GroupService, private statictic: StatisticsService) { }
   ngOnInit() {
-     this.getGroupsService.getPaginatedPage(this.pageNumberForLoad, this.numberPagesForTheLoad)
+     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
       .subscribe((data) => {
       this.groupsOnPage = <Group[]> data;
     })
@@ -53,30 +53,38 @@ export class GroupComponent implements OnInit {
       .subscribe((data) => {
         console.log(data);
       });
-    this.changePage(this.pageNumberForLoad, this.numberPagesForTheLoad);
   }
 
   // >>>>>>>>>SELECT FOR EDITING<<<<<<<<<<
   selectedGroup(group: Group) {
     this.GroupforDelete = group;
-    this.GroupforEdit = group;
+    this.groupforEdit = group;
   }
   // >>>>>>>>>>>>>DELETING<<<<<<<<<<<<<<
   deleteGroup() {
-    this.getGroupsService.deleteGroup(this.GroupforDelete['group_id']).subscribe((data) => console.log(data));
-    this.changePage(this.pageNumberForLoad, this.numberPagesForTheLoad);
-    console.log(this.GroupforDelete['group_id']);
+    this.getGroupsService.deleteGroup(this.GroupforDelete['group_id'])
+      .subscribe((data) => console.log(data));
+
+  }
+  // >>>>>>>>EDITING<<<<<<<<<<<
+
+  editGroup(groupName: string) {
+    console.log(this.groupforEdit['group_id'])
+    this.getGroupsService.editGroup(this.groupforEdit['group_id'], groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
+      .subscribe((data) => console.log(data));
   }
   // >>>>>pagination<<<<<<<<
     getCountRecords(entity) {
       this.statictic.getCountRecords(entity).subscribe((data) =>  {this.numberOfrecords = data.numberOfRecords; } );
 
     }
-    changePage(pageNumberForLoad, numberPagesForTheLoad) {
-      this.getGroupsService.getPaginatedPage(pageNumberForLoad, numberPagesForTheLoad)
+
+    getGroupsOnPage() {
+        this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
         .subscribe((data) => {
           this.groupsOnPage = <Group[]> data;
-    });
+        });
     }
+
 }
 

@@ -46,6 +46,12 @@ export class GroupService {
      .map((resp: Response) => resp.json());
   }
 
+  editGroup(id: number, groupname: string, specialytyId: number, facultyId: number ) {
+    const bodyForSendingEditedGroups = JSON.stringify({group_name: groupname, faculty_id: facultyId, speciality_id: specialytyId});
+    return this.http.post('http://' + HOST + this.entity + '/update/' + id, bodyForSendingEditedGroups)
+      .map((resp) => resp.json());
+  }
+
   getGroupsBySpeciality(specialytyId: number) {
     return this.http.get('http://' + HOST + this.entity + '/getGroupsBySpeciality/' + specialytyId)
       .map((resp: Response) => resp.json());
