@@ -6,6 +6,8 @@
     <th>Предмет</th>
     <th>Час початку тестування</th>
     <th>Час закінчення тестування</th>
+    <th></th>
+    <th></th>
   </tr>
   <tr *ngFor="let td of timeTables">
     <td>{{td?.timetable_id}}</td>
@@ -13,6 +15,8 @@
     <td>{{td?.subject_name}}</td>
     <td><span>{{td?.start_time}}</span><br><span>{{td?.start_date}}</span></td>
     <td><span>{{td?.end_time}}</span><br><span>{{td?.end_date}}</span></td>
+    <td><button type="button" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+    <td><button type="button" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button></td>
   </tr>
 </table>
 
@@ -29,8 +33,13 @@
       </div>
       <div class="modal-body">
         <form>
-          <label class="form-control-label">Група:</label>
-          <input [(ngModel)]="groupId" name="groupId" class="form-control">
+          <!--div class="form-group">
+            <label class="form-control-label">Група:</label>
+            <input [(ngModel)]="groupId" name="groupId" class="form-control">
+          </div-->
+          <!--select name="groupId" id="groupId" class="form-control">
+            <option *ngFor="let group of groups" value="{{group.group_id}}">{{group.group_name}}</option>
+          </select-->
           <div class="form-group">
             <label class="form-control-label"> Предмет:</label>
             <input [(ngModel)]="subjectId" name="subjectId" class="form-control">

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimetableService } from './timetable.service';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
+import { GroupService } from '../group/group.service';
 
 @Component({
   selector: 'app-timetable',
@@ -9,11 +10,13 @@ import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 })
 export class TimetableComponent implements OnInit {
   timeTables = [];
+  groups = [];
 
-  constructor(private timetableservice: TimetableService, private recordsById: GetRecordsByIdService) { }
+  constructor(private timetableservice: TimetableService, private recordsById: GetRecordsByIdService, private  groupService: GroupService) { }
 
   ngOnInit() {
     this.getTimetables();
+    this.getGroups();
   }
 
   getTimetables() {
@@ -45,9 +48,10 @@ export class TimetableComponent implements OnInit {
       });
     this.getTimetables();
   }
-
-
-
-
-
+  getGroups() {
+    this.groupService.getGroups().subscribe((data) => {
+      this.groups = data;
+      console.log(this.groups);
+    });
+  }
 }
