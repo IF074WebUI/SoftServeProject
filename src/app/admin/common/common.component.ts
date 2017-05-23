@@ -13,7 +13,6 @@ export class CommonComponent<T> implements OnInit {
   @Input() headers: string[] = [];
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
   @Output() editEntity: EventEmitter<T> = new EventEmitter();
-  indexArray: number[] = [];
 
   constructor() { }
 
@@ -30,11 +29,5 @@ export class CommonComponent<T> implements OnInit {
 
   delete(entity: T) {
     this.deleteEntity.emit(entity);
-  }
-  getIndexArray() {
-    for (let i = (this.page - 1) * this.itemsPerPage - 1; i <= this.entities.length; i++) {
-      this.indexArray.push(i);
-    }
-    return this.indexArray;
   }
 }

@@ -6,9 +6,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BadRequestComponent implements OnInit {
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }

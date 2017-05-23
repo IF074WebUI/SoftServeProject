@@ -23,6 +23,7 @@ export class PaginationComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     let countPages = this.countRecords % this.recordsPerPage === 0 ? this.countRecords / this.recordsPerPage :
       Math.ceil(this.countRecords / this.recordsPerPage);
+    /* fill array with natural numbers that represent pages */
     this.countPagesArray.length = 0;
     for (let i = 1; i <= countPages; i++) {
       this.countPagesArray.push(i);
