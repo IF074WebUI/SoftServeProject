@@ -3,21 +3,19 @@ import { MdDialog } from '@angular/material';
 import { AddStudentComponent } from './add-student/add-student.component';
 import { EditStudentComponent } from './edit-student/edit-student.component';
 import { DeleteStudentComponent } from './delete-student/delete-student.component';
-import {Student} from "./student";
 import {AddEditDeleteService} from './add-edit-delete.service';
 
 @Component({
   selector: 'app-test',
   templateUrl: './students.component.html',
   styleUrls: ['./students.component.css'],
-  providers: ['AddEditDeleteService']
+  providers: [AddEditDeleteService]
 })
 export class StudentsComponent implements OnInit {
-  students: Student[] = [];
-  page: number = 1;
-  count: number;
 
-  constructor(private dialog: MdDialog, private http: AddEditDeleteService) {}
+  constructor(private dialog: MdDialog) {}
+
+  ngOnInit() {};
 
   addDialog() {
     let add = this.dialog.open(AddStudentComponent, {
@@ -34,36 +32,4 @@ export class StudentsComponent implements OnInit {
       width: '40%'
     });
   }
-
-  getRecords() {
-    this.http.countRecords().subscribe(resp => {
-      this.count = resp['numberOfStudent'];
-    });
-  }
-
-  addStudent() {
-    this.http.insert().subscribe(resp => {
-      this.getRecords();
-      if ( (this.count % 10) === 1) {
-        this.page += 1;
-      }
-    });
-  }
-
-  editStudent() {
-    this.http.update().subscribe(resp => {
-
-    });
-  }
-
-  deleteStudent() {
-    this.http.delete().subscribe(resp => {
-      this.getRecords();
-      if ( (this.count % 10) === 1) {
-        this.page -= 1;
-      }
-    });
-  }
-
-  ngOnInit() {};
 }

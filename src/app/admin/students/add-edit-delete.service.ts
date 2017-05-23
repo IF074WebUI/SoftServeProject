@@ -11,25 +11,33 @@ export class AddEditDeleteService {
   constructor(private http: Http) {
   }
 
-  insert(): Observable<Response> {
-    let body = JSON.stringify();
-    let headers = new Headers({'Content-Type': 'application/json'});
-    let options = new RequestOptions({headers: headers});
-    return this.http.post('http://' + HOST + '/student/insertData', body, options).map(resp => resp.json());
-  }
-
-  update(): Observable<Response> {
-    let body = JSON.stringify();
-    let headers = new Headers({'Content-Type': 'application/json'});
-    let options = new RequestOptions({headers: headers});
-    return this.http.post('http://' + HOST + '/student/update' + id, body, options).map(resp => resp.json());
-  }
-
-  delete(): Observable<Response> {
-    return this.http.delete('http://' + HOST + '/del' + id).map(resp => resp.json());
-  }
-
-  countRecords() {
-    return this.http.get('http://' + HOST + '/Student/countRecords').map(resp => resp.json());
+  insert(username: string,
+         password: string,
+         password_confirm: string,
+         email: string,
+         gradebook_id: string,
+         student_surname: string,
+         student_name: string,
+         student_fname: string,
+         group_id: number,
+         plain_password: string,
+         photo: any
+  ): Observable<Response> {
+    let body = JSON.stringify(
+      {
+        'username': username,
+        'password': password,
+        'password_confirm': password_confirm,
+        'email': email,
+        'gradebook_id': gradebook_id,
+        'student_surname': student_surname,
+        'student_name': student_name,
+        'student_fname': student_fname,
+        'group_id': group_id,
+        'plain_password': plain_password,
+        'photo': photo
+      }
+      );
+    return this.http.post('http://' + HOST + '/Student/insertData', body).map(resp => resp.json());
   }
 }

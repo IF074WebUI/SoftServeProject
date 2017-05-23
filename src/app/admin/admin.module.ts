@@ -9,7 +9,7 @@ import {StatisticsService} from './statistics/statistics.service';
 import { FacultiesComponent } from './faculties/faculties.component';
 import {GroupService} from "./group/group.service";
 import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MdDialogModule, MdButtonModule} from '@angular/material';
 
 import {StudentsComponent} from './students/students.component';
@@ -20,7 +20,7 @@ import {DeleteStudentComponent} from './students/delete-student/delete-student.c
 @NgModule({
   declarations: [AdminComponent, MenuComponent, StatisticsComponent, GroupComponent, FacultiesComponent, StudentsComponent,
   AddStudentComponent, EditStudentComponent, DeleteStudentComponent],
-  imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule, MdDialogModule, MdButtonModule],
+  imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule, MdDialogModule, MdButtonModule, ReactiveFormsModule],
   providers: [StatisticsService, GroupService],
   entryComponents: [AddStudentComponent, EditStudentComponent, DeleteStudentComponent]
 })
