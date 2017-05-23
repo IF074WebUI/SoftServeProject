@@ -1,20 +1,17 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import {
   HttpModule,
-  Http,
   Response,
   ResponseOptions,
   XHRBackend
 } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { LoginService } from './login.service';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {CommonModule} from "@angular/common";
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
 
 describe('LoginService', () => {
-
   beforeEach(() => {
-
     TestBed.configureTestingModule({
       imports: [HttpModule, FormsModule, CommonModule,
         ReactiveFormsModule],
@@ -25,9 +22,8 @@ describe('LoginService', () => {
     });
   });
 
-  describe('checkLogged()', () => {
-
-    it('should return JSON with roles if logged',
+  fdescribe('checkLogged()', () => {
+    fit('should return JSON with roles if logged',
       inject([LoginService, XHRBackend], (loginService, mockBackend) => {
 
         const mockResponse = {response: 'logged', roles: ['login', 'admin'], username: 'admin'};
