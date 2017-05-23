@@ -1,5 +1,4 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs';
 import 'rxjs/add/operator/debounceTime';
 import {FormControl} from '@angular/forms';
 import {Router} from '@angular/router';

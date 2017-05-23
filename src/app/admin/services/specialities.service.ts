@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
-import {Http, Response} from "@angular/http";
-import {Observable} from "rxjs";
-import {Speciality} from "../specialities/speciality";
-import {HOST} from "../../constants";
+import {Http, RequestOptions, Response, Headers} from '@angular/http';
+import {Observable} from 'rxjs';
+import {Speciality} from '../specialities/speciality';
+import {HOST} from '../../constants';
 
 @Injectable()
 export class SpecialitiesService {
 
-  constructor(private http: Http) { }
+  options: RequestOptions;
+
+  constructor(private http: Http) {
+    const headers: Headers = new Headers({'Content-Type': 'application/json'});
+    this.options = new RequestOptions({headers: headers});
+  }
 
   getAll(): Observable<Speciality[]> {
     return this.http.get(`http://${HOST}/speciality/getRecords`).map((resp: Response) => resp.json());
   }
 
-  paginate(limit: number, offset: number): Observable<Speciality[]> {
+  getPaginated(limit: number, offset: number): Observable<Speciality[]> {
   return this.http.get(`http://${HOST}/speciality/getRecordsRange/${limit}/${offset}`).map((resp: Response) => resp.json());
   }
 
@@ -30,12 +35,12 @@ export class SpecialitiesService {
   }
 
   edit(speciality: Speciality): Observable<Speciality> {
-    return this.http.post(`http://${HOST}/speciality/update/${speciality['speciality_id']}`, JSON.stringify(speciality))
+    return this.http.post(`http://${HOST}/speciality/update/${speciality['speciality_id']}`, JSON.stringify(speciality), this.options)
       .map((resp: Response) => resp.json());
   }
 
   save(speciality: Speciality): Observable<Speciality> {
-    return this.http.post(`http://${HOST}/speciality/insertData`, JSON.stringify(speciality))
+    return this.http.post(`http://${HOST}/speciality/insertData`, JSON.stringify(speciality), this.options)
       .map((resp: Response) => resp.json());
   }
 }

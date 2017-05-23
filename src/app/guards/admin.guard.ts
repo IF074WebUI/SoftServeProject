@@ -1,7 +1,7 @@
 import {CanLoad, Route, Router} from '@angular/router';
 import {Injectable} from '@angular/core';
-import {LoginService} from "../login/login.service";
-import {Observable} from "rxjs/Observable";
+import {LoginService} from '../login/login.service';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class AdminGuard implements CanLoad {
@@ -14,7 +14,7 @@ export class AdminGuard implements CanLoad {
       if (logged !== 'logged') {
         return false;
       } else {
-        let role = resp['roles'][1];
+        let role: string = resp['roles'][1];
         if (role === 'admin') {
           return true;
         } else if (role === 'student') {
