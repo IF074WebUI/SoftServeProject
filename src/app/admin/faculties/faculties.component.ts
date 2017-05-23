@@ -1,9 +1,8 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Faculty} from './Faculty';
 import {FacultyService} from './faculty.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
-import {ActivatedRoute, Params} from '@angular/router';
 import {Location} from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 
@@ -32,7 +31,6 @@ export class FacultiesComponent implements OnInit {
   list: Array<number>;
 
   constructor(private http: FacultyService, private modalService: NgbModal,
-              private route: ActivatedRoute,
               private location: Location) {
   }
 

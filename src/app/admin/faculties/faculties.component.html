@@ -8,7 +8,7 @@
     <td>Видалити</td>
     </thead>
     <tr *ngFor="let item of faculties">
-      <td> {{faculties.indexOf(item)+ (page - 1) * 10 + 1}}</td>
+      <td> {{faculties.indexOf(item)+ 10 * page - 9}}</td>
       <td>{{item['faculty_name']}}</td>
       <td>{{item['faculty_description']}}</td>
       <td (click)="selectedItem(item)" (click)="edit(editContent)"><i class="fa fa-pencil-square-o"></i></td>
@@ -16,6 +16,7 @@
     </tr>
   </table>
   <ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
+
   <!-- Modal popup for adding  -->
 
   <ng-template #addContent let-c="close" let-d="dismiss">
