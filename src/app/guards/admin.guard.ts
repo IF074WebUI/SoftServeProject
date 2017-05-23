@@ -17,7 +17,7 @@ export class AdminGuard implements CanLoad {
         let role = resp['roles'][1];
         if (role === 'admin') {
           return true;
-        } else if (role === 'student') {
+        } else if (role === 'students') {
           this.router.navigate((['/denied']));
         }
         return false;

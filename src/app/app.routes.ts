@@ -9,7 +9,7 @@ export const routes: Route[] = [
   {path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'admin', loadChildren: './admin/admin.module#AdminModule', canLoad: [AdminGuard]},
-  {path: 'student', loadChildren: './student/student.module#StudentModule', canLoad: [StudentGuard]},
+  {path: 'students', loadChildren: './students/students.module#StudentModule', canLoad: [StudentGuard]},
   {path: 'denied', component: AccessDeniedComponent}
 
 ];

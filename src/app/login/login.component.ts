@@ -36,8 +36,8 @@ export class LoginComponent implements OnInit {
       let logged: string = resp['response'];
       if (logged === 'logged') {
         let role = resp['roles'][1];
-        if (role === 'student') {
-          this.router.navigate((['/student']));
+        if (role === 'students') {
+          this.router.navigate((['/students']));
         } else if (role === 'admin') {
           this.router.navigate((['/admin']));
         }

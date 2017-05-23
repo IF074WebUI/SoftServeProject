@@ -10,12 +10,14 @@ import { FacultiesComponent } from './faculties/faculties.component';
 import {GroupService} from "./group/group.service";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import { StudentsComponent } from './students/students.component';
+import {StudentsService} from "./students/students.service";
 
 
 @NgModule({
-  declarations: [AdminComponent, MenuComponent, StatisticsComponent, GroupComponent, FacultiesComponent],
+  declarations: [AdminComponent, MenuComponent, StatisticsComponent, GroupComponent, FacultiesComponent, StudentsComponent],
   imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule],
-  providers: [StatisticsService, GroupService]
+  providers: [StatisticsService, GroupService, StudentsService]
 
 })
 export class AdminModule {}

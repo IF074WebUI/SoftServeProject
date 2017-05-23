@@ -15,7 +15,7 @@ export class StudentGuard implements CanLoad {
         return false;
       } else {
         let role = resp['roles'][1];
-        if (role === 'student') {
+        if (role === 'students') {
           return true;
         } else if (role === 'admin') {
           this.router.navigate((['/denied']));

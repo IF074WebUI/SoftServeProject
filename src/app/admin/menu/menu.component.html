@@ -1,6 +1,6 @@
 <ul class="nav flex-column">
-  <li class="nav-item">
-    <a class="nav-link">Групи та студенти</a>
+  <li class="nav-item" routerLinkActive="active">
+    <a class="nav-link" [routerLink]="['students']">Cтуденти</a>
   </li>
   <li class="nav-item">
     <a class="nav-link">Предмети</a>
@@ -21,5 +21,4 @@
   <li class="nav-item logout" (click)="logout()">
      <span class="nav-link">Вихід</span>
   </li>
-
 </ul>
