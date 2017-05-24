@@ -27,7 +27,6 @@
   </tbody>
 </table>
 <a class="btn btn-primary" role="button" [routerLink]="['./student/add-student']">Додати студента</a>
-<!--Pagination component-->
 <div class="text-center">
   <app-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
                       (pageChanged)="changePage($event)"></app-pagination>

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import {HOST} from '../../constants';
-import {Observable} from "rxjs/Observable";
-import {Student} from "./student";
+import { HOST } from '../../constants';
+import { Observable } from 'rxjs/Observable';
+import { Student } from './student';
 
 
 @Injectable()

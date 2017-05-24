@@ -9,13 +9,11 @@ import { Router } from '@angular/router';
 })
 export class StudentsComponent implements OnInit {
   students = [];
-
-  page = 1;                     /* current page */
-  count: number;                /* count of all students */
-  countPerPage = 5;             /* count of students per page */
+  page = 1;
+  count: number;
+  countPerPage = 10;
   // headers: string[];            /* array of headers */
-  editId = 0;                   /* id of edited speciality (if speciality is adding than 0 or undefined) */
-
+  editId = 0;                   /* id of edited student (if student is adding than 0 or undefined) */
 
   constructor(private studentsService: StudentsService, private router: Router) {
   }
@@ -25,7 +23,7 @@ export class StudentsComponent implements OnInit {
       this.students = data;
       console.log(this.students);
     });
-    this.getStudents();       /* get specialities for start page and count of specialities for pagination */
+    this.getStudents();
     this.getCount();
   }
   getStudents(): void {
