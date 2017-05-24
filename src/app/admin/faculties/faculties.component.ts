@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Faculty} from './Faculty';
-import {FacultyService} from './faculty.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
-import {Location} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Faculty } from './Faculty';
+import { FacultyService } from './faculty.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { Location } from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 
 @Component({
@@ -18,6 +18,7 @@ export class FacultiesComponent implements OnInit {
   count: number;
   ItemforEdit: Faculty;
   ItemforDelete: Faculty;
+  ItemForGetGroups: Faculty;
   faculty: Faculty = new Faculty();
   facultyEditForm: FormGroup;
   facultyEditName: FormControl;
@@ -85,6 +86,7 @@ export class FacultiesComponent implements OnInit {
   selectedItem(faculty: Faculty) {
     this.ItemforEdit = faculty;
     this.ItemforDelete = faculty;
+    this.ItemForGetGroups = faculty;
   }
 
   confirmDelete() {
@@ -153,6 +155,13 @@ export class FacultiesComponent implements OnInit {
       }
     )
   }
+  showGroups(){
+    console.log(this.ItemForGetGroups['faculty_id']);
+    this.http.getGroupsByFacultyId(this.ItemForGetGroups.id).subscribe((resp) => {
+      console.log(resp);
+    });
+  }
+
 
 }
 

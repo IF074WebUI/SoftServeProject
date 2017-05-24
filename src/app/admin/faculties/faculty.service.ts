@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
-import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import {HOST} from '../../constants';
+import { Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { HOST } from '../../constants';
 
 @Injectable()
 export class FacultyService {
@@ -45,7 +45,9 @@ export class FacultyService {
   getFacultyById(id: number) {
     return this.http.get('http://' + HOST + '/Faculty/getRecords/' + id).map((resp: Response) => resp.json());
   }
-
+  getGroupsByFacultyId(id: number) {
+    return this.http.get('http://' + HOST + '/group/getGroupsByFaculty/' + id).map((resp: Response) => resp.json());
+  }
 
 
 }
