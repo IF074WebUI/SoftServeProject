@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Response} from '@angular/http';
 import { GroupService } from './group.service';
 import { Group } from './group';
 import { Faculty } from './Faculty';
-import {Speciality} from './speciality';
-import {StatisticsService} from '../statistics/statistics.service';
+import { Speciality } from './speciality';
+
 @Component({
-  selector: 'app-group',
+  selector: 'dtester-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.css'],
 })
@@ -14,24 +13,19 @@ export class GroupComponent implements OnInit {
   groupsOnPage: Group[] = [];
   facultiesOnPage: Faculty[] = [];
   specialitiesOnPage: Speciality[] = [];
-  groups: Group = new Group();
-  GroupforEdit: Group;
-  GroupforDelete: Group;
-  numberOfrecords: any;
-  pageNumberForLoad = 1;
-  numberPagesForTheLoad = 3;
-  constructor(private getGroupsService: GroupService, private statictic: StatisticsService) { }
-  ngOnInit() {
-    this.getGroupsService
-      .getGroups()
-      .subscribe((data) => {
-        this.groupsOnPage = <Group[]>data;
-      });
-    this.getGroupsService.getPaginatedPage(this.pageNumberForLoad, this.numberPagesForTheLoad)
-      .subscribe((data) => {
-      this.groupsOnPage = <Group[]> data;
-    })
+  groupforEdit: Group;
+  groupforDelete: Group;
+  pageNumber: number;
+  offset = 5;   /*number of the records for the stating page*/
+  countRecords: number;
+  selectedFacultyValue: number;
+  selectedSpesailutyValue: number;
 
+
+  constructor(private getGroupsService: GroupService) { }
+  ngOnInit() {
+    this.uploadPage();
+    this.getCountRecords();
     this.getGroupsService
       .getFaculties()
       .subscribe((data) => {
@@ -45,42 +39,72 @@ export class GroupComponent implements OnInit {
       });
   }
 
-  createCroup(facultyId, specialytyId, groupname) {
-    this.getGroupsService.createCroup(facultyId, specialytyId, groupname)
-      .subscribe((data) => {
-        console.log(data);
-      });
-      this.pageReload();
-  }
-  // >>>>>>>>>>>>>>Page Reload<<<<<<<<<<
-  pageReload() {
-    this.getGroupsService
-      .getGroups()
-      .subscribe((data) => {
-        this.groupsOnPage = <Group[]>data;
+  createCroup(groupName: string) {
+    this.getGroupsService.createCroup(groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
+      .subscribe(() => {this.uploadPage();
       });
   }
-  // >>>>>>>>>SELECT FOR EDITING<<<<<<<<<<
+// updatePage
+  uploadPage() {
+    this.pageNumber = 1;
+    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
+      .subscribe((data) => {
+        this.groupsOnPage = <Group[]> data;
+      });
+  }
+// select for editing
   selectedGroup(group: Group) {
-    this.GroupforDelete = group;
-    this.GroupforEdit = group;
+    this.groupforDelete = group;
+    this.groupforEdit = group;
   }
-  // >>>>>>>>>>>>>DELETING<<<<<<<<<<<<<<
+// deleting groups
   deleteGroup() {
-    this.getGroupsService.deleteGroup(this.GroupforDelete['group_id']).subscribe((data) => console.log(data));
-    this.pageReload();
-    console.log(this.GroupforDelete['group_id']);
+    this.getGroupsService.deleteGroup(this.groupforDelete['group_id'])
+      .subscribe(() => {
+        this.uploadPage();
+      });
+  }
+// editing groups
+  editGroup(groupName: string) {
+    console.log(this.groupforEdit['group_id']);
+    this.getGroupsService.editGroup(this.groupforEdit['group_id'], groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
+      .subscribe(() => {
+        this.uploadPage();
+      });
   }
   // >>>>>pagination<<<<<<<<
-    getCountRecords(entity) {
-      this.statictic.getCountRecords(entity).subscribe((data) => this.numberOfrecords = data.numberOfRecords);
-      return this.numberOfrecords;
+    getCountRecords() {
+      this.getGroupsService.getCountGroups()
+        .subscribe(resp => this.countRecords = resp );
     }
-    changePage(pageNumberForLoad, numberPagesForTheLoad) {
-      this.getGroupsService.getPaginatedPage(pageNumberForLoad, numberPagesForTheLoad)
-        .subscribe((data) => {
-          this.groupsOnPage = <Group[]> data;
-    });
+  previousPage() {
+    this.getCountRecords();
+    let numberOfLastPage: number;
+    numberOfLastPage = Math.ceil(+this.countRecords / this.offset);
+    if (this.pageNumber > 1 ) {
+      this.pageNumber--;
+    } else {
+      this.pageNumber = numberOfLastPage
     }
+    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
+      .subscribe((data) => {
+        this.groupsOnPage = <Group[]> data;
+          });
+    }
+
+  nextPage() {
+    this.getCountRecords();
+    let numberOfLastPage: number;
+    numberOfLastPage = Math.ceil(+this.countRecords / this.offset);
+    if (this.pageNumber < numberOfLastPage) {
+      this.pageNumber++;
+    } else {
+      this.pageNumber = 1;
+    }
+    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
+      .subscribe((data) => {
+        this.groupsOnPage = <Group[]> data;
+      });
+  }
 }
 

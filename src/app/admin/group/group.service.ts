@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Http, Response} from '@angular/http';
+import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
@@ -13,7 +13,8 @@ import {Group} from './group';
 
 @Injectable()
 export class GroupService {
-  private entity: string = '/Group';
+  private entity = '/Group';
+  groups: Group[] = [];
   constructor(private http: Http) { }
 
 
@@ -23,8 +24,8 @@ export class GroupService {
       .map((resp: Response) => resp.json());
   }
 
-  getPaginatedPage(pageNumber: number, numbersOfRecordOnPpage: number) {
-    return this.http.get('http://' + HOST + this.entity + '/getRecordsRange/' + numbersOfRecordOnPpage + '/' + (pageNumber - 1) * numbersOfRecordOnPpage )
+  getPaginatedPage(pageNumber: number, offset: number) {
+    return this.http.get('http://' + HOST + this.entity + '/getRecordsRange/' + offset + '/' + (pageNumber - 1) * offset )
       .map((resp: Response) => resp.json());
   }
   getFaculties() {
@@ -36,7 +37,7 @@ export class GroupService {
       .map((resp: Response) => resp.json());
   }
   createCroup(groupname: string, specialytyId: number, facultyId: number ): Observable<Response> {
-    const bodyForSendingNewGroups = JSON.stringify({group_name: groupname, faculty_id: facultyId, speciality_id: specialytyId})
+    const bodyForSendingNewGroups = JSON.stringify({group_name: groupname, faculty_id: facultyId, speciality_id: specialytyId});
     return this.http.post('http://' + HOST + this.entity + '/insertData', bodyForSendingNewGroups)
       .map((resp: Response) => resp.json());
   }
@@ -44,4 +45,16 @@ export class GroupService {
    return this.http.delete('http://' + HOST + this.entity + '/del/' + id)
      .map((resp: Response) => resp.json());
   }
+
+  editGroup(id: number, groupname: string, specialytyId: number, facultyId: number ) {
+    const bodyForSendingEditedGroups = JSON.stringify({group_name: groupname, faculty_id: facultyId, speciality_id: specialytyId});
+    return this.http.post('http://' + HOST + this.entity + '/update/' + id, bodyForSendingEditedGroups)
+      .map((resp) => resp.json());
+  }
+
+  getCountGroups() {
+    return this.http.get( 'http://' + HOST + this.entity + '/countRecords')
+      .map((resp: Response) => resp.json()['numberOfRecords']);
+  }
+
 }
