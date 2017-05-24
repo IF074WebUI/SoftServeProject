@@ -5,7 +5,7 @@ import { Faculty } from './Faculty';
 import { Speciality } from './speciality';
 
 @Component({
-  selector: 'app-group',
+  selector: 'dtester-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.css'],
 })
@@ -13,13 +13,11 @@ export class GroupComponent implements OnInit {
   groupsOnPage: Group[] = [];
   facultiesOnPage: Faculty[] = [];
   specialitiesOnPage: Speciality[] = [];
-  groups: Group = new Group();
   groupforEdit: Group;
-  GroupforDelete: Group;
+  groupforDelete: Group;
   pageNumber: number;
-  offset = 3;
+  offset = 5;   /*number of the records for the stating page*/
   countRecords: number;
-  selectedValue: number;
   selectedFacultyValue: number;
   selectedSpesailutyValue: number;
 
@@ -27,7 +25,7 @@ export class GroupComponent implements OnInit {
   constructor(private getGroupsService: GroupService) { }
   ngOnInit() {
     this.uploadPage();
-
+    this.getCountRecords();
     this.getGroupsService
       .getFaculties()
       .subscribe((data) => {
@@ -56,12 +54,12 @@ export class GroupComponent implements OnInit {
   }
 // select for editing
   selectedGroup(group: Group) {
-    this.GroupforDelete = group;
+    this.groupforDelete = group;
     this.groupforEdit = group;
   }
 // deleting groups
   deleteGroup() {
-    this.getGroupsService.deleteGroup(this.GroupforDelete['group_id'])
+    this.getGroupsService.deleteGroup(this.groupforDelete['group_id'])
       .subscribe(() => {
         this.uploadPage();
       });
