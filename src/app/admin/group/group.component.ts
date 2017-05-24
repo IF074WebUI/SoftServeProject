@@ -16,9 +16,9 @@ export class GroupComponent implements OnInit {
   groups: Group = new Group();
   groupforEdit: Group;
   GroupforDelete: Group;
-  pageNumber: number = 1;
+  pageNumber = 1;
   offset = 3;
-  countRecords: number;
+  countRecords: number = 0;
   selectedValue: number;
   selectedFacultyValue: number;
   selectedSpesailutyValue: number;
@@ -48,6 +48,7 @@ export class GroupComponent implements OnInit {
   }
   // >>>>>UPDATE PAGE<<<<<<<<<<<
   uploadPage() {
+    this.pageNumber = 1;
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
       .subscribe((data) => {
         this.groupsOnPage = <Group[]> data;
@@ -77,16 +78,19 @@ export class GroupComponent implements OnInit {
   // >>>>>pagination<<<<<<<<
     getCountRecords() {
       this.getGroupsService.getCountGroups()
-        .subscribe((resp) => {console.log(resp)} );
+        .subscribe((resp) => {this.countRecords = resp; } );
     }
   changePage(pageNumber) {
     this.getCountRecords()
-    console.log(typeof(this.countRecords));
+    let lastPage = Math.ceil( this.countRecords / this.offset);
+    console.log(lastPage);
     if (pageNumber <= 1) {
-        this.pageNumber = Math.floor( (this.countRecords / this.offset) )
-    } else {
-      this.pageNumber = pageNumber
-      }
+        this.pageNumber = lastPage;}
+    // } else if ( pageNumber > this.countRecords ) {
+    //   this.pageNumber = 1;
+    // } else {
+    //   console.log(this.countRecords);
+    // }
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
       .subscribe((data) => {
         this.groupsOnPage = <Group[]> data;
