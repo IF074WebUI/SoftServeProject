@@ -9,12 +9,14 @@ export class TimetableService {
 
   constructor(private http: Http) {}
 
-  getTimeTablesForGroup(group_id) {
-    return this.http.get('http://' + HOST + '/timeTable/getTimeTablesForGroup/' + group_id).map(resp => resp.json());
-  }
   getTimeTablesForSubject(subject_id) {
     return this.http.get('http://' + HOST + '/timeTable/getTimeTablesForSubject/' + subject_id).map(resp => resp.json());
   }
+
+  getTimeTablesForGroup(group_id) {
+    return this.http.get('http://' + HOST + '/timeTable/getTimeTablesForGroup/' + group_id).map(resp => resp.json());
+  }
+
 
   createTimeTable(groupId: number,
                   subjectId: number,
