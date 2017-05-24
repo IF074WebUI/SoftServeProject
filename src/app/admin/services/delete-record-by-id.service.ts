@@ -8,7 +8,7 @@ export class DeleteRecordByIdService {
   constructor(private http: Http) {}
 
   deleteRecordsById(entity: string, id: number) {
-    return this.http.get('http://' + HOST + '/' + entity + '/del/' + id).map(resp => resp.json());
+    return this.http.delete('http://' + HOST + '/' + entity + '/del/' + id).map(resp => resp.json());
   }
 
 }

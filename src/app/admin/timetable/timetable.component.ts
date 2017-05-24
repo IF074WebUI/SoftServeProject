@@ -16,7 +16,7 @@ export class TimetableComponent implements OnInit {
   selectedTimetable;
 
   constructor(private timetableservice: TimetableService,
-              private recordsById: GetRecordsByIdService,
+              private getRecordsByIdService: GetRecordsByIdService,
               private getAllRecordsService: GetAllRecordsService,
               private deleteRecordByIdService: DeleteRecordByIdService) { }
 
@@ -32,13 +32,11 @@ export class TimetableComponent implements OnInit {
       console.log(this.timeTables);
       for (const timetable of this.timeTables) {
         /*get names of groups*/
-        this.recordsById.getRecordsById('group', timetable.group_id).subscribe((groupData) => {
-          /*console.log(groupData);*/
+        this.getRecordsByIdService.getRecordsById('group', timetable.group_id).subscribe((groupData) => {
           timetable.group_name = groupData[0].group_name;
         });
         /*get names of subjects*/
-        this.recordsById.getRecordsById('subject', timetable.subject_id).subscribe((subjectData) => {
-          /*console.log(subjectData);*/
+        this.getRecordsByIdService.getRecordsById('subject', timetable.subject_id).subscribe((subjectData) => {
           timetable.subject_name = subjectData[0].subject_name;
         });
         /*edit date*/
@@ -61,6 +59,13 @@ export class TimetableComponent implements OnInit {
 
   createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime) {
     this.timetableservice.createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)
+      .subscribe((data) => {
+        console.log(data);
+      });
+    this.getTimetables();
+  }
+  updateTimeTable(timetable_id, groupId, subjectId, startDate, startTime, endDate, endTime) {
+    this.timetableservice.updateTimeTable(timetable_id, groupId, subjectId, startDate, startTime, endDate, endTime)
       .subscribe((data) => {
         console.log(data);
       });
