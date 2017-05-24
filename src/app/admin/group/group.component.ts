@@ -62,8 +62,9 @@ export class GroupComponent implements OnInit {
   // >>>>>>>>>>>>>DELETING<<<<<<<<<<<<<<
   deleteGroup() {
     this.getGroupsService.deleteGroup(this.GroupforDelete['group_id'])
-      .subscribe((data) => console.log(data));
-
+      .subscribe(() => {
+        this.uploadPage();
+      });
   }
   // >>>>>>>>EDITING<<<<<<<<<<<
 
