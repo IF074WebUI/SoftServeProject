@@ -18,6 +18,7 @@ import { CommonComponent } from './common/common.component';
 import { SpecialitiesService } from "./services/specialities.service";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SearchComponent } from './search/search.component';
+import { GetAllRecordsService } from './services/get-all-records.service';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,6 @@ import { SearchComponent } from './search/search.component';
     CommonComponent,
     SearchComponent],
   imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule, ReactiveFormsModule],
-  providers: [StatisticsService, SpecialitiesService, TimetableService, GetRecordsByIdService, GroupService ]
+  providers: [StatisticsService, SpecialitiesService, TimetableService, GetRecordsByIdService, GroupService, GetAllRecordsService ]
 })
 export class AdminModule {}

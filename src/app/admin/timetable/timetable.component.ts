@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimetableService } from './timetable.service';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
-import { GroupService } from '../group/group.service';
+import { GetAllRecordsService } from '../services/get-all-records.service';
 
 @Component({
   selector: 'app-timetable',
@@ -11,16 +11,18 @@ import { GroupService } from '../group/group.service';
 export class TimetableComponent implements OnInit {
   timeTables = [];
   groups = [];
+  subjects = [];
 
-  constructor(private timetableservice: TimetableService, private recordsById: GetRecordsByIdService, private  groupService: GroupService) { }
+  constructor(private timetableservice: TimetableService, private recordsById: GetRecordsByIdService, private getAllRecordsService: GetAllRecordsService ) { }
 
   ngOnInit() {
     this.getTimetables();
     this.getGroups();
+    this.getSubjects();
   }
 
   getTimetables() {
-    this.timetableservice.getAllTimeTables().subscribe((data) => {
+    this.getAllRecordsService.getAllRecords('timeTable').subscribe((data) => {
       this.timeTables = data;
       console.log(this.timeTables);
       for (const timetable of this.timeTables) {
@@ -49,9 +51,15 @@ export class TimetableComponent implements OnInit {
     this.getTimetables();
   }
   getGroups() {
-    this.groupService.getGroups().subscribe((data) => {
+    this.getAllRecordsService.getAllRecords('group').subscribe((data) => {
       this.groups = data;
       console.log(this.groups);
+    });
+  }
+  getSubjects() {
+    this.getAllRecordsService.getAllRecords('subject').subscribe((data) => {
+      this.subjects = data;
+      console.log(this.subjects);
     });
   }
 }
