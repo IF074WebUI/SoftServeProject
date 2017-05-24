@@ -1,4 +1,4 @@
-<div class="table-responsive">
+<div class="table-responsive table-bordered table-hover">
   <table class="table">
     <thead>
     <td>Номер</td>
@@ -11,108 +11,89 @@
       <td> {{faculties.indexOf(item)+ 10 * page - 9}}</td>
       <td>{{item['faculty_name']}}</td>
       <td>{{item['faculty_description']}}</td>
-      <td (click)="selectedItem(item)" (click)="edit(editContent)"><i class="fa fa-pencil-square-o"></i></td>
-      <td (click)="selectedItem(item)" (click)="delete(delContent)"><i class="fa fa-trash"></i></td>
+      <td  (click)="selectedItem(item)" (click)="editFaculty(editContent)"><i class="fa fa-pencil-square-o"></i></td>
+      <td  (click)="selectedItem(item)" (click)="deleteFaculty(delContent)"><i class="fa fa-trash"></i></td>
     </tr>
   </table>
-  <ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
+</div>
 
-  <!-- Modal popup for adding  -->
+<ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
 
-  <ng-template #addContent let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">{{modalHeader}}</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <form method="post" [formGroup]="facultyAddForm">
-        <input formControlName="name" type="text" name="name" required class="form-control"/>
-        <span
-          *ngIf="facultyAddForm.controls['name'].hasError('required') && facultyAddForm.controls['name'].touched"
-          class="validate_message">Вкажіть назву факультету</span>
-        <span
-          *ngIf="facultyAddForm.controls['name'].hasError('exists') && facultyAddForm.controls['name'].dirty"
-          class="validate_message">Факультет з такою назвою вже існує</span>
-        <textarea formControlName='description' type="text" name='description' required
-                  class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
+<!-- Modal popup for adding  -->
+
+<ng-template #addContent let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalHeader}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form method="post" [formGroup]="facultyAddForm">
+      <input formControlName="name" type="text" name="name" required class="form-control"/>
+      <span
+        *ngIf="facultyAddForm.controls['name'].hasError('required') && facultyAddForm.controls['name'].touched"
+        class="validate_message">Вкажіть назву факультету</span>
+      <span
+        *ngIf="facultyAddForm.controls['name'].hasError('exists') && facultyAddForm.controls['name'].dirty"
+        class="validate_message">Факультет з такою назвою вже існує</span>
+      <textarea formControlName='description' type="text" name='description' required
+                class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
        </textarea>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" [disabled]="!facultyAddForm.valid" (click)="c('Close click')">
-        Створити
-      </button>
-    </div>
-  </ng-template>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" [disabled]="!facultyAddForm.valid" (click)="c('Close click')">
+      Створити
+    </button>
+  </div>
+</ng-template>
 
 
-  <button class="btn btn-lg btn-outline-primary" (click)="add(addContent)"> Створити новий факультет</button>
+<button class="btn btn-lg btn-outline-primary" (click)="addFaculty(addContent)"> Створити новий факультет</button>
 
-  <!-- Modal popup for deleting -->
-
-
-  <ng-template #delContent let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">Видалення факультету</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <p>Ви підтверджуєте видалення даного факультету?</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Підтвердити</button>
-    </div>
-  </ng-template>
-
-  <!-- Modal popup for editing -->
+<!-- Modal popup for deleting -->
 
 
-  <ng-template #editContent let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">{{modalHeader}}</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <form method="post" [formGroup]="facultyEditForm">
-        <input formControlName="name" type="text" name="name" required class="form-control"/>
-        <span
-          *ngIf="facultyEditForm.controls['name'].hasError('required') && facultyEditForm.controls['name'].touched"
-          class="validate_message">Вкажіть назву факультету</span>
-        <textarea formControlName="description" type="text" name="description" required
-                  class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
+<ng-template #delContent let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Видалення факультету</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Ви підтверджуєте видалення даного факультету?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Підтвердити</button>
+  </div>
+</ng-template>
+
+<!-- Modal popup for editing -->
+
+
+<ng-template #editContent let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalHeader}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form method="post" [formGroup]="facultyEditForm">
+      <input formControlName="name" type="text" name="name" required class="form-control"/>
+      <span
+        *ngIf="facultyEditForm.controls['name'].hasError('required') && facultyEditForm.controls['name'].touched"
+        class="validate_message">Вкажіть назву факультету</span>
+      <textarea formControlName="description" type="text" name="description" required
+                class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
        </textarea>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" [disabled]="facultyEditForm.invalid" (click)="c('Close click')">
-        Створити
-      </button>
-    </div>
-  </ng-template>
-
-  <!-- <nav aria-label="Page navigation">
-     <ul class="pagination" >
-       <li>
-         <a href="#" aria-label="Previous">
-           <span aria-hidden="true">&laquo;</span>
-         </a>
-       </li>
-       <li *ngFor="let number of PaginationList()" ><a href="#">{{number}}</a></li>
-       <li>
-         <a href="#" aria-label="Next">
-           <span aria-hidden="true">&raquo;</span>
-         </a>
-       </li>
-     </ul>
-   </nav>
-     <ul *ngFor="let number of   ArrayOfN()" >
-     <li></li>
-   </ul>
-
- -->
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" [disabled]="facultyEditForm.invalid" (click)="c('Close click')">
+      Створити
+    </button>
+  </div>
+</ng-template>
