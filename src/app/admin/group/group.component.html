@@ -10,12 +10,10 @@
     </select>
   </div>
 </div>
-
-
 <table class="table table-hover table-bordered">
   <thead class="thead-inverse">
     <tr>
-      <td>ID групи</td>
+      <td>#</td>
       <td>Назва групи</td>
       <td colspan="3">Адміністрування</td>
     </tr>
@@ -27,28 +25,34 @@
        <td><button (click)=" selectedGroup(group)" type="button" class="fa fa-trash" data-toggle="modal" data-target="#deleteModal"></button></td>
      </tr>
 </table><br>
-<!--&gt;>>>>>>>>>>>>>>>>>>>>>>>>>>>Pagination view<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
-<div class="row ">
-  <nav aria-label="Page navigation example" >
-    <ul class="pagination">
-      <li class="page-item" (click)="changePage(pageNumber - 1)">
-        <a class="page-link" aria-label="Previous" >
-          <span aria-hidden="true">&laquo;</span>
-          <span class="sr-only">Previous</span>
-        </a>
-      </li>
-      <li class="page-item" (click)="changePage(pageNumber + 1)">
-        <a class="page-link"  aria-label="Next" >
-          <span aria-hidden="true">&raquo;</span>
-          <span class="sr-only" >Next</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+<!--pagination-->
+<div class="row">
+  <div class="col-md-5"></div>
+  <div class="col-md-4">
+    <nav aria-label="Page navigation example" >
+      <ul class="pagination">
+        <li class="page-item" (click)="previousPage()">
+          <a class="page-link" aria-label="Previous" >
+            <span >&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link">
+            <span aria-hidden="true" >{{pageNumber}}</span>
+          </a>
+        </li>
+        <li class="page-item" (click)="nextPage()">
+          <a class="page-link">
+            <span >&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="col-md-3">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Додати нову групу</button>
+  </div>
 </div>
-<!--&gt;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Creating new GROUP<<<<<<<<<<<<<<<<<<<<<<<<<<-->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Додати нову групу</button>
-
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -87,7 +91,7 @@
   </div>
 </div>
 <p></p>
-<!-->>>>>>>>>>>>>>>>>>>>>>CONFIRM DELETE MODAL<<<<<<<<<<<<<<<<<<<<<<<<-->
+<!--group deleting-->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -107,7 +111,7 @@
     </div>
   </div>
 </div>
-<!-->>>>>>>>>>>>>>>>>>>>>>EDIT MODAL<<<<<<<<<<<<<<<<<<<<<<<<-->
+<!--group editing-->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -135,7 +139,6 @@
             <label for="group-text" class="form-control-label">Введіть назву групи:</label>
             <input [(ngModel)]="groupName" name="groupName" class="form-control" id="group-name">
           </div>
-
         </form>
       </div>
       <div class="modal-footer">
