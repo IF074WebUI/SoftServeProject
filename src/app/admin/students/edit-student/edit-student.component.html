@@ -1,3 +1,19 @@
-<p>
-  edit-student works
-</p>
+<form #editForm="ngForm" [formGroup]="studentEditForm" method="post">
+  <fieldset>
+    <legend>Редагувати студента</legend>
+    <div class="form-group">
+      <label for="name">Ім'я:</label>
+      <input formControlName="editName" type="text" class="form-control" id="name" name="name" required >
+    </div>
+    <div class="form-group">
+      <label for="surname">Прізвище:</label>
+      <input formControlName="editSurname" type="text" class="form-control" id="surname" name="surname" required>
+    </div>
+    <div class="form-group">
+      <label for="f_name">Пo-батькові:</label>
+      <input formControlName="editF_name" type="text" class="form-control" id="f_name" name="surname" required>
+    </div>
+    <button md-raised-button type="submit" name="add" (click)="editStudent(editForm)">Додати</button>
+    <button md-raised-button type="submit" name="add" (click)="cansel()">Відміна</button>
+  </fieldset>
+</form>

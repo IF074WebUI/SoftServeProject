@@ -4,6 +4,8 @@ import { AddStudentComponent } from './add-student/add-student.component';
 import { EditStudentComponent } from './edit-student/edit-student.component';
 import { DeleteStudentComponent } from './delete-student/delete-student.component';
 import {AddEditDeleteService} from './add-edit-delete.service';
+import {FormControl} from '@angular/forms';
+import {Student} from './student';
 
 @Component({
   selector: 'app-test',
@@ -12,10 +14,19 @@ import {AddEditDeleteService} from './add-edit-delete.service';
   providers: [AddEditDeleteService]
 })
 export class StudentsComponent implements OnInit {
+  student: Student = new Student();
+  studentUser_id: FormControl;
+  studentForEdit: Student;
+  studentForDel: Student;
 
   constructor(private dialog: MdDialog) {}
 
   ngOnInit() {};
+
+  selectedStudent(student: Student) {
+    this.studentForEdit = student;
+    this.studentForDel = student;
+  }
 
   addDialog() {
     let add = this.dialog.open(AddStudentComponent, {
@@ -24,7 +35,10 @@ export class StudentsComponent implements OnInit {
   }
 
   editDialog() {
-    let edit = this.dialog.open(EditStudentComponent);
+    // this.studentUser_id.setValue(this.studentForEdit['user_id']);
+    let edit = this.dialog.open(EditStudentComponent, {
+      width: '50%'
+    });
   }
 
   deleteDialog() {

@@ -8,7 +8,7 @@ export class Student {
   student_name: string;
   student_fname: string;
   plain_password: string;
-  user_id: number;
+  user_id?: number;
   group_id: number;
   photo: any;
 }

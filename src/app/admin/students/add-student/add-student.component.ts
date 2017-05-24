@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialogRef } from '@angular/material'
+import { MdDialogRef } from '@angular/material';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Student } from '../student';
 import { AddEditDeleteService } from '../add-edit-delete.service';
 
 @Component({
-  selector: 'app-dialog-result-example-dialog',
+  selector: 'app-add-student',
   templateUrl: './add-student.component.html',
   styleUrls: ['./add-student.component.css'],
   providers: [AddEditDeleteService]
 })
 export class AddStudentComponent implements OnInit {
-  student: Student = new Student;
-  // studentForDel = Student;
-  // studentForEdit = Student;
+  student: Student = new Student();
   studentName: FormControl;
   studentSurname: FormControl;
   studentFname: FormControl;
@@ -27,7 +25,7 @@ export class AddStudentComponent implements OnInit {
   studentGroupId: number;
   studentPlainPassword: string;
 
-  constructor(public modal: MdDialogRef<any>, private http: AddEditDeleteService) {}
+  constructor(private modal: MdDialogRef<any>, private http: AddEditDeleteService) {}
 
   ngOnInit() {
     this.studentName = new FormControl('');
@@ -46,16 +44,16 @@ export class AddStudentComponent implements OnInit {
 
   addStudent() {
     this.http.insert(
-      this.studentUsername = '',
+      this.studentUsername = 'test' + Math.random(),
       this.studentPassword.value,
       this.studentPasswordConfirm.value,
-      this.studentEmail = '',
-      this.studentGradebookId = '',
+      this.studentEmail = 'test' + Math.random() + '@mail.if.ua',
+      this.studentGradebookId = 'If-1234567',
       this.studentSurname.value,
       this.studentName.value,
       this.studentFname.value,
       this.studentGroupId = 1,
-      this.studentPlainPassword = '',
+      this.studentPlainPassword = '1qaz2wsx',
       this.studentPhoto = ''
     ).subscribe(resp => {
       this.student.username = '' ;
@@ -72,7 +70,7 @@ export class AddStudentComponent implements OnInit {
     });
   }
 
-  public cansel() {
+  cansel() {
     let cansel = this.modal.close();
   }
 
