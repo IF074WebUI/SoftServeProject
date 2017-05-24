@@ -16,8 +16,9 @@ import { SpecialitiesComponent } from './specialities/specialities.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { CommonComponent } from './common/common.component';
 import { SpecialitiesService } from "./services/specialities.service";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SearchComponent } from './search/search.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { SearchComponent } from './search/search.component';
     PaginationComponent,
     CommonComponent,
     SearchComponent],
-  imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule, ReactiveFormsModule, NgbModule],
   providers: [StatisticsService, SpecialitiesService, TimetableService, GetRecordsByIdService, GroupService ]
 })
 export class AdminModule {}

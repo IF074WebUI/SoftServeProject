@@ -10,8 +10,9 @@ import { LoginService } from './login/login.service';
 import { AdminGuard } from './guards/admin.guard';
 import { StudentGuard } from './guards/student.guard';
 import { AccessDeniedComponent } from './error_pages/access-denied/access-denied.component';
-import { LoginGuard } from './guards/login.guard';
 import { BadRequestComponent } from './error_pages/bad-request/bad-request.component';
+import { LoginGuard } from './guards/login.guard';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { BadRequestComponent } from './error_pages/bad-request/bad-request.compo
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    NgbModule.forRoot()
   ],
   providers: [LoginService, AdminGuard, StudentGuard, LoginGuard],
   bootstrap: [AppComponent]
