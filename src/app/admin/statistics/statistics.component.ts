@@ -7,7 +7,7 @@ import { StatisticsService } from './statistics.service';
   styleUrls: ['./statistics.component.css']
 })
 export class StatisticsComponent implements OnInit {
-  entities: string[] = ['speciality', 'group', 'subject', 'test', 'student', 'question', 'log'];
+  entities: string[] = ['speciality', 'group', 'subject', 'test', 'student', 'question'];
   entitiesNumber = {};
 
 
