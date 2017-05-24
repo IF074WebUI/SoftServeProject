@@ -1,13 +1,12 @@
-
 <div class="row">
   <div class="col-md-10">
     <h1>Групи</h1>
   </div>
   <div class="col-md-2" >
-    <select class="form-control" [(ngModel)]="offset" (change)="getGroupsOnPage()">
-      <option [ngValue]="5">5</option>
+    <select class="form-control" [(ngModel)]="offset" (change)="uploadPage()">
+      <option [ngValue]="3">3</option>
       <option [ngValue]="7">7</option>
-      <option [ngValue]="15">15</option>
+      <option [ngValue]="15">13</option>
     </select>
   </div>
 </div>
@@ -21,15 +20,32 @@
       <td colspan="3">Адміністрування</td>
     </tr>
   </thead>
-     <tr *ngFor="let group of this.groupsOnPage">
-        <td>{{group.group_id}}</td>
+     <tr *ngFor="let group of this.groupsOnPage; let i = index">
+        <td>{{i + offset * (pageNumber - 1) + 1}}</td>
        <td>{{group.group_name}}</td>
        <td><button (click)=" selectedGroup(group)" type="button" class="fa fa-pencil" data-toggle="modal" data-target="#editModal" data-whatever="@mdo"></button></td>
        <td><button (click)=" selectedGroup(group)" type="button" class="fa fa-trash" data-toggle="modal" data-target="#deleteModal"></button></td>
      </tr>
 </table><br>
 <!--&gt;>>>>>>>>>>>>>>>>>>>>>>>>>>>Pagination view<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
-
+<div class="row ">
+  <nav aria-label="Page navigation example" >
+    <ul class="pagination">
+      <li class="page-item" (click)="changePage(pageNumber - 1)">
+        <a class="page-link" aria-label="Previous" >
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+      </li>
+      <li class="page-item" (click)="changePage(pageNumber + 1)">
+        <a class="page-link"  aria-label="Next" >
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only" >Next</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
 <!--&gt;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Creating new GROUP<<<<<<<<<<<<<<<<<<<<<<<<<<-->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Додати нову групу</button>
 
