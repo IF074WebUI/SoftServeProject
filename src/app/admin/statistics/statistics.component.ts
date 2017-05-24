@@ -19,6 +19,5 @@ export class StatisticsComponent implements OnInit {
         this.entitiesNumber[entity] = data.numberOfRecords;
       });
     }
-    console.log(this.entitiesNumber);
   }
 }

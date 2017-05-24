@@ -1,9 +1,9 @@
 <ul class="nav flex-column">
-  <li class="nav-item">
-    <a class="nav-link">Групи та студенти</a>
+  <li class="nav-item" routerLinkActive="active">
+    <a class="nav-link" [routerLink]="['students']">Cтуденти</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link">Предмети</a>
+    <a class="nav-link" [routerLink]="['subject']">Предмети</a>
   </li>
   <li class="nav-item" routerLinkActive="active">
     <a class="nav-link" [routerLink]="['group']">Групи</a>
@@ -23,9 +23,7 @@
   <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
   <a class="nav-link" [routerLink]="['statistics']">Статистика</a>
 </li>
-
   <li class="nav-item logout" (click)="logout()">
      <span class="nav-link">Вихід</span>
   </li>
-
 </ul>

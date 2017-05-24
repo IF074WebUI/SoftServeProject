@@ -27,9 +27,7 @@
     </td>
   </tr>
 </table>
-
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-new-timetabel" data-whatever="@mdo">Запланувати тестування</button>
-
 
 <!--modal of adding new timetable-->
 
@@ -46,31 +44,31 @@
         <form>
           <div class="form-group">
             <label class="form-control-label" for="groupId">Група:</label>
-            <select name="groupId" id="groupId" class="form-control" [(ngModel)]="groupId">
+            <select name="groupId" id="groupId" class="form-control" [(ngModel)]="groupId" required>
               <option *ngFor="let group of groups" [ngValue]="group.group_id">{{group.group_name}}</option>
             </select>
           </div>
           <div class="form-group">
             <label class="form-control-label" for="subjectId">Предмет:</label>
-            <select name="subjectId" id="subjectId" class="form-control" [(ngModel)]="subjectId">
+            <select name="subjectId" id="subjectId" class="form-control" [(ngModel)]="subjectId" required>
               <option *ngFor="let subject of subjects" [ngValue]="subject.subject_id">{{subject.subject_name}}</option>
             </select>
           </div>
           <div class="form-group">
             <label class="form-control-label">Початкова дата:</label>
-            <input type="date" [(ngModel)]="startDate" name="startDate" class="form-control">
+            <input type="date" [(ngModel)]="startDate" name="startDate" class="form-control" required>
           </div>
           <div class="form-group">
             <label class="form-control-label">Початковий час:</label>
-            <input type="time" [(ngModel)]="startTime" name="startTime" class="form-control">
+            <input type="time" [(ngModel)]="startTime" name="startTime" class="form-control" required>
           </div>
           <div class="form-group">
             <label class="form-control-label">Кінцева дата:</label>
-            <input type="date"[(ngModel)]="endDate" name="endDate" class="form-control">
+            <input type="date"[(ngModel)]="endDate" name="endDate" class="form-control" required>
           </div>
           <div class="form-group">
             <label class="form-control-label">Кінцевий час:</label>
-            <input type="time"[(ngModel)]="endTime" name="endTime" class="form-control">
+            <input type="time"[(ngModel)]="endTime" name="endTime" class="form-control" required>
           </div>
         </form>
       </div>
@@ -97,31 +95,31 @@
         <form>
           <div class="form-group">
             <label class="form-control-label" for="groupIdEdit">Група:</label>
-            <select name="groupId" id="groupIdEdit" class="form-control" [(ngModel)]="updateGroupId">
+            <select name="groupId" id="groupIdEdit" class="form-control" [(ngModel)]="updateGroupId" required>
               <option *ngFor="let group of groups" [ngValue]="group.group_id">{{group.group_name}}</option>
             </select>
           </div>
           <div class="form-group">
             <label class="form-control-label"> Предмет:</label>
-            <select name="subjectId" class="form-control" [(ngModel)]="updateSubjectId">
+            <select name="subjectId" class="form-control" [(ngModel)]="updateSubjectId" required>
               <option *ngFor="let subject of subjects" [ngValue]="subject.subject_id">{{subject.subject_name}}</option>
             </select>
           </div>
           <div class="form-group">
             <label class="form-control-label">Початкова дата:</label>
-            <input type="date" [(ngModel)]="updateStartDate" name="startDate" class="form-control">
+            <input type="date" [(ngModel)]="updateStartDate" name="startDate" class="form-control" required>
           </div>
           <div class="form-group">
             <label class="form-control-label">Початковий час:</label>
-            <input type="time" [(ngModel)]="updateStartTime" name="startTime" class="form-control">
+            <input type="time" [(ngModel)]="updateStartTime" name="startTime" class="form-control" required>
           </div>
           <div class="form-group">
             <label class="form-control-label">Кінцева дата:</label>
-            <input type="date"[(ngModel)]="updateEndDate" name="endDate" class="form-control">
+            <input type="date"[(ngModel)]="updateEndDate" name="endDate" class="form-control" required>
           </div>
           <div class="form-group">
             <label class="form-control-label">Кінцевий час:</label>
-            <input type="time"[(ngModel)]="updateEndTime" name="endTime" class="form-control">
+            <input type="time"[(ngModel)]="updateEndTime" name="endTime" class="form-control" required>
           </div>
         </form>
       </div>
