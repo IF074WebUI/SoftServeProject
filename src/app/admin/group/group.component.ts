@@ -44,7 +44,7 @@ export class GroupComponent implements OnInit {
 
   createCroup(groupName: string) {
     this.getGroupsService.createCroup(groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
-      .subscribe((data) => {this.uploadPage();
+      .subscribe(() => {this.uploadPage();
       });
   }
   // >>>>>UPDATE PAGE<<<<<<<<<<<
@@ -70,7 +70,9 @@ export class GroupComponent implements OnInit {
   editGroup(groupName: string) {
     console.log(this.groupforEdit['group_id']);
     this.getGroupsService.editGroup(this.groupforEdit['group_id'], groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
-      .subscribe((data) => console.log(data));
+      .subscribe(() => {
+        this.uploadPage();
+      });
   }
   // >>>>>pagination<<<<<<<<
     getCountRecords(entity) {
