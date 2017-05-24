@@ -27,10 +27,7 @@ export class GroupComponent implements OnInit {
 
   constructor(private getGroupsService: GroupService, private statictic: StatisticsService) { }
   ngOnInit() {
-     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
-      .subscribe((data) => {
-      this.groupsOnPage = <Group[]> data;
-    })
+    this.uploadPage();
 
     this.getGroupsService
       .getFaculties()
@@ -45,16 +42,20 @@ export class GroupComponent implements OnInit {
       });
   }
 
-  createCroup(groupName: string)
-  {
+  createCroup(groupName: string) {
         console.log(this.selectedValue);
-
     this.getGroupsService.createCroup(groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
       .subscribe((data) => {
         console.log(data);
       });
   }
-
+  // >>>>>UPDATE PAGE<<<<<<<<<<<
+  uploadPage() {
+    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
+      .subscribe((data) => {
+        this.groupsOnPage = <Group[]> data;
+      });
+  }
   // >>>>>>>>>SELECT FOR EDITING<<<<<<<<<<
   selectedGroup(group: Group) {
     this.GroupforDelete = group;
@@ -69,7 +70,7 @@ export class GroupComponent implements OnInit {
   // >>>>>>>>EDITING<<<<<<<<<<<
 
   editGroup(groupName: string) {
-    console.log(this.groupforEdit['group_id'])
+    console.log(this.groupforEdit['group_id']);
     this.getGroupsService.editGroup(this.groupforEdit['group_id'], groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
       .subscribe((data) => console.log(data));
   }
