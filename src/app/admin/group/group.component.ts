@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Response} from '@angular/http';
 import { GroupService } from './group.service';
 import { Group } from './group';
 import { Faculty } from './Faculty';
-import {Speciality} from './speciality';
-import {StatisticsService} from '../statistics/statistics.service';
+import { Speciality } from './speciality';
+
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',
@@ -17,15 +16,15 @@ export class GroupComponent implements OnInit {
   groups: Group = new Group();
   groupforEdit: Group;
   GroupforDelete: Group;
-  numberOfrecords: number;
-  pageNumber = 1;
-  offset = 5;
+  pageNumber: number = 1;
+  offset = 3;
+  countRecords: number;
   selectedValue: number;
   selectedFacultyValue: number;
   selectedSpesailutyValue: number;
 
 
-  constructor(private getGroupsService: GroupService, private statictic: StatisticsService) { }
+  constructor(private getGroupsService: GroupService) { }
   ngOnInit() {
     this.uploadPage();
 
@@ -76,9 +75,22 @@ export class GroupComponent implements OnInit {
       });
   }
   // >>>>>pagination<<<<<<<<
-    getCountRecords(entity) {
-      this.statictic.getCountRecords(entity).subscribe((data) =>  {this.numberOfrecords = data.numberOfRecords; } );
-
+    getCountRecords() {
+      this.getGroupsService.getCountGroups()
+        .subscribe((resp) => {console.log(resp)} );
+    }
+  changePage(pageNumber) {
+    this.getCountRecords()
+    console.log(typeof(this.countRecords));
+    if (pageNumber <= 1) {
+        this.pageNumber = Math.floor( (this.countRecords / this.offset) )
+    } else {
+      this.pageNumber = pageNumber
+      }
+    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
+      .subscribe((data) => {
+        this.groupsOnPage = <Group[]> data;
+          });
     }
 
     getGroupsOnPage() {

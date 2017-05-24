@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Http, Response} from '@angular/http';
+import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
@@ -24,8 +24,8 @@ export class GroupService {
       .map((resp: Response) => resp.json());
   }
 
-  getPaginatedPage(pageNumber: number, numbersOfRecordOnPpage: number) {
-    return this.http.get('http://' + HOST + this.entity + '/getRecordsRange/' + numbersOfRecordOnPpage + '/' + (pageNumber - 1) * numbersOfRecordOnPpage )
+  getPaginatedPage(pageNumber: number, offset: number) {
+    return this.http.get('http://' + HOST + this.entity + '/getRecordsRange/' + offset + '/' + (pageNumber - 1) * offset )
       .map((resp: Response) => resp.json());
   }
   getFaculties() {
@@ -52,21 +52,9 @@ export class GroupService {
       .map((resp) => resp.json());
   }
 
-  getGroupsBySpeciality(specialytyId: number) {
-    return this.http.get('http://' + HOST + this.entity + '/getGroupsBySpeciality/' + specialytyId)
-      .map((resp: Response) => resp.json());
+  getCountGroups() {
+    return this.http.get( 'http://' + HOST + this.entity + '/countRecords')
+      .map((resp: Response) => resp.json()['numberOfRecords']);
   }
 
-  getGroupsByFaculty(specialytyId: number) {
-    return this.http.get('http://' + HOST + this.entity + '/getGroupsByFaculty/' + specialytyId)
-      .map((resp: Response) => resp.json());
-  }
-  deleteGroupsBySpesialytyId(specialityId: number) {
-    this.getGroupsBySpeciality(specialityId)
-      .subscribe((data) =>  { this.groups = <Group[]> data; });
-      for (let i = 0; i < this.groups.length; i++ ) {
-       this.deleteGroup(this.groups[i].group_id)
-          .subscribe((resp) => console.log(resp));
-      }
-  }
 }
