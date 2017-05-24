@@ -1,6 +1,6 @@
 <h3>Предмети</h3>
 <div>
-  <div class = "add">
+  <div class = 'add'>
     <label>Предмет</label> <input #subjectName>
     <label>Опис </label><input #subjectDescription>
     <button (click)="addSubject(subjectName.value, subjectDescription.value); subjectName.value='';
@@ -9,13 +9,13 @@
     </button>
   </div>
 
-  <ul class="subjects">
+  <ul class='subjects'>
     <li *ngFor='let subject of subjects'
         [class.selected]='subject === selectedSubject'
         (click)='onSelect(subject)'>{{subject.subject_name}}
-      <button type="button" class="btn btn-default btn-xs buttonsInRow"
+      <button type='button' class='buttonsInRow btn btn-secondary btn-sm'
               (click)='deleteSubject(subject); $event.stopPropagation()'>Видалити </button>
-      <button type="button" class="btn btn-default btn-xs buttonsInRow" (click) = 'onUpdate(subject)'>Редагувати</button>
+      <button type='button' class='btn btn-secondary btn-sm buttonsInRow' (click) = 'onUpdate(subject)'>Редагувати</button>
     </li>
   </ul>
 </div>
@@ -25,9 +25,9 @@
 </div>
 <app-subject-update [subject]='updatedSubject '></app-subject-update>
 
-<button type = 'button' class='btn btn-default' (click) = 'decreasePage()'>Попередня</button>
+<button type = 'button' class='btn btn-secondary' (click) = 'decreasePage()'>Попередня</button>
 <label>{{page}} / {{pageCount}}</label>
-<button type = 'button' class='btn btn-default' (click) = 'increasePage()'>Наступна</button>
+<button type = 'button' class='btn btn-secondary' (click) = 'increasePage()'>Наступна</button>
 
 
 

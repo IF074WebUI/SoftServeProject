@@ -38,6 +38,7 @@ export class SubjectComponent implements OnInit {
     });
 
   }
+
   addSubject(subject_name: string, subject_description: string): void {
     subject_name = subject_name.trim();
     subject_description = subject_description.trim();
