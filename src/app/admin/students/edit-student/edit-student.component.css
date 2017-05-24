@@ -1,0 +1,25 @@
+fieldset {
+  text-align: center;
+  border: 2px solid black;
+  padding: 10px 5px 0;
+  margin: -15px 0 auto;
+}
+
+fieldset legend {
+  text-align: right;
+  width: 250px;
+  padding-right: 7px;
+}
+
+input {
+  width: 70%;
+  margin: auto;
+}
+
+button {
+  margin: 0 10px 10px 0;
+  outline: none;
+  height: 40px;
+  width: 100px;
+  background-color: #e0e0e0;
+}

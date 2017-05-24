@@ -1,7 +1,7 @@
-import {CanLoad, Route, Router} from '@angular/router';
-import {Injectable} from '@angular/core';
-import {LoginService} from '../login/login.service';
-import {Observable} from "rxjs/Observable";
+import { CanLoad, Route, Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { LoginService } from '../login/login.service';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class StudentGuard implements CanLoad {
@@ -15,7 +15,7 @@ export class StudentGuard implements CanLoad {
         return false;
       } else {
         let role = resp['roles'][1];
-        if (role === 'student') {
+        if (role === 'students') {
           return true;
         } else if (role === 'admin') {
           this.router.navigate((['/denied']));

@@ -1,7 +1,7 @@
-import {CanActivate, Router, RouterStateSnapshot, ActivatedRouteSnapshot} from '@angular/router';
-import {Injectable} from '@angular/core';
-import {LoginService} from '../login/login.service';
-import {Observable} from "rxjs/Observable";
+import { CanActivate, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { LoginService } from '../login/login.service';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class LoginGuard implements CanActivate {
@@ -17,8 +17,8 @@ export class LoginGuard implements CanActivate {
         let role = resp['roles'][1];
         if (role === 'admin') {
           this.router.navigate(['/admin']);
-        } else if (role === 'student') {
-          this.router.navigate(['/student']);
+        } else if (role === 'students') {
+          this.router.navigate(['/students']);
         }
         return false;
       }
