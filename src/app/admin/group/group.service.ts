@@ -13,7 +13,8 @@ import {Group} from './group';
 
 @Injectable()
 export class GroupService {
-  private entity: string = '/Group';
+  private entity = '/Group';
+  groups: Group[] = [];
   constructor(private http: Http) { }
 
 
@@ -36,12 +37,36 @@ export class GroupService {
       .map((resp: Response) => resp.json());
   }
   createCroup(groupname: string, specialytyId: number, facultyId: number ): Observable<Response> {
-    const bodyForSendingNewGroups = JSON.stringify({group_name: groupname, faculty_id: facultyId, speciality_id: specialytyId})
+    const bodyForSendingNewGroups = JSON.stringify({group_name: groupname, faculty_id: facultyId, speciality_id: specialytyId});
     return this.http.post('http://' + HOST + this.entity + '/insertData', bodyForSendingNewGroups)
       .map((resp: Response) => resp.json());
   }
   deleteGroup(id: number) {
    return this.http.delete('http://' + HOST + this.entity + '/del/' + id)
      .map((resp: Response) => resp.json());
+  }
+
+  editGroup(id: number, groupname: string, specialytyId: number, facultyId: number ) {
+    const bodyForSendingEditedGroups = JSON.stringify({group_name: groupname, faculty_id: facultyId, speciality_id: specialytyId});
+    return this.http.post('http://' + HOST + this.entity + '/update/' + id, bodyForSendingEditedGroups)
+      .map((resp) => resp.json());
+  }
+
+  getGroupsBySpeciality(specialytyId: number) {
+    return this.http.get('http://' + HOST + this.entity + '/getGroupsBySpeciality/' + specialytyId)
+      .map((resp: Response) => resp.json());
+  }
+
+  getGroupsByFaculty(specialytyId: number) {
+    return this.http.get('http://' + HOST + this.entity + '/getGroupsByFaculty/' + specialytyId)
+      .map((resp: Response) => resp.json());
+  }
+  deleteGroupsBySpesialytyId(specialityId: number) {
+    this.getGroupsBySpeciality(specialityId)
+      .subscribe((data) =>  { this.groups = <Group[]> data; });
+      for (let i = 0; i < this.groups.length; i++ ) {
+       this.deleteGroup(this.groups[i].group_id)
+          .subscribe((resp) => console.log(resp));
+      }
   }
 }
