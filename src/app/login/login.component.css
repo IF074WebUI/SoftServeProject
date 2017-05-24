@@ -22,7 +22,7 @@ form[role=login] > button {
 form[role=login] input {
   color: #777;
   background: rgba(180,180,180,.9);
-  border: none;
+
   height: 2.6em;
   position: relative;
   padding: 0px 10px;
@@ -47,5 +47,8 @@ form[role=login] > button {
   top: 2.5em;
   left: 40px;
   color: red;
-  loat: left;
 }
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+

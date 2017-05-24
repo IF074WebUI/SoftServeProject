@@ -20,11 +20,19 @@
       "prefix": "app",
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.css",
+<<<<<<< HEAD
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+=======
+>>>>>>> 656a8f9c32079fc3ddf138c77a80b81e7a9e30e6
         "../node_modules/font-awesome/css/font-awesome.css",
         "styles.css"
       ],
       "scripts": [
+<<<<<<< HEAD
+=======
+        "../node_modules/jquery/dist/jquery.js",
+        "../node_modules/tether/dist/js/tether.js",
+>>>>>>> 656a8f9c32079fc3ddf138c77a80b81e7a9e30e6
         "../node_modules/bootstrap/dist/js/bootstrap.js"
       ],
       "environmentSource": "environments/environment.ts",

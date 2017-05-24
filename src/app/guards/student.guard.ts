@@ -1,7 +1,7 @@
-import {CanLoad, Route, Router} from '@angular/router';
-import {Injectable} from '@angular/core';
-import {LoginService} from '../login/login.service';
-import {Observable} from "rxjs/Observable";
+import { CanLoad, Route, Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { LoginService } from '../login/login.service';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class StudentGuard implements CanLoad {
