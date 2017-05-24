@@ -16,9 +16,9 @@ export class GroupComponent implements OnInit {
   groups: Group = new Group();
   groupforEdit: Group;
   GroupforDelete: Group;
-  pageNumber = 1;
+  pageNumber: number;
   offset = 3;
-  countRecords: number = 0;
+  countRecords: number;
   selectedValue: number;
   selectedFacultyValue: number;
   selectedSpesailutyValue: number;
@@ -46,7 +46,7 @@ export class GroupComponent implements OnInit {
       .subscribe(() => {this.uploadPage();
       });
   }
-  // >>>>>UPDATE PAGE<<<<<<<<<<<
+// updatePage
   uploadPage() {
     this.pageNumber = 1;
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
@@ -54,20 +54,19 @@ export class GroupComponent implements OnInit {
         this.groupsOnPage = <Group[]> data;
       });
   }
-  // >>>>>>>>>SELECT FOR EDITING<<<<<<<<<<
+// select for editing
   selectedGroup(group: Group) {
     this.GroupforDelete = group;
     this.groupforEdit = group;
   }
-  // >>>>>>>>>>>>>DELETING<<<<<<<<<<<<<<
+// deleting groups
   deleteGroup() {
     this.getGroupsService.deleteGroup(this.GroupforDelete['group_id'])
       .subscribe(() => {
         this.uploadPage();
       });
   }
-  // >>>>>>>>EDITING<<<<<<<<<<<
-
+// editing groups
   editGroup(groupName: string) {
     console.log(this.groupforEdit['group_id']);
     this.getGroupsService.editGroup(this.groupforEdit['group_id'], groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
@@ -78,32 +77,36 @@ export class GroupComponent implements OnInit {
   // >>>>>pagination<<<<<<<<
     getCountRecords() {
       this.getGroupsService.getCountGroups()
-        .subscribe((resp) => {this.countRecords = resp; } );
+        .subscribe(resp => this.countRecords = resp );
     }
-  changePage(pageNumber) {
-    this.getCountRecords()
-    let lastPage = Math.ceil( this.countRecords / this.offset);
-    console.log(lastPage);
-    if (pageNumber <= 1) {
-        this.pageNumber = lastPage;}
-    // } else if ( pageNumber > this.countRecords ) {
-    //   this.pageNumber = 1;
-    // } else {
-    //   console.log(this.countRecords);
-    // }
+  previousPage() {
+    this.getCountRecords();
+    let numberOfLastPage: number;
+    numberOfLastPage = Math.ceil(+this.countRecords / this.offset);
+    if (this.pageNumber > 1 ) {
+      this.pageNumber--;
+    } else {
+      this.pageNumber = numberOfLastPage
+    }
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
       .subscribe((data) => {
         this.groupsOnPage = <Group[]> data;
           });
     }
 
-    getGroupsOnPage() {
-        this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
-        .subscribe((data) => {
-          this.groupsOnPage = <Group[]> data;
-        });
+  nextPage() {
+    this.getCountRecords();
+    let numberOfLastPage: number;
+    numberOfLastPage = Math.ceil(+this.countRecords / this.offset);
+    if (this.pageNumber < numberOfLastPage) {
+      this.pageNumber++;
+    } else {
+      this.pageNumber = 1;
     }
-
-
+    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
+      .subscribe((data) => {
+        this.groupsOnPage = <Group[]> data;
+      });
+  }
 }
 
