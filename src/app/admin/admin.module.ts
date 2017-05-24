@@ -23,8 +23,13 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { CommonComponent } from './common/common.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SearchComponent } from './search/search.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MdDialogModule, MdButtonModule } from '@angular/material';
+import { StudentsComponent } from './students/students.component';
+import { StudentsService } from './students/students.service';
+import { AddStudentComponent } from './students/add-student/add-student.component';
+import { EditStudentComponent } from './students/edit-student/edit-student.component';
+import { DeleteStudentComponent } from './students/delete-student/delete-student.component';
 
 @NgModule({
   declarations: [
@@ -41,10 +46,14 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     SpecialitiesComponent,
     PaginationComponent,
     CommonComponent,
-    SearchComponent],
+    SearchComponent,
+    AddStudentComponent,
+    EditStudentComponent,
+    DeleteStudentComponent,
+    StudentsComponent],
 
-  imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule, ReactiveFormsModule, NgbModule],
-  providers: [StatisticsService, SubjectService, SpecialitiesService, TimetableService, GetRecordsByIdService, GroupService ]
-
+  imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule, ReactiveFormsModule, NgbModule, MdDialogModule, MdButtonModule],
+  providers: [StatisticsService, SubjectService, SpecialitiesService, TimetableService, GetRecordsByIdService, GroupService, StudentsService],
+  entryComponents: [AddStudentComponent, EditStudentComponent, DeleteStudentComponent]
 })
 export class AdminModule {}
