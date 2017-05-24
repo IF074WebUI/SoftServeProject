@@ -43,10 +43,8 @@ export class GroupComponent implements OnInit {
   }
 
   createCroup(groupName: string) {
-        console.log(this.selectedValue);
     this.getGroupsService.createCroup(groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
-      .subscribe((data) => {
-        console.log(data);
+      .subscribe((data) => {this.uploadPage();
       });
   }
   // >>>>>UPDATE PAGE<<<<<<<<<<<
