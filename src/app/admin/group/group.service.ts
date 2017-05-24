@@ -4,12 +4,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import {Observable} from 'rxjs/Observable';
-
-
-
 import {HOST} from '../../constants';
-import {Group} from './group';
-
+import {Group} from "./group";
 
 @Injectable()
 export class GroupService {
@@ -17,15 +13,14 @@ export class GroupService {
   groups: Group[] = [];
   constructor(private http: Http) { }
 
-
-
   getGroups() {
     return this.http.get('http://' + HOST + this.entity + '/getRecords')
       .map((resp: Response) => resp.json());
   }
 
   getPaginatedPage(pageNumber: number, numbersOfRecordOnPpage: number) {
-    return this.http.get('http://' + HOST + this.entity + '/getRecordsRange/' + numbersOfRecordOnPpage + '/' + (pageNumber - 1) * numbersOfRecordOnPpage )
+    return this.http.get('http://' + HOST + this.entity + '/getRecordsRange/'
+      + numbersOfRecordOnPpage + '/' + (pageNumber - 1) * numbersOfRecordOnPpage )
       .map((resp: Response) => resp.json());
   }
   getFaculties() {
@@ -46,6 +41,15 @@ export class GroupService {
      .map((resp: Response) => resp.json());
   }
 
+  // deleteGroupsBySpeciality(specialityId: number): Observable<any> {
+  //   return this.http.get('http://' + HOST + this.entity + '/getGroupsBySpeciality/' + specialityId)
+  //     .map((resp: Response) => <Group[]>resp.json())
+  //     .map((data: Group[]) => {
+  //     data.map((g: Group) => {
+  //       this.deleteGroup(g.group_id).subscribe(r => console.log(r)); }); });
+  // }
+
+
   editGroup(id: number, groupname: string, specialytyId: number, facultyId: number ) {
     const bodyForSendingEditedGroups = JSON.stringify({group_name: groupname, faculty_id: facultyId, speciality_id: specialytyId});
     return this.http.post('http://' + HOST + this.entity + '/update/' + id, bodyForSendingEditedGroups)
@@ -60,14 +64,6 @@ export class GroupService {
   getGroupsByFaculty(specialytyId: number) {
     return this.http.get('http://' + HOST + this.entity + '/getGroupsByFaculty/' + specialytyId)
       .map((resp: Response) => resp.json());
-  }
-  deleteGroupsBySpesialytyId(specialityId: number) {
-    this.getGroupsBySpeciality(specialityId)
-      .subscribe((data) =>  { this.groups = <Group[]> data; });
-      for (let i = 0; i < this.groups.length; i++ ) {
-       this.deleteGroup(this.groups[i].group_id)
-          .subscribe((resp) => console.log(resp));
-      }
   }
 
 }

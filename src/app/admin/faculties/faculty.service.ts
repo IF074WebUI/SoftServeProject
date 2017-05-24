@@ -45,9 +45,7 @@ export class FacultyService {
   getFacultyById(id: number) {
     return this.http.get('http://' + HOST + '/Faculty/getRecords/' + id).map((resp: Response) => resp.json());
   }
-  getGroupsByFacultyId(id: number) {
-    return this.http.get('http://' + HOST + '/group/getGroupsByFaculty/' + id).map((resp: Response) => resp.json());
-  }
+
 
 
 }

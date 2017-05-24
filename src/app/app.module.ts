@@ -11,15 +11,18 @@ import { AdminGuard } from './guards/admin.guard';
 import { StudentGuard } from './guards/student.guard';
 import { AccessDeniedComponent } from './error_pages/access-denied/access-denied.component';
 import { BadRequestComponent } from './error_pages/bad-request/bad-request.component';
+import { NotFoundComponent } from './error_pages/not-found/not-found.component';
 import { LoginGuard } from './guards/login.guard';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     AccessDeniedComponent,
-    BadRequestComponent
+    BadRequestComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

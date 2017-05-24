@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Faculty } from './Faculty';
 import { FacultyService } from './faculty.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -18,8 +18,7 @@ export class FacultiesComponent implements OnInit {
   count: number;
   ItemforEdit: Faculty;
   ItemforDelete: Faculty;
-  ItemForGetGroups: Faculty;
-  faculty: Faculty = new Faculty();
+ // faculty: Faculty = new Faculty();
   facultyEditForm: FormGroup;
   facultyEditName: FormControl;
   facultyEditDescription: FormControl;
@@ -29,7 +28,6 @@ export class FacultiesComponent implements OnInit {
   facultyAddDescription: FormControl;
   modalHeader: string;
 
-  list: Array<number>;
 
   constructor(private http: FacultyService, private modalService: NgbModal,
               private location: Location) {
@@ -43,19 +41,18 @@ export class FacultiesComponent implements OnInit {
       'id': this.facultyEditId,
       'name': this.facultyEditName,
       'description': this.facultyEditDescription
-    })
+    });
 
     this.facultyAddName = new FormControl('', Validators.required, this.asyncValidator.bind(this));
     this.facultyAddDescription = new FormControl('', Validators.required);
     this.facultyAddForm = new FormGroup({
       'name': this.facultyAddName,
       'description': this.facultyAddDescription
-    })
+    });
 
     this.http.getPaginatedPage(1).subscribe((resp) => {
       this.faculties = <Faculty[]> resp;
-      console.log(this.faculties);
-    })
+    });
 
     this.http.countAllRecords().subscribe((resp) => {
       this.count = resp['numberOfRecords'];
@@ -77,7 +74,6 @@ export class FacultiesComponent implements OnInit {
 
   changePage(d: number) {
     this.page = d;
-    console.log(this.page);
     this.http.getPaginatedPage(d).subscribe((resp) => {
       this.faculties = <Faculty[]> resp;
     });
@@ -86,13 +82,12 @@ export class FacultiesComponent implements OnInit {
   selectedItem(faculty: Faculty) {
     this.ItemforEdit = faculty;
     this.ItemforDelete = faculty;
-    this.ItemForGetGroups = faculty;
   }
 
   confirmDelete() {
     this.http.deleteItem(this.ItemforDelete['faculty_id']).subscribe((resp) => {
       this.getCount();
-      (this.count % 10 === 1) ? this.page = this.page - 1 : this.page = this.page;
+      (this.count % 10 === 1) ? this.page = this.page - 1 : this.page;
       this.uploadAllPages(this.page);
     })
   }
@@ -104,34 +99,34 @@ export class FacultiesComponent implements OnInit {
   }
 
   confirmAdd() {
-    console.log(this.facultyAddName.value);
     this.http.addItem(this.facultyAddName.value, this.facultyAddDescription.value).subscribe(response => {
       this.getCount();
-      (this.count % 10 === 0) ? this.page = this.page + 1 : this.page = this.page;
+      (this.count % 10 === 0) ? this.page = this.page + 1 : this.page;
       this.uploadAllPages(this.page);
     })
   }
 
-  add(content) {
+  addFaculty(content) {
+    this.facultyAddName.reset();
+    this.facultyAddDescription.reset();
     this.modalHeader = 'Створення нового факультету';
     this.modalService.open(content).result.then((result) => {
-      console.log(this.facultyAddName.value);
       this.confirmAdd();
     }, (reason) => {
-      console.log(`Dismissed`);
+    //  console.log(`Dismissed`);
     });
   }
 
-  delete(content) {
+  deleteFaculty(content) {
     this.modalService.open(content).result.then((result) => {
       this.confirmDelete();
       alert('Факультет було успішно видалено');
     }, (reason) => {
-      console.log(`Dismissed`);
+     // console.log(`Dismissed`);
     });
   }
 
-  edit(content) {
+  editFaculty(content) {
     this.modalHeader = 'Редагування факультету';
     this.facultyEditId.setValue(this.ItemforEdit['faculty_id']);
     this.facultyEditName.setValue(this.ItemforEdit['faculty_name']);
@@ -140,9 +135,9 @@ export class FacultiesComponent implements OnInit {
       this.confirmEdit();
       alert('Факультет було успішно відредаговано');
     }, (reason) => {
-      console.log(`Dismissed`);
-    });
-  };
+     // console.log(`Dismissed`);
+    })
+  }
 
   asyncValidator(control: AbstractControl) {
     return this.http.searchByName(control.value).map((resp: Faculty[]) => {
@@ -154,12 +149,6 @@ export class FacultiesComponent implements OnInit {
         return null;
       }
     )
-  }
-  showGroups(){
-    console.log(this.ItemForGetGroups['faculty_id']);
-    this.http.getGroupsByFacultyId(this.ItemForGetGroups.id).subscribe((resp) => {
-      console.log(resp);
-    });
   }
 
 

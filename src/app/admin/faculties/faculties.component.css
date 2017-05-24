@@ -1,3 +1,7 @@
-i{
-cursor: pointer
+i {
+  cursor: pointer
+}
+
+.table {
+  text-align: center;
 }
