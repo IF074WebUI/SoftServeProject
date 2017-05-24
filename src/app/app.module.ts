@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {HttpModule} from '@angular/http';
@@ -16,15 +17,16 @@ import {LoginGuard} from './guards/login.guard';
   declarations: [
     AppComponent,
     LoginComponent,
-    AccessDeniedComponent
+    AccessDeniedComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    BrowserAnimationsModule
   ],
   providers: [LoginService, AdminGuard, StudentGuard, LoginGuard],
-  bootstrap: [AppComponent]
-})
+  bootstrap: [AppComponent],
+  })
 export class AppModule { }

@@ -1,0 +1,27 @@
+<form #addForm="ngForm" [formGroup]="studentForm" method="post">
+  <fieldset>
+    <legend>Додати студента</legend>
+    <div class="form-group">
+      <label for="name">Ім'я:</label>
+      <input formControlName="name" type="text" class="form-control" id="name" name="name" required >
+    </div>
+    <div class="form-group">
+      <label for="surname">Прізвище:</label>
+      <input formControlName="surname" type="text" class="form-control" id="surname" name="surname" required>
+    </div>
+    <div class="form-group">
+      <label for="f_name">Пo-батькові:</label>
+      <input formControlName="f_name" type="text" class="form-control" id="f_name" name="surname" required>
+    </div>
+    <div class="form-group">
+      <label for="pwd">Пароль:</label>
+      <input formControlName="password" type="password" class="form-control" id="pwd" name="password" required>
+    </div>
+    <div class="form-group">
+      <label for="password_confirm">Підтвердіть пароль:</label>
+      <input formControlName="password_confirm" type="password" class="form-control" id="password_confirm" name="password" required>
+    </div>
+    <button md-raised-button type="submit" name="add" (click)="addStudent(addForm)">Додати</button>
+    <button md-raised-button type="submit" name="add" (click)="cansel()">Відміна</button>
+  </fieldset>
+</form>

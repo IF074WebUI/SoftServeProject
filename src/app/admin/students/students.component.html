@@ -3,11 +3,11 @@
     <h1>Студенти</h1>
   </div>
   <div class="col-md-2" >
-    <select class="form-control" [(ngModel)]="offset" (change)="getStudentsOnPage()">
-      <option [ngValue]="5">5</option>
-      <option [ngValue]="10">10</option>
-      <option [ngValue]="15">15</option>
-    </select>
+    <!--<select class="form-control" [(ngModel)]="offset" (change)="getStudentsOnPage()">-->
+      <!--<option [ngValue]="5">5</option>-->
+      <!--<option [ngValue]="10">10</option>-->
+      <!--<option [ngValue]="15">15</option>-->
+    <!--</select>-->
   </div>
 </div>
 <table class="table table-responsive table-bordered">
@@ -36,13 +36,14 @@
     <!--<td><img src="{{student.photo}}" alt="student"></td>-->
     <td><i class="fa fa-user" aria-hidden="true"></i>
     </td>
-    <td><button type="button" class="btn btn-success btn-edit">Edit</button></td>
-    <td><button type="button" class="btn btn-danger btn-delete">Delete</button></td>
+    <td><button (click)="editDialog()" type="button" class="btn btn-success btn-edit">Edit</button></td>
+    <td><button (click)="deleteDialog()" type="button" class="btn btn-danger btn-delete">Delete</button></td>
   </tr>
   </tbody>
 </table>
-<a class="btn btn-primary" role="button" [routerLink]="['./student/add-student']">Додати студента</a>
+<a (click)="addDialog()" class="btn btn-primary" role="button">Додати студента</a>
 <div class="text-center">
   <app-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
                       (pageChanged)="changePage($event)"></app-pagination>
 </div>
+
