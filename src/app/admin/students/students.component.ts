@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentsService} from './students.service';
 import { Router } from '@angular/router';
+import {Student} from './student';
 
 @Component({
   selector: 'app-students',
@@ -9,11 +10,18 @@ import { Router } from '@angular/router';
 })
 export class StudentsComponent implements OnInit {
   students = [];
+  // studentsOnPage: any = [];
   page = 1;
   count: number;
   countPerPage = 10;
   // headers: string[];            /* array of headers */
   editId = 0;                   /* id of edited student (if student is adding than 0 or undefined) */
+  // numberOfrecords: number;
+  // // pageNumber = 1;
+  // offset = 10;
+  // selectedValue: number;
+  // selectedStudentsValue: number;
+
 
   constructor(private studentsService: StudentsService, private router: Router) {
   }
@@ -49,4 +57,11 @@ export class StudentsComponent implements OnInit {
     this.countPerPage = itemsPerPage;
     this.getStudents();
   }
+
+  // getStudentsOnPage() {
+  //   this.studentsService.getPaginated(this.page, this.offset)
+  //     .subscribe((data) => {
+  //       this.studentsOnPage = data;
+  //     });
+  // }
 }
