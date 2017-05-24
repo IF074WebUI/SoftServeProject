@@ -15,10 +15,11 @@ import { GroupService } from './group/group.service';
 import { SpecialitiesComponent } from './specialities/specialities.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { CommonComponent } from './common/common.component';
-import { SpecialitiesService } from "./services/specialities.service";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { SpecialitiesService } from './services/specialities.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SearchComponent } from './search/search.component';
 import { GetAllRecordsService } from './services/get-all-records.service';
+import { DeleteRecordByIdService } from './services/delete-record-by-id.service';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,13 @@ import { GetAllRecordsService } from './services/get-all-records.service';
     CommonComponent,
     SearchComponent],
   imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule, ReactiveFormsModule],
-  providers: [StatisticsService, SpecialitiesService, TimetableService, GetRecordsByIdService, GroupService, GetAllRecordsService ]
+  providers: [
+    StatisticsService,
+    SpecialitiesService,
+    TimetableService,
+    GetRecordsByIdService,
+    GroupService,
+    GetAllRecordsService,
+    DeleteRecordByIdService]
 })
 export class AdminModule {}

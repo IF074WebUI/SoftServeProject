@@ -9,24 +9,35 @@
     <th></th>
     <th></th>
   </tr>
-  <tr *ngFor="let td of timeTables">
-    <td>{{td?.timetable_id}}</td>
-    <td>{{td?.group_name}}</td>
-    <td>{{td?.subject_name}}</td>
-    <td><span>{{td?.start_time}}</span><br><span>{{td?.start_date}}</span></td>
-    <td><span>{{td?.end_time}}</span><br><span>{{td?.end_date}}</span></td>
-    <td><button type="button" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-    <td><button type="button" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+  <tr *ngFor="let timeTable of timeTables">
+    <td>{{timeTable?.timetable_id}}</td>
+    <td>{{timeTable?.group_name}}</td>
+    <td>{{timeTable?.subject_name}}</td>
+    <td><span>{{timeTable?.start_time}}</span><br><span>{{timeTable?.start_date}}</span></td>
+    <td><span>{{timeTable?.end_time}}</span><br><span>{{timeTable?.end_date}}</span></td>
+    <td>
+      <button type="button" class="btn btn-success">
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+      </button>
+    </td>
+    <td>
+      <button type="button" class="btn btn-danger" (click)="getSelectedTimetable(timeTable)" data-toggle="modal" data-target="#modal-delete-timetabel" data-whatever="@mdo">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </td>
   </tr>
 </table>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal" data-whatever="@mdo">Запланувати тестування</button>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-new-timetabel" data-whatever="@mdo">Запланувати тестування</button>
 
-<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+<!--madal of adding new timetable-->
+
+<div class="modal fade" id="modal-new-timetabel" tabindex="-1" role="dialog" aria-labelledby="modalAddTimetable" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Запланувати тестування</h5>
+        <h5 class="modal-title" id="modalAddTimetable">Запланувати тестування</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -66,6 +77,30 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
         <button  type="button" class="btn btn-primary" (click)="createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)">Запланувати</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--modal of deleting timetable-->
+
+<div class="modal fade" id="modal-delete-timetabel" tabindex="-1" role="dialog" aria-labelledby="modalDeleteTimetable" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalDeleteTimetable">Видалення тестування</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <p>Ви впевнені що хочете видалити тестування?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
+        <button  (click)="deleteTimetable()" type="button" class="btn btn-danger" >Видалити</button>
       </div>
     </div>
   </div>
