@@ -1,0 +1,71 @@
+<h2>Розклад проведення тестування</h2>
+<table class="table">
+  <tr>
+    <th>ID</th>
+    <th>Навчальна група</th>
+    <th>Предмет</th>
+    <th>Час початку тестування</th>
+    <th>Час закінчення тестування</th>
+    <th></th>
+    <th></th>
+  </tr>
+  <tr *ngFor="let td of timeTables">
+    <td>{{td?.timetable_id}}</td>
+    <td>{{td?.group_name}}</td>
+    <td>{{td?.subject_name}}</td>
+    <td><span>{{td?.start_time}}</span><br><span>{{td?.start_date}}</span></td>
+    <td><span>{{td?.end_time}}</span><br><span>{{td?.end_date}}</span></td>
+    <td><button type="button" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+    <td><button type="button" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+  </tr>
+</table>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal" data-whatever="@mdo">Запланувати тестування</button>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Запланувати тестування</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <!--div class="form-group">
+            <label class="form-control-label">Група:</label>
+            <input [(ngModel)]="groupId" name="groupId" class="form-control">
+          </div-->
+          <!--select name="groupId" id="groupId" class="form-control">
+            <option *ngFor="let group of groups" value="{{group.group_id}}">{{group.group_name}}</option>
+          </select-->
+          <div class="form-group">
+            <label class="form-control-label"> Предмет:</label>
+            <input [(ngModel)]="subjectId" name="subjectId" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-control-label">Початкова дата:</label>
+            <input [(ngModel)]="startDate" name="startDate" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-control-label">Початковий час:</label>
+            <input [(ngModel)]="startTime" name="startTime" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-control-label">Кінцева дата:</label>
+            <input [(ngModel)]="endDate" name="endDate" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-control-label">Кінцевий час:</label>
+            <input [(ngModel)]="endTime" name="endTime" class="form-control">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
+        <button  type="button" class="btn btn-primary" (click)="createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)">Запланувати</button>
+      </div>
+    </div>
+  </div>
+</div>

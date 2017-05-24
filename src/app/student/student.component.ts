@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 @Component({
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.css']

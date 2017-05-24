@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {Http, RequestOptions, Headers, Response} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, RequestOptions, Headers, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
-import {Observable} from 'rxjs/Observable';
-import {HOST} from '../constants';
+import { Observable } from 'rxjs/Observable';
+import { HOST } from '../constants';
 
 
 @Injectable()

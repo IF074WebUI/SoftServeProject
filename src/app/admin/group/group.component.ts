@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Response} from '@angular/http';
 import { GroupService } from './group.service';
 import { Group } from './group';
-import {Faculty} from './Faculty';
+import { Faculty } from './Faculty';
 import {Speciality} from './speciality';
 import {StatisticsService} from '../statistics/statistics.service';
 @Component({
