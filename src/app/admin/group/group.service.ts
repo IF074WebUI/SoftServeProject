@@ -37,7 +37,7 @@ export class GroupService {
       .map((resp: Response) => resp.json());
   }
   deleteGroup(id: number) {
-   return this.http.delete('http://' + HOST + this.entity + '/delete-student/' + id)
+   return this.http.delete('http://' + HOST + this.entity + '/del/' + id)
      .map((resp: Response) => resp.json());
   }
 
