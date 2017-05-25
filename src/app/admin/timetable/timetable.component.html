@@ -74,7 +74,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-        <button  type="button" class="btn btn-primary" (click)="createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)">Запланувати</button>
+        <button  type="button" class="btn btn-primary" data-dismiss="modal" (click)="createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)">Запланувати</button>
       </div>
     </div>
   </div>
@@ -125,7 +125,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-        <button  type="button" class="btn btn-success" (click)="updateTimeTable(selectedTimetable.timetable_id, updateGroupId, updateSubjectId, updateStartDate, updateStartTime, updateEndDate, updateEndTime)">Редагувати</button>
+        <button  type="button" class="btn btn-success" data-dismiss="modal" (click)="updateTimeTable(selectedTimetable.timetable_id, updateGroupId, updateSubjectId, updateStartDate, updateStartTime, updateEndDate, updateEndTime)">Редагувати</button>
       </div>
     </div>
   </div>
@@ -149,7 +149,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-        <button  (click)="deleteTimetable()" type="button" class="btn btn-danger" >Видалити</button>
+        <button  (click)="deleteTimetable()" type="button" class="btn btn-danger" data-dismiss="modal">Видалити</button>
       </div>
     </div>
   </div>
