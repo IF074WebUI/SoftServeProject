@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { GroupService } from './group.service';
 import { Group } from './group';
-import { Faculty } from './Faculty';
-import {Speciality} from './speciality';
-import {StatisticsService} from '../statistics/statistics.service';
-import {ActivatedRoute} from '@angular/router';
+import { Speciality } from '../specialities/speciality';
+import { SpecialitiesService } from '../services/specialities.service';
+import { FacultyService } from '../faculties/faculty.service';
+import { Faculty } from '../faculties/Faculty';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'dtester-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.css'],
+  providers: [FacultyService, SpecialitiesService]
 })
 export class GroupComponent implements OnInit {
   groupsOnPage: Group[] = [];
@@ -17,21 +19,20 @@ export class GroupComponent implements OnInit {
   specialitiesOnPage: Speciality[] = [];
   groupforEdit: Group;
   groupforDelete: Group;
+  selectetGroup: Group;
   pageNumber: number;
   offset = 5;   /*number of the records for the stating page*/
   countRecords: number;
   selectedFacultyValue: number;
   selectedSpesailutyValue: number;
 
-
-  constructor(private getGroupsService: GroupService, private route: ActivatedRoute) { }
-
+  constructor(private getGroupsService: GroupService, private spesialityService: SpecialitiesService, private facultyService: FacultyService, private route: ActivatedRoute, private router: Router ) { }
   ngOnInit() {
 
     this.uploadPage();
     this.getCountRecords();
-    this.getGroupsService
-      .getFaculties()
+    this.facultyService
+      .getAllFaculties()
       .subscribe((data) => {
         this.facultiesOnPage = <Faculty[]>data;
       });
@@ -57,9 +58,19 @@ export class GroupComponent implements OnInit {
       .subscribe(() => {this.uploadPage();
       });
   }
+  // get Specialities and Faculties
+  getSpecialities() {
+    this.spesialityService.getAll()
+      .subscribe((data) => this.specialitiesOnPage = <Speciality[]>data);
+  }
+  getFaculties() {
+    this.facultyService.getAllFaculties()
+      .subscribe( (data) => this.facultiesOnPage = <Faculty[]>data );
+  }
 // updatePage
   uploadPage() {
     this.pageNumber = 1;
+    this.getCountRecords();
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
       .subscribe((data) => {
         this.groupsOnPage = <Group[]> data;
@@ -79,13 +90,12 @@ export class GroupComponent implements OnInit {
   }
 // editing groups
   editGroup(groupName: string) {
-    console.log(this.groupforEdit['group_id']);
     this.getGroupsService.editGroup(this.groupforEdit['group_id'], groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
       .subscribe(() => {
         this.uploadPage();
       });
   }
-  // >>>>>pagination<<<<<<<<
+  // pagination
     getCountRecords() {
       this.getGroupsService.getCountGroups()
         .subscribe(resp => this.countRecords = resp );
@@ -118,6 +128,11 @@ export class GroupComponent implements OnInit {
       .subscribe((data) => {
         this.groupsOnPage = <Group[]> data;
       });
+  }
+  // get students by group
+  getStudentsByGroup(group: Group) {
+    this.router.navigate(['./students'], {queryParams: {'group_id': group.group_id}, relativeTo: this.route.parent});
+    console.log(group);
   }
 }
 
