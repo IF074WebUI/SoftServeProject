@@ -24,7 +24,7 @@
      <tr *ngFor="let group of this.groupsOnPage; let i = index">
         <td>{{i + offset * (pageNumber - 1) + 1}}</td>
        <td>{{group.group_name}}</td>
-       <td><button (click)=" selectedGroup(group)" type="button" class="fa fa-pencil" data-toggle="modal" data-target="#editModal" data-whatever="@mdo"></button></td>
+       <td><button (click)=" selectedGroup(group); getSpecialities(); getFaculties() " type="button" class="fa fa-pencil" data-toggle="modal" data-target="#editModal" data-whatever="@mdo"></button></td>
        <td><button (click)=" selectedGroup(group)" type="button" class="fa fa-trash" data-toggle="modal" data-target="#deleteModal"></button></td>
      </tr>
 </table><br>
@@ -53,7 +53,7 @@
     </nav>
   </div>
   <div class="col-md-3">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Додати нову групу</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" (click)="getSpecialities(); getFaculties()">Додати нову групу</button>
   </div>
 </div>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

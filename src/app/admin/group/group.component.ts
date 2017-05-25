@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { GroupService } from './group.service';
 import { Group } from './group';
-import { Faculty } from './Faculty';
-import { Speciality } from './speciality';
+import { Speciality } from '../specialities/speciality';
+import { SpecialitiesService } from '../services/specialities.service';
+import { FacultyService } from '../faculties/faculty.service';
+import { Faculty } from '../faculties/Faculty';
 
 @Component({
   selector: 'dtester-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.css'],
+  providers: [FacultyService, SpecialitiesService]
 })
 export class GroupComponent implements OnInit {
   groupsOnPage: Group[] = [];
@@ -22,27 +25,31 @@ export class GroupComponent implements OnInit {
   selectedSpesailutyValue: number;
 
 
-  constructor(private getGroupsService: GroupService) { }
+  constructor(private getGroupsService: GroupService, private spesialityService: SpecialitiesService, private facultyService: FacultyService) { }
   ngOnInit() {
     this.uploadPage();
     this.getCountRecords();
-    this.getGroupsService
-      .getFaculties()
+    this.facultyService
+      .getAllFaculties()
       .subscribe((data) => {
         this.facultiesOnPage = <Faculty[]>data;
       });
 
-    this.getGroupsService
-      .getSpeciality()
-      .subscribe((data) => {
-        this.specialitiesOnPage = <Speciality[]>data;
-      });
   }
 
   createCroup(groupName: string) {
     this.getGroupsService.createCroup(groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
       .subscribe(() => {this.uploadPage();
       });
+  }
+  // get Specialities and Faculties
+  getSpecialities() {
+    this.spesialityService.getAll()
+      .subscribe((data) => this.specialitiesOnPage = <Speciality[]>data);
+  }
+  getFaculties() {
+    this.facultyService.getAllFaculties()
+      .subscribe( (data) => this.facultiesOnPage = <Faculty[]>data );
   }
 // updatePage
   uploadPage() {
