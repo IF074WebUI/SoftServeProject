@@ -3,21 +3,15 @@ import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import {Observable} from 'rxjs/Observable';
-
-
-
-import {HOST} from '../../constants';
-import {Group} from './group';
-
+import { Observable } from 'rxjs/Observable';
+import { HOST } from '../../constants';
+import { Group } from './group';
 
 @Injectable()
 export class GroupService {
   private entity = '/Group';
   groups: Group[] = [];
   constructor(private http: Http) { }
-
-
 
   getGroups() {
     return this.http.get('http://' + HOST + this.entity + '/getRecords')
@@ -45,6 +39,15 @@ export class GroupService {
    return this.http.delete('http://' + HOST + this.entity + '/del/' + id)
      .map((resp: Response) => resp.json());
   }
+  // METHOD FOR THE FUTURE
+  // deleteGroupsBySpeciality(specialityId: number): Observable<any> {
+  //   return this.http.get('http://' + HOST + this.entity + '/getGroupsBySpeciality/' + specialityId)
+  //     .map((resp: Response) => <Group[]>resp.json())
+  //     .map((data: Group[]) => {
+  //     data.map((g: Group) => {
+  //       this.deleteGroup(g.group_id).subscribe(r => console.log(r)); }); });
+  // }
+
 
   editGroup(id: number, groupname: string, specialytyId: number, facultyId: number ) {
     const bodyForSendingEditedGroups = JSON.stringify({group_name: groupname, faculty_id: facultyId, speciality_id: specialytyId});
@@ -56,5 +59,4 @@ export class GroupService {
     return this.http.get( 'http://' + HOST + this.entity + '/countRecords')
       .map((resp: Response) => resp.json()['numberOfRecords']);
   }
-
 }

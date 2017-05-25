@@ -47,6 +47,7 @@ export class GroupComponent implements OnInit {
 // updatePage
   uploadPage() {
     this.pageNumber = 1;
+    this.getCountRecords()
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
       .subscribe((data) => {
         this.groupsOnPage = <Group[]> data;
