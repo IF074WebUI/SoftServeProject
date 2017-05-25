@@ -16,13 +16,13 @@
     <td><span>{{timeTable.start_time}}</span><br><span>{{timeTable.start_date}}</span></td>
     <td><span>{{timeTable.end_time}}</span><br><span>{{timeTable.end_date}}</span></td>
     <td>
-      <button type="button" class="btn btn-success" (click)="getSelectedTimetable(timeTable)" data-toggle="modal" data-target="#modal-update-timetabel" data-whatever="@mdo">
+      <button type="button" class="btn btn-success btn-sm" (click)="getSelectedTimetable(timeTable)" data-toggle="modal" data-target="#modal-update-timetabel" data-whatever="@mdo">
         <i class="fa fa-pencil" aria-hidden="true"></i>
       </button>
     </td>
     <td>
-      <button type="button" class="btn btn-danger" (click)="getUpdatedTimetable(timeTable)" data-toggle="modal" data-target="#modal-delete-timetabel" data-whatever="@mdo">
-        <i class="fa fa-times" aria-hidden="true"></i>
+      <button type="button" class="btn btn-danger btn-sm" (click)="getUpdatedTimetable(timeTable)" data-toggle="modal" data-target="#modal-delete-timetabel" data-whatever="@mdo">
+        <i class="fa fa-trash" aria-hidden="true"></i>
       </button>
     </td>
   </tr>
