@@ -44,7 +44,12 @@ export class GroupComponent implements OnInit {
       });
     let specialityId = this.route.snapshot.queryParams['specialityId'];
     if (specialityId) {
-      this.getGroupsService.getGroupsBySpeciality(specialityId).subscribe(resp =>  this.groupsOnPage = resp);
+      this.getGroupsService.getGroupsBySpeciality(specialityId).subscribe(resp => {
+      if (resp['response'] === 'no records') {
+        this.groupsOnPage = [];
+      } else
+        this.groupsOnPage = resp
+    });
     }
   }
 
