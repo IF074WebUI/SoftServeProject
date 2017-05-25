@@ -39,7 +39,7 @@ export class GroupService {
    return this.http.delete('http://' + HOST + this.entity + '/del/' + id)
      .map((resp: Response) => resp.json());
   }
-
+  // METHOD FOR THE FUTURE
   // deleteGroupsBySpeciality(specialityId: number): Observable<any> {
   //   return this.http.get('http://' + HOST + this.entity + '/getGroupsBySpeciality/' + specialityId)
   //     .map((resp: Response) => <Group[]>resp.json())
@@ -59,5 +59,4 @@ export class GroupService {
     return this.http.get( 'http://' + HOST + this.entity + '/countRecords')
       .map((resp: Response) => resp.json()['numberOfRecords']);
   }
-
 }
