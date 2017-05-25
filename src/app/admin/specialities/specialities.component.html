@@ -1,13 +1,13 @@
-<h3 class="text-center">Спеціальності</h3>
+<h3 class="text-center">{{SPECIALITIES_HEADER}}</h3>
 <div class="header-group">
-  <button class="btn btn-sm btn-primary" title="Додати спеціальність" (click)="add()" data-target="#myModal">
+  <button class="btn btn-sm btn-primary" [title]="SPECIALITIES_ADD_TITLE" (click)="add()" data-target="#myModal">
     <i class="fa fa-plus-circle" aria-hidden="true"></i>
   </button>
   <!--Dropdown for items per page count-->
   <select #s (change)="changeCountPerPage(s.value)">
-    <option>5</option>
-    <option>10</option>
-    <option>20</option>
+    <option>{{FIRST_DROPDOWN_ITEM}}</option>
+    <option>{{SECOND_DROPDOWN_ITEM}}</option>
+    <option>{{THIRD_DROPDOWN_ITEM}}</option>
   </select>
 </div>
 <!--Search component-->
@@ -18,7 +18,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Додати (редагувати) спеціальність</h5>
+        <h5 class="modal-title" id="exampleModalLabel">{{MODAL_TITLE}}</h5>
         <button type="button" class="close" (click)="cancel()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -27,28 +27,27 @@
         <!--Form for add/delete speciality-->
         <form [formGroup]="specialitiesForm" (ngSubmit)="save()">
           <div class="form-group">
-            <label for="name">Назва спеціальності</label>
+            <label for="name">{{MODAL_NAME}}</label>
             <input formControlName="name" name="speciality_name" type="text"
                    class="form-control"
                    id="name">
             <span
               *ngIf="specialitiesForm.controls['name'].hasError('required') && specialitiesForm.controls['name'].touched"
-              class="validate_message">Вкажіть назву спеціальності</span>
+              class="validate_message">{{MODAL_VALIDATION_NAME_REQUIRED}}</span>
             <span
               *ngIf="specialitiesForm.controls['name'].hasError('exists') && specialitiesForm.controls['name'].dirty"
-              class="validate_message">Така спеціальність вже існує</span>
+              class="validate_message">{{MODAL_VALIDATION_NAME_EXISTS}}</span>
           </div>
           <div class="form-group">
-            <label for="code">Код спеціальності</label>
+            <label for="code">{{MODAL_CODE}}</label>
             <input formControlName="code" name="speciality_code" type="text" class="form-control" id="code">
             <span
               *ngIf="specialitiesForm.controls['code'].hasError('required') && specialitiesForm.controls['code'].touched"
-              class="validate_message">Вкажіть код спеціальності
-            </span>
+              class="validate_message">{{MODAL_VALIDATION_CODE_REQUIRED}}</span>
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary" [disabled]="!specialitiesForm.valid">Зберегти</button>
-            <button type="button" class="btn btn-secondary" (click)="cancel()">Відміна</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!specialitiesForm.valid">{{BUTTON_SAVE}}</button>
+            <button type="button" class="btn btn-secondary" (click)="cancel()">{{BUTTON_CANCEL}}</button>
           </div>
         </form>
       </div>
@@ -67,10 +66,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <h5>Ви справді бажаєте видалити спеціальність {{delSpeciality['speciality_name']}}?</h5>
+        <h5>{{MODAL_CONFIRM_HEADER}}{{delSpeciality['speciality_name']}}?</h5>
         <div class="text-center">
-          <button type="submit" class="btn btn-primary" (click)="deleteSpeciality()">Підтвердити</button>
-          <button type="button" class="btn btn-secondary" (click)="cancelConfirm()">Відміна</button>
+          <button type="submit" class="btn btn-primary" (click)="deleteSpeciality()">{{BUTTON_CONFIRM}}</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelConfirm()">{{BUTTON_CANCEL}}</button>
         </div>
       </div>
     </div>

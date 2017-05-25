@@ -1,7 +1,12 @@
 // export const HOST = 'dtapi.local';
 export const HOST = 'api1.lena.limit.com.ua';
-export const SPECIALITIES_HEADERS = ['пор.номер', 'код спеціальності', 'назва спеціальності', 'дії'];
 export const NEWFACULTY = 'Створення нового факультету';
 export const DELETERESULT = 'Факультет було успішно видалено';
 export const EDITFACULTY = 'Редагування факультету';
 export const EDITRESULT = 'Факультет було успішно відредаговано';
+export const SPECIALITY_URI = `http://${HOST}/speciality/`;
+export const LOGIN_URI = `http://${HOST}/login/`;
+export const LOGGED = 'logged';
+export const ROLE_ADMIN = 'admin';
+export const ROLE_STUDENT = 'student';
+export const DEBOUNCE_TIME = 700;

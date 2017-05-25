@@ -2,6 +2,7 @@ import { CanActivate, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from
 import { Injectable } from '@angular/core';
 import { LoginService } from '../login/login.service';
 import { Observable } from 'rxjs/Observable';
+import { LOGGED, ROLE_ADMIN, ROLE_STUDENT } from "../constants";
 
 @Injectable()
 export class LoginGuard implements CanActivate {
@@ -11,13 +12,13 @@ export class LoginGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.loginService.checkLogged().map(resp => {
       let logged: string = resp['response'];
-      if (logged !== 'logged') {
+      if (logged !== LOGGED) {
         return true;
       } else {
         let role = resp['roles'][1];
-        if (role === 'admin') {
+        if (role === ROLE_ADMIN) {
           this.router.navigate(['/admin']);
-        } else if (role === 'students') {
+        } else if (role === ROLE_STUDENT) {
           this.router.navigate(['/students']);
         }
         return false;

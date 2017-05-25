@@ -7,6 +7,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class CommonComponent<T> implements OnInit {
 
+  NO_ENTITIES: string = 'Сутності відсутні';
+
   @Input() itemsPerPage: number = 5;
   @Input() page: number = 1;
   @Input() entities: T[] = [];
