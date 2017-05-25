@@ -27,10 +27,7 @@ export class GroupComponent implements OnInit {
   constructor(private getGroupsService: GroupService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    let specialityId = this.route.snapshot.queryParams['specialityId'];
-    if (specialityId) {
-      this.getGroupsService.getGroupsBySpeciality(specialityId).subscribe(resp =>  this.groupsOnPage = resp);
-    }
+
     this.uploadPage();
     this.getCountRecords();
     this.getGroupsService
@@ -44,7 +41,10 @@ export class GroupComponent implements OnInit {
       .subscribe((data) => {
         this.specialitiesOnPage = <Speciality[]>data;
       });
-
+    let specialityId = this.route.snapshot.queryParams['specialityId'];
+    if (specialityId) {
+      this.getGroupsService.getGroupsBySpeciality(specialityId).subscribe(resp =>  this.groupsOnPage = resp);
+    }
   }
 
   createCroup(groupName: string) {
