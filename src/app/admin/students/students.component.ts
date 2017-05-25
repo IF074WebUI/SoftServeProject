@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { StudentsService} from './students.service';
-import { Router } from '@angular/router';
-import { MdDialog } from '@angular/material';
-import { AddStudentComponent } from './add-student/add-student.component';
-import { EditStudentComponent } from './edit-student/edit-student.component';
-import { DeleteStudentComponent } from './delete-student/delete-student.component';
-import { AddEditDeleteService } from './add-edit-delete.service';
-import { FormControl } from '@angular/forms';
-import { Student } from './student';
-
+import {Component, OnInit} from '@angular/core';
+import {StudentsService} from './students.service';
+import {Router} from '@angular/router';
+import {MdDialog} from '@angular/material';
+import {AddStudentComponent} from './add-student/add-student.component';
+import {EditStudentComponent} from './edit-student/edit-student.component';
+import {DeleteStudentComponent} from './delete-student/delete-student.component';
+import {AddEditDeleteService} from './add-edit-delete.service';
+import {FormControl} from '@angular/forms';
+import {Student} from './student';
 @Component({
   selector: 'dtester-students',
   templateUrl: './students.component.html',
@@ -97,11 +96,11 @@ export class StudentsComponent implements OnInit {
     });
   }
 }
-  // getStudentsOnPage() {
-  //   this.studentsService.getPaginated(this.page, this.offset)
-  //     .subscribe((data) => {
-  //       this.studentsOnPage = data;
-  //     });
-  // }
+// getStudentsOnPage() {
+//   this.studentsService.getPaginated(this.page, this.offset)
+//     .subscribe((data) => {
+//       this.studentsOnPage = data;
+//     });
+// }
 
 

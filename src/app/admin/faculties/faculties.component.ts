@@ -19,6 +19,7 @@ export class FacultiesComponent implements OnInit {
   count: number; // count all faculties
   ItemforEdit: Faculty;
   ItemforDelete: Faculty;
+  ItemforShowGroups: Faculty;
   // faculty: Faculty = new Faculty();
   facultyEditForm: FormGroup;
   facultyEditName: FormControl;
@@ -28,7 +29,6 @@ export class FacultiesComponent implements OnInit {
   facultyAddName: FormControl;
   facultyAddDescription: FormControl;
   modalHeader: string;
-
 
   constructor(private http: FacultyService, private modalService: NgbModal, private router: Router) {
   }
@@ -55,7 +55,6 @@ export class FacultiesComponent implements OnInit {
       },
       error => this.router.navigate(['/bad_request'])
     );
-
 
     this.http.countAllRecords().subscribe((resp) => {
         this.count = resp['numberOfRecords'];
@@ -106,16 +105,18 @@ export class FacultiesComponent implements OnInit {
 
   confirmEdit() {
     this.http.editItem(this.facultyEditId.value, this.facultyEditName.value, this.facultyEditDescription.value).subscribe((resp) => {
-          this.uploadAllPages(this.page); },
-        error => this.router.navigate(['/bad_request'])
-      );
+        this.uploadAllPages(this.page);
+      },
+      error => this.router.navigate(['/bad_request'])
+    );
   }
 
   confirmAdd() {
     this.http.addItem(this.facultyAddName.value, this.facultyAddDescription.value).subscribe(response => {
         this.getCount();
         (this.count % 10 === 0) ? this.page = this.page + 1 : this.page;
-        this.uploadAllPages(this.page); },
+        this.uploadAllPages(this.page);
+      },
       error => this.router.navigate(['/bad_request'])
     );
   }
@@ -162,5 +163,22 @@ export class FacultiesComponent implements OnInit {
     );
   }
 
+  search(text: string) {
+    this.http.searchFaculty(text).subscribe(resp => {
+      if (resp['response'] === 'no records') {
+        this.faculties = [];
+      }
+      else {
+        this.faculties = <Faculty[]> resp;
+      }
+    });
+  }
 }
+
+// .then(heroes => this.heroes = heroes.slice(1, 5));
+// showGroups(faculty: Faculty) {
+// this.ItemforShowGroups = faculty;
+//this.http.getFacultyById(this.ItemforShowGroups.id).subscribe(resp => console.log(resp));
+//}
+
 
