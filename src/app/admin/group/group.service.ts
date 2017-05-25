@@ -60,16 +60,4 @@ export class GroupService {
       .map((resp: Response) => resp.json()['numberOfRecords']);
   }
 
-  getGroupsByFaculty(specialytyId: number) {
-    return this.http.get('http://' + HOST + this.entity + '/getGroupsByFaculty/' + specialytyId)
-      .map((resp: Response) => resp.json());
-  }
-  deleteGroupsBySpesialytyId(specialityId: number) {
-    this.getGroupsBySpeciality(specialityId)
-      .subscribe((data) =>  { this.groups = <Group[]> data; });
-      for (let i = 0; i < this.groups.length; i++ ) {
-       this.deleteGroup(this.groups[i].group_id)
-          .subscribe((resp) => console.log(resp));
-      }
-  }
 }
