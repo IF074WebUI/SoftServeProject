@@ -17,8 +17,8 @@
       <td>{{faculties.indexOf(item)+ 10 * page - 9}}</td>
       <td>{{item['faculty_name']}}</td>
       <td>{{item['faculty_description']}}</td>
-      <td (click)="selectedItem(item)" (click)="editFaculty(editContent)"><i class="fa fa-pencil-square-o"></i></td>
-      <td (click)="selectedItem(item)" (click)="deleteFaculty(delContent)"><i class="fa fa-trash"></i></td>
+      <td><button  (click)="selectedItem(item); editFaculty(editContent)" type="button" class="btn btn-sm btn-success btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
+      <td><button  (click)="selectedItem(item); deleteFaculty(delContent)" type="button" class="btn btn-sm btn-danger btn-delete"><i class="fa fa-trash"></i></button></td>
     </tr>
   </table>
 </div>
