@@ -21,14 +21,77 @@
     <td>{{student.student_fname}}</td>
     <td><i class="fa fa-user" aria-hidden="true"></i>
     </td>
-    <td><button (click)="editDialog()" type="button" class="btn btn-success btn-edit"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+    <td><button (click)="editDialog(editForm)" type="button" class="btn btn-success btn-edit"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
     <td><button (click)="deleteDialog()" type="button" class="btn btn-danger btn-delete"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
   </tr>
   </tbody>
 </table>
-<a (click)="addDialog()" class="btn btn-primary" role="button">Додати студента</a>
+<a (click)="addDialog(addForm)" class="btn btn-primary" role="button">Додати студента</a>
 <div class="text-center">
   <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
-                      (pageChanged)="changePage($event)"></dtester-pagination>
+                      (pageChanged)="changePage($event)">
+  </dtester-pagination>
 </div>
 
+<ng-template #addForm>
+  <form [formGroup]="studentForm" method="post">
+    <fieldset>
+      <legend>Додати студента</legend>
+      <div class="form-group">
+        <label for="name">Ім'я:</label>
+        <input formControlName="name" type="text" class="form-control" id="name" name="name" required >
+      </div>
+      <div class="form-group">
+        <label for="surname">Прізвище:</label>
+        <input formControlName="surname" type="text" class="form-control" id="surname" name="surname" required>
+      </div>
+      <div class="form-group">
+        <label for="f_name">Пo-батькові:</label>
+        <input formControlName="f_name" type="text" class="form-control" id="f_name" name="surname" required>
+      </div>
+      <div class="form-group">
+        <label for="pwd">Пароль:</label>
+        <input formControlName="password" type="password" class="form-control" id="pwd" name="password" required>
+      </div>
+      <div class="form-group">
+        <label for="password_confirm">Підтвердіть пароль:</label>
+        <input formControlName="password_confirm" type="password" class="form-control" id="password_confirm" name="password" required>
+      </div>
+      <button md-raised-button type="submit" name="add" (click)="addDialog(addForm)">Додати</button>
+      <button md-raised-button type="submit" name="add" (click)="cansel()">Відміна</button>
+    </fieldset>
+  </form>
+</ng-template>
+
+<ng-template #editForm>
+  <form [formGroup]="studentEditForm" method="post">
+    <fieldset>
+      <legend>Редагувати студента</legend>
+      <div class="form-group">
+        <label for="name">Ім'я:</label>
+        <input formControlName="editName" type="text" class="form-control" id="name" name="name" required >
+      </div>
+      <div class="form-group">
+        <label for="surname">Прізвище:</label>
+        <input formControlName="editSurname" type="text" class="form-control" id="surname" name="surname" required>
+      </div>
+      <div class="form-group">
+        <label for="f_name">Пo-батькові:</label>
+        <input formControlName="editF_name" type="text" class="form-control" id="f_name" name="surname" required>
+      </div>
+      <button md-raised-button type="submit" name="add" (click)="editStudent(editForm)">Додати</button>
+      <button md-raised-button type="submit" name="add" (click)="cansel()">Відміна</button>
+    </fieldset>
+  </form>
+</ng-template>
+
+<ng-template #delForm>
+  <form method="get">
+    <fieldset>
+      <legend>Видалення</legend>
+      <h2>Ви дійсно хочете видалити студента?</h2>
+      <button md-raised-button type="submit" name="delete" (click)="deleteStudent(delForm)">Видалити</button>
+      <button md-raised-button type="button" name="cansel" (click)="cansel()">Відміна</button>
+    </fieldset>
+  </form>
+</ng-template>

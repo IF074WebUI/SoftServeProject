@@ -3,6 +3,7 @@ import { MdDialogRef } from '@angular/material';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Student } from '../student';
 import { AddEditDeleteService } from '../add-edit-delete.service';
+import { StudentsService } from '../students.service';
 
 @Component({
   selector: 'app-add-student',
@@ -24,8 +25,10 @@ export class AddStudentComponent implements OnInit {
   studentPhoto: any;
   studentGroupId: number;
   studentPlainPassword: string;
+  students: Student[];
 
-  constructor(private modal: MdDialogRef<any>, private http: AddEditDeleteService) {}
+  constructor(private modal: MdDialogRef<any>, private http: AddEditDeleteService, private studentsService: StudentsService) {
+  }
 
   ngOnInit() {
     this.studentName = new FormControl('');
@@ -60,7 +63,7 @@ export class AddStudentComponent implements OnInit {
       this.studentPlainPassword = '1qaz2wsx',
       this.studentPhoto = ''
     ).subscribe(resp => {
-      this.student.username = '' ;
+      this.student.username = '';
       this.student.password = '';
       this.student.password_confirm = '';
       this.student.email = '';
@@ -72,9 +75,9 @@ export class AddStudentComponent implements OnInit {
       this.student.plain_password = '';
       this.student.photo = '';
     });
-
-    this.cansel();
+    this.studentsService.getAllStudents().subscribe((data) => {
+      this.students = data;
+      this.cansel();
+    });
   }
-
-
 }
