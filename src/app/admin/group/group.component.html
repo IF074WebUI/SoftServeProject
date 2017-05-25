@@ -1,6 +1,9 @@
 <div class="row">
-  <div class="col-md-10">
+  <div class="col-md-2">
     <h1>Групи</h1>
+  </div>
+  <div class="col-md-8 croup-count">
+    <h5>зареєстровано груп: <span>{{countRecords}}</span></h5>
   </div>
   <div class="col-md-2" >
     <select class="form-control" [(ngModel)]="offset" (change)="uploadPage()">
