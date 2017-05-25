@@ -1,0 +1,9 @@
+button, a {
+  cursor: pointer;
+}
+select {
+  margin-top: 5px;
+}
+.croup-count {
+  margin-top: 20px;
+}
