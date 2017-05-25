@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import {Http, Response} from '@angular/http';
+import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import {Observable} from 'rxjs/Observable';
-import {HOST} from '../../constants';
-import {Group} from "./group";
+import { Observable } from 'rxjs/Observable';
+import { HOST } from '../../constants';
+import { Group } from './group';
 
 @Injectable()
 export class GroupService {
@@ -18,9 +18,8 @@ export class GroupService {
       .map((resp: Response) => resp.json());
   }
 
-  getPaginatedPage(pageNumber: number, numbersOfRecordOnPpage: number) {
-    return this.http.get('http://' + HOST + this.entity + '/getRecordsRange/'
-      + numbersOfRecordOnPpage + '/' + (pageNumber - 1) * numbersOfRecordOnPpage )
+  getPaginatedPage(pageNumber: number, offset: number) {
+    return this.http.get('http://' + HOST + this.entity + '/getRecordsRange/' + offset + '/' + (pageNumber - 1) * offset )
       .map((resp: Response) => resp.json());
   }
   getFaculties() {
@@ -40,7 +39,7 @@ export class GroupService {
    return this.http.delete('http://' + HOST + this.entity + '/del/' + id)
      .map((resp: Response) => resp.json());
   }
-
+  // METHOD FOR THE FUTURE
   // deleteGroupsBySpeciality(specialityId: number): Observable<any> {
   //   return this.http.get('http://' + HOST + this.entity + '/getGroupsBySpeciality/' + specialityId)
   //     .map((resp: Response) => <Group[]>resp.json())
@@ -56,6 +55,10 @@ export class GroupService {
       .map((resp) => resp.json());
   }
 
+  getCountGroups() {
+    return this.http.get( 'http://' + HOST + this.entity + '/countRecords')
+      .map((resp: Response) => resp.json()['numberOfRecords']);
+  }
   getGroupsBySpeciality(specialytyId: number) {
     return this.http.get('http://' + HOST + this.entity + '/getGroupsBySpeciality/' + specialytyId)
       .map((resp: Response) => resp.json());
@@ -65,5 +68,4 @@ export class GroupService {
     return this.http.get('http://' + HOST + this.entity + '/getGroupsByFaculty/' + specialytyId)
       .map((resp: Response) => resp.json());
   }
-
 }

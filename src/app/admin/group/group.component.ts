@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Response} from '@angular/http';
 import { GroupService } from './group.service';
 import { Group } from './group';
 import { Faculty } from './Faculty';
 import {Speciality} from './speciality';
 import {StatisticsService} from '../statistics/statistics.service';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute} from '@angular/router';
+
 @Component({
-  selector: 'app-group',
+  selector: 'dtester-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.css'],
 })
@@ -15,21 +15,20 @@ export class GroupComponent implements OnInit {
   groupsOnPage: Group[] = [];
   facultiesOnPage: Faculty[] = [];
   specialitiesOnPage: Speciality[] = [];
-  groups: Group = new Group();
   groupforEdit: Group;
-  GroupforDelete: Group;
-  numberOfrecords: number;
-  pageNumber = 1;
-  offset = 5;
-  selectedValue: number;
+  groupforDelete: Group;
+  pageNumber: number;
+  offset = 5;   /*number of the records for the stating page*/
+  countRecords: number;
   selectedFacultyValue: number;
   selectedSpesailutyValue: number;
 
 
-  constructor(private getGroupsService: GroupService, private statictic: StatisticsService, private route: ActivatedRoute) { }
+  constructor(private getGroupsService: GroupService, private route: ActivatedRoute) { }
+
   ngOnInit() {
     this.uploadPage();
-
+    this.getCountRecords();
     this.getGroupsService
       .getFaculties()
       .subscribe((data) => {
@@ -52,27 +51,27 @@ export class GroupComponent implements OnInit {
       .subscribe(() => {this.uploadPage();
       });
   }
-  // >>>>>UPDATE PAGE<<<<<<<<<<<
+// updatePage
   uploadPage() {
+    this.pageNumber = 1;
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
       .subscribe((data) => {
         this.groupsOnPage = <Group[]> data;
       });
   }
-  // >>>>>>>>>SELECT FOR EDITING<<<<<<<<<<
+// select for editing
   selectedGroup(group: Group) {
-    this.GroupforDelete = group;
+    this.groupforDelete = group;
     this.groupforEdit = group;
   }
-  // >>>>>>>>>>>>>DELETING<<<<<<<<<<<<<<
+// deleting groups
   deleteGroup() {
-    this.getGroupsService.deleteGroup(this.GroupforDelete['group_id'])
+    this.getGroupsService.deleteGroup(this.groupforDelete['group_id'])
       .subscribe(() => {
         this.uploadPage();
       });
   }
-  // >>>>>>>>EDITING<<<<<<<<<<<
-
+// editing groups
   editGroup(groupName: string) {
     console.log(this.groupforEdit['group_id']);
     this.getGroupsService.editGroup(this.groupforEdit['group_id'], groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
@@ -81,18 +80,38 @@ export class GroupComponent implements OnInit {
       });
   }
   // >>>>>pagination<<<<<<<<
-    getCountRecords(entity) {
-      this.statictic.getCountRecords(entity).subscribe((data) =>  {this.numberOfrecords = data.numberOfRecords; } );
-
+    getCountRecords() {
+      this.getGroupsService.getCountGroups()
+        .subscribe(resp => this.countRecords = resp );
+    }
+  previousPage() {
+    this.getCountRecords();
+    let numberOfLastPage: number;
+    numberOfLastPage = Math.ceil(+this.countRecords / this.offset);
+    if (this.pageNumber > 1 ) {
+      this.pageNumber--;
+    } else {
+      this.pageNumber = numberOfLastPage
+    }
+    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
+      .subscribe((data) => {
+        this.groupsOnPage = <Group[]> data;
+          });
     }
 
-    getGroupsOnPage() {
-        this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
-        .subscribe((data) => {
-          this.groupsOnPage = <Group[]> data;
-        });
+  nextPage() {
+    this.getCountRecords();
+    let numberOfLastPage: number;
+    numberOfLastPage = Math.ceil(+this.countRecords / this.offset);
+    if (this.pageNumber < numberOfLastPage) {
+      this.pageNumber++;
+    } else {
+      this.pageNumber = 1;
     }
-
-
+    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
+      .subscribe((data) => {
+        this.groupsOnPage = <Group[]> data;
+      });
+  }
 }
 
