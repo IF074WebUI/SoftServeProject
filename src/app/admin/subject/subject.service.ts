@@ -4,6 +4,7 @@ import {HOST} from '../../constants';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import {Subject} from './subject.component';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class SubjectService {
@@ -11,21 +12,18 @@ export class SubjectService {
 
   constructor(private http: Http) {
   }
-
   getSubjects() {
     return this.http.get('http://' + HOST + '/Subject/getRecords')
       .map((response: Response) => response.json());
   }
-
-  create(subject_name: string, subject_description: string): Promise<Subject> {
-    return this.http
-      .post('http://' + HOST + '/Subject/insertData',
-        JSON.stringify({subject_name: subject_name, subject_description: subject_description}),
-        {headers: this.headers})
-      .toPromise()
-      .then(res => res.json().data as Subject);
+  createSubject(subject_name: string, subject_description: string): Observable <Response> {
+    const bodyForSendingNewSubject = JSON.stringify({
+      subject_name: subject_name,
+      subject_description: subject_description
+    });
+    return this.http.post('http://' + HOST + '/Subject/insertData', bodyForSendingNewSubject)
+      .map((resp: Response) => resp.json());
   }
-
   update(subject: Subject): Promise<Subject> {
     return this.http
       .post('http://' + HOST + '/Subject/update/' + subject.subject_id,
@@ -34,7 +32,6 @@ export class SubjectService {
       .toPromise()
       .then(() => subject);
   }
-
   delete(subject_id: number): Promise<void> {
     return this.http
       .delete('http://' + HOST + '/Subject/del/' + subject_id, {headers: this.headers})
@@ -43,11 +40,11 @@ export class SubjectService {
   }
   getPagenationSubjects(page: number, limit: number) {
     let offset: number;
-    offset = (page - 1) * 3;
+    offset = (page - 1) * limit;
     return this.http.get('http://' + HOST + '/Subject/getRecordsRange/' + limit + '/' + offset)
       .map((response: Response) => response.json());
   }
-  getNumberOfRecords(){
+  getNumberOfRecords() {
     return this.http.get('http://' + HOST + '/Subject/countRecords/')
       .map((response: Response) => response.json());
   }
