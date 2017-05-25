@@ -23,6 +23,8 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { CommonComponent } from './common/common.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SearchComponent } from './search/search.component';
+import { GetAllRecordsService } from './services/get-all-records.service';
+import { DeleteRecordByIdService } from './services/delete-record-by-id.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MdDialogModule, MdButtonModule } from '@angular/material';
 import { StudentsComponent } from './students/students.component';
@@ -30,6 +32,7 @@ import { StudentsService } from './students/students.service';
 import { AddStudentComponent } from './students/add-student/add-student.component';
 import { EditStudentComponent } from './students/edit-student/edit-student.component';
 import { DeleteStudentComponent } from './students/delete-student/delete-student.component';
+
 
 @NgModule({
   declarations: [
@@ -50,10 +53,31 @@ import { DeleteStudentComponent } from './students/delete-student/delete-student
     AddStudentComponent,
     EditStudentComponent,
     DeleteStudentComponent,
-    StudentsComponent],
-
-  imports: [RouterModule.forChild(adminRoutes), CommonModule, FormsModule, ReactiveFormsModule, NgbModule, MdDialogModule, MdButtonModule],
-  providers: [StatisticsService, SubjectService, SpecialitiesService, TimetableService, GetRecordsByIdService, GroupService, StudentsService],
-  entryComponents: [AddStudentComponent, EditStudentComponent, DeleteStudentComponent]
+    StudentsComponent
+    ],
+  imports: [
+    RouterModule.forChild(adminRoutes),
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule,
+    MdDialogModule,
+    MdButtonModule
+  ],
+  providers: [
+    StatisticsService,
+    SpecialitiesService,
+    TimetableService,
+    GetRecordsByIdService,
+    GroupService,
+    GetAllRecordsService,
+    DeleteRecordByIdService,
+    SubjectService,
+    StudentsService
+  ],
+  entryComponents: [
+    AddStudentComponent,
+    EditStudentComponent,
+    DeleteStudentComponent]
 })
 export class AdminModule {}

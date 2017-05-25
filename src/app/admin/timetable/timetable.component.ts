@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TimetableService } from './timetable.service';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
-import { GroupService } from '../group/group.service';
+import { GetAllRecordsService } from '../services/get-all-records.service';
+import { DeleteRecordByIdService } from '../services/delete-record-by-id.service';
 
 @Component({
   selector: 'app-timetable',
@@ -11,27 +12,30 @@ import { GroupService } from '../group/group.service';
 export class TimetableComponent implements OnInit {
   timeTables = [];
   groups = [];
+  subjects = [];
+  selectedTimetable;
 
-  constructor(private timetableservice: TimetableService, private recordsById: GetRecordsByIdService, private  groupService: GroupService) { }
+  constructor(private timetableservice: TimetableService,
+              private getRecordsByIdService: GetRecordsByIdService,
+              private getAllRecordsService: GetAllRecordsService,
+              private deleteRecordByIdService: DeleteRecordByIdService) { }
 
   ngOnInit() {
     this.getTimetables();
     this.getGroups();
+    this.getSubjects();
   }
 
   getTimetables() {
-    this.timetableservice.getAllTimeTables().subscribe((data) => {
+    this.getAllRecordsService.getAllRecords('timeTable').subscribe((data) => {
       this.timeTables = data;
-      console.log(this.timeTables);
       for (const timetable of this.timeTables) {
         /*get names of groups*/
-        this.recordsById.getRecordsById('group', timetable.group_id).subscribe((groupData) => {
-          /*console.log(groupData);*/
+        this.getRecordsByIdService.getRecordsById('group', timetable.group_id).subscribe((groupData) => {
           timetable.group_name = groupData[0].group_name;
         });
         /*get names of subjects*/
-        this.recordsById.getRecordsById('subject', timetable.subject_id).subscribe((subjectData) => {
-          /*console.log(subjectData);*/
+        this.getRecordsByIdService.getRecordsById('subject', timetable.subject_id).subscribe((subjectData) => {
           timetable.subject_name = subjectData[0].subject_name;
         });
         /*edit date*/
@@ -41,17 +45,34 @@ export class TimetableComponent implements OnInit {
     });
   }
 
+  getSelectedTimetable(timetable) {
+    this.selectedTimetable = timetable;
+  }
+
+  deleteTimetable() {
+    this.deleteRecordByIdService.deleteRecordsById('timeTable', this.selectedTimetable.timetable_id).subscribe((data) => {
+    });
+    this.getTimetables();
+  }
+
   createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime) {
     this.timetableservice.createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)
-      .subscribe((data) => {
-        console.log(data);
-      });
+      .subscribe();
+    this.getTimetables();
+  }
+  updateTimeTable(timetable_id, groupId, subjectId, startDate, startTime, endDate, endTime) {
+    this.timetableservice.updateTimeTable(timetable_id, groupId, subjectId, startDate, startTime, endDate, endTime)
+      .subscribe();
     this.getTimetables();
   }
   getGroups() {
-    this.groupService.getGroups().subscribe((data) => {
+    this.getAllRecordsService.getAllRecords('group').subscribe((data) => {
       this.groups = data;
-      console.log(this.groups);
+    });
+  }
+  getSubjects() {
+    this.getAllRecordsService.getAllRecords('subject').subscribe((data) => {
+      this.subjects = data;
     });
   }
 }
