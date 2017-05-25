@@ -38,8 +38,14 @@ export class StudentsComponent implements OnInit {
     this.getCount();
     let  groupId = this.route.snapshot.queryParams['group_id'];
     if (groupId) {
-      this.studentsService.getStudentsByGroupId(groupId).subscribe(resp => this.students = resp);
-    } ;
+      this.studentsService.getStudentsByGroupId(groupId).subscribe(resp => {
+        if (resp['response'] === 'no records') {
+          this.students = [];
+        } else {
+          this.students = resp;
+        }
+      });
+    }
   }
 
   selectedStudent(student: Student) {

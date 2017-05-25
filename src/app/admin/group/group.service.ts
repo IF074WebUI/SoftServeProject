@@ -64,8 +64,8 @@ export class GroupService {
       .map((resp: Response) => resp.json());
   }
 
-  getGroupsByFaculty(specialytyId: number) {
-    return this.http.get('http://' + HOST + this.entity + '/getGroupsByFaculty/' + specialytyId)
+  getGroupsByFaculty(facultyId: number) {
+    return this.http.get('http://' + HOST + this.entity + '/getGroupsByFaculty/' + facultyId)
       .map((resp: Response) => resp.json());
   }
 }

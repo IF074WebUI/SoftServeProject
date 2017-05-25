@@ -24,8 +24,8 @@
      <tr *ngFor="let group of this.groupsOnPage; let i = index" >
         <td>{{i + offset * (pageNumber - 1) + 1}}</td>
        <td (click)="getStudentsByGroup(group)">{{group.group_name}}</td>
-       <td><button (click)=" selectedGroup(group); getSpecialities(); getFaculties() " type="button" class="btn btn-sm btn-success btn-edit"><i class="fa fa-edit"></i></button></td>
-       <td><button (click)=" selectedGroup(group)" type="button" class="btn btn-sm btn-danger btn-delete"><i class="fa fa-trash"></i></button></td>
+       <td><button (click)=" selectedGroup(group); getSpecialities(); getFaculties() " type="button" class="btn btn-sm btn-success btn-edit" data-toggle="modal" data-target="#editModal" data-whatever="@mdo"><i class="fa fa-edit"></i></button></td>
+       <td><button (click)=" selectedGroup(group)" type="button" class="btn btn-sm btn-danger btn-delete"><i class="fa fa-trash" data-toggle="modal" data-target="#deleteModal"></i></button></td>
      </tr>
 </table><br>
 <!--pagination-->

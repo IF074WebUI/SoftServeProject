@@ -26,7 +26,7 @@ export class StudentsService {
   }
 
   getStudentsByGroupId(groupId: number) {
-      return this.http.get('http://' + HOST + '/getStudentsByGroup/' +  groupId).map((resp: Response) => resp.json());
+      return this.http.get('http://' + HOST + '/student/getStudentsByGroup/' +  groupId).map((resp: Response) => resp.json());
     }
 
 }

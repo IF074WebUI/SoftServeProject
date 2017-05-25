@@ -83,7 +83,6 @@ export class GroupComponent implements OnInit {
   }
 // editing groups
   editGroup(groupName: string) {
-    console.log(this.groupforEdit['group_id']);
     this.getGroupsService.editGroup(this.groupforEdit['group_id'], groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
       .subscribe(() => {
         this.uploadPage();
@@ -123,7 +122,7 @@ export class GroupComponent implements OnInit {
         this.groupsOnPage = <Group[]> data;
       });
   }
-  // get students by specialyty
+  // get students by group
   getStudentsByGroup(group: Group) {
     this.router.navigate(['./students'], {queryParams: {'group_id': group.group_id}, relativeTo: this.route.parent});
     console.log(group);
