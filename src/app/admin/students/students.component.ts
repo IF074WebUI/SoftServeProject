@@ -25,6 +25,8 @@ export class StudentsComponent implements OnInit {
   count: number;
   countPerPage = 10;
   editId = 0;
+  selectedStudent: Student;
+  onSelect( student: Student ) { this.selectedStudent = student; }
 
   constructor(private dialog: MdDialog, private studentsService: StudentsService, private router: Router, private http: AddEditDeleteService) {
   }
@@ -37,7 +39,7 @@ export class StudentsComponent implements OnInit {
     this.getCount();
   }
 
-  selectedStudent(student: Student) {
+  selectedStudents(student: Student) {
     this.studentForEdit = student;
     this.studentForDel = student;
   }
