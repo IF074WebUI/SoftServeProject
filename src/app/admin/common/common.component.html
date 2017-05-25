@@ -5,12 +5,12 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let entity of entities; let i = index">
+  <tr *ngFor="let entity of entities; let i = index" (click)="clickEntityCallback(entity)">
     <td>{{i + itemsPerPage * (page - 1) + 1}}</td>
     <td *ngFor="let name of getProperties(entity)">{{entity[name]}}</td>
     <td>
-      <button (click)="edit(entity)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-      <button (click)="delete(entity)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+      <button (click)="editEntityCallback(entity)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+      <button (click)="deleteEntityCallback(entity)"><i class="fa fa-trash" aria-hidden="true"></i></button>
     </td>
   </tr>
   </tbody>

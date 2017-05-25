@@ -13,6 +13,7 @@ export class CommonComponent<T> implements OnInit {
   @Input() headers: string[] = [];
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
   @Output() editEntity: EventEmitter<T> = new EventEmitter();
+  @Output() clickEntity: EventEmitter<T> = new EventEmitter();
 
   constructor() { }
 
@@ -23,11 +24,15 @@ export class CommonComponent<T> implements OnInit {
     return Object.getOwnPropertyNames(entity).slice(1);
   }
 
-  edit(entity: T) {
+  editEntityCallback(entity: T) {
     this.editEntity.emit(entity);
   }
 
-  delete(entity: T) {
+  deleteEntityCallback(entity: T) {
     this.deleteEntity.emit(entity);
+  }
+
+  clickEntityCallback(entity: T) {
+    this.clickEntity.emit(entity);
   }
 }
