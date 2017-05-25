@@ -4,6 +4,7 @@ import {FacultyService} from './faculty.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
 import {Router} from '@angular/router';
+import {NEWFACULTY, EDITRESULT, EDITFACULTY, DELETERESULT} from '../../constants';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -122,7 +123,7 @@ export class FacultiesComponent implements OnInit {
   addFaculty(content) {
     this.facultyAddName.reset();
     this.facultyAddDescription.reset();
-    this.modalHeader = 'Створення нового факультету';
+    this.modalHeader = NEWFACULTY;
     this.modalService.open(content).result.then((result) => {
       this.confirmAdd();
     }, (reason) => {
@@ -132,19 +133,19 @@ export class FacultiesComponent implements OnInit {
   deleteFaculty(content) {
     this.modalService.open(content).result.then((result) => {
       this.confirmDelete();
-      alert('Факультет було успішно видалено');
+      alert(DELETERESULT);
     }, (reason) => {
     });
   }
 
   editFaculty(content) {
-    this.modalHeader = 'Редагування факультету';
+    this.modalHeader = EDITFACULTY;
     this.facultyEditId.setValue(this.ItemforEdit['faculty_id']);
     this.facultyEditName.setValue(this.ItemforEdit['faculty_name']);
     this.facultyEditDescription.setValue(this.ItemforEdit['faculty_description']);
     this.modalService.open(content).result.then((result) => {
       this.confirmEdit();
-      alert('Факультет було успішно відредаговано');
+      alert(EDITRESULT);
     }, (reason) => {
     });
   }
