@@ -32,7 +32,6 @@ export class StudentsComponent implements OnInit {
   ngOnInit() {
     this.studentsService.getAllStudents().subscribe((data) => {
       this.students = data;
-      console.log(this.students);
     });
     this.getStudents();
     this.getCount();
