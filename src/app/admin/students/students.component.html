@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-md-10">
+    <h1>Студенти</h1>
+  </div>
+  <div class="col-md-2" >
+    <!--<select class="form-control" [(ngModel)]="offset" (change)="getStudentsOnPage()">-->
+      <!--<option [ngValue]="5">5</option>-->
+      <!--<option [ngValue]="10">10</option>-->
+      <!--<option [ngValue]="15">15</option>-->
+    <!--</select>-->
+  </div>
+</div>
+<table class="table table-responsive table-bordered">
+  <thead>
+  <tr>
+    <th>№</th>
+    <th>Прізвище</th>
+    <td>Ім'я</td>
+    <td>По батькові</td>
+    <!--<td>Група</td>-->
+    <!--<td>Фото</td>-->
+    <td>Профіль</td>
+    <td>Редагувати</td>
+    <td>Видалити</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let student of students"
+      [class.selected]="student === selectedStudent"
+      (click)="onSelect(student)">
+    <th scope="row">{{student.user_id}}</th>
+    <td>{{student.student_surname}}</td>
+    <td>{{student.student_name}}</td>
+    <td>{{student.student_fname}}</td>
+    <!--<td>{{student.group_id}}</td>-->
+    <!--<td><img src="{{student.photo}}" alt="student"></td>-->
+    <td><i class="fa fa-user" aria-hidden="true"></i>
+    </td>
+    <td><button (click)="editDialog()" type="button" class="btn btn-success btn-edit">Edit</button></td>
+    <td><button (click)="deleteDialog()" type="button" class="btn btn-danger btn-delete">Delete</button></td>
+  </tr>
+  </tbody>
+</table>
+<a (click)="addDialog()" class="btn btn-primary" role="button">Додати студента</a>
+<div class="text-center">
+  <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
+                      (pageChanged)="changePage($event)"></dtester-pagination>
+</div>
+
