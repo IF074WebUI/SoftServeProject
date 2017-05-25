@@ -28,8 +28,7 @@ export class StudentsComponent implements OnInit {
   countPerPage = 10;
   editId = 0;
 
-  constructor(private dialog: MdDialog, private studentsService: StudentsService, private router: Router, private http: AddEditDeleteService, private route: ActivatedRoute) {
-  }
+  constructor(private dialog: MdDialog, private studentsService: StudentsService, private router: Router, private http: AddEditDeleteService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.studentsService.getAllStudents().subscribe((data) => {
@@ -40,7 +39,7 @@ export class StudentsComponent implements OnInit {
     let  groupId = this.route.snapshot.queryParams['group_id'];
     if (groupId) {
       this.studentsService.getStudentsByGroupId(groupId).subscribe(resp => this.students = resp);
-    } else { this.getStudents(); }
+    } ;
   }
 
   selectedStudent(student: Student) {
