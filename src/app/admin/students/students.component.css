@@ -3,9 +3,5 @@ tbody tr:hover{
 }
 .selected {
   background-color: #0c56a9 !important;
-  color: white;
-}
-.active{
-  background-color: #000;
   color: #fff;
 }

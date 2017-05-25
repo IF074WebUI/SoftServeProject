@@ -28,7 +28,6 @@ export class StudentsComponent implements OnInit {
   selectedStudent: Student;
   onSelect( student: Student ) { this.selectedStudent = student; }
 
-
   constructor(private dialog: MdDialog, private studentsService: StudentsService, private router: Router, private http: AddEditDeleteService) {
   }
 
