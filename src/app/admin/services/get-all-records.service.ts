@@ -3,12 +3,11 @@ import { Http } from '@angular/http';
 import { HOST } from '../../constants';
 
 @Injectable()
-export class GetRecordsByIdService {
+export class GetAllRecordsService {
 
   constructor(private http: Http) {}
 
-  getRecordsById(entity, id) {
-    return this.http.get('http://' + HOST + '/' + entity + '/getRecords/' + id).map(resp => resp.json());
+  getAllRecords(entity) {
+    return this.http.get('http://' + HOST + '/' + entity + '/getRecords').map(resp => resp.json());
   }
 }
-
