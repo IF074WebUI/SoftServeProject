@@ -59,4 +59,13 @@ export class GroupService {
     return this.http.get( 'http://' + HOST + this.entity + '/countRecords')
       .map((resp: Response) => resp.json()['numberOfRecords']);
   }
+  getGroupsBySpeciality(specialytyId: number) {
+    return this.http.get('http://' + HOST + this.entity + '/getGroupsBySpeciality/' + specialytyId)
+      .map((resp: Response) => resp.json());
+  }
+
+  getGroupsByFaculty(specialytyId: number) {
+    return this.http.get('http://' + HOST + this.entity + '/getGroupsByFaculty/' + specialytyId)
+      .map((resp: Response) => resp.json());
+  }
 }

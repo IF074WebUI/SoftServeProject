@@ -1,6 +1,6 @@
 <h3 class="text-center">Спеціальності</h3>
 <div class="header-group">
-  <button title="Додати спеціальність" (click)="add()" data-target="#myModal">
+  <button class="btn btn-sm btn-primary" title="Додати спеціальність" (click)="add()" data-target="#myModal">
     <i class="fa fa-plus-circle" aria-hidden="true"></i>
   </button>
   <!--Dropdown for items per page count-->
@@ -55,9 +55,31 @@
     </div>
   </div>
 </div>
+<!--Confirm dialog-->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="text-center">Увага</h5>
+        <button type="button" class="close" (click)="cancelConfirm()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Ви справді бажаєте видалити спеціальність {{delSpeciality['speciality_name']}}?</h5>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary" (click)="deleteSpeciality()">Підтвердити</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelConfirm()">Відміна</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <!--Common component to display entnties-->
-<dtester-common [entities]="specialities" [headers]="headers" (deleteEntity)="delete($event)" [page]="page" [itemsPerPage]="countPerPage"
-                (editEntity)="edit($event)"></dtester-common>
+<dtester-common [entities]="specialities" [headers]="headers" (deleteEntity)="showDeleteConfirmDialog($event)"
+                [page]="page" [itemsPerPage]="countPerPage"
+                (editEntity)="edit($event)" (clickEntity)="getGroupsBySpeciality($event)"></dtester-common>
 <!--Pagination component-->
 <div class="text-center">
   <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"

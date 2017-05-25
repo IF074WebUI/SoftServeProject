@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { GroupService } from './group.service';
 import { Group } from './group';
 import { Faculty } from './Faculty';
-import { Speciality } from './speciality';
+import {Speciality} from './speciality';
+import {StatisticsService} from '../statistics/statistics.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'dtester-group',
@@ -22,8 +24,10 @@ export class GroupComponent implements OnInit {
   selectedSpesailutyValue: number;
 
 
-  constructor(private getGroupsService: GroupService) { }
+  constructor(private getGroupsService: GroupService, private route: ActivatedRoute) { }
+
   ngOnInit() {
+
     this.uploadPage();
     this.getCountRecords();
     this.getGroupsService
@@ -37,6 +41,10 @@ export class GroupComponent implements OnInit {
       .subscribe((data) => {
         this.specialitiesOnPage = <Speciality[]>data;
       });
+    let specialityId = this.route.snapshot.queryParams['specialityId'];
+    if (specialityId) {
+      this.getGroupsService.getGroupsBySpeciality(specialityId).subscribe(resp =>  this.groupsOnPage = resp);
+    }
   }
 
   createCroup(groupName: string) {
