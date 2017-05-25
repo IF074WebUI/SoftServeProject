@@ -36,12 +36,12 @@ export class TimetableService {
       .map((resp: Response) => resp.json());
   }
   updateTimeTable(timetable_id: number,
-                  groupId: number,
-                  subjectId: number,
-                  startDate: string,
-                  startTime: string,
-                  endDate: string,
-                  endTime: string): Observable<Response> {
+                  groupId,
+                  subjectId,
+                  startDate,
+                  startTime,
+                  endDate,
+                  endTime): Observable<Response> {
     const bodyForSendingNewTimeTable = JSON.stringify({
       group_id: groupId,
       subject_id: subjectId,
