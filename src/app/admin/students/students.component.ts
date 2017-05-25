@@ -8,6 +8,8 @@ import { DeleteStudentComponent } from './delete-student/delete-student.componen
 import { AddEditDeleteService } from './add-edit-delete.service';
 import { FormControl } from '@angular/forms';
 import { Student } from './student';
+import {  ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'dtester-students',
@@ -28,8 +30,7 @@ export class StudentsComponent implements OnInit {
   selectedStudent: Student;
   onSelect( student: Student ) { this.selectedStudent = student; }
 
-  constructor(private dialog: MdDialog, private studentsService: StudentsService, private router: Router, private http: AddEditDeleteService) {
-  }
+  constructor(private dialog: MdDialog, private studentsService: StudentsService, private router: Router, private http: AddEditDeleteService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.studentsService.getAllStudents().subscribe((data) => {
@@ -37,6 +38,16 @@ export class StudentsComponent implements OnInit {
     });
     this.getStudents();
     this.getCount();
+    let  groupId = this.route.snapshot.queryParams['group_id'];
+    if (groupId) {
+      this.studentsService.getStudentsByGroupId(groupId).subscribe(resp => {
+        if (resp['response'] === 'no records') {
+          this.students = [];
+        } else {
+          this.students = resp;
+        }
+      });
+    }
   }
 
   selectedStudents(student: Student) {

@@ -3,8 +3,8 @@ import { SpecialitiesService } from '../services/specialities.service';
 import { Speciality } from './speciality';
 import { SPECIALITIES_HEADERS } from '../../constants';
 import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {GroupService} from "../group/group.service";
+import { ActivatedRoute, Router } from '@angular/router';
+import { GroupService } from '../group/group.service';
 
 declare var $: any;
 
