@@ -24,4 +24,9 @@ export class StudentsService {
   getCount(): Observable<number> {
     return this.http.get(`http://${HOST}/student/countRecords`).map((resp: Response) => resp.json()['numberOfRecords']);
   }
+
+  getStudentsByGroupId(groupId: number) {
+      return this.http.get('http://' + HOST + '/getGetStudentsByGroup/' +  groupId).map((resp: Response) => resp.json());
+    }
+
 }

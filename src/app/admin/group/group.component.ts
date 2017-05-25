@@ -5,6 +5,7 @@ import { Speciality } from '../specialities/speciality';
 import { SpecialitiesService } from '../services/specialities.service';
 import { FacultyService } from '../faculties/faculty.service';
 import { Faculty } from '../faculties/Faculty';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'dtester-group',
@@ -18,14 +19,14 @@ export class GroupComponent implements OnInit {
   specialitiesOnPage: Speciality[] = [];
   groupforEdit: Group;
   groupforDelete: Group;
+  selectetGroup: Group;
   pageNumber: number;
   offset = 5;   /*number of the records for the stating page*/
   countRecords: number;
   selectedFacultyValue: number;
   selectedSpesailutyValue: number;
 
-
-  constructor(private getGroupsService: GroupService, private spesialityService: SpecialitiesService, private facultyService: FacultyService) { }
+  constructor(private getGroupsService: GroupService, private spesialityService: SpecialitiesService, private facultyService: FacultyService, private route: ActivatedRoute, private router: Router ) { }
   ngOnInit() {
     this.uploadPage();
     this.getCountRecords();
@@ -35,6 +36,15 @@ export class GroupComponent implements OnInit {
         this.facultiesOnPage = <Faculty[]>data;
       });
 
+    this.getGroupsService
+      .getSpeciality()
+      .subscribe((data) => {
+        this.specialitiesOnPage = <Speciality[]>data;
+      });
+    let specialityId = this.route.snapshot.queryParams['specialityId'];
+    if (specialityId) {
+      this.getGroupsService.getGroupsBySpeciality(specialityId).subscribe(resp =>  this.groupsOnPage = resp);
+    }
   }
 
   createCroup(groupName: string) {
@@ -112,6 +122,11 @@ export class GroupComponent implements OnInit {
       .subscribe((data) => {
         this.groupsOnPage = <Group[]> data;
       });
+  }
+  // get students by specialyty
+  getStudentsByGroup(group: Group) {
+    this.router.navigate(['./students'], {queryParams: {'group_id': group.group_id}, relativeTo: this.route.parent});
+    console.log(group);
   }
 }
 

@@ -3,7 +3,8 @@ import { SpecialitiesService } from '../services/specialities.service';
 import { Speciality } from './speciality';
 import { SPECIALITIES_HEADERS } from '../../constants';
 import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GroupService } from '../group/group.service';
 
 declare var $: any;
 
@@ -15,16 +16,19 @@ declare var $: any;
 export class SpecialitiesComponent implements OnInit {
 
   specialities: Speciality[];   /* array of specialities that will be displayed on current page */
+  delSpeciality: Speciality = new Speciality('', '');
   page = 1;                     /* current page */
   count: number;                /* count of all specialities */
   countPerPage = 5;             /* count of specialities per page */
   headers: string[];            /* array of headers */
-  editId = 0;                   /* id of edited speciality (if speciality is adding than 0 or undefined) */
+  editId: number = 0;           /* id of edited speciality (if speciality is adding than 0 or undefined) */
+  editName: string = '';
   specialitiesForm: FormGroup;
   specialitiesName: FormControl;
   specialitiesCode: FormControl;
 
-  constructor(private specialitiesService: SpecialitiesService, private router: Router) {
+  constructor(private specialitiesService: SpecialitiesService, private router: Router,
+   private groupsService: GroupService, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -63,6 +67,7 @@ export class SpecialitiesComponent implements OnInit {
   edit(speciality: Speciality) {
     this.specialitiesForm.reset();
     this.editId = speciality.speciality_id;
+    this.editName = speciality.speciality_name;
     /* manually set inputs with speciality properties values being edited */
     this.specialitiesName.setValue(speciality.speciality_name);
     this.specialitiesCode.setValue(speciality.speciality_code);
@@ -88,22 +93,33 @@ export class SpecialitiesComponent implements OnInit {
     }
   }
 
-  cancel() {
-    if (confirm('Зіни будуть втрачені, продовжити?')) {   /* confirm dialog before exit without add or edit speciality */
+  cancel() {                                /* exit without add or edit speciality */
       $('#myModal').modal('hide');
       this.specialitiesForm.reset();
-    }
   }
 
-  delete(speciality: Speciality) {
-    if (confirm('Ви справді бажаєте видалити цю спеціальність?')) {
-      this.specialitiesService.delete(speciality['speciality_id']).subscribe(resp => {
+  showDeleteConfirmDialog(speciality: Speciality) {
+    $('#confirmModal').modal('show');
+    this.delSpeciality = speciality;
+  }
+
+  cancelConfirm() {
+    $('#confirmModal').modal('hide');
+  }
+
+  getGroupsBySpeciality(speciality: Speciality) {
+    this.router.navigate(['./group'], {queryParams: {'specialityId': speciality.speciality_id}, relativeTo: this.activatedRoute.parent});
+  }
+
+  deleteSpeciality() {
+      this.specialitiesService.delete(this.delSpeciality['speciality_id'])
+        .subscribe(resp => {
+            $('#confirmModal').modal('hide');
           --this.count;                   /* after delete speciality get all specialities from backend */
           this.getSpecialities();         /* also we reset new count of records to calculate pagination pages count */
         },
         err => this.router.navigate(['/bad_request']));
-    }
-    }
+  }
 
   changePage(page: number) {              /* callback method for change page pagination output event */
     this.page = page;
@@ -135,7 +151,10 @@ export class SpecialitiesComponent implements OnInit {
 function asyncValidator(control: AbstractControl) {
   return this.specialitiesService.searchByName(control.value).map((res: Speciality[]) => {
     for (const speciality of res) {
-      if (speciality.speciality_name === control.value.trim() && control.dirty && !this.editId) {
+      if (speciality.speciality_name === control.value.trim() && control.dirty) {
+        if (this.editId && this.editName === control.value.trim()) {
+          return null;
+        }
         return {exists: true};
       }
     }
