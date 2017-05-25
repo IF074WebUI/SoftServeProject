@@ -19,8 +19,6 @@ export class FacultiesComponent implements OnInit {
   count: number; // count all faculties
   ItemforEdit: Faculty;
   ItemforDelete: Faculty;
-  ItemforShowGroups: Faculty;
-  // faculty: Faculty = new Faculty();
   facultyEditForm: FormGroup;
   facultyEditName: FormControl;
   facultyEditDescription: FormControl;
@@ -96,7 +94,7 @@ export class FacultiesComponent implements OnInit {
   confirmDelete() {
     this.http.deleteItem(this.ItemforDelete['faculty_id']).subscribe((resp) => {
         this.getCount();
-        (this.count % 10 === 1) ? this.page = this.page - 1 : this.page;
+        (this.count % 10 === 1) ? this.page = this.page - 1 : this.page; // number of items per page is 10
         this.uploadAllPages(this.page)
       },
       error => this.router.navigate(['/bad_request'])
@@ -174,11 +172,5 @@ export class FacultiesComponent implements OnInit {
     });
   }
 }
-
-// .then(heroes => this.heroes = heroes.slice(1, 5));
-// showGroups(faculty: Faculty) {
-// this.ItemforShowGroups = faculty;
-//this.http.getFacultyById(this.ItemforShowGroups.id).subscribe(resp => console.log(resp));
-//}
 
 
