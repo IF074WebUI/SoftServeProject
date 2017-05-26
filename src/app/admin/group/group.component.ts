@@ -125,7 +125,6 @@ export class GroupComponent implements OnInit {
   // get students by group
   getStudentsByGroup(group: Group) {
     this.router.navigate(['./students'], {queryParams: {'group_id': group.group_id}, relativeTo: this.route.parent});
-    console.log(group);
   }
 }
 
