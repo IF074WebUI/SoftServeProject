@@ -7,12 +7,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class CommonComponent<T> implements OnInit {
 
+  NO_ENTITIES: string = 'Сутності відсутні';
+
   @Input() itemsPerPage: number = 5;
   @Input() page: number = 1;
   @Input() entities: T[] = [];
   @Input() headers: string[] = [];
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
   @Output() editEntity: EventEmitter<T> = new EventEmitter();
+  @Output() clickEntity: EventEmitter<T> = new EventEmitter();
 
   constructor() { }
 
@@ -23,11 +26,15 @@ export class CommonComponent<T> implements OnInit {
     return Object.getOwnPropertyNames(entity).slice(1);
   }
 
-  edit(entity: T) {
+  editEntityCallback(entity: T) {
     this.editEntity.emit(entity);
   }
 
-  delete(entity: T) {
+  deleteEntityCallback(entity: T) {
     this.deleteEntity.emit(entity);
+  }
+
+  clickEntityCallback(entity: T) {
+    this.clickEntity.emit(entity);
   }
 }

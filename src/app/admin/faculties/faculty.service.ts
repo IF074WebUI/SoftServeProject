@@ -29,13 +29,13 @@ export class FacultyService {
   }
 
   editItem(id: number, name: string, description: string): Observable<Response> {
-    let body = JSON.stringify({'faculty_name': name, 'faculty_description': description})
+    let body = JSON.stringify({'faculty_name': name, 'faculty_description': description});
     return this.http.post('http://' + HOST + '/Faculty/update/' + id, body).map((resp: Response) => resp.json());
   }
 
   addItem(name: string, description: string): Observable<Response> {
-    let body1 = JSON.stringify({'faculty_name': name, 'faculty_description': description})
-    return this.http.post('http://' + HOST + '/Faculty/insertData', body1).map((resp: Response) => resp.json());
+    let body = JSON.stringify({'faculty_name': name, 'faculty_description': description});
+    return this.http.post('http://' + HOST + '/Faculty/insertData', body).map((resp: Response) => resp.json());
   }
 
   searchByName(name: string) {
@@ -46,7 +46,8 @@ export class FacultyService {
     return this.http.get('http://' + HOST + '/Faculty/getRecords/' + id).map((resp: Response) => resp.json());
   }
 
-
-
+  searchFaculty(text: string) {
+    return this.http.get('http://' + HOST + '/Faculty/getRecordsBySearch/' + text).map((resp: Response) => resp.json());
+  }
 }
 

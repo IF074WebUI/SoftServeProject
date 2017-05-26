@@ -14,6 +14,14 @@ export class TimetableComponent implements OnInit {
   groups = [];
   subjects = [];
   selectedTimetable;
+  updatedTimetable = {
+    groupId : '',
+    subjectId : '',
+    startDate : '',
+    startTime : '',
+    endDate : '',
+    endTime : ''
+  };
 
   constructor(private timetableservice: TimetableService,
               private getRecordsByIdService: GetRecordsByIdService,
@@ -47,6 +55,22 @@ export class TimetableComponent implements OnInit {
 
   getSelectedTimetable(timetable) {
     this.selectedTimetable = timetable;
+    this.updatedTimetable.groupId = timetable.group_id;
+    this.updatedTimetable.subjectId = timetable.subject_id;
+    this.updatedTimetable.startDate = timetable.start_date;
+    this.updatedTimetable.startTime = timetable.start_time;
+    this.updatedTimetable.endDate = timetable.end_date;
+    this.updatedTimetable.endTime = timetable.end_time;
+  }
+
+  getUpdatedTimetable(timetable) {
+    this.selectedTimetable = timetable;
+    this.updatedTimetable.groupId = timetable.group_id;
+    this.updatedTimetable.subjectId = timetable.subject_id;
+    this.updatedTimetable.startDate = timetable.start_date;
+    this.updatedTimetable.startTime = timetable.start_time;
+    this.updatedTimetable.endDate = timetable.end_date;
+    this.updatedTimetable.endTime = timetable.end_time;
   }
 
   deleteTimetable() {
@@ -60,8 +84,15 @@ export class TimetableComponent implements OnInit {
       .subscribe();
     this.getTimetables();
   }
-  updateTimeTable(timetable_id, groupId, subjectId, startDate, startTime, endDate, endTime) {
-    this.timetableservice.updateTimeTable(timetable_id, groupId, subjectId, startDate, startTime, endDate, endTime)
+  updateTimeTable(timetable_id) {
+    this.timetableservice.updateTimeTable(
+      timetable_id,
+      this.updatedTimetable.groupId,
+      this.updatedTimetable.subjectId,
+      this.updatedTimetable.startDate,
+      this.updatedTimetable.startTime,
+      this.updatedTimetable.endDate,
+      this.updatedTimetable.endTime)
       .subscribe();
     this.getTimetables();
   }

@@ -5,3 +5,7 @@ i {
 .table {
   text-align: center;
 }
+
+thead {
+  background-color: #CCC8C9;
+}
