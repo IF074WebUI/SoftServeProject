@@ -74,15 +74,17 @@ export class TimetableComponent implements OnInit {
   }
 
   deleteTimetable() {
-    this.deleteRecordByIdService.deleteRecordsById('timeTable', this.selectedTimetable.timetable_id).subscribe((data) => {
-    });
-    this.getTimetables();
+    this.deleteRecordByIdService.deleteRecordsById('timeTable', this.selectedTimetable.timetable_id)
+      .subscribe(() => {
+        this.getTimetables();
+      });
   }
 
   createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime) {
     this.timetableservice.createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)
-      .subscribe();
-    this.getTimetables();
+      .subscribe(() => {
+        this.getTimetables();
+      });
   }
   updateTimeTable(timetable_id) {
     this.timetableservice.updateTimeTable(
