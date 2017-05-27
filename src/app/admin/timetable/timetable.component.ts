@@ -13,17 +13,13 @@ export class TimetableComponent implements OnInit {
   timeTables = [];
   groups = [];
   subjects = [];
+  newTimetable = {};
   selectedTimetable;
   updatedTimetable = {
-    groupId : '',
-    subjectId : '',
-    startDate : '',
-    startTime : '',
-    endDate : '',
-    endTime : ''
+    group_id : '', subject_id  : '', start_date  : '', start_time  : '', end_date  : '', end_time  : ''
   };
 
-  constructor(private timetableservice: TimetableService,
+  constructor(private timetableService: TimetableService,
               private getRecordsByIdService: GetRecordsByIdService,
               private getAllRecordsService: GetAllRecordsService,
               private deleteRecordByIdService: DeleteRecordByIdService) { }
@@ -52,51 +48,30 @@ export class TimetableComponent implements OnInit {
       }
     });
   }
-
-  getSelectedTimetable(timetable) {
-    this.selectedTimetable = timetable;
-    this.updatedTimetable.groupId = timetable.group_id;
-    this.updatedTimetable.subjectId = timetable.subject_id;
-    this.updatedTimetable.startDate = timetable.start_date;
-    this.updatedTimetable.startTime = timetable.start_time;
-    this.updatedTimetable.endDate = timetable.end_date;
-    this.updatedTimetable.endTime = timetable.end_time;
-  }
-
   getUpdatedTimetable(timetable) {
-    this.selectedTimetable = timetable;
-    this.updatedTimetable.groupId = timetable.group_id;
-    this.updatedTimetable.subjectId = timetable.subject_id;
-    this.updatedTimetable.startDate = timetable.start_date;
-    this.updatedTimetable.startTime = timetable.start_time;
-    this.updatedTimetable.endDate = timetable.end_date;
-    this.updatedTimetable.endTime = timetable.end_time;
+    this.updatedTimetable = timetable;
   }
-
+  getDeletedTimetable(timetable) {
+    this.selectedTimetable = timetable;
+  }
+  createTimeTable(newTimetable) {
+    this.timetableService.createTimeTable(newTimetable)
+      .subscribe(() => {
+        this.newTimetable = {group_id : '', subject_id : '', start_date: '', start_time : '', end_date : '', end_time : ''};
+        this.getTimetables();
+      });
+  }
+  updateTimeTable(updatedTimetable) {
+    this.timetableService.updateTimeTable(updatedTimetable)
+      .subscribe(() => {
+        this.getTimetables();
+      });
+  }
   deleteTimetable() {
     this.deleteRecordByIdService.deleteRecordsById('timeTable', this.selectedTimetable.timetable_id)
       .subscribe(() => {
         this.getTimetables();
       });
-  }
-
-  createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime) {
-    this.timetableservice.createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)
-      .subscribe(() => {
-        this.getTimetables();
-      });
-  }
-  updateTimeTable(timetable_id) {
-    this.timetableservice.updateTimeTable(
-      timetable_id,
-      this.updatedTimetable.groupId,
-      this.updatedTimetable.subjectId,
-      this.updatedTimetable.startDate,
-      this.updatedTimetable.startTime,
-      this.updatedTimetable.endDate,
-      this.updatedTimetable.endTime)
-      .subscribe();
-    this.getTimetables();
   }
   getGroups() {
     this.getAllRecordsService.getAllRecords('group').subscribe((data) => {

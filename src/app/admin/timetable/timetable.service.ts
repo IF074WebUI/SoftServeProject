@@ -18,39 +18,28 @@ export class TimetableService {
   }
 
 
-  createTimeTable(groupId: number,
-                  subjectId: number,
-                  startDate: string,
-                  startTime: string,
-                  endDate: string,
-                  endTime: string): Observable<Response> {
+  createTimeTable(newTimetable): Observable<Response> {
     const bodyForSendingNewTimeTable = JSON.stringify({
-      group_id: groupId,
-      subject_id: subjectId,
-      start_date: startDate,
-      start_time: startTime,
-      end_date: endDate,
-      end_time: endTime
+      group_id: newTimetable.group_id,
+      subject_id: newTimetable.subject_id,
+      start_date: newTimetable.start_date,
+      start_time: newTimetable.start_time,
+      end_date: newTimetable.end_date,
+      end_time: newTimetable.end_time
     });
     return this.http.post('http://' + HOST + '/timeTable/insertData', bodyForSendingNewTimeTable)
       .map((resp: Response) => resp.json());
   }
-  updateTimeTable(timetable_id: number,
-                  groupId,
-                  subjectId,
-                  startDate,
-                  startTime,
-                  endDate,
-                  endTime): Observable<Response> {
+  updateTimeTable(updatedTimetable): Observable<Response> {
     const bodyForSendingNewTimeTable = JSON.stringify({
-      group_id: groupId,
-      subject_id: subjectId,
-      start_date: startDate,
-      start_time: startTime,
-      end_date: endDate,
-      end_time: endTime
+      group_id: updatedTimetable.group_id,
+      subject_id: updatedTimetable.subject_id,
+      start_date: updatedTimetable.start_date,
+      start_time: updatedTimetable.start_time,
+      end_date: updatedTimetable.end_date,
+      end_time: updatedTimetable.end_time
     });
-    return this.http.post('http://' + HOST + '/timeTable/update/' + timetable_id, bodyForSendingNewTimeTable)
+    return this.http.post('http://' + HOST + '/timeTable/update/' + updatedTimetable.timetable_id, bodyForSendingNewTimeTable)
       .map((resp: Response) => resp.json());
   }
 
