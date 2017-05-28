@@ -31,7 +31,8 @@ export class FacultiesComponent implements OnInit {
   id: number;
 
 
-  constructor(private http: FacultyService, private modalService: NgbModal, private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -179,7 +180,7 @@ export class FacultiesComponent implements OnInit {
 
   getGroupsByFaculties(faculty: Faculty) {
     this.id = faculty['faculty_id'];
-    this.router.navigate(['/group'], {queryParams: {'facultyId': this.id}, relativeTo: this.activatedRoute.parent});
+    this.router.navigate(['/admin/group'], {queryParams: {'facultyId': this.id}, relativeTo: this.route.parent});
     console.log(faculty);
   }
 }
