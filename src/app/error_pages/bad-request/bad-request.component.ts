@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   templateUrl: './bad-request.component.html',
@@ -6,8 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BadRequestComponent implements OnInit {
 
-  constructor() {}
+  constructor(private location: Location) {}
 
   ngOnInit() {}
-
+  goBack(): void {
+    this.location.back();
+  }
 }

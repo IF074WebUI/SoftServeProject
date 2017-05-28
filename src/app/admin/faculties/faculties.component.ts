@@ -180,7 +180,7 @@ export class FacultiesComponent implements OnInit {
 
   getGroupsByFaculties(faculty: Faculty) {
     this.id = faculty['faculty_id'];
-    this.router.navigate(['/admin/group'], {queryParams: {'facultyId': this.id}, relativeTo: this.route.parent});
+    this.router.navigate(['/admin/group'], {queryParams: {'facultyId': this.id}});
     console.log(faculty);
   }
 }
