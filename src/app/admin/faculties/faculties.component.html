@@ -8,7 +8,7 @@
 <dtester-common [entities]="faculties" [headers]="headers" (deleteEntity)="deleteFaculty($event, delContent)"
                 [page]="page" [itemsPerPage]="countPerPage"
                 (editEntity)="editFaculty($event, editContent)"
-                (clickEntity)="getGroupsBySpeciality($event)"></dtester-common>
+                (clickEntity)="getGroupsByFaculties($event)"></dtester-common>
 <!--Pagination component-->
 <div class="text-center">
   <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"

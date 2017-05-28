@@ -26,8 +26,11 @@ export class GroupComponent implements OnInit {
   selectedFacultyValue: number;
   selectedSpesailutyValue: number;
 
-  constructor(private getGroupsService: GroupService, private spesialityService: SpecialitiesService, private facultyService: FacultyService, private route: ActivatedRoute, private router: Router ) { }
+
+  constructor(private getGroupsService: GroupService, private spesialityService: SpecialitiesService, private facultyService: FacultyService, private route: ActivatedRoute, private router: Router ) {}
   ngOnInit() {
+
+
 
     this.uploadPage();
     this.getCountRecords();
@@ -42,15 +45,27 @@ export class GroupComponent implements OnInit {
       .subscribe((data) => {
         this.specialitiesOnPage = <Speciality[]>data;
       });
+
+    let facultyId = this.route.snapshot.queryParams['facultyId'];
+    console.log(facultyId);
+    if (facultyId) {
+      this.getGroupsService.getGroupsByFaculty(facultyId).subscribe(resp => {
+        if (resp['response'] === 'no records') {
+          this.groupsOnPage = [];
+        } else
+        {this.groupsOnPage = resp}})
+    }
+
     let specialityId = this.route.snapshot.queryParams['specialityId'];
     if (specialityId) {
       this.getGroupsService.getGroupsBySpeciality(specialityId).subscribe(resp => {
-      if (resp['response'] === 'no records') {
-        this.groupsOnPage = [];
-      } else
-        this.groupsOnPage = resp
-    });
+        if (resp['response'] === 'no records') {
+          this.groupsOnPage = [];
+        } else
+          this.groupsOnPage = resp
+      });
     }
+
   }
 
   createCroup(groupName: string) {
@@ -134,5 +149,7 @@ export class GroupComponent implements OnInit {
     this.router.navigate(['./students'], {queryParams: {'group_id': group.group_id}, relativeTo: this.route.parent});
     console.log(group);
   }
+
+
 }
 

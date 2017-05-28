@@ -8,7 +8,7 @@ import { DeleteStudentComponent } from './delete-student/delete-student.componen
 import { AddEditDeleteService } from './add-edit-delete.service';
 import { FormControl } from '@angular/forms';
 import { Student } from './student';
-import {  ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({

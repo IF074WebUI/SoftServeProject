@@ -3,7 +3,7 @@ import {Faculty} from './Faculty';
 import {FacultyService} from './faculty.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {NEWFACULTY, EDITRESULT, EDITFACULTY, DELETERESULT} from '../../constants';
 
 import 'rxjs/add/operator/switchMap';
@@ -28,14 +28,15 @@ export class FacultiesComponent implements OnInit {
   modalHeader: string;
   countPerPage: number = 5;
   add: boolean = false;
+  id: number;
 
 
-  constructor(private http: FacultyService, private modalService: NgbModal, private router: Router) {
+  constructor(private http: FacultyService, private modalService: NgbModal, private router: Router, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.facultyEditName = new FormControl('', Validators.required);
-    this.facultyEditDescription = new FormControl('', Validators.required);
+    this.facultyEditDescription = new FormControl('');
     this.facultyEditId = new FormControl('');
     this.facultyEditForm = new FormGroup({
       'id': this.facultyEditId,
@@ -44,7 +45,7 @@ export class FacultiesComponent implements OnInit {
     });
 
     this.facultyAddName = new FormControl('', Validators.required, this.ValidatorUniqName.bind(this));
-    this.facultyAddDescription = new FormControl('', Validators.required);
+    this.facultyAddDescription = new FormControl('');
     this.facultyAddForm = new FormGroup({
       'name': this.facultyAddName,
       'description': this.facultyAddDescription
@@ -171,8 +172,15 @@ export class FacultiesComponent implements OnInit {
       }
       else {
         this.faculties = <Faculty[]> resp;
+        this.count = this.faculties.length;
       }
     });
+  }
+
+  getGroupsByFaculties(faculty: Faculty) {
+    this.id = faculty['faculty_id'];
+    this.router.navigate(['/group'], {queryParams: {'facultyId': this.id}, relativeTo: this.activatedRoute.parent});
+    console.log(faculty);
   }
 }
 
