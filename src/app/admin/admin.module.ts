@@ -17,10 +17,10 @@ import {SubjectService} from './subject/subject.service';
 import {GroupService} from './group/group.service';
 import {SpecialitiesComponent} from './specialities/specialities.component';
 import {SpecialitiesService} from './services/specialities.service';
-import {PaginationComponent} from './pagination/pagination.component';
-import {CommonComponent} from './common/common.component';
+import {PaginationComponent} from './universal/pagination/pagination.component';
+import {EntitiesTableComponent} from './universal/entities-table/entities-table.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {SearchComponent} from './search/search.component';
+import {SearchComponent} from './universal/search/search.component';
 import {GetAllRecordsService} from './services/get-all-records.service';
 import {DeleteRecordByIdService} from './services/delete-record-by-id.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -30,7 +30,9 @@ import {StudentsService} from './students/students.service';
 import {AddStudentComponent} from './students/add-student/add-student.component';
 import {EditStudentComponent} from './students/edit-student/edit-student.component';
 import {DeleteStudentComponent} from './students/delete-student/delete-student.component';
-
+import {PopupComponent} from './popup/popup.component';
+import { ResultsComponent } from './results/results.component';
+import {ResultsService} from "./services/results.service";
 
 @NgModule({
   declarations: [
@@ -44,12 +46,14 @@ import {DeleteStudentComponent} from './students/delete-student/delete-student.c
     TimetableComponent,
     SpecialitiesComponent,
     PaginationComponent,
-    CommonComponent,
+    EntitiesTableComponent,
     SearchComponent,
     AddStudentComponent,
     EditStudentComponent,
     DeleteStudentComponent,
-    StudentsComponent
+    StudentsComponent,
+    PopupComponent,
+    ResultsComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -62,6 +66,7 @@ import {DeleteStudentComponent} from './students/delete-student/delete-student.c
   ],
   providers: [
     StatisticsService,
+    ResultsService,
     SpecialitiesService,
     TimetableService,
     GetRecordsByIdService,

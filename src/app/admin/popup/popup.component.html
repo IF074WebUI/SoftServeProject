@@ -1,0 +1,54 @@
+<!-- Modal popup-->
+<div class="modal fade" #modal id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><span *ngIf="action === 'add'; else edit">{{MODAL_ADD_TITLE}}</span></h5>
+        <ng-template #edit><span *ngIf="action === 'edit'; else confirmHeader">{{MODAL_EDIT_TITLE}}</span></ng-template>
+        <ng-template #confirmHeader><span>{{MODAL_CONFIRM_HEADER}}</span></ng-template>
+        <button type="button" class="close" (click)="cancel()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!--Form for add/delete speciality-->
+        <form *ngIf="action !== 'confirm'; else confirmContent" [formGroup]="specialitiesForm" (ngSubmit)="saveOrEdit()">
+          <div class="form-group">
+            <label for="name">{{MODAL_NAME}}</label>
+            <input formControlName="name" name="speciality_name" type="text"
+                   class="form-control"
+                   id="name">
+            <span
+              *ngIf="specialitiesForm.controls['name'].hasError('required') && specialitiesForm.controls['name'].touched"
+              class="validate_message">{{MODAL_VALIDATION_NAME_REQUIRED}}</span>
+            <span
+              *ngIf="specialitiesForm.controls['name'].hasError('exists') && specialitiesForm.controls['name'].dirty"
+              class="validate_message">{{MODAL_VALIDATION_NAME_EXISTS}}</span>
+          </div>
+          <div class="form-group">
+            <label for="code">{{MODAL_CODE}}</label>
+            <input formControlName="code" name="speciality_code" type="text" class="form-control" id="code">
+            <span
+              *ngIf="specialitiesForm.controls['code'].hasError('required') && specialitiesForm.controls['code'].touched"
+              class="validate_message">{{MODAL_VALIDATION_CODE_REQUIRED}}</span>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary" [disabled]="!specialitiesForm.valid">{{BUTTON_SAVE}}</button>
+            <button type="button" class="btn btn-secondary" (click)="cancel()">{{BUTTON_CANCEL}}</button>
+          </div>
+        </form>
+        <ng-template #confirmContent>
+          <div>
+            <h5>{{MODAL_CONFIRM_BODY}}{{speciality['speciality_name']}}?</h5>
+            <div class="text-center">
+              <button type="submit" class="btn btn-danger" (click)="delSpeciality()">{{BUTTON_CONFIRM}}</button>
+              <button type="button" class="btn btn-secondary" (click)="cancel()">{{BUTTON_CANCEL}}</button>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+

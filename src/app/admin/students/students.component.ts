@@ -8,8 +8,7 @@ import { DeleteStudentComponent } from './delete-student/delete-student.componen
 import { AddEditDeleteService } from './add-edit-delete.service';
 import { FormControl } from '@angular/forms';
 import { Student } from './student';
-import {  ActivatedRoute } from '@angular/router';
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'dtester-students',
@@ -22,17 +21,21 @@ export class StudentsComponent implements OnInit {
   studentUser_id: FormControl;
   studentForEdit: Student;
   studentForDel: Student;
-  students = [];
+  students: Student[];
   page = 1;
   count: number;
   countPerPage = 10;
   editId = 0;
   selectedStudent: Student;
+  headers: string[] = [];
+  ignoreProperties: string[] = [];
   onSelect( student: Student ) { this.selectedStudent = student; }
 
   constructor(private dialog: MdDialog, private studentsService: StudentsService, private router: Router, private http: AddEditDeleteService, private route: ActivatedRoute) {}
 
   ngOnInit() {
+    this.headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові'];
+    this.ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
     this.studentsService.getAllStudents().subscribe((data) => {
       this.students = data;
     });

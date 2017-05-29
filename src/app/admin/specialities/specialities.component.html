@@ -12,73 +12,16 @@
 </div>
 <!--Search component-->
 <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
-<!-- Modal popup-->
-<div class="modal fade" #modal id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{MODAL_TITLE}}</h5>
-        <button type="button" class="close" (click)="cancel()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!--Form for add/delete speciality-->
-        <form [formGroup]="specialitiesForm" (ngSubmit)="save()">
-          <div class="form-group">
-            <label for="name">{{MODAL_NAME}}</label>
-            <input formControlName="name" name="speciality_name" type="text"
-                   class="form-control"
-                   id="name">
-            <span
-              *ngIf="specialitiesForm.controls['name'].hasError('required') && specialitiesForm.controls['name'].touched"
-              class="validate_message">{{MODAL_VALIDATION_NAME_REQUIRED}}</span>
-            <span
-              *ngIf="specialitiesForm.controls['name'].hasError('exists') && specialitiesForm.controls['name'].dirty"
-              class="validate_message">{{MODAL_VALIDATION_NAME_EXISTS}}</span>
-          </div>
-          <div class="form-group">
-            <label for="code">{{MODAL_CODE}}</label>
-            <input formControlName="code" name="speciality_code" type="text" class="form-control" id="code">
-            <span
-              *ngIf="specialitiesForm.controls['code'].hasError('required') && specialitiesForm.controls['code'].touched"
-              class="validate_message">{{MODAL_VALIDATION_CODE_REQUIRED}}</span>
-          </div>
-          <div class="text-center">
-            <button type="submit" class="btn btn-primary" [disabled]="!specialitiesForm.valid">{{BUTTON_SAVE}}</button>
-            <button type="button" class="btn btn-secondary" (click)="cancel()">{{BUTTON_CANCEL}}</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-<!--Confirm dialog-->
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="text-center">Увага</h5>
-        <button type="button" class="close" (click)="cancelConfirm()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <h5>{{MODAL_CONFIRM_HEADER}}{{delSpeciality['speciality_name']}}?</h5>
-        <div class="text-center">
-          <button type="submit" class="btn btn-primary" (click)="deleteSpeciality()">{{BUTTON_CONFIRM}}</button>
-          <button type="button" class="btn btn-secondary" (click)="cancelConfirm()">{{BUTTON_CANCEL}}</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<dtester-popup (saveSpeciality)="saveSpeciality($event)"
+               (editSpeciality)="editSpeciality($event)"
+               (deleteSpeciality)="deleteSpeciality($event)"
+></dtester-popup>
 <!--Common component to display entnties-->
-<dtester-common [entities]="specialities" [headers]="headers" (deleteEntity)="showDeleteConfirmDialog($event)"
+<dtester-entities-table [entities]="specialities" [headers]="headers" [ignoreProperties]="ignoreProperties"
+                (deleteEntity)="del($event)"
                 [page]="page" [itemsPerPage]="countPerPage"
-                (editEntity)="edit($event)" (clickEntity)="getGroupsBySpeciality($event)"></dtester-common>
+                (editEntity)="edit($event)" (clickEntity)="getGroupsBySpeciality($event)">
+</dtester-entities-table>
 <!--Pagination component-->
 <div class="text-center">
   <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"

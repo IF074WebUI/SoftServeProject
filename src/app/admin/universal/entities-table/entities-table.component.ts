@@ -1,18 +1,21 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'dtester-common',
-  templateUrl: './common.component.html',
-  styleUrls: ['./common.component.css']
+  selector: 'dtester-entities-table',
+  templateUrl: './entities-table.component.html',
+  styleUrls: ['./entities-table.component.css']
 })
-export class CommonComponent<T> implements OnInit {
+export class EntitiesTableComponent<T> implements OnInit {
 
   NO_ENTITIES: string = 'Сутності відсутні';
 
   @Input() itemsPerPage: number = 5;
   @Input() page: number = 1;
   @Input() entities: T[] = [];
+  @Input() ignoreProperties: string[];
   @Input() headers: string[] = [];
+  @Input() canEdit: boolean = true;
+  @Input() canDelete: boolean = true;
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
   @Output() editEntity: EventEmitter<T> = new EventEmitter();
   @Output() clickEntity: EventEmitter<T> = new EventEmitter();
@@ -23,7 +26,7 @@ export class CommonComponent<T> implements OnInit {
   }
 
   getProperties(entity: T): string[] {
-    return Object.getOwnPropertyNames(entity).slice(1);
+    return Object.getOwnPropertyNames(entity);
   }
 
   editEntityCallback(entity: T) {

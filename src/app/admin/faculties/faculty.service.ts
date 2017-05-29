@@ -19,8 +19,8 @@ export class FacultyService {
     return this.http.get('http://' + HOST + '/Faculty/countRecords').map((resp: Response) => resp.json());
   }
 
-  getPaginatedPage(n: number) {
-    return this.http.get('http://' + HOST + '/Faculty/getRecordsRange/10/' + (n - 1) * 10).map((resp: Response) => resp.json());
+  getPaginatedPage(perpage: number, position: number) {
+    return this.http.get('http://' + HOST + '/Faculty/getRecordsRange/' +  perpage + '/'+ position).map((resp: Response) => resp.json());
   }
 
   deleteItem(id: number) {
