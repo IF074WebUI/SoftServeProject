@@ -42,7 +42,6 @@ export class StudentsComponent implements OnInit {
   page = 1;
   count: number;
   countPerPage = 10;
-  selectedStudent: Student;
 
   studentName: FormControl;
   studentSurname: FormControl;
@@ -50,15 +49,12 @@ export class StudentsComponent implements OnInit {
   studentPassword: FormControl;
   studentPasswordConfirm: FormControl;
   studentForm: FormGroup;
-  // studentEmail: string;
-  // studentGradebookId: string;
-  // studentUsername: string;
-  // studentPhoto: any;
-  // studentGroupId: number;
-  // studentPlainPassword: string;
-
-
-  onSelect( student: Student ) { this.selectedStudent = student; }
+  studentEmail: string;
+  studentGradebookId: string;
+  studentUsername: string;
+  studentPhoto: any;
+  studentGroupId: number;
+  studentPlainPassword: string;
 
   constructor(private studentsService: StudentsService, private addEditDeleteService: AddEditDeleteService,
               private router: Router, private route: ActivatedRoute) {}
@@ -99,6 +95,7 @@ export class StudentsComponent implements OnInit {
     if (this.count <= (this.page - 1) * this.countPerPage) {
       --this.page;
     }
+    this.getCount();
     this.studentsService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
       .subscribe(resp => this.students = resp, err => this.router.navigate(['/bad_request']));
   }
@@ -116,6 +113,11 @@ export class StudentsComponent implements OnInit {
   changeCountPerPage(itemsPerPage: number) {
     this.countPerPage = itemsPerPage;
     this.getStudents();
+  }
+
+  selectedStudent(student: Student) {
+    this.studentForDel = student;
+    this.studentForEdit = student;
   }
 
   // addDialog() {
@@ -137,6 +139,25 @@ export class StudentsComponent implements OnInit {
   // }
   deleteStudent() {
      this.addEditDeleteService.delete(this.studentForDel['user_id']).subscribe(resp => {
+       this.getStudents();
      });
+  }
+
+  addStudent() {
+    this.addEditDeleteService.insert(
+      this.studentUsername = 'test' + Math.random(),
+      this.studentPassword.value,
+      this.studentPasswordConfirm.value,
+      this.studentEmail = 'test' + Math.random() + '@mail.if.ua',
+      this.studentGradebookId = 'If-12' + Math.random().toFixed(4),
+      this.studentSurname.value,
+      this.studentName.value,
+      this.studentFname.value,
+      this.studentGroupId = 1,
+      this.studentPlainPassword = '1qaz2wsx',
+      this.studentPhoto = ''
+    ).subscribe(resp => {
+      this.getStudents();
+    });
   }
 }

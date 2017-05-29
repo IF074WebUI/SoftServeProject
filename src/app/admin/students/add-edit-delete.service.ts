@@ -73,6 +73,6 @@ export class AddEditDeleteService {
   }
 
   delete(user_id: number) {
-    return this.http.delete('http://' + HOST + '/Student/del' + user_id).map(resp => resp.json());
+    return this.http.delete('http://' + HOST + '/Student/del/' + user_id).map(resp => resp.json());
   }
 }
