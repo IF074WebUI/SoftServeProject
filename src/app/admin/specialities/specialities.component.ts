@@ -110,17 +110,22 @@ export class SpecialitiesComponent implements OnInit {
   }
 
   startSearch(criteria: string) {         /* callback method for output in search component */
+  if (criteria === '') {
+    this.getSpecialities();
+    this.getCount();
+  } else {
     this.specialitiesService.searchByName(criteria).subscribe(resp => {
       if (resp['response'] === this.NO_RECORDS) {    /* check condition: if no records presented for search criteria */
         this.specialities = [];
         this.count = this.specialities.length;
       } else {
-        this.page = 1;
-        this.count = resp.length;                 /* if records are present than set specialities count to calculate pagination pages */
-        this.specialities = resp.slice(0, this.countPerPage);  /* present only paginated specialities */
+        this.count = 0;
+        this.page = 2;
+        this.specialities = resp;         /* present all specialities */
       }
     },
       err => this.router.navigate(['/bad_request']));
+  }
   }
 }
 
