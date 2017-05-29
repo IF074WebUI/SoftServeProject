@@ -12,7 +12,7 @@ import { PopupComponent } from '../popup/popup.component';
 
 export class SpecialitiesComponent implements OnInit {
 
-  SPECIALITIES_HEADERS: string[] = ['пор.номер', 'код спеціальності', 'назва спеціальності', 'дії'];
+  SPECIALITIES_HEADERS: string[] = ['№', 'код спеціальності', 'назва спеціальності'];
   IGNORE_PROPERTIES: string[] = ['speciality_id'];
   NO_RECORDS: string = 'no records';
   SPECIALITIES_HEADER: string = 'Спеціальності';
@@ -111,7 +111,7 @@ export class SpecialitiesComponent implements OnInit {
 
   startSearch(criteria: string) {         /* callback method for output in search component */
     this.specialitiesService.searchByName(criteria).subscribe(resp => {
-      if (resp['response'].toString() === this.NO_RECORDS) {    /* check condition: if no records presented for search criteria */
+      if (resp['response'] === this.NO_RECORDS) {    /* check condition: if no records presented for search criteria */
         this.specialities = [];
         this.count = this.specialities.length;
       } else {

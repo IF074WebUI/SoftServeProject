@@ -14,6 +14,8 @@ export class EntitiesTableComponent<T> implements OnInit {
   @Input() entities: T[] = [];
   @Input() ignoreProperties: string[];
   @Input() headers: string[] = [];
+  @Input() canEdit: boolean = true;
+  @Input() canDelete: boolean = true;
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
   @Output() editEntity: EventEmitter<T> = new EventEmitter();
   @Output() clickEntity: EventEmitter<T> = new EventEmitter();
