@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
-import {FacultyService} from '../faculty.service';
-import {Faculty} from '../Faculty';
+import {FacultyService} from '../faculties/faculty.service';
+import {Faculty} from '../faculties/Faculty';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 
@@ -29,9 +29,7 @@ export class AddeditComponent implements OnInit {
     this.entityId = +this.route.snapshot.queryParams['id'];
     console.log(this.entityId);
     this.facultyService.getFacultyById(this.entityId).subscribe(resp => {
-      this.entity.id = resp['faculty_id'];
-      this.entity.name = resp['faculty_name'];
-      this.entity.description = resp['faculty_description'];
+    console.log(resp)
     });
 
 

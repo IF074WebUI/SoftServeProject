@@ -8,6 +8,7 @@ import { TimetableComponent } from './timetable/timetable.component';
 import { SpecialitiesComponent } from './specialities/specialities.component';
 import { StudentsComponent } from './students/students.component';
 import { ResultsComponent } from './results/results.component';
+import {AddeditComponent} from "./addedit/addedit.component";
 
 export const adminRoutes: Route[] = [
   {
@@ -20,6 +21,8 @@ export const adminRoutes: Route[] = [
       {path: 'timetable', component: TimetableComponent},
       {path: 'specialities', component: SpecialitiesComponent},
       {path: 'students', component: StudentsComponent},
-      {path: 'results', component: ResultsComponent}
+      {path: 'results', component: ResultsComponent},
+      {path: 'addedit', component: AddeditComponent},
+
     ]
   }];
