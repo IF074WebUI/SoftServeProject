@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./items-per-page.component.css']
 })
 export class ItemsPerPageComponent implements OnInit {
+  NUMBER_OF_PAGE_RECORDS = [5, 10, 20];
 
   constructor() { }
 
