@@ -75,7 +75,12 @@
           </div>
         </div>
         <div class="modal-footer">
-          <span class="error" *ngIf="!newTimetableForm.controls['time_limits'].valid && newTimetableForm.get(['time_limits', 'start_date']).touched && newTimetableForm.get(['time_limits', 'end_date']).touched && newTimetableForm.get(['time_limits', 'end_time']).touched && newTimetableForm.get(['time_limits', 'start_time']).touched">
+          <span class="error"
+                *ngIf="!newTimetableForm.controls['time_limits'].valid
+                && newTimetableForm.get(['time_limits', 'start_date']).touched
+                && newTimetableForm.get(['time_limits', 'end_date']).touched
+                && newTimetableForm.get(['time_limits', 'end_time']).touched
+                && newTimetableForm.get(['time_limits', 'start_time']).touched;">
            Не коректні часові межі
           </span>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
@@ -133,6 +138,10 @@
 
         </div>
         <div class="modal-footer">
+          <span class="error"
+                *ngIf="!updateTimetableForm.controls['time_limits'].valid;">
+           Не коректні часові межі
+          </span>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
           <button  type="submit" class="btn btn-success" [disabled]="!updateTimetableForm.valid">Редагувати</button>
         </div>

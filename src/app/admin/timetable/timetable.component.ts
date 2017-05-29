@@ -4,7 +4,7 @@ import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { GetAllRecordsService } from '../services/get-all-records.service';
 import { DeleteRecordByIdService } from '../services/delete-record-by-id.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Timetable } from  './timetable';
+import { Timetable } from './timetable';
 import { Group } from '../group/group';
 import { timeValidator } from './time-validator';
 
@@ -21,7 +21,6 @@ export class TimetableComponent implements OnInit {
   updateTimetableForm: FormGroup;
   deletedTimetable: Timetable;
   updatedTimetable: Timetable;
-
   constructor(private timetableService: TimetableService,
               private getRecordsByIdService: GetRecordsByIdService,
               private getAllRecordsService: GetAllRecordsService,
@@ -72,7 +71,6 @@ export class TimetableComponent implements OnInit {
     });
   }
   createTimeTable() {
-    console.log(this.newTimetableForm);
     this.timetableService.createTimeTable(this.newTimetableForm.value)
       .subscribe(() => {
         this.getTimetables();

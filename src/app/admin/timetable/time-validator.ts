@@ -1,12 +1,12 @@
 import { AbstractControl } from '@angular/forms';
 
 export const timeValidator = (control: AbstractControl): {[key: string]: boolean} => {
-  const startDate = control.get('start_date').value.split('-');
-  const startTime = control.get('start_time').value.split(':');
-  const endDate = control.get('end_date').value.split('-');
-  const endTime = control.get('end_time').value.split(':');
-  const startTimeIntervalArr: number[] = arrFromSrtToNum(startDate.concat(startTime));
-  const endTimeIntervalArr: number[] = arrFromSrtToNum(endDate.concat(endTime));
+  const startDateArr: string[] = control.get('start_date').value.split('-');
+  const startTimeArr: string[] = control.get('start_time').value.split(':');
+  const endDateArr: string[] = control.get('end_date').value.split('-');
+  const endTimeArr: string[] = control.get('end_time').value.split(':');
+  const startTimeIntervalArr: number[] = arrFromSrtToNum(startDateArr.concat(startTimeArr));
+  const endTimeIntervalArr: number[] = arrFromSrtToNum(endDateArr.concat(endTimeArr));
   const startTimeInterval = +new Date(
     startTimeIntervalArr[0],
     startTimeIntervalArr[1],
