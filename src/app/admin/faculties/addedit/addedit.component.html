@@ -1,8 +1,39 @@
-<h1>Add new entity</h1>
-  <form method="post" [formGroup]="Add">
-    <input formControlName='name' type="text" name="name" required class="form-control"/>
-    <textarea formControlName='description' type="text" name='description' required
-              class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
+<h1>Модальне вікно</h1>
+<form  [formGroup]="EntityForm">
+  <!--  Додавання -->
+  <div class="form-group" *ngIf="add">
+    <label for="addname"> Add{{MODAL_NAME}}</label>
+    <input formControlName="addname" name="entity_add_name" type="text"
+           class="form-control"
+           id="addname" placeholder="Введіть назву факультету">
+    <span
+      *ngIf="EntityForm.controls['addname'].hasError('required') && EntityForm.controls['addname'].touched"
+      class="validate_message">enter name{{MODAL_VALIDATION_NAME_REQUIRED}}</span>
+    <span
+      *ngIf="EntityForm.controls['addname'].hasError('exists') && EntityForm.controls['addname'].dirty"
+      class="validate_message">this name exists{{MODAL_VALIDATION_NAME_EXISTS}}</span>
+  </div>
+  <!--  Редагування -->
+  <div   *ngIf="edit" class="form-group">
+    <label for="editname">Edit{{MODAL_CODE}}</label>
+    <input formControlName="editname" name="entity_edit_name" type="text" class="form-control" id="editname">
+    <span
+      *ngIf="EntityForm.controls['editname'].hasError('required') && EntityForm.controls['editname'].touched"
+      class="validate_message"> enter name{{MODAL_VALIDATION_CODE_REQUIRED}}</span>
+  </div>
+  <!--  Опис -->
+  <textarea formControlName='description' type="text" name='entity_description' required
+            class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
        </textarea>
-  </form>
+</form>
+
+  <div>
+    <div class="text-center">
+      <button type="submit" class="btn btn-danger"[disabled]="!EntityForm.valid" (click)="confirmAddEdit()">Confirm{{BUTTON_CONFIRM}}</button>
+      <button (click)="goBack()">Back</button>
+    </div>
+  </div>
+
+
+
 

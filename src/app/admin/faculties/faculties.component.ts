@@ -154,6 +154,12 @@ export class FacultiesComponent implements OnInit {
     });
   }
 
+  addFacultyUniversal() {
+this.router.navigate(['/admin/addedit'], {queryParams: {'id': NaN}});
+  }
+  editFacultyUniversal(faculty: Faculty) {
+    this.router.navigate(['/admin/addedit'], {queryParams: {'id': faculty['faculty_id']}});
+  }
 
   ValidatorUniqName(control: AbstractControl) {
     return this.http.searchByName(control.value).map((resp: Faculty[]) => {

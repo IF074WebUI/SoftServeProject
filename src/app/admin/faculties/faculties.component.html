@@ -7,7 +7,7 @@
 <!--Common component to display entities-->
 <dtester-entities-table [entities]="faculties" [headers]="headers"  [ignoreProperties]="ignoreProperties" (deleteEntity)="deleteFaculty($event, delContent)"
                 [page]="page" [itemsPerPage]="countPerPage"
-                (editEntity)="editFaculty($event, editContent)"
+                (editEntity)="editFacultyUniversal($event)"
                 (clickEntity)="getGroupsByFaculties($event)"></dtester-entities-table>
 <!--Pagination component-->
 <div class="text-center">
@@ -39,7 +39,7 @@
 <ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
 -->
 
-<button class="btn btn-lg btn-outline-primary" (click)="addFaculty(addContent)"> Створити новий факультет</button>
+<button class="btn btn-lg btn-outline-primary" (click)="addFacultyUniversal()"> Створити новий факультет</button>
 
 <button routerLink="/sidekicks">Go to sidekicks</button>
 <!-- Modal popup for adding -->
