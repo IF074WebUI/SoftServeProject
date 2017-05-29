@@ -6,6 +6,7 @@ import { DeleteRecordByIdService } from '../services/delete-record-by-id.service
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Timetable } from  './timetable';
 import { Group } from '../group/group';
+import { timeValidator } from './time-validator';
 
 @Component({
   selector: 'app-timetable',
@@ -35,7 +36,7 @@ export class TimetableComponent implements OnInit {
         'start_time': new FormControl('', Validators.required),
         'end_date': new FormControl('', Validators.required),
         'end_time': new FormControl('', Validators.required)
-      })
+      }, timeValidator)
     });
     this.updateTimetableForm = new FormGroup({
       'group_id': new FormControl('', Validators.required),
@@ -45,7 +46,7 @@ export class TimetableComponent implements OnInit {
         'start_time': new FormControl('', Validators.required),
         'end_date': new FormControl('', Validators.required),
         'end_time': new FormControl('', Validators.required)
-      })
+      }, timeValidator )
     });
     this.getTimetables();
     this.getGroups();
@@ -78,14 +79,18 @@ export class TimetableComponent implements OnInit {
       });
   }
   getUpdatedTimetable(timeTable) {
-    console.log(timeTable);
+    console.log(this.updateTimetableForm);
     this.updatedTimetable = timeTable;
-    this.updateTimetableForm.controls['group_id'].setValue(timeTable.group_id);
-    this.updateTimetableForm.controls['subject_id'].setValue(timeTable.subject_id);
-    this.updateTimetableForm.controls['time_limits'].controls['start_date'].setValue(timeTable.start_date);
-    this.updateTimetableForm.controls['time_limits']['start_time'].setValue(timeTable.start_time);
-    this.updateTimetableForm.controls['time_limits']['end_date'].setValue(timeTable.end_date);
-    this.updateTimetableForm.controls['time_limits']['end_time'].setValue(timeTable.end_time);
+    this.updateTimetableForm.setValue({
+      'group_id': timeTable.group_id,
+      'subject_id': timeTable.subject_id,
+      'time_limits': {
+        'start_date': timeTable.start_date,
+        'start_time': timeTable.start_time,
+        'end_date': timeTable.end_date,
+        'end_time': timeTable.end_time
+      }
+    });
   }
   updateTimeTable() {
     console.log(this.newTimetableForm);
@@ -114,5 +119,4 @@ export class TimetableComponent implements OnInit {
       this.subjects = data;
     });
   }
-  /*timeValidator(control: FormControl): {[s: string]: boolean} {}*/
 }
