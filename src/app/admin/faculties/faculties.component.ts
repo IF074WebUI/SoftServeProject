@@ -3,7 +3,8 @@ import {Faculty} from './Faculty';
 import {FacultyService} from './faculty.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NEWFACULTY, EDITRESULT, EDITFACULTY, DELETERESULT} from '../../constants';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -15,11 +16,9 @@ import 'rxjs/add/operator/switchMap';
 })
 export class FacultiesComponent implements OnInit {
   faculties: Faculty[] = [];
+  IGNORE_PROPERTIES: string[] = ['faculty_id'];
   page: number = 1; // current number of page
   count: number; // count all faculties
-  ItemforEdit: Faculty;
-  ItemforDelete: Faculty;
-  // faculty: Faculty = new Faculty();
   facultyEditForm: FormGroup;
   facultyEditName: FormControl;
   facultyEditDescription: FormControl;
@@ -28,14 +27,20 @@ export class FacultiesComponent implements OnInit {
   facultyAddName: FormControl;
   facultyAddDescription: FormControl;
   modalHeader: string;
+  countPerPage: number = 5;
+  add: boolean = false;
+  id: number;
+  ignoreProperties: string[];
 
 
-  constructor(private http: FacultyService, private modalService: NgbModal, private router: Router) {
+  constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit() {
+    this.ignoreProperties = this.IGNORE_PROPERTIES;
     this.facultyEditName = new FormControl('', Validators.required);
-    this.facultyEditDescription = new FormControl('', Validators.required);
+    this.facultyEditDescription = new FormControl('');
     this.facultyEditId = new FormControl('');
     this.facultyEditForm = new FormGroup({
       'id': this.facultyEditId,
@@ -44,21 +49,21 @@ export class FacultiesComponent implements OnInit {
     });
 
     this.facultyAddName = new FormControl('', Validators.required, this.ValidatorUniqName.bind(this));
-    this.facultyAddDescription = new FormControl('', Validators.required);
+    this.facultyAddDescription = new FormControl('');
     this.facultyAddForm = new FormGroup({
       'name': this.facultyAddName,
       'description': this.facultyAddDescription
     });
 
-    this.http.getPaginatedPage(1).subscribe((resp) => {
-        this.faculties = <Faculty[]> resp;
+
+    this.http.countAllRecords().subscribe((resp) => {
+        this.count = resp['numberOfRecords'];
       },
       error => this.router.navigate(['/bad_request'])
     );
 
-
-    this.http.countAllRecords().subscribe((resp) => {
-        this.count = resp['numberOfRecords'];
+    this.http.getPaginatedPage(this.countPerPage, 0).subscribe((resp) => {
+        this.faculties = <Faculty[]> resp;
       },
       error => this.router.navigate(['/bad_request'])
     );
@@ -72,50 +77,69 @@ export class FacultiesComponent implements OnInit {
     );
   }
 
-  uploadAllPages(num: number) {
-    this.http.getPaginatedPage(num).subscribe((resp) => {
-        this.faculties = <Faculty[]> resp;
-      },
-      error => this.router.navigate(['/bad_request'])
-    );
-  }
-
   changePage(d: number) {
     this.page = d;
-    this.http.getPaginatedPage(d).subscribe((resp) => {
+    this.http.getPaginatedPage(this.countPerPage, (this.page - 1) * this.countPerPage).subscribe((resp) => {
         this.faculties = <Faculty[]> resp;
       },
       error => this.router.navigate(['/bad_request'])
     );
   }
 
-  selectedItem(faculty: Faculty) {
-    this.ItemforEdit = faculty;
-    this.ItemforDelete = faculty;
+  uploadAllPages(page: number) {
+    this.getCount();
+    this.http.getPaginatedPage(this.countPerPage, (page - 1) * this.countPerPage).subscribe((resp) => {
+        this.faculties = <Faculty[]> resp;
+      },
+      error => this.router.navigate(['/bad_request'])
+    );
   }
 
-  confirmDelete() {
-    this.http.deleteItem(this.ItemforDelete['faculty_id']).subscribe((resp) => {
+  editFaculty(faculty: Faculty, content) {
+    this.modalHeader = EDITFACULTY;
+    this.facultyEditId.setValue(faculty['faculty_id']);
+    this.facultyEditName.setValue(faculty['faculty_name']);
+    this.facultyEditDescription.setValue(faculty['faculty_description']);
+    this.modalService.open(content).result.then((result) => {
+      this.confirmEdit();
+      alert(EDITRESULT);
+    }, (reason) => {
+    });
+  }
+
+  confirmEdit() {
+    this.http.editItem(this.facultyEditId.value, this.facultyEditName.value, this.facultyEditDescription.value).subscribe((resp) => {
+        this.uploadAllPages(this.page);
+      },
+      error => this.router.navigate(['/bad_request'])
+    );
+  }
+
+  deleteFaculty(faculty: Faculty, content) {
+    this.modalService.open(content).result.then((result) => {
+      this.confirmDelete(faculty);
+      alert(DELETERESULT);
+    }, (reason) => {
+    });
+  }
+
+  confirmDelete(faculty: Faculty) {
+    this.http.deleteItem(faculty['faculty_id']).subscribe((resp) => {
         this.getCount();
-        (this.count % 10 === 1) ? this.page = this.page - 1 : this.page;
-        this.uploadAllPages(this.page)
+        (this.count % this.countPerPage === 1) ? this.page = this.page - 1 : this.page; // number of items per page is 10
+        this.uploadAllPages(this.page);
       },
       error => this.router.navigate(['/bad_request'])
     );
   };
 
-  confirmEdit() {
-    this.http.editItem(this.facultyEditId.value, this.facultyEditName.value, this.facultyEditDescription.value).subscribe((resp) => {
-          this.uploadAllPages(this.page); },
-        error => this.router.navigate(['/bad_request'])
-      );
-  }
 
   confirmAdd() {
     this.http.addItem(this.facultyAddName.value, this.facultyAddDescription.value).subscribe(response => {
         this.getCount();
         (this.count % 10 === 0) ? this.page = this.page + 1 : this.page;
-        this.uploadAllPages(this.page); },
+        this.uploadAllPages(this.page);
+      },
       error => this.router.navigate(['/bad_request'])
     );
   }
@@ -123,32 +147,13 @@ export class FacultiesComponent implements OnInit {
   addFaculty(content) {
     this.facultyAddName.reset();
     this.facultyAddDescription.reset();
-    this.modalHeader = 'Створення нового факультету';
+    this.modalHeader = NEWFACULTY;
     this.modalService.open(content).result.then((result) => {
       this.confirmAdd();
     }, (reason) => {
     });
   }
 
-  deleteFaculty(content) {
-    this.modalService.open(content).result.then((result) => {
-      this.confirmDelete();
-      alert('Факультет було успішно видалено');
-    }, (reason) => {
-    });
-  }
-
-  editFaculty(content) {
-    this.modalHeader = 'Редагування факультету';
-    this.facultyEditId.setValue(this.ItemforEdit['faculty_id']);
-    this.facultyEditName.setValue(this.ItemforEdit['faculty_name']);
-    this.facultyEditDescription.setValue(this.ItemforEdit['faculty_description']);
-    this.modalService.open(content).result.then((result) => {
-      this.confirmEdit();
-      alert('Факультет було успішно відредаговано');
-    }, (reason) => {
-    });
-  }
 
   ValidatorUniqName(control: AbstractControl) {
     return this.http.searchByName(control.value).map((resp: Faculty[]) => {
@@ -162,5 +167,22 @@ export class FacultiesComponent implements OnInit {
     );
   }
 
+  search(text: string) {
+    this.http.searchFaculty(text).subscribe(resp => {
+      if (resp['response'] === 'no records') {
+        this.faculties = [];
+      }
+      else {
+        this.faculties = <Faculty[]> resp;
+        this.count = this.faculties.length;
+      }
+    });
+  }
+
+  getGroupsByFaculties(faculty: Faculty) {
+    this.id = faculty['faculty_id'];
+    this.router.navigate(['/admin/group'], {queryParams: {'facultyId': this.id}});
+  }
 }
+
 

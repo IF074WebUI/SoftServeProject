@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   templateUrl: './access-denied.component.html',
@@ -6,9 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccessDeniedComponent implements OnInit {
 
-  constructor() { }
+  constructor(private location: Location) { }
 
   ngOnInit() {
   }
-
+  goBack(): void {
+    this.location.back();
+  }
 }

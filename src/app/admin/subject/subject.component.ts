@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {SubjectService} from './subject.service';
+import { SubjectService } from './subject.service';
+
 
 export class Subject {
   subject_id: number;
@@ -14,47 +15,39 @@ export class Subject {
   providers: [SubjectService]
 })
 export class SubjectComponent implements OnInit {
+  subject: any;
   subjects: Subject[];
   selectedSubject: Subject;
-  updatedSubject: Subject;
   page: number;
   pageCount: number;
-  limit = 3;
+  limit = 5;
 
-  constructor(private subjectService: SubjectService) {
-  }
-
+  constructor(private subjectService: SubjectService) { }
   getSubjects(): void {
     this.subjectService.getPagenationSubjects(this.page, this.limit).subscribe(data => {
       this.subjects = data;
     });
   }
   getNumberOfPages(): void {
-    let a: number;
+    let recordsCount: number;
     this.subjectService.getNumberOfRecords().subscribe(data => {
-      a = data['numberOfRecords'];
-      this.pageCount = Math.ceil( a / this.limit);
-      console.log(this.pageCount);
+      recordsCount = data['numberOfRecords'];
+      this.pageCount = Math.ceil(recordsCount / this.limit);
     });
-
   }
-
-  addSubject(subject_name: string, subject_description: string): void {
-    subject_name = subject_name.trim();
-    subject_description = subject_description.trim();
-    if (!subject_name || !subject_description) { return; }
-    this.subjectService.create(subject_name, subject_description)
-      .then(subject => {
-        this.subjects.push(subject);
-        this.selectedSubject = null;
-      });
+  addSubject(subject_name: string, subject_description: string) {
+    this.subjectService.createSubject(subject_name, subject_description)
+      .subscribe();
+    this.getSubjects();
   }
   deleteSubject(subject: Subject): void {
     this.subjectService
       .delete(subject.subject_id)
       .then(() => {
         this.subjects = this.subjects.filter(h => h !== subject);
-        if (this.selectedSubject === subject) { this.selectedSubject = null; }
+        if (this.selectedSubject === subject) {
+          this.selectedSubject = null;
+        }
       });
   }
   ngOnInit(): void {
@@ -66,7 +59,7 @@ export class SubjectComponent implements OnInit {
     this.selectedSubject = subject;
   }
   onUpdate(subject: Subject): void {
-    this.updatedSubject = subject;
+    this.subjectService.update(subject);
   }
   increasePage(): void {
     if (this.page < this.pageCount) {
@@ -80,8 +73,6 @@ export class SubjectComponent implements OnInit {
       this.getSubjects();
     }
   }
-
-
 }
 
 

@@ -1,63 +1,27 @@
-<h3 class="text-center">Спеціальності</h3>
+<h3 class="text-center">{{SPECIALITIES_HEADER}}</h3>
 <div class="header-group">
-  <button title="Додати спеціальність" (click)="add()" data-target="#myModal">
+  <button class="btn btn-sm btn-primary" [title]="SPECIALITIES_ADD_TITLE" (click)="add()" data-target="#myModal">
     <i class="fa fa-plus-circle" aria-hidden="true"></i>
   </button>
   <!--Dropdown for items per page count-->
   <select #s (change)="changeCountPerPage(s.value)">
-    <option>5</option>
-    <option>10</option>
-    <option>20</option>
+    <option>{{FIRST_DROPDOWN_ITEM}}</option>
+    <option>{{SECOND_DROPDOWN_ITEM}}</option>
+    <option>{{THIRD_DROPDOWN_ITEM}}</option>
   </select>
 </div>
 <!--Search component-->
 <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
-<!-- Modal popup-->
-<div class="modal fade" #modal id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Додати (редагувати) спеціальність</h5>
-        <button type="button" class="close" (click)="cancel()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!--Form for add/delete speciality-->
-        <form [formGroup]="specialitiesForm" (ngSubmit)="save()">
-          <div class="form-group">
-            <label for="name">Назва спеціальності</label>
-            <input formControlName="name" name="speciality_name" type="text"
-                   class="form-control"
-                   id="name">
-            <span
-              *ngIf="specialitiesForm.controls['name'].hasError('required') && specialitiesForm.controls['name'].touched"
-              class="validate_message">Вкажіть назву спеціальності</span>
-            <span
-              *ngIf="specialitiesForm.controls['name'].hasError('exists') && specialitiesForm.controls['name'].dirty"
-              class="validate_message">Така спеціальність вже існує</span>
-          </div>
-          <div class="form-group">
-            <label for="code">Код спеціальності</label>
-            <input formControlName="code" name="speciality_code" type="text" class="form-control" id="code">
-            <span
-              *ngIf="specialitiesForm.controls['code'].hasError('required') && specialitiesForm.controls['code'].touched"
-              class="validate_message">Вкажіть код спеціальності
-            </span>
-          </div>
-          <div class="text-center">
-            <button type="submit" class="btn btn-primary" [disabled]="!specialitiesForm.valid">Зберегти</button>
-            <button type="button" class="btn btn-secondary" (click)="cancel()">Відміна</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+<dtester-popup (saveSpeciality)="saveSpeciality($event)"
+               (editSpeciality)="editSpeciality($event)"
+               (deleteSpeciality)="deleteSpeciality($event)"
+></dtester-popup>
 <!--Common component to display entnties-->
-<dtester-common [entities]="specialities" [headers]="headers" (deleteEntity)="delete($event)" [page]="page" [itemsPerPage]="countPerPage"
-                (editEntity)="edit($event)"></dtester-common>
+<dtester-entities-table [entities]="specialities" [headers]="headers" [ignoreProperties]="ignoreProperties"
+                (deleteEntity)="del($event)"
+                [page]="page" [itemsPerPage]="countPerPage"
+                (editEntity)="edit($event)" (clickEntity)="getGroupsBySpeciality($event)">
+</dtester-entities-table>
 <!--Pagination component-->
 <div class="text-center">
   <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"

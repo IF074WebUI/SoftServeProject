@@ -1,40 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SpecialitiesService } from '../services/specialities.service';
 import { Speciality } from './speciality';
-import { SPECIALITIES_HEADERS } from '../../constants';
-import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { Router } from '@angular/router';
-
-declare var $: any;
+import { ActivatedRoute, Router } from '@angular/router';
+import { PopupComponent } from '../popup/popup.component';
 
 @Component({
   selector: 'dtester-specialities',
   templateUrl: './specialities.component.html',
   styleUrls: ['./specialities.component.css']
 })
+
 export class SpecialitiesComponent implements OnInit {
+
+  SPECIALITIES_HEADERS: string[] = ['№', 'код спеціальності', 'назва спеціальності'];
+  IGNORE_PROPERTIES: string[] = ['speciality_id'];
+  NO_RECORDS: string = 'no records';
+  SPECIALITIES_HEADER: string = 'Спеціальності';
+  SPECIALITIES_ADD_TITLE: string = 'Додати спеціальність';
+  FIRST_DROPDOWN_ITEM: number = 5;
+  SECOND_DROPDOWN_ITEM: number = 10;
+  THIRD_DROPDOWN_ITEM: number = 20;
+  MODAL_TITLE: string = 'Додати (редагувати) спеціальність';
 
   specialities: Speciality[];   /* array of specialities that will be displayed on current page */
   page = 1;                     /* current page */
   count: number;                /* count of all specialities */
   countPerPage = 5;             /* count of specialities per page */
   headers: string[];            /* array of headers */
-  editId = 0;                   /* id of edited speciality (if speciality is adding than 0 or undefined) */
-  specialitiesForm: FormGroup;
-  specialitiesName: FormControl;
-  specialitiesCode: FormControl;
+  ignoreProperties: string[];
+  editName: string = '';
+  @ViewChild(PopupComponent) popup: PopupComponent;
 
-  constructor(private specialitiesService: SpecialitiesService, private router: Router) {
+  constructor(private specialitiesService: SpecialitiesService, private router: Router,
+   private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.specialitiesName = new FormControl('', Validators.required, asyncValidator.bind(this));
-    this.specialitiesCode = new FormControl('', Validators.required);
-    this.specialitiesForm = new FormGroup({
-      'name': this.specialitiesName,
-      'code': this.specialitiesCode
-    });
-    this.headers = SPECIALITIES_HEADERS;
+    this.headers = this.SPECIALITIES_HEADERS;
+    this.ignoreProperties = this.IGNORE_PROPERTIES;
     this.getSpecialities();       /* get specialities for start page and count of specialities for pagination */
     this.getCount();
   }
@@ -44,7 +47,6 @@ export class SpecialitiesComponent implements OnInit {
     if (this.count <= (this.page - 1) * this.countPerPage) {
       --this.page;
     }
-
     this.specialitiesService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
       .subscribe(resp => this.specialities = resp, err => this.router.navigate(['/bad_request']));
   }
@@ -55,55 +57,47 @@ export class SpecialitiesComponent implements OnInit {
   }
 
   add() {
-    this.editId = 0;
-    this.specialitiesForm.reset();      /* reset form before add new speciality */
-    $('#myModal').modal('show');
+    this.popup.showModal('add', new Speciality('', ''));
   }
 
   edit(speciality: Speciality) {
-    this.specialitiesForm.reset();
-    this.editId = speciality.speciality_id;
-    /* manually set inputs with speciality properties values being edited */
-    this.specialitiesName.setValue(speciality.speciality_name);
-    this.specialitiesCode.setValue(speciality.speciality_code);
-    $('#myModal').modal('show');
+    this.popup.showModal('edit', speciality);
   }
 
-  save() {
-    let speciality: Speciality = new Speciality(this.specialitiesName.value, this.specialitiesCode.value);
-    if (this.editId) {                      /* check if we can edit or add subject */
-      speciality['speciality_id'] = this.editId;
-      this.specialitiesService.edit(speciality).subscribe(resp => {
-        $('#myModal').modal('hide');
+  del(speciality: Speciality) {
+    this.popup.showModal('confirm', speciality);
+  }
+
+  saveSpeciality(speciality: Speciality): void {
+    this.specialitiesService.save(speciality).subscribe(resp => {
+        this.popup.hideModal();
+        this.getSpecialities();             /* after add speciality get all specialities from backend */
+        this.count++;
+      },
+      err => this.router.navigate(['/bad_request']));
+  }
+
+  editSpeciality(speciality: Speciality): void {
+    this.specialitiesService.edit(speciality).subscribe(resp => {
+        this.popup.hideModal();
         this.getSpecialities();             /* after update speciality get all specialities from backend */
       },
-        err => this.router.navigate(['/bad_request']));
-    } else {
-      this.specialitiesService.save(speciality).subscribe(resp => {
-        $('#myModal').modal('hide');
-        this.getSpecialities();             /* after add speciality get all specialities from backend */
-        this.count++;                       /* also we reset new count of records to calculate pagination pages count */
-      },
-        err => this.router.navigate(['/bad_request']));
-    }
+      err => this.router.navigate(['/bad_request']));
   }
 
-  cancel() {
-    if (confirm('Зіни будуть втрачені, продовжити?')) {   /* confirm dialog before exit without add or edit speciality */
-      $('#myModal').modal('hide');
-      this.specialitiesForm.reset();
-    }
+  getGroupsBySpeciality(speciality: Speciality) {
+    this.router.navigate(['./group'], {queryParams: {'specialityId': speciality.speciality_id}, relativeTo: this.activatedRoute.parent});
   }
 
-  delete(speciality: Speciality) {
-    if (confirm('Ви справді бажаєте видалити цю спеціальність?')) {
-      this.specialitiesService.delete(speciality['speciality_id']).subscribe(resp => {
+  deleteSpeciality(speciality: Speciality) {
+      this.specialitiesService.delete(speciality['speciality_id'])
+        .subscribe(resp => {
+            this.popup.hideModal();
           --this.count;                   /* after delete speciality get all specialities from backend */
           this.getSpecialities();         /* also we reset new count of records to calculate pagination pages count */
         },
         err => this.router.navigate(['/bad_request']));
-    }
-    }
+  }
 
   changePage(page: number) {              /* callback method for change page pagination output event */
     this.page = page;
@@ -117,7 +111,7 @@ export class SpecialitiesComponent implements OnInit {
 
   startSearch(criteria: string) {         /* callback method for output in search component */
     this.specialitiesService.searchByName(criteria).subscribe(resp => {
-      if (resp['response'] === 'no records') {    /* check condition: if no records presented for search criteria */
+      if (resp['response'] === this.NO_RECORDS) {    /* check condition: if no records presented for search criteria */
         this.specialities = [];
         this.count = this.specialities.length;
       } else {
@@ -125,20 +119,8 @@ export class SpecialitiesComponent implements OnInit {
         this.count = resp.length;                 /* if records are present than set specialities count to calculate pagination pages */
         this.specialities = resp.slice(0, this.countPerPage);  /* present only paginated specialities */
       }
-
-
     },
       err => this.router.navigate(['/bad_request']));
   }
 }
-/* asynchronous validator function to validate adding or updating existing specialities */
-function asyncValidator(control: AbstractControl) {
-  return this.specialitiesService.searchByName(control.value).map((res: Speciality[]) => {
-    for (const speciality of res) {
-      if (speciality.speciality_name === control.value.trim() && control.dirty && !this.editId) {
-        return {exists: true};
-      }
-    }
-    return null;
-  });
-}
+

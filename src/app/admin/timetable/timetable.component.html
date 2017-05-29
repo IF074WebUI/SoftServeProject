@@ -16,13 +16,13 @@
     <td><span>{{timeTable.start_time}}</span><br><span>{{timeTable.start_date}}</span></td>
     <td><span>{{timeTable.end_time}}</span><br><span>{{timeTable.end_date}}</span></td>
     <td>
-      <button type="button" class="btn btn-success" (click)="getSelectedTimetable(timeTable)" data-toggle="modal" data-target="#modal-update-timetabel" data-whatever="@mdo">
+      <button type="button" class="btn btn-success btn-sm" (click)="getSelectedTimetable(timeTable)" data-toggle="modal" data-target="#modal-update-timetabel" data-whatever="@mdo">
         <i class="fa fa-pencil" aria-hidden="true"></i>
       </button>
     </td>
     <td>
-      <button type="button" class="btn btn-danger" (click)="getSelectedTimetable(timeTable)" data-toggle="modal" data-target="#modal-delete-timetabel" data-whatever="@mdo">
-        <i class="fa fa-times" aria-hidden="true"></i>
+      <button type="button" class="btn btn-danger btn-sm" (click)="getUpdatedTimetable(timeTable)" data-toggle="modal" data-target="#modal-delete-timetabel" data-whatever="@mdo">
+        <i class="fa fa-trash" aria-hidden="true"></i>
       </button>
     </td>
   </tr>
@@ -74,13 +74,13 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-        <button  type="button" class="btn btn-primary" (click)="createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)">Запланувати</button>
+        <button  type="button" class="btn btn-primary" data-dismiss="modal" (click)="createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)">Запланувати</button>
       </div>
     </div>
   </div>
 </div>
 
-<!--modal of editing  timetable-->
+<!--modal of updating  timetable-->
 
 <div class="modal fade" id="modal-update-timetabel" tabindex="-1" role="dialog" aria-labelledby="modalEditTimetable" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -95,37 +95,37 @@
         <form>
           <div class="form-group">
             <label class="form-control-label" for="groupIdEdit">Група:</label>
-            <select name="groupId" id="groupIdEdit" class="form-control" [(ngModel)]="updateGroupId" required>
+            <select name="groupId" id="groupIdEdit" class="form-control" [(ngModel)]="updatedTimetable.groupId" required>
               <option *ngFor="let group of groups" [ngValue]="group.group_id">{{group.group_name}}</option>
             </select>
           </div>
           <div class="form-group">
             <label class="form-control-label"> Предмет:</label>
-            <select name="subjectId" class="form-control" [(ngModel)]="updateSubjectId" required>
+            <select name="subjectId" class="form-control" [(ngModel)]="updatedTimetable.subjectId" required>
               <option *ngFor="let subject of subjects" [ngValue]="subject.subject_id">{{subject.subject_name}}</option>
             </select>
           </div>
           <div class="form-group">
             <label class="form-control-label">Початкова дата:</label>
-            <input type="date" [(ngModel)]="updateStartDate" name="startDate" class="form-control" required>
+            <input type="date" [(ngModel)]="updatedTimetable.startDate" name="startDate" class="form-control" required>
           </div>
           <div class="form-group">
             <label class="form-control-label">Початковий час:</label>
-            <input type="time" [(ngModel)]="updateStartTime" name="startTime" class="form-control" required>
+            <input type="time" [(ngModel)]="updatedTimetable.startTime" name="startTime" class="form-control" required>
           </div>
           <div class="form-group">
             <label class="form-control-label">Кінцева дата:</label>
-            <input type="date"[(ngModel)]="updateEndDate" name="endDate" class="form-control" required>
+            <input type="date"[(ngModel)]="updatedTimetable.endDate" name="endDate" class="form-control" required>
           </div>
           <div class="form-group">
             <label class="form-control-label">Кінцевий час:</label>
-            <input type="time"[(ngModel)]="updateEndTime" name="endTime" class="form-control" required>
+            <input type="time"[(ngModel)]="updatedTimetable.endTime" name="endTime" class="form-control" required>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-        <button  type="button" class="btn btn-success" (click)="updateTimeTable(selectedTimetable.timetable_id, updateGroupId, updateSubjectId, updateStartDate, updateStartTime, updateEndDate, updateEndTime)">Редагувати</button>
+        <button  type="button" class="btn btn-success" data-dismiss="modal" (click)="updateTimeTable(selectedTimetable.timetable_id)">Редагувати</button>
       </div>
     </div>
   </div>
@@ -149,7 +149,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-        <button  (click)="deleteTimetable()" type="button" class="btn btn-danger" >Видалити</button>
+        <button  (click)="deleteTimetable()" type="button" class="btn btn-danger" data-dismiss="modal">Видалити</button>
       </div>
     </div>
   </div>

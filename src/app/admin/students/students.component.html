@@ -1,34 +1,79 @@
-<h1>Студенти</h1>
-<table class="table table-responsive table-bordered">
-  <thead>
-  <tr>
-    <th>№</th>
-    <th>Прізвище</th>
-    <td>Ім'я</td>
-    <td>По батькові</td>
-    <td>Профіль</td>
-    <td>Редагувати</td>
-    <td>Видалити</td>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let student of students"
-      [class.selected]="student === selectedStudent"
-      (click)="onSelect(student)">
-    <th scope="row">{{student.user_id}}</th>
-    <td>{{student.student_surname}}</td>
-    <td>{{student.student_name}}</td>
-    <td>{{student.student_fname}}</td>
-    <td><i class="fa fa-user" aria-hidden="true"></i>
-    </td>
-    <td><button (click)="editDialog()" type="button" class="btn btn-success btn-edit"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-    <td><button (click)="deleteDialog()" type="button" class="btn btn-danger btn-delete"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
-  </tr>
-  </tbody>
-</table>
-<a (click)="addDialog()" class="btn btn-primary" role="button">Додати студента</a>
+<h1>{{mainHeader}}</h1>
+<dtester-entities-table [entities]="students"
+                        [headers]="headers"
+                        [page]="page"
+                        [itemsPerPage]="countPerPage"
+                        [ignoreProperties]="ignoreProperties">
+</dtester-entities-table>
+<a class="btn btn-primary" role="button" data-toggle="modal" data-target="#modalAdd" data-whatever="@mdo">{{modalAddHeader}}</a>
 <div class="text-center">
-  <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
-                      (pageChanged)="changePage($event)"></dtester-pagination>
+  <dtester-pagination [countRecords]="count"
+                      [recordsPerPage]="countPerPage"
+                      [currentPage]="page"
+                      (pageChanged)="changePage($event)">
+  </dtester-pagination>
 </div>
 
+<div [ngClass]="{'modal': true, 'fade': true, 'show': showModal}" id="modalAdd" tabindex="-1"
+     role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form #addForm="ngForm" [formGroup]="studentForm" method="post">
+        <fieldset>
+          <legend>{{modalAddHeader}}</legend>
+          <div class="form-group">
+            <label for="name">{{modalName}}</label>
+            <input formControlName="name" type="text" class="form-control" id="name" name="name" required >
+          </div>
+          <div class="form-group">
+            <label for="surname">{{modalSurname}}</label>
+            <input formControlName="surname" type="text" class="form-control" id="surname" name="surname" required>
+          </div>
+          <div class="form-group">
+            <label for="f_name">{{modalFname}}</label>
+            <input formControlName="f_name" type="text" class="form-control" id="f_name" name="surname" required>
+          </div>
+          <div class="form-group">
+            <label for="pwd">{{modalPassword}}</label>
+            <input formControlName="password" type="password" class="form-control" id="pwd" name="password" required>
+          </div>
+          <div class="form-group">
+            <label for="password_confirm">{{modalConfirmPassword}}</label>
+            <input formControlName="password_confirm" type="password" class="form-control" id="password_confirm" name="password" required>
+          </div>
+          <button class="btn btn-success" type="submit" name="add" (click)="addStudent(addForm)">{{modalAdd}}</button>
+          <button class="btn btn-secondary" type="button" name="add" (click)="cansel()">{{modalCansel}}</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--<form #delForm="ngForm">-->
+  <!--<fieldset>-->
+    <!--<legend>{{modalDelHeader}}</legend>-->
+    <!--<h2>{{modalDelBody}}</h2>-->
+    <!--<button class="btn btn-danger" type="submit" name="delete" (click)="deleteStudent(delForm)">{{modalDel}}</button>-->
+    <!--<button class="btn btn-secondary" type="button" name="cansel" (click)="cansel()">{{modalCansel}}</button>-->
+  <!--</fieldset>-->
+<!--</form>-->
+
+<!--<form #editForm="ngForm" [formGroup]="studentEditForm" method="post">-->
+  <!--<fieldset>-->
+    <!--<legend>{{modalEditHeader}}</legend>-->
+    <!--<div class="form-group">-->
+      <!--<label for="editName">{{modalName}}</label>-->
+      <!--<input formControlName="editName" type="text" class="form-control" id="editName" name="name" required >-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+      <!--<label for="editSurname">{{modalSurname}}</label>-->
+      <!--<input formControlName="editSurname" type="text" class="form-control" id="editSurname" name="surname" required>-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+      <!--<label for="editF_name">{{modalFname}}</label>-->
+      <!--<input formControlName="editF_name" type="text" class="form-control" id="editF_name" name="surname" required>-->
+    <!--</div>-->
+    <!--<button class="btn btn-success" type="submit" name="add" (click)="editStudent(editForm)">{{modalEdit}}</button>-->
+    <!--<button class="btn btn-secondary" type="submit" name="add" (click)="cansel()">{{modalCansel}}</button>-->
+  <!--</fieldset>-->
+<!--</form>-->

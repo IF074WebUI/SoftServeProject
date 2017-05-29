@@ -1,4 +1,22 @@
+<!--serarch component -->
+<div class="input-group">
+  <span class="input-group-addon" id="basic-addon1"> <i class="fa fa-search-plus" aria-hidden="true"></i>
+</span>
+  <dtester-search (searchCriteria)="search($event)"></dtester-search>
+</div>
+<!--Common component to display entities-->
+<dtester-entities-table [entities]="faculties" [headers]="headers"  [ignoreProperties]="ignoreProperties" (deleteEntity)="deleteFaculty($event, delContent)"
+                [page]="page" [itemsPerPage]="countPerPage"
+                (editEntity)="editFaculty($event, editContent)"
+                (clickEntity)="getGroupsByFaculties($event)"></dtester-entities-table>
+<!--Pagination component-->
+<div class="text-center">
+  <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
+                      (pageChanged)="changePage($event)"></dtester-pagination>
+</div>
 
+
+<!--my old table and pagination
 <div class="table-responsive table-bordered table-hover">
   <table class="table">
     <thead>
@@ -12,19 +30,24 @@
       <td>{{faculties.indexOf(item)+ 10 * page - 9}}</td>
       <td>{{item['faculty_name']}}</td>
       <td>{{item['faculty_description']}}</td>
-      <td  (click)="selectedItem(item)" (click)="editFaculty(editContent)"><i class="fa fa-pencil-square-o"></i></td>
-      <td  (click)="selectedItem(item)" (click)="deleteFaculty(delContent)"><i class="fa fa-trash"></i></td>
+      <td><button  (click)="selectedItem(item); editFaculty(editContent)" type="button" class="btn btn-sm btn-success btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
+      <td><button  (click)="selectedItem(item); deleteFaculty(delContent)" type="button" class="btn btn-sm btn-danger btn-delete"><i class="fa fa-trash"></i></button></td>
     </tr>
   </table>
 </div>
 
 <ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
+-->
 
 <button class="btn btn-lg btn-outline-primary" (click)="addFaculty(addContent)"> Створити новий факультет</button>
 
-<!-- Modal popup for adding  -->
+<button routerLink="/sidekicks">Go to sidekicks</button>
+<!-- Modal popup for adding -->
 
-<ng-template #addContent let-c="close" let-d="dismiss">
+
+ <ng-template #addContent let-c="close" let-d="dismiss">
+
+
   <div class="modal-header">
     <h4 class="modal-title">{{modalHeader}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
@@ -51,6 +74,7 @@
     </button>
   </div>
 </ng-template>
+
 
 <!-- Modal popup for deleting -->
 
