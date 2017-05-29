@@ -17,10 +17,11 @@
                (deleteSpeciality)="deleteSpeciality($event)"
 ></dtester-popup>
 <!--Common component to display entnties-->
-<dtester-common [entities]="specialities" [headers]="headers" [ignoreProperties]="ignoreProperties"
+<dtester-entities-table [entities]="specialities" [headers]="headers" [ignoreProperties]="ignoreProperties"
                 (deleteEntity)="del($event)"
                 [page]="page" [itemsPerPage]="countPerPage"
-                (editEntity)="edit($event)" (clickEntity)="getGroupsBySpeciality($event)"></dtester-common>
+                (editEntity)="edit($event)" (clickEntity)="getGroupsBySpeciality($event)">
+</dtester-entities-table>
 <!--Pagination component-->
 <div class="text-center">
   <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
