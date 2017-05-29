@@ -12,6 +12,7 @@ export class CommonComponent<T> implements OnInit {
   @Input() itemsPerPage: number = 5;
   @Input() page: number = 1;
   @Input() entities: T[] = [];
+  @Input() ignoreProperties: string[];
   @Input() headers: string[] = [];
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
   @Output() editEntity: EventEmitter<T> = new EventEmitter();
@@ -23,7 +24,7 @@ export class CommonComponent<T> implements OnInit {
   }
 
   getProperties(entity: T): string[] {
-    return Object.getOwnPropertyNames(entity).slice(1);
+    return Object.getOwnPropertyNames(entity);
   }
 
   editEntityCallback(entity: T) {

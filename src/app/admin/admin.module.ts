@@ -30,6 +30,7 @@ import {StudentsService} from './students/students.service';
 import {AddStudentComponent} from './students/add-student/add-student.component';
 import {EditStudentComponent} from './students/edit-student/edit-student.component';
 import {DeleteStudentComponent} from './students/delete-student/delete-student.component';
+import {PopupComponent} from './popup/popup.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import {DeleteStudentComponent} from './students/delete-student/delete-student.c
     AddStudentComponent,
     EditStudentComponent,
     DeleteStudentComponent,
-    StudentsComponent
+    StudentsComponent,
+    PopupComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
