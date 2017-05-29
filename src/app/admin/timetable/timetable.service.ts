@@ -18,39 +18,28 @@ export class TimetableService {
   }
 
 
-  createTimeTable(groupId: number,
-                  subjectId: number,
-                  startDate: string,
-                  startTime: string,
-                  endDate: string,
-                  endTime: string): Observable<Response> {
+  createTimeTable(newTimetable): Observable<Response> {
     const bodyForSendingNewTimeTable = JSON.stringify({
-      group_id: groupId,
-      subject_id: subjectId,
-      start_date: startDate,
-      start_time: startTime,
-      end_date: endDate,
-      end_time: endTime
+      group_id: newTimetable.group_id,
+      subject_id: newTimetable.subject_id,
+      start_date: newTimetable.time_limits.start_date,
+      start_time: newTimetable.time_limits.start_time,
+      end_date: newTimetable.time_limits.end_date,
+      end_time: newTimetable.time_limits.end_time
     });
     return this.http.post('http://' + HOST + '/timeTable/insertData', bodyForSendingNewTimeTable)
       .map((resp: Response) => resp.json());
   }
-  updateTimeTable(timetable_id: number,
-                  groupId,
-                  subjectId,
-                  startDate,
-                  startTime,
-                  endDate,
-                  endTime): Observable<Response> {
+  updateTimeTable(updatedTimetable, updatedTimetable_id): Observable<Response> {
     const bodyForSendingNewTimeTable = JSON.stringify({
-      group_id: groupId,
-      subject_id: subjectId,
-      start_date: startDate,
-      start_time: startTime,
-      end_date: endDate,
-      end_time: endTime
+      group_id: updatedTimetable.group_id,
+      subject_id: updatedTimetable.subject_id,
+      start_date: updatedTimetable.time_limits.start_date,
+      start_time: updatedTimetable.time_limits.start_time,
+      end_date: updatedTimetable.time_limits.end_date,
+      end_time: updatedTimetable.time_limits.end_time
     });
-    return this.http.post('http://' + HOST + '/timeTable/update/' + timetable_id, bodyForSendingNewTimeTable)
+    return this.http.post('http://' + HOST + '/timeTable/update/' + updatedTimetable_id, bodyForSendingNewTimeTable)
       .map((resp: Response) => resp.json());
   }
 
