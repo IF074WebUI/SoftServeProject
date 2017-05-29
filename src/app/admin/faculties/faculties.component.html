@@ -5,7 +5,7 @@
   <dtester-search (searchCriteria)="search($event)"></dtester-search>
 </div>
 <!--Common component to display entities-->
-<dtester-entities-table [entities]="faculties" [headers]="headers" (deleteEntity)="deleteFaculty($event, delContent)"
+<dtester-entities-table [entities]="faculties" [headers]="headers"  [ignoreProperties]="ignoreProperties" (deleteEntity)="deleteFaculty($event, delContent)"
                 [page]="page" [itemsPerPage]="countPerPage"
                 (editEntity)="editFaculty($event, editContent)"
                 (clickEntity)="getGroupsByFaculties($event)"></dtester-entities-table>

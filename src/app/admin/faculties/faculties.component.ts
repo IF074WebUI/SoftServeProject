@@ -16,6 +16,7 @@ import 'rxjs/add/operator/switchMap';
 })
 export class FacultiesComponent implements OnInit {
   faculties: Faculty[] = [];
+  IGNORE_PROPERTIES: string[] = ['faculty_id'];
   page: number = 1; // current number of page
   count: number; // count all faculties
   facultyEditForm: FormGroup;
@@ -29,6 +30,7 @@ export class FacultiesComponent implements OnInit {
   countPerPage: number = 5;
   add: boolean = false;
   id: number;
+  ignoreProperties: string[];
 
 
   constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
@@ -36,6 +38,7 @@ export class FacultiesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.ignoreProperties = this.IGNORE_PROPERTIES;
     this.facultyEditName = new FormControl('', Validators.required);
     this.facultyEditDescription = new FormControl('');
     this.facultyEditId = new FormControl('');
@@ -55,7 +58,6 @@ export class FacultiesComponent implements OnInit {
 
     this.http.countAllRecords().subscribe((resp) => {
         this.count = resp['numberOfRecords'];
-        console.log(this.count);
       },
       error => this.router.navigate(['/bad_request'])
     );
@@ -76,7 +78,6 @@ export class FacultiesComponent implements OnInit {
   }
 
   changePage(d: number) {
-    console.log(d);
     this.page = d;
     this.http.getPaginatedPage(this.countPerPage, (this.page - 1) * this.countPerPage).subscribe((resp) => {
         this.faculties = <Faculty[]> resp;
@@ -181,7 +182,6 @@ export class FacultiesComponent implements OnInit {
   getGroupsByFaculties(faculty: Faculty) {
     this.id = faculty['faculty_id'];
     this.router.navigate(['/admin/group'], {queryParams: {'facultyId': this.id}});
-    console.log(faculty);
   }
 }
 
