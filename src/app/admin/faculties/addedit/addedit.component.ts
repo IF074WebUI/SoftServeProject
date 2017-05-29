@@ -28,9 +28,12 @@ export class AddeditComponent implements OnInit {
   ngOnInit() {
     this.entityId = +this.route.snapshot.queryParams['id'];
     console.log(this.entityId);
-    this.facultyService.getFacultyById(this.entityId).subscribe(resp => {this.entity = resp;
+    this.facultyService.getFacultyById(this.entityId).subscribe(resp => {
+      this.entity.id = resp['faculty_id'];
+      this.entity.name = resp['faculty_name'];
+      this.entity.description = resp['faculty_description'];
     });
-    console.log(this.entity);
+
 
     this.entityAddName = new FormControl('', Validators.required, this.ValidatorUniqName.bind(this));
     this.entityEditName = new FormControl('', Validators.required);
@@ -41,6 +44,8 @@ export class AddeditComponent implements OnInit {
       'description': this.entityDescription
     });
   }
+
+
 
   confirmAddEdit() {
 
