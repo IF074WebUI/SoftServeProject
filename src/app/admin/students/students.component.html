@@ -1,31 +1,13 @@
 <h1>Студенти</h1>
-<table class="table table-responsive table-bordered">
-  <thead>
-  <tr>
-    <th>№</th>
-    <th>Прізвище</th>
-    <td>Ім'я</td>
-    <td>По батькові</td>
-    <td>Профіль</td>
-    <td>Редагувати</td>
-    <td>Видалити</td>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let student of students"
-      [class.selected]="student === selectedStudent"
-      (click)="onSelect(student)">
-    <th scope="row">{{student.user_id}}</th>
-    <td>{{student.student_surname}}</td>
-    <td>{{student.student_name}}</td>
-    <td>{{student.student_fname}}</td>
-    <td class="text-center"><i class="fa fa-user" aria-hidden="true"></i>
-    </td>
-    <td class="text-center"><button (click)="editDialog()" type="button" class="btn btn-success btn-edit"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-    <td class="text-center"><button (click)="deleteDialog()" type="button" class="btn btn-danger btn-delete"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
-  </tr>
-  </tbody>
-</table>
+<dtester-entities-table [entities]="students"
+                        [headers]="headers"
+                        [page]="page"
+                        [itemsPerPage]="countPerPage"
+                        (editEntity)="editDialog()"
+                        (deleteEntity)="deleteDialog()"
+                        [ignoreProperties]="ignoreProperties">
+
+</dtester-entities-table>
 <a (click)="addDialog()" class="btn btn-primary" role="button">Додати студента</a>
 <div class="text-center">
   <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
