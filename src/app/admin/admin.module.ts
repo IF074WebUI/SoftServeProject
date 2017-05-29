@@ -17,10 +17,10 @@ import {SubjectService} from './subject/subject.service';
 import {GroupService} from './group/group.service';
 import {SpecialitiesComponent} from './specialities/specialities.component';
 import {SpecialitiesService} from './services/specialities.service';
-import {PaginationComponent} from './pagination/pagination.component';
-import {CommonComponent} from './common/common.component';
+import {PaginationComponent} from './universal/pagination/pagination.component';
+import {EntitiesTableComponent} from './universal/entities-table/entities-table.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {SearchComponent} from './search/search.component';
+import {SearchComponent} from './universal/search/search.component';
 import {GetAllRecordsService} from './services/get-all-records.service';
 import {DeleteRecordByIdService} from './services/delete-record-by-id.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -45,7 +45,7 @@ import {PopupComponent} from './popup/popup.component';
     TimetableComponent,
     SpecialitiesComponent,
     PaginationComponent,
-    CommonComponent,
+    EntitiesTableComponent,
     SearchComponent,
     AddStudentComponent,
     EditStudentComponent,
