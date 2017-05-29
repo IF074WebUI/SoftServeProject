@@ -58,7 +58,6 @@ export class FacultiesComponent implements OnInit {
 
     this.http.countAllRecords().subscribe((resp) => {
         this.count = resp['numberOfRecords'];
-        console.log(this.count);
       },
       error => this.router.navigate(['/bad_request'])
     );
@@ -79,7 +78,6 @@ export class FacultiesComponent implements OnInit {
   }
 
   changePage(d: number) {
-    console.log(d);
     this.page = d;
     this.http.getPaginatedPage(this.countPerPage, (this.page - 1) * this.countPerPage).subscribe((resp) => {
         this.faculties = <Faculty[]> resp;
@@ -184,7 +182,6 @@ export class FacultiesComponent implements OnInit {
   getGroupsByFaculties(faculty: Faculty) {
     this.id = faculty['faculty_id'];
     this.router.navigate(['/admin/group'], {queryParams: {'facultyId': this.id}});
-    console.log(faculty);
   }
 }
 

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
-import {Http} from '@angular/http';
 import { FacultyService } from '../faculty.service';
 
 
@@ -16,7 +15,7 @@ addDescription: FormControl;
 addForm: FormGroup;
 
 
-  constructor(private http: Http) { }
+  constructor(private facultyService: FacultyService) { }
 
   ngOnInit() {
     this.addName = new FormControl('');
@@ -27,8 +26,5 @@ addForm: FormGroup;
     });
   }
   confirmAdd() {
-    this.http.addItem(this.addName.value, this.addDescription.value).subscribe(response => {
-
-    }
   }
 }

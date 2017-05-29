@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'dtester-common',
-  templateUrl: './common.component.html',
-  styleUrls: ['./common.component.css']
+  selector: 'dtester-entities-table',
+  templateUrl: './entities-table.component.html',
+  styleUrls: ['./entities-table.component.css']
 })
-export class CommonComponent<T> implements OnInit {
+export class EntitiesTableComponent<T> implements OnInit {
 
   NO_ENTITIES: string = 'Сутності відсутні';
 
