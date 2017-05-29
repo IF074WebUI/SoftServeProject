@@ -16,6 +16,7 @@ import 'rxjs/add/operator/switchMap';
 })
 export class FacultiesComponent implements OnInit {
   faculties: Faculty[] = [];
+  IGNORE_PROPERTIES: string[] = ['faculty_id'];
   page: number = 1; // current number of page
   count: number; // count all faculties
   facultyEditForm: FormGroup;
@@ -29,6 +30,7 @@ export class FacultiesComponent implements OnInit {
   countPerPage: number = 5;
   add: boolean = false;
   id: number;
+  ignoreProperties: string[];
 
 
   constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
@@ -36,6 +38,7 @@ export class FacultiesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.ignoreProperties = this.IGNORE_PROPERTIES;
     this.facultyEditName = new FormControl('', Validators.required);
     this.facultyEditDescription = new FormControl('');
     this.facultyEditId = new FormControl('');
