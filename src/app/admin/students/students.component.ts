@@ -16,6 +16,7 @@ import { ActivatedRoute } from '@angular/router';
   providers: [AddEditDeleteService]
 })
 export class StudentsComponent implements OnInit {
+
   headers: string[] = [];
   ignoreProperties: string[] = [];
   mainHeader = 'Студенти';
@@ -94,16 +95,10 @@ export class StudentsComponent implements OnInit {
     });
   }
 
-  selectedStudents(student: Student) {
-    this.studentForEdit = student;
-    this.studentForDel = student;
-  }
-
   getStudents(): void {
     if (this.count <= (this.page - 1) * this.countPerPage) {
       --this.page;
     }
-
     this.studentsService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
       .subscribe(resp => this.students = resp, err => this.router.navigate(['/bad_request']));
   }

@@ -6,13 +6,9 @@
                         [ignoreProperties]="ignoreProperties">
 </dtester-entities-table>
 <a class="btn btn-primary" role="button" data-toggle="modal" data-target="#modalAdd" data-whatever="@mdo">{{modalAddHeader}}</a>
-<div class="text-center">
   <dtester-pagination [countRecords]="count"
                       [recordsPerPage]="countPerPage"
-                      [currentPage]="page"
-                      (pageChanged)="changePage($event)">
-  </dtester-pagination>
-</div>
+                      [currentPage]="page"></dtester-pagination>
 
 <div [ngClass]="{'modal': true, 'fade': true, 'show': showModal}" id="modalAdd" tabindex="-1"
      role="dialog" aria-hidden="true">
