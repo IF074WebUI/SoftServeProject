@@ -69,4 +69,8 @@ export class GroupService {
     return this.http.get('http://' + HOST + GROUP_ENITY + '/getGroupsByFaculty/' + facultyId)
       .map((resp: Response) => resp.json());
   }
+
+  searchByName(criteria: string): Observable<Group[]> {
+    return this.http.get('http://' + HOST + GROUP_ENITY + '/getRecordsBySearch/' + criteria).map((resp: Response) => resp.json());
+  }
 }

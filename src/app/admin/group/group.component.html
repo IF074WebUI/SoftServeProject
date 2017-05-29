@@ -151,4 +151,16 @@
     </div>
   </div>
 </div>
-
+<!--search groups-->
+<dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
+<!--Common component to display entnties-->
+<dtester-entities-table [entities]="groupsOnPage" [headers]="headers" [ignoreProperties]="ignoreProperties"
+                        (deleteEntity)="deleteGroup()"
+                        [page]="pageNumber" [itemsPerPage]="offset"
+                        (editEntity)="editGroup()" (clickEntity)="getStudentsByGroup()">
+</dtester-entities-table>
+<!--Pagination component-->
+<div class="text-center">
+  <dtester-pagination [countRecords]="countRecords" [recordsPerPage]="offset" [currentPage]="pageNumber"
+                      (pageChanged)="changePage($event)"></dtester-pagination>
+</div>

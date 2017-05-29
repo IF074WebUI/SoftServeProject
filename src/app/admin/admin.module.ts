@@ -31,6 +31,7 @@ import {AddStudentComponent} from './students/add-student/add-student.component'
 import {EditStudentComponent} from './students/edit-student/edit-student.component';
 import {DeleteStudentComponent} from './students/delete-student/delete-student.component';
 import {PopupComponent} from './popup/popup.component';
+import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page.component';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import {PopupComponent} from './popup/popup.component';
     EditStudentComponent,
     DeleteStudentComponent,
     StudentsComponent,
-    PopupComponent
+    PopupComponent,
+    ItemsPerPageComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
