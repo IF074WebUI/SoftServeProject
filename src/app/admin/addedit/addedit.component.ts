@@ -15,43 +15,51 @@ import {Location} from '@angular/common';
 export class AddeditComponent implements OnInit {
   entityId: number;
   entityAddName: FormControl;
-  entityDescription: FormControl;
-  EntityForm: FormGroup;
+  entityAddDescription: FormControl;
+  entityEditDescription: FormControl;
+  entityAddForm: FormGroup;
+  EntityEditForm: FormGroup;
   entityEditName: FormControl;
   entity: Faculty = new Faculty;
   add: boolean = false;
   edit: boolean = true;
+  Name: string;
+  Description: string
 
   constructor(private facultyService: FacultyService, private location: Location, private route: ActivatedRoute, private router: Router) {
+    this.entityId = +this.route.snapshot.queryParams['id'];
+    this.Name = this.route.snapshot.queryParams['name'];
+    this.Description = this.route.snapshot.queryParams['description'];
   }
 
   ngOnInit() {
-    this.entityId = +this.route.snapshot.queryParams['id'];
-    console.log(this.entityId);
+
+    console.log(this.Name);
     this.facultyService.getFacultyById(this.entityId).subscribe(resp => {
-    console.log(resp)
+      this.entity = resp
     });
+    console.log(this.entity);
 
-
-    this.entityAddName = new FormControl('', Validators.required, this.ValidatorUniqName.bind(this));
     this.entityEditName = new FormControl('', Validators.required);
-    this.entityDescription = new FormControl('');
-    this.EntityForm = new FormGroup({
-      'addname': this.entityAddName,
+    this.entityEditDescription = new FormControl('');
+    this.EntityEditForm = new FormGroup({
       'editname': this.entityEditName,
-      'description': this.entityDescription
+      'editdescription': this.entityEditDescription
     });
-  }
 
+    this.entityEditName.setValue(this.Name);
+    this.entityEditDescription.setValue(this.Description);
+  }
 
 
   confirmAddEdit() {
 
-    if (this.add) {
-      this.facultyService.addItem(this.entityAddName.value, this.entityDescription.value).subscribe((resp) => console.log(resp));
+    if (this.entityId === 0) {
+      console.log('works')
+     this.facultyService.addItem(this.entityEditName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
     }
-    if (this.edit) {
-      this.facultyService.editItem(this.entityId, this.entityAddName.value, this.entityDescription.value).subscribe((resp) => console.log(resp));
+    if (this.entityId != 0) {
+      this.facultyService.editItem(this.entityId, this.entityEditName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
     }
   }
 

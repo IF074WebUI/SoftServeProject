@@ -155,10 +155,10 @@ export class FacultiesComponent implements OnInit {
   }
 
   addFacultyUniversal() {
-this.router.navigate(['/admin/addedit'], {queryParams: {'id': NaN}});
+this.router.navigate(['/admin/addedit'], {queryParams: {'id': 0, 'name': '', 'description': ''}});
   }
   editFacultyUniversal(faculty: Faculty) {
-    this.router.navigate(['/admin/addedit'], {queryParams: {'id': faculty['faculty_id']}});
+    this.router.navigate(['/admin/addedit'], {queryParams: {'id': faculty['faculty_id'], 'name': faculty['faculty_name'], 'description': faculty['faculty_description']}});
   }
 
   ValidatorUniqName(control: AbstractControl) {
@@ -187,7 +187,7 @@ this.router.navigate(['/admin/addedit'], {queryParams: {'id': NaN}});
 
   getGroupsByFaculties(faculty: Faculty) {
     this.id = faculty['faculty_id'];
-    this.router.navigate(['/admin/group'], {queryParams: {'facultyId': this.id}});
+    this.router.navigate(['/admin/group'], {queryParams: {'Id': this.id}});
   }
 }
 
