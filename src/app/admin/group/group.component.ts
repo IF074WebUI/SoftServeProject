@@ -156,7 +156,7 @@ export class GroupComponent implements OnInit {
 
   changePage(page: number) {              /* callback method for change page pagination output event */
     this.pageNumber = page;
-    this.uploadPage();               /* request new groups for new page */
+    this.getGroups();               /* request new groups for new page */
   }
   changeNumberOfRecordsOnPage(numberOfRecords: number) {
     this.offset = numberOfRecords;
