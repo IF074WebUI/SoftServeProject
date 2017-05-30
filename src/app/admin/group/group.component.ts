@@ -158,6 +158,7 @@ export class GroupComponent implements OnInit {
   }
   changeNumberOfRecordsOnPage(numberOfRecords: number) {
     this.offset = numberOfRecords;
+    this.pageNumber = 1;
     this.uploadPage();
   }
   // get students by group
