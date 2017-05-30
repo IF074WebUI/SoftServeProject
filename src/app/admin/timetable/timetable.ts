@@ -8,4 +8,6 @@ export interface Timetable {
   end_time: string;
   subject_name?: string;
   group_name?: string;
+  start_timeInterval?: string;
+  end_timeInterval?: string;
 }

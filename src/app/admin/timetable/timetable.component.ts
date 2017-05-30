@@ -19,14 +19,17 @@ export class TimetableComponent implements OnInit {
   subjects = [];
   newTimetableForm: FormGroup;
   updateTimetableForm: FormGroup;
+  addTimetable: Timetable;
   deletedTimetable: Timetable;
   updatedTimetable: Timetable;
+  headers: string[] = ['№', 'Навчальна група', 'Предмет', 'Час початку тестування', 'Час закінчення тестування'];
+  countPerPage: number;
+  page: number;
+  ignoreProperties: string[] = ['timetable_id', 'subject_id', 'group_id', 'end_time', 'start_time', 'end_date', 'start_date'];
   constructor(private timetableService: TimetableService,
               private getRecordsByIdService: GetRecordsByIdService,
               private getAllRecordsService: GetAllRecordsService,
-              private deleteRecordByIdService: DeleteRecordByIdService) { }
-
-  ngOnInit() {
+              private deleteRecordByIdService: DeleteRecordByIdService) {
     this.newTimetableForm = new FormGroup({
       'group_id': new FormControl('', Validators.required),
       'subject_id': new FormControl('', Validators.required),
@@ -47,6 +50,11 @@ export class TimetableComponent implements OnInit {
         'end_time': new FormControl('', Validators.required)
       }, timeValidator )
     });
+  }
+
+  ngOnInit() {
+    this.page = 1;
+    this.countPerPage = 10;
     this.getTimetables();
     this.getGroups();
     this.getSubjects();
@@ -59,14 +67,16 @@ export class TimetableComponent implements OnInit {
         /*get names of groups*/
         this.getRecordsByIdService.getRecordsById('group', timetable.group_id).subscribe((groupData) => {
           timetable.group_name = groupData[0].group_name;
+          /*get names of subjects*/
+          this.getRecordsByIdService.getRecordsById('subject', timetable.subject_id).subscribe((subjectData) => {
+            timetable.subject_name = subjectData[0].subject_name;
+            /*edit date*/
+            timetable.end_time = timetable.end_time.slice(0, 5);
+            timetable.start_time = timetable.start_time.slice(0, 5);
+            timetable.start_timeInterval = `${timetable.start_time}, ${timetable.start_date}`;
+            timetable.end_timeInterval = `${timetable.end_time}, ${timetable.end_date}`;
+          });
         });
-        /*get names of subjects*/
-        this.getRecordsByIdService.getRecordsById('subject', timetable.subject_id).subscribe((subjectData) => {
-          timetable.subject_name = subjectData[0].subject_name;
-        });
-        /*edit date*/
-        timetable.end_time = timetable.end_time.slice(0, 5);
-        timetable.start_time = timetable.start_time.slice(0, 5);
       }
     });
   }
@@ -74,10 +84,10 @@ export class TimetableComponent implements OnInit {
     this.timetableService.createTimeTable(this.newTimetableForm.value)
       .subscribe(() => {
         this.getTimetables();
+        this.newTimetableForm.reset();
       });
   }
   getUpdatedTimetable(timeTable) {
-    console.log(this.updateTimetableForm);
     this.updatedTimetable = timeTable;
     this.updateTimetableForm.setValue({
       'group_id': timeTable.group_id,
@@ -91,11 +101,9 @@ export class TimetableComponent implements OnInit {
     });
   }
   updateTimeTable() {
-    console.log(this.newTimetableForm);
     this.timetableService.updateTimeTable(this.updateTimetableForm.value, this.updatedTimetable.timetable_id)
       .subscribe(() => {
         this.getTimetables();
-        this.updateTimetableForm.reset();
       });
   }
   getDeletedTimetable(timeTable) {
