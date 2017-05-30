@@ -8,102 +8,115 @@ import {ComponentCanDeactivate} from '../../guards/exit.about.guard';
 import {Observable} from 'rxjs/Rx';
 import {GroupService} from '../group/group.service';
 import {Group} from '../group/group';
+import {AddEditDeleteService} from "../students/add-edit-delete.service";
+import {Student} from "../students/student";
+import {SpecialitiesService} from "../services/specialities.service";
+import {Speciality} from "../specialities/speciality";
 
 
 @Component({
   selector: 'dtester-addedit',
   templateUrl: './addedit.component.html',
   styleUrls: ['./addedit.component.css'],
-  providers: [FacultyService]
+  providers: [FacultyService, AddEditDeleteService]
 })
 export class AddeditComponent implements OnInit, ComponentCanDeactivate {
-  entityId: number;
-  entityAddName: FormControl;
-  entityAddDescription: FormControl;
-  entityEditDescription: FormControl;
-  entityAddForm: FormGroup;
-  EntityEditForm: FormGroup;
-  entityEditName: FormControl;
-  studentSecondName: FormControl;
-  studentFirstName: FormControl;
-  searname: FormControl;
-  password: FormControl;
-  confirmpassword: FormControl;
-  group: FormControl;
-  entityName: string;
-  entity: Faculty = new Faculty;
-  groups: Group[] = [];
-  Name: string;
-  Description: string;
+  student: Student = new Student();
+  faculty: Faculty = new Faculty;
+  group: Group = new Group;
+  specialities: Speciality[] = [];
+  faculties: Faculty[] = [];
   entityService: any;
-  add: boolean;
-  edit: boolean;
+
+
+
   HEADER: string;
   DESCRIPTION: string = 'Ввести опис';
 
-  constructor(private facultyService: FacultyService, private location: Location, private route: ActivatedRoute, private router: Router,
-  private groupService: GroupService) {
+
+  entityId: number;
+  entityAddName: FormControl;
+  entityEditDescription: FormControl;
+  EntityEditForm: FormGroup;
+  entityEditName: FormControl;
+  chosenSpeciality: FormControl;
+  chosenFaculty: FormControl;
+
+
+  entity: string;
+  Name: string;
+  Description: string;
+
+
+  constructor(private facultyService: FacultyService,
+              private groupService: GroupService,
+              private specialityService: SpecialitiesService,
+              private location: Location, private route: ActivatedRoute, private router: Router) {
+
     this.entityId = +this.route.snapshot.queryParams['id'];
     this.Name = this.route.snapshot.queryParams['name'];
     this.Description = this.route.snapshot.queryParams['description'];
-    this.entityName = this.route.snapshot.queryParams['entity'];
+    this.entity = this.route.snapshot.queryParams['entity'];
 
   }
 
   ngOnInit() {
-    console.log(this.entityName);
-    this.entityService = this.facultyService;
-    this.studentFirstName = new FormControl('');
-    this.studentSecondName = new FormControl('');
+    console.log(this.entity);
+    this.facultyService.getAllFaculties().subscribe(resp => this.faculties = resp);
+    this.groupService.getSpeciality().subscribe(resp => this.specialities = resp);
+
     this.entityAddName = new FormControl('', Validators.required, this.ValidatorUniqName.bind(this));
     this.entityEditName = new FormControl(this.Name, Validators.required);
-    this.entityEditDescription = new FormControl(this.Description);
-    this.confirmpassword = new FormControl('');
-    this.group = new FormControl('');
-this.searname = new FormControl('');
-this.password = new FormControl('');
+    this.entityEditDescription = new FormControl('');
+    this.chosenFaculty = new FormControl('');
+    this.chosenSpeciality = new FormControl('');
+
+
     this.EntityEditForm = new FormGroup({
       'addname': this.entityAddName,
       'editname': this.entityEditName,
       'editdescription': this.entityEditDescription,
-      'studentfirstname': this.studentFirstName,
-      'studentsecondname': this.studentSecondName,
-      'searname': this.searname,
-      'password': this.password,
-      'confirmpassword': this.confirmpassword,
-      'group': this.group
+      'chosenfacultyId': this.chosenFaculty,
+      'chosenspecialityId': this.chosenSpeciality
     });
 
     if (this.entityId !== 0) {
       this.entityAddName.setValue('Hi');
+      this.entityEditDescription.setValue(this.Description);
       this.HEADER = 'Редагувати назву';
     } else {
       this.HEADER = 'Ввести назву';
     }
 
-    console.log(this.getAllGroups());
-
   }
 
 
-  confirmAddEdit() {
+  confirmFacultySpeciality() {
+    this.entityService = this.facultyService;
+      if (this.entityId === 0) {
+        this.entityService.addItem(this.entityAddName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
+      }
+      if (this.entityId !== 0) {
+        this.entityService.editItem(this.entityId, this.entityAddName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
+      }
+  };
 
-    if (this.entityId === 0) {
-      this.entityService.addItem(this.entityAddName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
-    }
-    if (this.entityId !== 0) {
-      this.entityService.editItem(this.entityId, this.entityEditName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
-    }
+  confirmGroup() {
+    this.entityService = this.groupService;
+      console.log('group works');
+      if (this.entityId === 0) {
+        this.entityService.createCroup(this.entityAddName.value, this.chosenSpeciality.value, this.chosenFaculty.value).subscribe((resp) => console.log(resp));
+      }
+      if (this.entityId !== 0) {
+        this.entityService.editGroup(this.entityId, this.entityAddName.value, this.chosenSpeciality.value, this.chosenFaculty.value).subscribe((resp) => console.log(resp));
+      }
+      this.EntityEditForm.reset();
   }
-
 
   goBack(): void {
     this.location.back();
   }
 
-  getAllGroups(){
-    this.groupService.getGroups().subscribe(resp => this.groups = resp);
-  }
 
   ValidatorUniqName(control: AbstractControl) {
     return this.facultyService.searchByName(control.value).map((resp: Faculty[]) => {

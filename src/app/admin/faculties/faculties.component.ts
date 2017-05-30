@@ -160,8 +160,7 @@ export class FacultiesComponent implements OnInit {
         'id': 0,
         'name': 0,
         'description': '',
-        'entityName': 'faculty'
-      }
+        'entity': 'faculty'      }
     });
   }
 
@@ -171,7 +170,7 @@ export class FacultiesComponent implements OnInit {
         'id': faculty['faculty_id'],
         'name': faculty['faculty_name'],
         'description': faculty['faculty_description'],
-        'entityName': 'faculty'
+        'entity': 'faculty'
       }
     });
   }
