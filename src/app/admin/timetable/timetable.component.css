@@ -12,3 +12,7 @@ td, th{
   margin-left: 10px;
   display: inline-block;
 }
+
+.error{
+  color: red;
+}
