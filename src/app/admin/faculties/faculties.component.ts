@@ -27,7 +27,7 @@ export class FacultiesComponent implements OnInit {
   facultyAddName: FormControl;
   facultyAddDescription: FormControl;
   modalHeader: string;
-  countPerPage: number = 5;
+  countPerPage: number = 10;
   add: boolean = false;
   id: number;
   ignoreProperties: string[];
