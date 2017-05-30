@@ -9,7 +9,6 @@ import { Group } from '../group/group';
 import { timeValidator } from './time-validator';
 import { GetRecordsRangeService } from '../services/get-records-range.service';
 import { StatisticsService } from '../statistics/statistics.service';
-import { GetRecordsBySearchService } from '../services/get-records-by-search.service';
 
 @Component({
   selector: 'app-timetable',
@@ -34,8 +33,7 @@ export class TimetableComponent implements OnInit {
               private getAllRecordsService: GetAllRecordsService,
               private deleteRecordByIdService: DeleteRecordByIdService,
               private getRecordsRangeService: GetRecordsRangeService,
-              private statisticsService: StatisticsService,
-              private getRecordsBySearchService: GetRecordsBySearchService) {
+              private statisticsService: StatisticsService) {
     this.newTimetableForm = new FormGroup({
       'group_id': new FormControl('', Validators.required),
       'subject_id': new FormControl('', Validators.required),
@@ -143,22 +141,5 @@ export class TimetableComponent implements OnInit {
   changePage(page: number) {
     this.page = page;
     this.getTimetables();
-  }
-  startSearch(criteria: string) {
-    if (criteria === '') {
-      this.getTimetables();
-      this.getCountRecords();
-    } else {
-      this.getRecordsBySearchService.getRecordsBySearch('subject', criteria).subscribe(resp => {
-          if (resp['response'] === 'no records') {
-            this.timeTables = [];
-            this.countRecords = this.timeTables.length;
-          } else {
-            this.countRecords = 0;
-            this.page = 2;
-            this.timeTables = resp;
-          }
-        });
-    }
   }
 }
