@@ -3,6 +3,10 @@ import { TimetableService } from './timetable.service';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { GetAllRecordsService } from '../services/get-all-records.service';
 import { DeleteRecordByIdService } from '../services/delete-record-by-id.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Timetable } from './timetable';
+import { Group } from '../group/group';
+import { timeValidator } from './time-validator';
 
 @Component({
   selector: 'app-timetable',
@@ -10,25 +14,39 @@ import { DeleteRecordByIdService } from '../services/delete-record-by-id.service
   styleUrls: ['./timetable.component.css']
 })
 export class TimetableComponent implements OnInit {
-  timeTables = [];
-  groups = [];
+  timeTables: Timetable[] = [];
+  groups: Group[] = [];
   subjects = [];
-  selectedTimetable;
-  updatedTimetable = {
-    groupId : '',
-    subjectId : '',
-    startDate : '',
-    startTime : '',
-    endDate : '',
-    endTime : ''
-  };
-
-  constructor(private timetableservice: TimetableService,
+  newTimetableForm: FormGroup;
+  updateTimetableForm: FormGroup;
+  deletedTimetable: Timetable;
+  updatedTimetable: Timetable;
+  constructor(private timetableService: TimetableService,
               private getRecordsByIdService: GetRecordsByIdService,
               private getAllRecordsService: GetAllRecordsService,
               private deleteRecordByIdService: DeleteRecordByIdService) { }
 
   ngOnInit() {
+    this.newTimetableForm = new FormGroup({
+      'group_id': new FormControl('', Validators.required),
+      'subject_id': new FormControl('', Validators.required),
+      'time_limits': new FormGroup({
+        'start_date': new FormControl('', Validators.required),
+        'start_time': new FormControl('', Validators.required),
+        'end_date': new FormControl('', Validators.required),
+        'end_time': new FormControl('', Validators.required)
+      }, timeValidator)
+    });
+    this.updateTimetableForm = new FormGroup({
+      'group_id': new FormControl('', Validators.required),
+      'subject_id': new FormControl('', Validators.required),
+      'time_limits': new FormGroup({
+        'start_date': new FormControl('', Validators.required),
+        'start_time': new FormControl('', Validators.required),
+        'end_date': new FormControl('', Validators.required),
+        'end_time': new FormControl('', Validators.required)
+      }, timeValidator )
+    });
     this.getTimetables();
     this.getGroups();
     this.getSubjects();
@@ -52,49 +70,42 @@ export class TimetableComponent implements OnInit {
       }
     });
   }
-
-  getSelectedTimetable(timetable) {
-    this.selectedTimetable = timetable;
-    this.updatedTimetable.groupId = timetable.group_id;
-    this.updatedTimetable.subjectId = timetable.subject_id;
-    this.updatedTimetable.startDate = timetable.start_date;
-    this.updatedTimetable.startTime = timetable.start_time;
-    this.updatedTimetable.endDate = timetable.end_date;
-    this.updatedTimetable.endTime = timetable.end_time;
+  createTimeTable() {
+    this.timetableService.createTimeTable(this.newTimetableForm.value)
+      .subscribe(() => {
+        this.getTimetables();
+      });
   }
-
-  getUpdatedTimetable(timetable) {
-    this.selectedTimetable = timetable;
-    this.updatedTimetable.groupId = timetable.group_id;
-    this.updatedTimetable.subjectId = timetable.subject_id;
-    this.updatedTimetable.startDate = timetable.start_date;
-    this.updatedTimetable.startTime = timetable.start_time;
-    this.updatedTimetable.endDate = timetable.end_date;
-    this.updatedTimetable.endTime = timetable.end_time;
-  }
-
-  deleteTimetable() {
-    this.deleteRecordByIdService.deleteRecordsById('timeTable', this.selectedTimetable.timetable_id).subscribe((data) => {
+  getUpdatedTimetable(timeTable) {
+    console.log(this.updateTimetableForm);
+    this.updatedTimetable = timeTable;
+    this.updateTimetableForm.setValue({
+      'group_id': timeTable.group_id,
+      'subject_id': timeTable.subject_id,
+      'time_limits': {
+        'start_date': timeTable.start_date,
+        'start_time': timeTable.start_time,
+        'end_date': timeTable.end_date,
+        'end_time': timeTable.end_time
+      }
     });
-    this.getTimetables();
   }
-
-  createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime) {
-    this.timetableservice.createTimeTable(groupId, subjectId, startDate, startTime, endDate, endTime)
-      .subscribe();
-    this.getTimetables();
+  updateTimeTable() {
+    console.log(this.newTimetableForm);
+    this.timetableService.updateTimeTable(this.updateTimetableForm.value, this.updatedTimetable.timetable_id)
+      .subscribe(() => {
+        this.getTimetables();
+        this.updateTimetableForm.reset();
+      });
   }
-  updateTimeTable(timetable_id) {
-    this.timetableservice.updateTimeTable(
-      timetable_id,
-      this.updatedTimetable.groupId,
-      this.updatedTimetable.subjectId,
-      this.updatedTimetable.startDate,
-      this.updatedTimetable.startTime,
-      this.updatedTimetable.endDate,
-      this.updatedTimetable.endTime)
-      .subscribe();
-    this.getTimetables();
+  getDeletedTimetable(timeTable) {
+    this.deletedTimetable = timeTable;
+  }
+  deleteTimetable() {
+    this.deleteRecordByIdService.deleteRecordsById('timeTable', this.deletedTimetable.timetable_id)
+      .subscribe(() => {
+        this.getTimetables();
+      });
   }
   getGroups() {
     this.getAllRecordsService.getAllRecords('group').subscribe((data) => {

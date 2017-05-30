@@ -8,11 +8,11 @@
   <tr *ngFor="let entity of entities; let i = index">
     <td>{{i + itemsPerPage * (page - 1) + 1}}</td>
     <ng-container *ngFor="let name of getProperties(entity)">
-      <td *ngIf="!ignoreProperties.includes(name)" (click)="clickEntityCallback(entity)">{{entity[name]}}</td>
+      <td *ngIf="!ignoreProperties?.includes(name)" (click)="clickEntityCallback(entity)">{{entity[name]}}</td>
     </ng-container>
     <td>
-      <button class="btn btn-sm btn-success" (click)="editEntityCallback(entity)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-      <button class="btn btn-sm btn-danger" (click)="deleteEntityCallback(entity)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+      <button *ngIf="canEdit" class="btn btn-sm btn-success" (click)="editEntityCallback(entity)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+      <button *ngIf="canDelete" class="btn btn-sm btn-danger" (click)="deleteEntityCallback(entity)"><i class="fa fa-trash" aria-hidden="true"></i></button>
     </td>
   </tr>
   </tbody>

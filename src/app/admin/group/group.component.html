@@ -165,5 +165,5 @@
   <dtester-pagination [countRecords]="countRecords" [recordsPerPage]="offset" [currentPage]="pageNumber"
   (pageChanged)="changePage($event)"></dtester-pagination>
 </div>
-<dtester-items-per-page [recordsPerPage]="groupsOnPage" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
+<dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
 

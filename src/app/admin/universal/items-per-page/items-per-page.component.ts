@@ -6,10 +6,9 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
   styleUrls: ['./items-per-page.component.css']
 })
 export class ItemsPerPageComponent implements OnInit {
-  @Input() recordsPerPage: number;
+  @Input() numberOfRecords: number;
   @Output() recordsPerPageChanged: EventEmitter<number> = new EventEmitter();
-  NUMBER_OF_PAGE_RECORDS = [5, 10, 20];
-  itemsPerPage: number;
+  numberOfRecordsOnPage = [5, 10, 20];
 
   constructor() { }
 

@@ -32,7 +32,10 @@ import {EditStudentComponent} from './students/edit-student/edit-student.compone
 import {DeleteStudentComponent} from './students/delete-student/delete-student.component';
 import {PopupComponent} from './popup/popup.component';
 import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page.component';
-
+import { ResultsComponent } from './results/results.component';
+import {ResultsService} from './services/results.service';
+import {AddeditComponent} from './addedit/addedit.component';
+import {ExitAboutGuard} from '../guards/exit.about.guard';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,9 @@ import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page
     DeleteStudentComponent,
     StudentsComponent,
     PopupComponent,
-    ItemsPerPageComponent
+    ItemsPerPageComponent,
+    ResultsComponent,
+    AddeditComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -66,6 +71,7 @@ import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page
   ],
   providers: [
     StatisticsService,
+    ResultsService,
     SpecialitiesService,
     TimetableService,
     GetRecordsByIdService,
@@ -73,7 +79,8 @@ import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page
     GetAllRecordsService,
     DeleteRecordByIdService,
     SubjectService,
-    StudentsService
+    StudentsService,
+    ExitAboutGuard
   ],
   entryComponents: [
     AddStudentComponent,

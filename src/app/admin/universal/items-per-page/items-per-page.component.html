@@ -1,3 +1,5 @@
 <select  #s (change)="getNumberRecords(s.value)">
-  <option *ngFor="let i of NUMBER_OF_PAGE_RECORDS" >{{i}}</option>
+  <!--<option value="">Select Option</option>-->
+  <option *ngFor="let i of numberOfRecordsOnPage" >{{i}}</option>
+  <option value="{{numberOfRecords}}">Всі</option>
 </select>

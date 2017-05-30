@@ -32,7 +32,11 @@ export class GroupComponent implements OnInit {
   ignoreProperties: string[];
 
 
-  constructor(private getGroupsService: GroupService, private spesialityService: SpecialitiesService, private facultyService: FacultyService, private route: ActivatedRoute, private router: Router ) {}
+  constructor(private getGroupsService: GroupService,
+              private spesialityService: SpecialitiesService,
+              private facultyService: FacultyService,
+              private route: ActivatedRoute,
+              private router: Router ) {}
   ngOnInit() {
     this.headers = GROUPS_HEADERS;
     this.ignoreProperties = IGNORE_PROPERTIES;
@@ -127,7 +131,7 @@ export class GroupComponent implements OnInit {
     if (this.pageNumber > 1 ) {
       this.pageNumber--;
     } else {
-      this.pageNumber = numberOfLastPage
+      this.pageNumber = numberOfLastPage;
     }
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
       .subscribe((data) => {

@@ -62,9 +62,9 @@ export class EditStudentComponent implements OnInit {
       this.student.password_confirm = '';
       this.student.email = '';
       this.student.gradebook_id = '';
-      this.student.student_surname = '';
-      this.student.student_name = '';
-      this.student.student_fname = '';
+      this.student.name.student_surname = '';
+      this.student.name.student_name = '';
+      this.student.name.student_fname = '';
       this.student.group_id = 1;
       this.student.plain_password = '';
       this.student.photo = '';

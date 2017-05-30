@@ -12,7 +12,7 @@ import { PopupComponent } from '../popup/popup.component';
 
 export class SpecialitiesComponent implements OnInit {
 
-  SPECIALITIES_HEADERS: string[] = ['пор.номер', 'код спеціальності', 'назва спеціальності', 'дії'];
+  SPECIALITIES_HEADERS: string[] = ['№', 'код спеціальності', 'назва спеціальності'];
   IGNORE_PROPERTIES: string[] = ['speciality_id'];
   NO_RECORDS: string = 'no records';
   SPECIALITIES_HEADER: string = 'Спеціальності';
@@ -110,17 +110,22 @@ export class SpecialitiesComponent implements OnInit {
   }
 
   startSearch(criteria: string) {         /* callback method for output in search component */
+  if (criteria === '') {
+    this.getSpecialities();
+    this.getCount();
+  } else {
     this.specialitiesService.searchByName(criteria).subscribe(resp => {
-      if (resp['response'].toString() === this.NO_RECORDS) {    /* check condition: if no records presented for search criteria */
+      if (resp['response'] === this.NO_RECORDS) {    /* check condition: if no records presented for search criteria */
         this.specialities = [];
         this.count = this.specialities.length;
       } else {
-        this.page = 1;
-        this.count = resp.length;                 /* if records are present than set specialities count to calculate pagination pages */
-        this.specialities = resp.slice(0, this.countPerPage);  /* present only paginated specialities */
+        this.count = 0;
+        this.page = 2;
+        this.specialities = resp;         /* present all specialities */
       }
     },
       err => this.router.navigate(['/bad_request']));
+  }
   }
 }
 

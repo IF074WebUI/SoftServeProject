@@ -5,9 +5,9 @@
   <dtester-search (searchCriteria)="search($event)"></dtester-search>
 </div>
 <!--Common component to display entities-->
-<dtester-entities-table [entities]="faculties" [headers]="headers" (deleteEntity)="deleteFaculty($event, delContent)"
+<dtester-entities-table [entities]="faculties" [headers]="headers"  [ignoreProperties]="ignoreProperties" (deleteEntity)="deleteFaculty($event, delContent)"
                 [page]="page" [itemsPerPage]="countPerPage"
-                (editEntity)="editFaculty($event, editContent)"
+                (editEntity)="editFacultyUniversal($event)"
                 (clickEntity)="getGroupsByFaculties($event)"></dtester-entities-table>
 <!--Pagination component-->
 <div class="text-center">
@@ -39,7 +39,7 @@
 <ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
 -->
 
-<button class="btn btn-lg btn-outline-primary" (click)="addFaculty(addContent)"> Створити новий факультет</button>
+<button class="btn btn-lg btn-outline-primary" (click)="addFacultyUniversal()"> Створити новий факультет</button>
 
 <button routerLink="/sidekicks">Go to sidekicks</button>
 <!-- Modal popup for adding -->
@@ -61,7 +61,7 @@
         *ngIf="facultyAddForm.controls['name'].hasError('required') && facultyAddForm.controls['name'].touched"
         class="validate_message">Вкажіть назву факультету</span>
       <span
-        *ngIf="facultyAddForm.controls['name'].hasError('exists') && facultyAddForm.controls['name'].dirty"
+        *ngIf="facultyAddForm.controls['name'].hasError('exists') && facultyAddForm.controls['name'].pristine"
         class="validate_message">Факультет з такою назвою вже існує</span>
       <textarea formControlName='description' type="text" name='description' required
                 class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
