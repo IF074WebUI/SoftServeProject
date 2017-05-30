@@ -1,13 +1,15 @@
 <h2>Розклад проведення тестування</h2>
+<dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
 <dtester-entities-table [entities]="timeTables"
                         [headers]="headers"
                         [page]="page"
-                        [itemsPerPage]="countPerPage"
+                        [itemsPerPage]="recordsPerPage"
                         (editEntity)="getUpdatedTimetable($event)"
                         (deleteEntity)="getDeletedTimetable($event)"
                         [ignoreProperties]="ignoreProperties">
-
 </dtester-entities-table>
+<dtester-pagination [countRecords]="countRecords" [recordsPerPage]="recordsPerPage" [currentPage]="page"
+                    (pageChanged)="changePage($event)"></dtester-pagination>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-new-timetabel" data-whatever="@mdo">Запланувати тестування</button>
 
 <!--modal of adding new timetable-->

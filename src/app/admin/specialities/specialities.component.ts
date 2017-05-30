@@ -14,7 +14,7 @@ export class SpecialitiesComponent implements OnInit {
 
   SPECIALITIES_HEADERS: string[] = ['№', 'код спеціальності', 'назва спеціальності'];
   IGNORE_PROPERTIES: string[] = ['speciality_id'];
-  NO_RECORDS: string = 'no records';
+  NO_RECORDS: string = '';
   SPECIALITIES_HEADER: string = 'Спеціальності';
   SPECIALITIES_ADD_TITLE: string = 'Додати спеціальність';
   FIRST_DROPDOWN_ITEM: number = 5;

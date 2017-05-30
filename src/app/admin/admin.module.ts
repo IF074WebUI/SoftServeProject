@@ -35,6 +35,8 @@ import { ResultsComponent } from './results/results.component';
 import {ResultsService} from './services/results.service';
 import {AddeditComponent} from './addedit/addedit.component';
 import {ExitAboutGuard} from '../guards/exit.about.guard';
+import {GetRecordsRangeService} from './services/get-records-range.service';
+import {GetRecordsBySearchService} from './services/get-records-by-search.service';
 
 @NgModule({
   declarations: [
@@ -78,7 +80,9 @@ import {ExitAboutGuard} from '../guards/exit.about.guard';
     DeleteRecordByIdService,
     SubjectService,
     StudentsService,
-    ExitAboutGuard
+    ExitAboutGuard,
+    GetRecordsRangeService,
+    GetRecordsBySearchService
   ],
   entryComponents: [
     AddStudentComponent,
