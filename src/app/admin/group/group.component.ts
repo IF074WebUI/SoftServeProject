@@ -23,7 +23,7 @@ export class GroupComponent implements OnInit {
   groupforDelete: Group;
   NO_RECORDS: string = 'no records';
   selectetGroup: Group;
-  pageNumber: number;
+  pageNumber: number = 1;
   offset = 5;   /*number of the records for the stating page*/
   countRecords: number;
   selectedFacultyValue: number;
@@ -41,9 +41,7 @@ export class GroupComponent implements OnInit {
     this.headers = GROUPS_HEADERS;
     this.ignoreProperties = IGNORE_PROPERTIES;
 
-    this.uploadPage();
-    this.getCountRecords();
-
+    this.getGroups();
 
     // let facultyId = this.route.snapshot.queryParams['facultyId'];
     // console.log(facultyId);
@@ -84,7 +82,6 @@ export class GroupComponent implements OnInit {
   }
 // updatePage
   uploadPage() {
-    this.pageNumber = 1;
     this.getCountRecords();
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
       .subscribe((data) => {
@@ -93,12 +90,13 @@ export class GroupComponent implements OnInit {
   }
 
   getGroups(): void {
+    this.getCountRecords()
     /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.countRecords <= (this.pageNumber - 1) * this.offset) {
       --this.pageNumber;
     }
-    this.getGroupsService.getPaginatedPage(this.offset, (this.pageNumber - 1) * this.offset)
-      .subscribe(resp => this.groupsOnPage = resp, err => this.router.navigate(['/bad_request']));
+    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
+      .subscribe(resp => this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']));
   }
 // select for editing
   selectedGroup(group: Group) {
