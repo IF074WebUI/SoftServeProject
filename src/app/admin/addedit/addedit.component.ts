@@ -4,6 +4,8 @@ import {FacultyService} from '../faculties/faculty.service';
 import {Faculty} from '../faculties/Faculty';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
+import {ComponentCanDeactivate} from '../../guards/exit.about.guard';
+import {Observable} from 'rxjs/Rx';
 
 
 @Component({
@@ -12,7 +14,7 @@ import {Location} from '@angular/common';
   styleUrls: ['./addedit.component.css'],
   providers: [FacultyService]
 })
-export class AddeditComponent implements OnInit {
+export class AddeditComponent implements OnInit, ComponentCanDeactivate {
   entityId: number;
   entityAddName: FormControl;
   entityAddDescription: FormControl;
@@ -21,10 +23,12 @@ export class AddeditComponent implements OnInit {
   EntityEditForm: FormGroup;
   entityEditName: FormControl;
   entity: Faculty = new Faculty;
-  add: boolean = false;
-  edit: boolean = true;
   Name: string;
-  Description: string
+  Description: string;
+  add: boolean;
+  edit: boolean;
+  HEADER: string;
+  DESCRIPTION: string = 'Ввести опис';
 
   constructor(private facultyService: FacultyService, private location: Location, private route: ActivatedRoute, private router: Router) {
     this.entityId = +this.route.snapshot.queryParams['id'];
@@ -33,32 +37,29 @@ export class AddeditComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    console.log(this.Name);
-    this.facultyService.getFacultyById(this.entityId).subscribe(resp => {
-      this.entity = resp
-    });
-    console.log(this.entity);
-
-    this.entityEditName = new FormControl('', Validators.required);
-    this.entityEditDescription = new FormControl('');
+    this.entityAddName = new FormControl('', Validators.required, this.ValidatorUniqName.bind(this));
+    this.entityEditName = new FormControl(this.Name, Validators.required);
+    this.entityEditDescription = new FormControl(this.Description);
     this.EntityEditForm = new FormGroup({
+      'addname': this.entityAddName,
       'editname': this.entityEditName,
       'editdescription': this.entityEditDescription
     });
+    if (this.entityId !== 0) {
+      this.entityAddName.setValue('Hi');
+      this.HEADER = 'Редагувати назву'; } else {
+      this.HEADER = 'Ввести назву'; }
 
-    this.entityEditName.setValue(this.Name);
-    this.entityEditDescription.setValue(this.Description);
+
   }
 
 
   confirmAddEdit() {
 
     if (this.entityId === 0) {
-      console.log('works')
-     this.facultyService.addItem(this.entityEditName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
+      this.facultyService.addItem(this.entityAddName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
     }
-    if (this.entityId != 0) {
+    if (this.entityId !== 0) {
       this.facultyService.editItem(this.entityId, this.entityEditName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
     }
   }
@@ -79,4 +80,20 @@ export class AddeditComponent implements OnInit {
       }
     );
   }
+
+  saved: boolean = false;
+  save(){
+    this.saved = true;
+  }
+
+  canDeactivate() : boolean | Observable<boolean>{
+
+    if(!this.saved){
+      return confirm("Вы хотите покинуть страницу?");
+    }
+    else{
+      return true;
+    }
+  }
 }
+

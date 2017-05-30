@@ -1,32 +1,13 @@
 <h2>Розклад проведення тестування</h2>
-<table class="table">
-  <tr>
-    <th>ID</th>
-    <th>Навчальна група</th>
-    <th>Предмет</th>
-    <th>Час початку тестування</th>
-    <th>Час закінчення тестування</th>
-    <th></th>
-    <th></th>
-  </tr>
-  <tr *ngFor="let timeTable of timeTables">
-    <td>{{timeTable.timetable_id}}</td>
-    <td>{{timeTable.group_name}}</td>
-    <td>{{timeTable.subject_name}}</td>
-    <td><span>{{timeTable.start_time}}</span><br><span>{{timeTable.start_date}}</span></td>
-    <td><span>{{timeTable.end_time}}</span><br><span>{{timeTable.end_date}}</span></td>
-    <td>
-      <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-success btn-sm" (click)="getUpdatedTimetable(timeTable)" data-toggle="modal" data-target="#modal-update-timetabel" data-whatever="@mdo">
-          <i class="fa fa-pencil" aria-hidden="true"></i>
-        </button>
-        <button type="button" class="btn btn-danger btn-sm" (click)="getDeletedTimetable(timeTable)" data-toggle="modal" data-target="#modal-delete-timetabel" data-whatever="@mdo">
-          <i class="fa fa-trash" aria-hidden="true"></i>
-        </button>
-      </div>
-    </td>
-  </tr>
-</table>
+<dtester-entities-table [entities]="timeTables"
+                        [headers]="headers"
+                        [page]="page"
+                        [itemsPerPage]="countPerPage"
+                        (editEntity)="getUpdatedTimetable($event)"
+                        (deleteEntity)="getDeletedTimetable($event)"
+                        [ignoreProperties]="ignoreProperties">
+
+</dtester-entities-table>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-new-timetabel" data-whatever="@mdo">Запланувати тестування</button>
 
 <!--modal of adding new timetable-->
