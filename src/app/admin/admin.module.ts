@@ -35,6 +35,9 @@ import { ResultsComponent } from './results/results.component';
 import {ResultsService} from './services/results.service';
 import {AddeditComponent} from './addedit/addedit.component';
 import {ExitAboutGuard} from '../guards/exit.about.guard';
+import {HistoryLinksService} from "./services/history-links.service";
+import { HistoryLinksComponent } from './history-links/history-links.component';
+import {LinksPipe} from "./pipes/links.pipe";
 
 @NgModule({
   declarations: [
@@ -50,13 +53,15 @@ import {ExitAboutGuard} from '../guards/exit.about.guard';
     PaginationComponent,
     EntitiesTableComponent,
     SearchComponent,
+    LinksPipe,
     AddStudentComponent,
     EditStudentComponent,
     DeleteStudentComponent,
     StudentsComponent,
     PopupComponent,
     ResultsComponent,
-    AddeditComponent
+    AddeditComponent,
+    HistoryLinksComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -71,6 +76,7 @@ import {ExitAboutGuard} from '../guards/exit.about.guard';
     StatisticsService,
     ResultsService,
     SpecialitiesService,
+    HistoryLinksService,
     TimetableService,
     GetRecordsByIdService,
     GroupService,

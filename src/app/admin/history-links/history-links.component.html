@@ -1,0 +1,2 @@
+<span>Історія переходів: </span><span *ngFor="let link of links; let l=last"><a [routerLink]="[link]" >{{link | links}}<span *ngIf="!l">/</span></a></span>
+<span [routerLink]="['results']" [queryParams]="{student: 1}">gooooooo</span>
