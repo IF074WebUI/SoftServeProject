@@ -71,12 +71,11 @@ export class StudentsComponent implements OnInit {
   ngOnInit() {
     // this.headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові'];
     // this.ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
-    this.studentsService.getAllStudents().subscribe((data) => {
-      this.students = data;
-    });
+    // this.studentsService.getAllStudents().subscribe((data) => {
+    //   this.students = data;
+    // });
+    // this.getCount();
     this.getStudents();
-    this.getCount();
-
     const  groupId = this.route.snapshot.queryParams['group_id'];
     if (groupId) {
       this.studentsService.getStudentsByGroupId(groupId).subscribe(resp => {
