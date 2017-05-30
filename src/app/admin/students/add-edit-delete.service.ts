@@ -69,7 +69,7 @@ export class AddEditDeleteService {
         'photo': photo
       }
     );
-    return this.http.post('http://' + HOST + '/Student/update' + user_id, body).map(resp => resp.json());
+    return this.http.post('http://' + HOST + '/Student/update/' + user_id, body).map(resp => resp.json());
   }
 
   delete(user_id: number) {

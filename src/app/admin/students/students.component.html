@@ -19,14 +19,14 @@
     <td>{{student.student_fname}}</td>
     <td class="text-center"><i class="fa fa-user" aria-hidden="true"></i>
     </td>
-    <td class="text-center"><button (click)="selectedStudent(student)" type="button" class="btn btn-success btn-edit" data-toggle="modal" data-target="#editModal" data-whatever="@mdo">
+    <td class="text-center"><button (click)="selectedStudent(student)" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalEdit" data-whatever="@mdo">
       <i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-    <td class="text-center"><button (click)="selectedStudent(student)" type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalDel" data-whatever="@mdo">
+    <td class="text-center"><button (click)="selectedStudent(student)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDel" data-whatever="@mdo">
       <i class="fa fa-trash" aria-hidden="true"></i></button></td>
   </tr>
   </tbody>
 </table>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAdd" data-whatever="@mdo"></button>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAdd" data-whatever="@mdo">{{modalAdd}}</button>
 <div class="text-center">
   <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
                       (pageChanged)="changePage($event)"></dtester-pagination>
@@ -38,7 +38,7 @@
     <div class="modal-content">
       <form #addForm="ngForm" [formGroup]="studentForm" method="post">
         <fieldset>
-          <legend>{{modalAddHeader}}</legend>
+          <legend>{{modalAdd}}</legend>
           <div class="form-group">
             <label for="name">{{modalName}}</label>
             <input formControlName="name" type="text" class="form-control" id="name" name="name" required >
@@ -59,8 +59,8 @@
             <label for="password_confirm">{{modalConfirmPassword}}</label>
             <input formControlName="password_confirm" type="password" class="form-control" id="password_confirm" name="password" required>
           </div>
-          <button class="btn btn-success" type="submit" name="add" (click)="addStudent(addForm)" data-dismiss="modal">{{modalAdd}}</button>
-          <button class="btn btn-secondary" type="button" name="add" data-dismiss="modal">{{modalCansel}}</button>
+          <button class="btn btn-success my-button" type="submit" name="add" (click)="addStudent(addForm)" data-dismiss="modal">{{modalAdd}}</button>
+          <button class="btn btn-secondary my-button" type="button" name="add" data-dismiss="modal">{{modalCansel}}</button>
         </fieldset>
       </form>
     </div>
@@ -73,29 +73,39 @@
     <div class="modal-content">
 <form #delForm="ngForm">
   <fieldset>
-    <legend>{{modalDelHeader}}</legend>
+    <legend class="del-legend">{{modalDelHeader}}</legend>
     <h2>{{modalDelBody}}</h2>
-    <button (click)="deleteStudent()" type="button" class="btn btn-primary" data-dismiss="modal">Видалити</button>
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{modalCansel}}</button>
+    <button (click)="deleteStudent()" type="submit" class="btn btn-danger my-button" data-dismiss="modal">Видалити</button>
+    <button type="button" class="btn btn-secondary my-button" data-dismiss="modal">{{modalCansel}}</button>
   </fieldset>
 </form>
+    </div>
+  </div>
+</div>
 
-<!--<form #editForm="ngForm" [formGroup]="studentEditForm" method="post">-->
-  <!--<fieldset>-->
-    <!--<legend>{{modalEditHeader}}</legend>-->
-    <!--<div class="form-group">-->
-      <!--<label for="editName">{{modalName}}</label>-->
-      <!--<input formControlName="editName" type="text" class="form-control" id="editName" name="name" required >-->
-    <!--</div>-->
-    <!--<div class="form-group">-->
-      <!--<label for="editSurname">{{modalSurname}}</label>-->
-      <!--<input formControlName="editSurname" type="text" class="form-control" id="editSurname" name="surname" required>-->
-    <!--</div>-->
-    <!--<div class="form-group">-->
-      <!--<label for="editF_name">{{modalFname}}</label>-->
-      <!--<input formControlName="editF_name" type="text" class="form-control" id="editF_name" name="surname" required>-->
-    <!--</div>-->
-    <!--<button class="btn btn-success" type="submit" name="add" (click)="editStudent(editForm)">{{modalEdit}}</button>-->
-    <!--<button class="btn btn-secondary" type="submit" name="add" (click)="cansel()">{{modalCansel}}</button>-->
-  <!--</fieldset>-->
-<!--</form>-->
+<div [ngClass]="{'modal': true, 'fade': true, 'show': showModal}" id="modalEdit" tabindex="-1"
+     role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form #editForm="ngForm" [formGroup]="studentEditForm" method="post">
+        <fieldset>
+          <legend class="edit-legend">{{modalEditHeader}}</legend>
+          <div class="form-group">
+            <label for="editName">{{modalName}}</label>
+            <input formControlName="editName" type="text" class="form-control" id="editName" name="name" required >
+          </div>
+          <div class="form-group">
+            <label for="editSurname">{{modalSurname}}</label>
+            <input formControlName="editSurname" type="text" class="form-control" id="editSurname" name="surname" required>
+          </div>
+          <div class="form-group">
+            <label for="editF_name">{{modalFname}}</label>
+            <input formControlName="editF_name" type="text" class="form-control" id="editF_name" name="surname" required>
+          </div>
+          <button class="btn btn-success my-button" type="submit" (click)="editStudent(editForm)" data-dismiss="modal">{{modalEdit}}</button>
+          <button class="btn btn-secondary my-button" type="button" data-dismiss="modal">{{modalCansel}}</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
