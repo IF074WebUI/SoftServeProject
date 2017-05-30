@@ -32,8 +32,8 @@ import {EditStudentComponent} from './students/edit-student/edit-student.compone
 import {DeleteStudentComponent} from './students/delete-student/delete-student.component';
 import {PopupComponent} from './popup/popup.component';
 import { ResultsComponent } from './results/results.component';
-import {ResultsService} from "./services/results.service";
-import {AddeditComponent} from "./addedit/addedit.component";
+import {ResultsService} from './services/results.service';
+import {AddeditComponent} from './addedit/addedit.component';
 
 @NgModule({
   declarations: [

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ResultsService} from '../services/results.service';
 import {Result} from './result';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'dtester-results',
@@ -18,12 +18,35 @@ export class ResultsComponent implements OnInit {
   countPerPage: number = 5;
   page: number = 1;
 
-  constructor(private resultsService: ResultsService, private router: Router) {
+  constructor(private resultsService: ResultsService, private router: Router, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.getResults();
-    this.getCount();
+    this.activatedRoute.queryParams.subscribe(params => {
+      let studentId = params['student'];
+      let testId = params['test'];
+      let groupId = params['group'];
+      let date = params['date'];
+      if (studentId) {
+        console.log(studentId);
+        this.resultsService.getAllByStudent(studentId).subscribe((resp: Result[]) => {
+          this.results = resp;
+        }, err => this.router.navigate(['/bad_request']));
+      } else if (testId && groupId) {
+        this.resultsService.getAllByTestGroupDate(testId, groupId, date).subscribe((resp: Result[]) => {
+          this.results = resp;
+        }, err => this.router.navigate(['/bad_request']));
+      } else if (groupId) {
+        this.resultsService.getPassedTestsByGroup(groupId).subscribe((resp: Result[]) => {
+          this.RESULTS_HEADERS = ['№', 'id тесту'];
+          this.results = resp;
+        }, err => this.router.navigate(['/bad_request']));
+      } else {
+        this.getResults();
+        this.getCount();
+      }
+      }
+    );
   }
 
   getResults(): void {

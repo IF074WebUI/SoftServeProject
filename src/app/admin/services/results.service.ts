@@ -15,11 +15,27 @@ export class ResultsService {
   }
 
   getAll(): Observable<Result[]> {
-    return this.http.get(`${RESULT_URI}getRecords`).map((resp: Response) => resp.json());
+    return this.http.get(`${RESULT_URI}/getRecords`).map((resp: Response) => resp.json());
   }
 
-  getAllByStudent(id: number): Observable<Result[]> {
-    return this.http.get((`${RESULT_URI}getRecordsbyStudent/${id}`)).map((resp: Response) => resp.json());
+  getAllByStudent(studentId: number): Observable<Result[]> {
+    return this.http.get(`${RESULT_URI}/getRecordsbyStudent/${studentId}`).map((resp: Response) => resp.json());
+  }
+
+  countPassedByStudent(studentId: number, testId: number): Observable<number> {
+    return this.http.get(`${RESULT_URI}/countTestPassesByStudent/${studentId}}/${testId}`).map((resp: Response) => resp.json());
+  }
+
+  getAllByTestGroupDate(testId: number, groupId: number, date: Date): Observable<Result[]> {
+    if (date) {
+      return this.http.get(`${RESULT_URI}/getRecordsByTestGroupDate/${testId}/${groupId}/${date}`).map((resp: Response) => resp.json());
+    } else {
+      return this.http.get(`${RESULT_URI}/getRecordsByTestGroupDate/${testId}/${groupId}`).map((resp: Response) => resp.json());
+    }
+  }
+
+  getPassedTestsByGroup(groupId: number) {
+    return this.http.get(`${RESULT_URI}/getResultTestIdsByGroup/${groupId}`).map((resp: Response) => resp.json());
   }
 
   getPaginated(limit: number, offset: number): Observable<Result[]> {
