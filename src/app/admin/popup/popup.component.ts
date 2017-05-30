@@ -69,6 +69,7 @@ export class PopupComponent implements OnInit {
       saveOrEditSpeciality['speciality_id'] = this.speciality.speciality_id;
       this.editSpeciality.emit(saveOrEditSpeciality);
     }
+    this.specialitiesForm.reset();
   }
 
   delSpeciality() {

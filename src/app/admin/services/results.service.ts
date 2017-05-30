@@ -18,6 +18,10 @@ export class ResultsService {
     return this.http.get(`${RESULT_URI}getRecords`).map((resp: Response) => resp.json());
   }
 
+  getAllByStudent(id: number): Observable<Result[]> {
+    return this.http.get((`${RESULT_URI}getRecordsbyStudent/${id}`)).map((resp: Response) => resp.json());
+  }
+
   getPaginated(limit: number, offset: number): Observable<Result[]> {
     return this.http.get(`${RESULT_URI}/getRecordsRange/${limit}/${offset}`).map((resp: Response) => resp.json());
   }
@@ -29,6 +33,7 @@ export class ResultsService {
   getCount(): Observable<number> {
     return this.http.get(`${RESULT_URI}/countRecords`).map((resp: Response) => resp.json()['numberOfRecords']);
   }
+
 
   delete(id: number): Observable<Result> {
     return this.http.delete(`${RESULT_URI}/del/${id}`).map((resp: Response) => resp.json());
