@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentsService} from './students.service';
 import { Router } from '@angular/router';
-import { AddStudentComponent } from './add-student/add-student.component';
-import { EditStudentComponent } from './edit-student/edit-student.component';
-import { DeleteStudentComponent } from './delete-student/delete-student.component';
-import { AddEditDeleteService } from './add-edit-delete.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Student } from './student';
 import { ActivatedRoute } from '@angular/router';
@@ -13,27 +9,27 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'dtester-students',
   templateUrl: './students.component.html',
   styleUrls: ['./students.component.css'],
-  providers: [AddEditDeleteService]
+  providers: [StudentsService]
 })
 export class StudentsComponent implements OnInit {
 
-  headers: string[] = [];
-  ignoreProperties: string[] = [];
-  mainHeader = 'Студенти';
+  // headers: string[] = [];
+  // ignoreProperties: string[] = [];
 
-  modalAdd = 'Додати студента';
-  modalName = 'Ім\'я:';
-  modalSurname = 'Прізвище:';
-  modalFname = 'Пo-батькові:';
-  modalPassword = 'Пароль:';
-  modalConfirmPassword = 'Підтвердіть пароль:';
-  modalAddAction = 'Додати';
-  modalCansel = 'Відміна';
-  modalDelHeader = 'Видалення';
-  modalDelBody = 'Ви дійсно хочете видалити студента?';
-  modalDel = 'Видалити';
-  modalEditHeader = 'Редагувати студента';
-  modalEdit = 'Редагувати';
+  MAIN_HEADER = 'Студенти';
+  MODAL_ADD = 'Додати студента';
+  MODAL_NAME = 'Ім\'я:';
+  MODAL_SURNAME = 'Прізвище:';
+  MODAL_F_NAME = 'Пo-батькові:';
+  MODAL_PASSWORD = 'Пароль:';
+  MODAL_CONFIRM_PASSWORD = 'Підтвердіть пароль:';
+  MODAL_ADD_ACTION = 'Додати';
+  MODAL_CANSEL = 'Відміна';
+  MODAL_DEL_HEADER = 'Видалення';
+  MODAL_DEL_BODY = 'Ви дійсно хочете видалити студента?';
+  MODAL_DEL = 'Видалити';
+  MODAL_EDIR_HEADER = 'Редагувати студента';
+  MODAL_EDIT = 'Редагувати';
 
   student: Student = new Student();
   studentForEdit: Student;
@@ -70,12 +66,11 @@ export class StudentsComponent implements OnInit {
   studentEditPlainPassword: string;
   studentUser_id: FormControl;
 
-  constructor(private studentsService: StudentsService, private addEditDeleteService: AddEditDeleteService,
-              private router: Router, private route: ActivatedRoute) {}
+  constructor(private studentsService: StudentsService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові'];
-    this.ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
+    // this.headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові'];
+    // this.ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
     this.studentsService.getAllStudents().subscribe((data) => {
       this.students = data;
     });
@@ -148,13 +143,13 @@ export class StudentsComponent implements OnInit {
   }
 
   deleteStudent() {
-     this.addEditDeleteService.delete(this.studentForDel['user_id']).subscribe(resp => {
+     this.studentsService.delete(this.studentForDel['user_id']).subscribe(resp => {
        this.getStudents();
      });
   }
 
   addStudent() {
-    this.addEditDeleteService.insert(
+    this.studentsService.insert(
       this.studentUsername = 'test' + Math.random(),
       this.studentPassword.value,
       this.studentPasswordConfirm.value,
@@ -174,7 +169,7 @@ export class StudentsComponent implements OnInit {
 
   editStudent() {
     this.studentUser_id.setValue(this.studentForEdit['user_id']);
-    this.addEditDeleteService.update(
+    this.studentsService.update(
       this.studentEditUsername = 'test' + Math.random(),
       this.studentEditPassword = '1qaz2wsx',
       this.studentEditPasswordConfirm = '1qaz2wsx',
@@ -191,5 +186,16 @@ export class StudentsComponent implements OnInit {
       this.getStudents();
     });
     this.studentEditForm.reset();
+  }
+
+  searchStudent(criteria: string){
+    this.studentsService.searchByName(criteria).subscribe(resp => {
+      if (resp['response'] === 'no records') {
+        this.students = [];
+      } else {
+        this.students = <Student[]> resp;
+        this.count = this.students.length;
+      }
+    });
   }
 }
