@@ -13,8 +13,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class StudentsComponent implements OnInit {
 
-  // headers: string[] = [];
-  // ignoreProperties: string[] = [];
+  headers: string[] = [];
+  ignoreProperties: string[] = [];
 
   MAIN_HEADER = 'Студенти';
   MODAL_ADD = 'Додати студента';
@@ -39,38 +39,39 @@ export class StudentsComponent implements OnInit {
   count: number;
   countPerPage = 10;
 
+  studentData = {};
   studentName: FormControl;
   studentSurname: FormControl;
   studentFname: FormControl;
   studentPassword: FormControl;
   studentPasswordConfirm: FormControl;
   studentForm: FormGroup;
-  studentEmail: string;
-  studentGradebookId: string;
-  studentUsername: string;
-  studentPhoto: any;
-  studentGroupId: number;
-  studentPlainPassword: string;
+  studentEmail = 'test' + Math.random() + '@mail.if.ua';
+  studentGradebookId = 'If-' + Math.random().toFixed(9);
+  studentUsername = 'test' + Math.random();
+  studentPhoto = '';
+  studentGroupId = 1;
+  studentPlainPassword = '1qaz2wsx';
 
+  studentEditData = {};
   studentEditName: FormControl;
   studentEditSurname: FormControl;
   studentEditFname: FormControl;
-  studentEditPassword: string;
-  studentEditPasswordConfirm: string;
+  studentEditPassword = '1qaz2wsx';
+  studentEditPasswordConfirm = '1qaz2wsx';
   studentEditForm: FormGroup;
-  studentEditEmail: string;
-  studentEditGradebookId: string;
-  studentEditUsername: string;
-  studentEditPhoto: any;
-  studentEditGroupId: number;
-  studentEditPlainPassword: string;
-  studentUser_id: FormControl;
+  studentEditEmail = 'test' + Math.random() + '@mail.if.ua';
+  studentEditGradebookId = 'If-' + Math.random().toFixed(9);
+  studentEditUsername = 'test' + Math.random();
+  studentEditPhoto = '';
+  studentEditGroupId = 1;
+  studentEditPlainPassword = '1qaz2wsx';
 
   constructor(private studentsService: StudentsService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    // this.headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові'];
-    // this.ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
+    this.headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові'];
+    this.ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
     // this.studentsService.getAllStudents().subscribe((data) => {
     //   this.students = data;
     // });
@@ -93,9 +94,9 @@ export class StudentsComponent implements OnInit {
     this.studentPassword = new FormControl('');
     this.studentPasswordConfirm = new FormControl('');
     this.studentForm = new FormGroup({
-      'name': this.studentName,
-      'surname': this.studentSurname,
-      'f_name': this.studentFname,
+      'student_name': this.studentName,
+      'student_surname': this.studentSurname,
+      'student_fname': this.studentFname,
       'password': this.studentPassword,
       'password_confirm': this.studentPasswordConfirm
     });
@@ -103,13 +104,31 @@ export class StudentsComponent implements OnInit {
     this.studentEditName = new FormControl('');
     this.studentEditSurname = new FormControl('');
     this.studentEditFname = new FormControl('');
-    this.studentUser_id = new FormControl('');
     this.studentEditForm = new FormGroup({
       'editName': this.studentEditName,
       'editSurname': this.studentEditSurname,
-      'editF_name': this.studentEditFname,
-      'user_id': this.studentUser_id
+      'editF_name': this.studentEditFname
     });
+
+    this.studentData = {
+      'username' : this.studentUsername,
+      'email' : this.studentEmail,
+      'gradebook_id' : this.studentGradebookId,
+      'group_id' : this.studentGroupId,
+      'plain_password' : this.studentPlainPassword,
+      'photo' : this.studentPhoto
+    };
+
+    this.studentEditData = {
+      'username' : this.studentEditUsername,
+      'password' : this.studentEditPassword,
+      'password_confirm': this.studentEditPasswordConfirm,
+      'email' : this.studentEditEmail,
+      'gradebook_id' : this.studentEditGradebookId,
+      'group_id' : this.studentEditGroupId,
+      'plain_password' : this.studentEditPlainPassword,
+      'photo' : this.studentEditPhoto
+    };
   }
 
   getStudents(): void {
@@ -148,40 +167,14 @@ export class StudentsComponent implements OnInit {
   }
 
   addStudent() {
-    this.studentsService.insert(
-      this.studentUsername = 'test' + Math.random(),
-      this.studentPassword.value,
-      this.studentPasswordConfirm.value,
-      this.studentEmail = 'test' + Math.random() + '@mail.if.ua',
-      this.studentGradebookId = 'If-' + Math.random().toFixed(9),
-      this.studentSurname.value,
-      this.studentName.value,
-      this.studentFname.value,
-      this.studentGroupId = 1,
-      this.studentPlainPassword = '1qaz2wsx',
-      this.studentPhoto = ''
-    ).subscribe(resp => {
+    this.studentsService.insert(this.studentForm.value, this.studentData).subscribe(resp => {
       this.getStudents();
     });
     this.studentForm.reset();
   }
 
   editStudent() {
-    this.studentUser_id.setValue(this.studentForEdit['user_id']);
-    this.studentsService.update(
-      this.studentEditUsername = 'test' + Math.random(),
-      this.studentEditPassword = '1qaz2wsx',
-      this.studentEditPasswordConfirm = '1qaz2wsx',
-      this.studentEditEmail = 'test' + Math.random() + '@mail.if.ua',
-      this.studentEditGradebookId = 'If-' + Math.random().toFixed(9),
-      this.studentEditSurname.value,
-      this.studentEditName.value,
-      this.studentEditFname.value,
-      this.studentEditGroupId = 1,
-      this.studentEditPlainPassword = '1qaz2wsx',
-      this.studentEditPhoto = '',
-      this.studentUser_id.value
-    ).subscribe(resp => {
+    this.studentsService.update(this.studentEditForm.value, this.studentEditData, this.studentForEdit['user_id']).subscribe(resp => {
       this.getStudents();
     });
     this.studentEditForm.reset();

@@ -29,62 +29,39 @@ export class StudentsService {
       return this.http.get('http://' + HOST + '/student/getStudentsByGroup/' +  groupId).map((resp: Response) => resp.json());
     }
 
-  insert(username: string,
-         password: string,
-         password_confirm: string,
-         email: string,
-         gradebook_id: string,
-         student_surname: string,
-         student_name: string,
-         student_fname: string,
-         group_id: number,
-         plain_password: string,
-         photo: any
-  ): Observable<Student> {
+  insert(studentForm, studentData): Observable<Student> {
     let body = JSON.stringify(
       {
-        'username': username,
-        'password': password,
-        'password_confirm': password_confirm,
-        'email': email,
-        'gradebook_id': gradebook_id,
-        'student_surname': student_surname,
-        'student_name': student_name,
-        'student_fname': student_fname,
-        'group_id': group_id,
-        'plain_password': plain_password,
-        'photo': photo
+        'username': studentData.username,
+        'password': studentForm.password,
+        'password_confirm': studentForm.password_confirm,
+        'email': studentData.email,
+        'gradebook_id': studentData.gradebook_id,
+        'student_surname': studentForm.student_surname,
+        'student_name': studentForm.student_name,
+        'student_fname': studentForm.student_fname,
+        'group_id': studentData.group_id,
+        'plain_password': studentData.plain_password,
+        'photo': studentData.photo
       }
     );
     return this.http.post('http://' + HOST + '/Student/insertData', body).map(resp => resp.json());
   }
 
-  update(username: string,
-         password: string,
-         password_confirm: string,
-         email: string,
-         gradebook_id: string,
-         student_surname: string,
-         student_name: string,
-         student_fname: string,
-         group_id: number,
-         plain_password: string,
-         photo: any,
-         user_id: number
-  ): Observable<Student> {
+  update(studentEditForm, studentEditData, user_id): Observable<Student> {
     let body = JSON.stringify(
       {
-        'username': username,
-        'password': password,
-        'password_confirm': password_confirm,
-        'email': email,
-        'gradebook_id': gradebook_id,
-        'student_surname': student_surname,
-        'student_name': student_name,
-        'student_fname': student_fname,
-        'group_id': group_id,
-        'plain_password': plain_password,
-        'photo': photo
+        'username': studentEditData.username,
+        'password': studentEditData.password,
+        'password_confirm': studentEditData.password_confirm,
+        'email': studentEditData.email,
+        'gradebook_id': studentEditData.gradebook_id,
+        'student_surname': studentEditForm.editSurname,
+        'student_name': studentEditForm.editName,
+        'student_fname': studentEditForm.editF_name,
+        'group_id': studentEditData.group_id,
+        'plain_password': studentEditData.plain_password,
+        'photo': studentEditData.photo,
       }
     );
     return this.http.post('http://' + HOST + '/Student/update/' + user_id, body).map(resp => resp.json());

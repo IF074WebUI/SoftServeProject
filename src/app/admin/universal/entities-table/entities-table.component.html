@@ -11,8 +11,14 @@
       <td *ngIf="!ignoreProperties?.includes(name)" (click)="clickEntityCallback(entity)">{{entity[name]}}</td>
     </ng-container>
     <td>
-      <button *ngIf="canEdit" class="btn btn-sm btn-success" (click)="editEntityCallback(entity)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-      <button *ngIf="canDelete" class="btn btn-sm btn-danger" (click)="deleteEntityCallback(entity)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-success btn-sm" (click)="editEntityCallback(entity)" data-toggle="modal" data-target="#modal-update-timetabel,#modalEdit" data-whatever="@mdo">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" (click)="deleteEntityCallback(entity)" data-toggle="modal" data-target="#modal-delete-timetabel,#modalDel" data-whatever="@mdo">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
+      </div>
     </td>
   </tr>
   </tbody>

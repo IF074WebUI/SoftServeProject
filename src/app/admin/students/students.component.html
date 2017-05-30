@@ -1,36 +1,24 @@
 <h1>{{MAIN_HEADER}}</h1>
+
 <dtester-search (searchCriteria)="searchStudent($event)"></dtester-search>
-<table class="table table-responsive table-bordered">
-  <thead>
-  <tr>
-    <th>№</th>
-    <td>Прізвище</td>
-    <td>Ім'я</td>
-    <td>По батькові</td>
-    <td>Профіль</td>
-    <td>Редагувати</td>
-    <td>Видалити</td>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let student of students">
-    <th scope="row">{{student.user_id}}</th>
-    <td>{{student.student_surname}}</td>
-    <td>{{student.student_name}}</td>
-    <td>{{student.student_fname}}</td>
-    <td class="text-center"><i class="fa fa-user" aria-hidden="true"></i>
-    </td>
-    <td class="text-center"><button (click)="selectedStudent(student)" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalEdit" data-whatever="@mdo">
-      <i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-    <td class="text-center"><button (click)="selectedStudent(student)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDel" data-whatever="@mdo">
-      <i class="fa fa-trash" aria-hidden="true"></i></button></td>
-  </tr>
-  </tbody>
-</table>
+
+<dtester-entities-table [entities]="students"
+                        [headers]="headers"
+                        [page]="page"
+                        [itemsPerPage]="countPerPage"
+                        (editEntity)="selectedStudent($event)"
+                        (deleteEntity)="selectedStudent($event)"
+                        [ignoreProperties]="ignoreProperties">
+</dtester-entities-table>
+
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAdd" data-whatever="@mdo">{{MODAL_ADD}}</button>
+
 <div class="text-center">
-  <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
-                      (pageChanged)="changePage($event)"></dtester-pagination>
+  <dtester-pagination [countRecords]="count"
+                      [recordsPerPage]="countPerPage"
+                      [currentPage]="page"
+                      (pageChanged)="changePage($event)">
+  </dtester-pagination>
 </div>
 
 <div [ngClass]="{'modal': true, 'fade': true, 'show': showModal}" id="modalAdd" tabindex="-1"
@@ -42,15 +30,15 @@
           <legend>{{MODAL_ADD}}</legend>
           <div class="form-group">
             <label for="name">{{MODAL_NAME}}</label>
-            <input formControlName="name" type="text" class="form-control" id="name" name="name" required >
+            <input formControlName="student_name" type="text" class="form-control" id="name" name="name" required >
           </div>
           <div class="form-group">
             <label for="surname">{{MODAL_SURNAME}}</label>
-            <input formControlName="surname" type="text" class="form-control" id="surname" name="surname" required>
+            <input formControlName="student_surname" type="text" class="form-control" id="surname" name="surname" required>
           </div>
           <div class="form-group">
             <label for="f_name">{{MODAL_F_NAME}}</label>
-            <input formControlName="f_name" type="text" class="form-control" id="f_name" name="surname" required>
+            <input formControlName="student_fname" type="text" class="form-control" id="f_name" name="surname" required>
           </div>
           <div class="form-group">
             <label for="pwd">{{MODAL_PASSWORD}}</label>
@@ -58,10 +46,12 @@
           </div>
           <div class="form-group">
             <label for="password_confirm">{{MODAL_CONFIRM_PASSWORD}}</label>
-            <input formControlName="password_confirm" type="password" class="form-control" id="password_confirm" name="password" required>
+            <input formControlName="password_confirm" type="password" class="form-control"
+                   id="password_confirm" name="password" required>
           </div>
-          <button class="btn btn-success my-button" type="submit" name="add" (click)="addStudent(addForm)" data-dismiss="modal">{{MODAL_ADD_ACTION}}</button>
-          <button class="btn btn-secondary my-button" type="button" name="add" data-dismiss="modal">{{MODAL_CANSEL}}</button>
+          <button class="btn btn-success my-button" type="submit" (click)="addStudent(addForm)"
+                  data-dismiss="modal">{{MODAL_ADD_ACTION}}</button>
+          <button class="btn btn-secondary my-button" type="button" data-dismiss="modal">{{MODAL_CANSEL}}</button>
         </fieldset>
       </form>
     </div>
@@ -103,7 +93,8 @@
             <label for="editF_name">{{MODAL_F_NAME}}</label>
             <input formControlName="editF_name" type="text" class="form-control" id="editF_name" name="surname" required>
           </div>
-          <button class="btn btn-success my-button" type="submit" (click)="editStudent(editForm)" data-dismiss="modal">{{MODAL_EDIT}}</button>
+          <button class="btn btn-success my-button" type="submit" (click)="editStudent(editForm)"
+                  data-dismiss="modal">{{MODAL_EDIT}}</button>
           <button class="btn btn-secondary my-button" type="button" data-dismiss="modal">{{MODAL_CANSEL}}</button>
         </fieldset>
       </form>
