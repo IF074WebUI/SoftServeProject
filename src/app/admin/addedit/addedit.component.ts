@@ -4,6 +4,8 @@ import {FacultyService} from '../faculties/faculty.service';
 import {Faculty} from '../faculties/Faculty';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
+import {ComponentCanDeactivate} from '../../guards/exit.about.guard';
+import {Observable} from 'rxjs/Rx';
 
 
 @Component({
@@ -12,7 +14,7 @@ import {Location} from '@angular/common';
   styleUrls: ['./addedit.component.css'],
   providers: [FacultyService]
 })
-export class AddeditComponent implements OnInit {
+export class AddeditComponent implements OnInit, ComponentCanDeactivate {
   entityId: number;
   entityAddName: FormControl;
   entityAddDescription: FormControl;
@@ -78,4 +80,20 @@ export class AddeditComponent implements OnInit {
       }
     );
   }
+
+  saved: boolean = false;
+  save(){
+    this.saved = true;
+  }
+
+  canDeactivate() : boolean | Observable<boolean>{
+
+    if(!this.saved){
+      return confirm("Вы хотите покинуть страницу?");
+    }
+    else{
+      return true;
+    }
+  }
 }
+
