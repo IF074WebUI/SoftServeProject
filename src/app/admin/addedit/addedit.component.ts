@@ -22,9 +22,11 @@ export class AddeditComponent implements OnInit, ComponentCanDeactivate {
   entityAddForm: FormGroup;
   EntityEditForm: FormGroup;
   entityEditName: FormControl;
+  entityName: string;
   entity: Faculty = new Faculty;
   Name: string;
   Description: string;
+  entityService: any;
   add: boolean;
   edit: boolean;
   HEADER: string;
@@ -34,9 +36,13 @@ export class AddeditComponent implements OnInit, ComponentCanDeactivate {
     this.entityId = +this.route.snapshot.queryParams['id'];
     this.Name = this.route.snapshot.queryParams['name'];
     this.Description = this.route.snapshot.queryParams['description'];
+    this.entityName = this.route.snapshot.queryParams['entity'];
+
   }
 
   ngOnInit() {
+    console.log(this.entityName);
+    this.entityService =  this.facultyService;
     this.entityAddName = new FormControl('', Validators.required, this.ValidatorUniqName.bind(this));
     this.entityEditName = new FormControl(this.Name, Validators.required);
     this.entityEditDescription = new FormControl(this.Description);
@@ -57,10 +63,10 @@ export class AddeditComponent implements OnInit, ComponentCanDeactivate {
   confirmAddEdit() {
 
     if (this.entityId === 0) {
-      this.facultyService.addItem(this.entityAddName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
+      this.entityService.addItem(this.entityAddName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
     }
     if (this.entityId !== 0) {
-      this.facultyService.editItem(this.entityId, this.entityEditName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
+      this.entityService.editItem(this.entityId, this.entityEditName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
     }
   }
 
@@ -89,7 +95,7 @@ export class AddeditComponent implements OnInit, ComponentCanDeactivate {
   canDeactivate() : boolean | Observable<boolean>{
 
     if(!this.saved){
-      return confirm("Вы хотите покинуть страницу?");
+      return confirm("Ви впевнені, що хочете перейти на сторінку?");
     }
     else{
       return true;

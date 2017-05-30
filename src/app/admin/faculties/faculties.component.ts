@@ -155,7 +155,14 @@ export class FacultiesComponent implements OnInit {
   }
 
   addFacultyUniversal() {
-    this.router.navigate(['/admin/addedit'], {queryParams: {'id': 0, 'name': 0, 'description': ''}});
+    this.router.navigate(['/admin/addedit'], {
+      queryParams: {
+        'id': 0,
+        'name': 0,
+        'description': '',
+        'entityName': 'faculty'
+      }
+    });
   }
 
   editFacultyUniversal(faculty: Faculty) {
@@ -163,7 +170,8 @@ export class FacultiesComponent implements OnInit {
       queryParams: {
         'id': faculty['faculty_id'],
         'name': faculty['faculty_name'],
-        'description': faculty['faculty_description']
+        'description': faculty['faculty_description'],
+        'entityName': 'faculty'
       }
     });
   }
