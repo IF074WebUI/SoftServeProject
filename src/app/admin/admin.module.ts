@@ -27,14 +27,9 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MdDialogModule, MdButtonModule} from '@angular/material';
 import {StudentsComponent} from './students/students.component';
 import {StudentsService} from './students/students.service';
-import {AddStudentComponent} from './students/add-student/add-student.component';
-import {EditStudentComponent} from './students/edit-student/edit-student.component';
-import {DeleteStudentComponent} from './students/delete-student/delete-student.component';
 import {PopupComponent} from './popup/popup.component';
 import { ResultsComponent } from './results/results.component';
 import {ResultsService} from './services/results.service';
-import {AddeditComponent} from './addedit/addedit.component';
-import {ExitAboutGuard} from '../guards/exit.about.guard';
 
 @NgModule({
   declarations: [
@@ -50,13 +45,9 @@ import {ExitAboutGuard} from '../guards/exit.about.guard';
     PaginationComponent,
     EntitiesTableComponent,
     SearchComponent,
-    AddStudentComponent,
-    EditStudentComponent,
-    DeleteStudentComponent,
     StudentsComponent,
     PopupComponent,
-    ResultsComponent,
-    AddeditComponent
+    ResultsComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -77,13 +68,8 @@ import {ExitAboutGuard} from '../guards/exit.about.guard';
     GetAllRecordsService,
     DeleteRecordByIdService,
     SubjectService,
-    StudentsService,
-    ExitAboutGuard
+    StudentsService
   ],
-  entryComponents: [
-    AddStudentComponent,
-    EditStudentComponent,
-    DeleteStudentComponent]
 })
 export class AdminModule {
 }

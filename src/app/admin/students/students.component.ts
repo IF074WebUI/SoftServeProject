@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentsService} from './students.service';
 import { Router } from '@angular/router';
-import { MdDialog } from '@angular/material';
-import { AddStudentComponent } from './add-student/add-student.component';
-import { EditStudentComponent } from './edit-student/edit-student.component';
-import { DeleteStudentComponent } from './delete-student/delete-student.component';
-import { AddEditDeleteService } from './add-edit-delete.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Student } from './student';
 import { ActivatedRoute } from '@angular/router';
 
@@ -14,34 +9,75 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'dtester-students',
   templateUrl: './students.component.html',
   styleUrls: ['./students.component.css'],
-  providers: [AddEditDeleteService]
+  providers: [StudentsService]
 })
 export class StudentsComponent implements OnInit {
+
+  headers: string[] = [];
+  ignoreProperties: string[] = [];
+
+  MAIN_HEADER = 'Студенти';
+  MODAL_ADD = 'Додати студента';
+  MODAL_NAME = 'Ім\'я:';
+  MODAL_SURNAME = 'Прізвище:';
+  MODAL_F_NAME = 'Пo-батькові:';
+  MODAL_PASSWORD = 'Пароль:';
+  MODAL_CONFIRM_PASSWORD = 'Підтвердіть пароль:';
+  MODAL_ADD_ACTION = 'Додати';
+  MODAL_CANSEL = 'Відміна';
+  MODAL_DEL_HEADER = 'Видалення';
+  MODAL_DEL_BODY = 'Ви дійсно хочете видалити студента?';
+  MODAL_DEL = 'Видалити';
+  MODAL_EDIR_HEADER = 'Редагувати студента';
+  MODAL_EDIT = 'Редагувати';
+
   student: Student = new Student();
-  studentUser_id: FormControl;
   studentForEdit: Student;
   studentForDel: Student;
   students: Student[];
   page = 1;
   count: number;
   countPerPage = 10;
-  editId = 0;
-  selectedStudent: Student;
-  headers: string[] = [];
-  ignoreProperties: string[] = [];
-  onSelect( student: Student ) { this.selectedStudent = student; }
 
-  constructor(private dialog: MdDialog, private studentsService: StudentsService, private router: Router, private http: AddEditDeleteService, private route: ActivatedRoute) {}
+  studentData = {};
+  studentName: FormControl;
+  studentSurname: FormControl;
+  studentFname: FormControl;
+  studentPassword: FormControl;
+  studentPasswordConfirm: FormControl;
+  studentForm: FormGroup;
+  studentEmail = 'test' + Math.random() + '@mail.if.ua';
+  studentGradebookId = 'If-' + Math.random().toFixed(9);
+  studentUsername = 'test' + Math.random();
+  studentPhoto = '';
+  studentGroupId = 1;
+  studentPlainPassword = '1qaz2wsx';
+
+  studentEditData = {};
+  studentEditName: FormControl;
+  studentEditSurname: FormControl;
+  studentEditFname: FormControl;
+  studentEditPassword = '1qaz2wsx';
+  studentEditPasswordConfirm = '1qaz2wsx';
+  studentEditForm: FormGroup;
+  studentEditEmail = 'test' + Math.random() + '@mail.if.ua';
+  studentEditGradebookId = 'If-' + Math.random().toFixed(9);
+  studentEditUsername = 'test' + Math.random();
+  studentEditPhoto = '';
+  studentEditGroupId = 1;
+  studentEditPlainPassword = '1qaz2wsx';
+
+  constructor(private studentsService: StudentsService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові'];
     this.ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
-    this.studentsService.getAllStudents().subscribe((data) => {
-      this.students = data;
-    });
+    // this.studentsService.getAllStudents().subscribe((data) => {
+    //   this.students = data;
+    // });
+    // this.getCount();
     this.getStudents();
-    this.getCount();
-    let  groupId = this.route.snapshot.queryParams['group_id'];
+    const  groupId = this.route.snapshot.queryParams['group_id'];
     if (groupId) {
       this.studentsService.getStudentsByGroupId(groupId).subscribe(resp => {
         if (resp['response'] === 'no records') {
@@ -51,18 +87,55 @@ export class StudentsComponent implements OnInit {
         }
       });
     }
-  }
 
-  selectedStudents(student: Student) {
-    this.studentForEdit = student;
-    this.studentForDel = student;
+    this.studentName = new FormControl('');
+    this.studentSurname = new FormControl('');
+    this.studentFname = new FormControl('');
+    this.studentPassword = new FormControl('');
+    this.studentPasswordConfirm = new FormControl('');
+    this.studentForm = new FormGroup({
+      'student_name': this.studentName,
+      'student_surname': this.studentSurname,
+      'student_fname': this.studentFname,
+      'password': this.studentPassword,
+      'password_confirm': this.studentPasswordConfirm
+    });
+
+    this.studentEditName = new FormControl('');
+    this.studentEditSurname = new FormControl('');
+    this.studentEditFname = new FormControl('');
+    this.studentEditForm = new FormGroup({
+      'editName': this.studentEditName,
+      'editSurname': this.studentEditSurname,
+      'editF_name': this.studentEditFname
+    });
+
+    this.studentData = {
+      'username' : this.studentUsername,
+      'email' : this.studentEmail,
+      'gradebook_id' : this.studentGradebookId,
+      'group_id' : this.studentGroupId,
+      'plain_password' : this.studentPlainPassword,
+      'photo' : this.studentPhoto
+    };
+
+    this.studentEditData = {
+      'username' : this.studentEditUsername,
+      'password' : this.studentEditPassword,
+      'password_confirm': this.studentEditPasswordConfirm,
+      'email' : this.studentEditEmail,
+      'gradebook_id' : this.studentEditGradebookId,
+      'group_id' : this.studentEditGroupId,
+      'plain_password' : this.studentEditPlainPassword,
+      'photo' : this.studentEditPhoto
+    };
   }
 
   getStudents(): void {
     if (this.count <= (this.page - 1) * this.countPerPage) {
       --this.page;
     }
-
+    this.getCount();
     this.studentsService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
       .subscribe(resp => this.students = resp, err => this.router.navigate(['/bad_request']));
   }
@@ -82,21 +155,39 @@ export class StudentsComponent implements OnInit {
     this.getStudents();
   }
 
-  addDialog() {
-    const add = this.dialog.open(AddStudentComponent, {
-      width: '50%'
-    });
+  selectedStudent(student: Student) {
+    this.studentForDel = student;
+    this.studentForEdit = student;
   }
 
-  editDialog() {
-    const edit = this.dialog.open(EditStudentComponent, {
-      width: '50%'
-    });
+  deleteStudent() {
+     this.studentsService.delete(this.studentForDel['user_id']).subscribe(resp => {
+       this.getStudents();
+     });
   }
 
-  deleteDialog() {
-    const del = this.dialog.open(DeleteStudentComponent, {
-      width: '40%'
+  addStudent() {
+    this.studentsService.insert(this.studentForm.value, this.studentData).subscribe(resp => {
+      this.getStudents();
+    });
+    this.studentForm.reset();
+  }
+
+  editStudent() {
+    this.studentsService.update(this.studentEditForm.value, this.studentEditData, this.studentForEdit['user_id']).subscribe(resp => {
+      this.getStudents();
+    });
+    this.studentEditForm.reset();
+  }
+
+  searchStudent(criteria: string){
+    this.studentsService.searchByName(criteria).subscribe(resp => {
+      if (resp['response'] === 'no records') {
+        this.students = [];
+      } else {
+        this.students = <Student[]> resp;
+        this.count = this.students.length;
+      }
     });
   }
 }

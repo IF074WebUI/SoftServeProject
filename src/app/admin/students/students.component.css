@@ -1,3 +1,33 @@
-tbody tr:hover{
+tr:hover{
   background-color: rgba(0,0,0,.14);
+}
+
+fieldset {
+  text-align: center;
+  border: 2px solid black;
+  padding: 10px 5px 0;
+  margin: 0 15px 15px;
+}
+
+fieldset legend, .edit-legend, .del-legend {
+  text-align: right;
+  width: 195px;
+  padding-right: 7px;
+}
+
+input {
+  width: 70%;
+  margin: auto;
+}
+
+fieldset .edit-legend {
+  width: 236px;
+}
+
+fieldset .del-legend {
+  width: 130px;
+}
+
+.my-button {
+  margin: 10px 0;
 }
