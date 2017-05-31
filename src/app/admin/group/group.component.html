@@ -18,7 +18,7 @@
     <dtester-entities-table *ngIf="!isLoading" [entities]="groupsOnPage" [headers]="headers" [ignoreProperties]="ignoreProperties"
                             (deleteEntity)="deleteGroup()" [canAction]="true"
                             [page]="pageNumber" [itemsPerPage]="offset"
-                            (editEntity)="editGroup()" (clickEntity)="getStudentsByGroup()">
+                            (editEntity)="editGroup()" (clickEntity)="getStudentsByGroup()" (actionEntity)="onTimeTableNavigate($event)">
     </dtester-entities-table>
   </div>
   <div class="row">
