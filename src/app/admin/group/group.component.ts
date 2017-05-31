@@ -14,7 +14,7 @@ import {GROUPS_HEADERS, IGNORE_PROPERTIES} from './groupConstants';
   providers: [FacultyService, SpecialitiesService]
 })
 export class GroupComponent implements OnInit {
-  isLoading: boolean = true;
+  isLoading: boolean;
   groupsOnPage: Group[];
   facultiesOnPage: Faculty[] = [];
   specialitiesOnPage: Speciality[] = [];
@@ -67,7 +67,7 @@ export class GroupComponent implements OnInit {
 
   createCroup(groupName: string) {
     this.getGroupsService.createCroup(groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
-      .subscribe(() => {this.uploadPage();
+      .subscribe(() => {this.getGroups();
       });
   }
   // get Specialities and Faculties
@@ -79,23 +79,16 @@ export class GroupComponent implements OnInit {
     this.facultyService.getAllFaculties()
       .subscribe( (data) => this.facultiesOnPage = <Faculty[]>data );
   }
-// updatePage
-  uploadPage() {
-    this.getCountRecords();
-    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
-      .subscribe((data) => {
-        this.groupsOnPage = <Group[]> data;
-      });
-  }
 
   getGroups(): void {
+    this.isLoading = true;
     this.getCountRecords()
     /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.countRecords <= (this.pageNumber - 1) * this.offset) {
       --this.pageNumber;
     }
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
-      .subscribe(resp => {this.groupsOnPage = <Group[]>resp; this.isLoading = false;  });
+      .subscribe(resp => {this.groupsOnPage = <Group[]>resp; this.isLoading = false,  err => this.router.navigate(['/bad_request']);  });
   }
 // select for editing
   selectedGroup(group: Group) {
@@ -106,14 +99,15 @@ export class GroupComponent implements OnInit {
   deleteGroup() {
     this.getGroupsService.deleteGroup(this.groupforDelete['group_id'])
       .subscribe(() => {
-        this.uploadPage();
+        this.getGroups();
       });
   }
 // editing groups
   editGroup(groupName: string) {
     this.getGroupsService.editGroup(this.groupforEdit['group_id'], groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
       .subscribe(() => {
-        this.uploadPage();
+        this.getGroups();
+        this.getGroups();
       });
   }
   // pagination
@@ -130,10 +124,7 @@ export class GroupComponent implements OnInit {
     } else {
       this.pageNumber = numberOfLastPage;
     }
-    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
-      .subscribe((data) => {
-        this.groupsOnPage = <Group[]> data;
-          });
+    this.getGroups();
     }
 
   nextPage() {
@@ -145,10 +136,7 @@ export class GroupComponent implements OnInit {
     } else {
       this.pageNumber = 1;
     }
-    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
-      .subscribe((data) => {
-        this.groupsOnPage = <Group[]> data;
-      });
+    this.getGroups();
   }
 
   changePage(page: number) {              /* callback method for change page pagination output event */
@@ -158,7 +146,7 @@ export class GroupComponent implements OnInit {
   changeNumberOfRecordsOnPage(numberOfRecords: number) {
     this.offset = numberOfRecords;
     this.pageNumber = 1;
-    this.uploadPage();
+    this.getGroups();
   }
   // get students by group
   getStudentsByGroup(group: Group) {
@@ -167,20 +155,22 @@ export class GroupComponent implements OnInit {
   }
     // search group
   startSearch(criteria: string) {         /* callback method for output in search component */
-    this.getGroupsService.searchByName(criteria).subscribe(resp => {
-        if (resp['response'] === this.NO_RECORDS) {    /* check condition: if no records presented for search criteria */
-          this.groupsOnPage = [];
-          this.countRecords = this.groupsOnPage.length;
-          console.log(this.countRecords);
-        } else {
-          this.groupsOnPage = [];
-          this.pageNumber = 1;
-          this.countRecords = resp.length; /* if records are present than set groups count to calculate pagination pages */
-          this.groupsOnPage = <Group[]> resp;  /* present only paginated groups */
-          console.log(this.countRecords);
-        }
-      },
-      err => this.router.navigate(['/bad_request']));
+    if (criteria === '') {
+      this.getGroups();
+    } else {
+      this.isLoading = true;
+      this.getGroupsService.searchByName(criteria).subscribe(resp => {
+          if (resp['response'] === 'no records') {    /* check condition: if no records presented for search criteria */
+            this.groupsOnPage = [];
+            this.countRecords = this.groupsOnPage.length;
+            this.isLoading = false;
+          } else {
+            this.groupsOnPage = <Group[]>resp;         /* present all specialities */
+            this.isLoading = false;
+          }
+        },
+        err => this.router.navigate(['/bad_request']));
+    }
   }
 
   /*
