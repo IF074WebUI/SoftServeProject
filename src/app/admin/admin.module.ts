@@ -36,6 +36,7 @@ import {ExitAboutGuard} from '../guards/exit.about.guard';
 import {BreadcrumbsService} from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import {LinksPipe} from './pipes/links.pipe';
+import { SpinnerComponent } from './universal/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import {LinksPipe} from './pipes/links.pipe';
     ItemsPerPageComponent,
     ResultsComponent,
     AddeditComponent,
-    BreadcrumbsComponent
+    BreadcrumbsComponent,
+    SpinnerComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

@@ -14,8 +14,9 @@
     </div>
   </div>
   <div class="row">
-    <dtester-entities-table [entities]="groupsOnPage" [headers]="headers" [ignoreProperties]="ignoreProperties"
-                            (deleteEntity)="deleteGroup()"
+    <dtester-spinner *ngIf="isLoading"></dtester-spinner>
+    <dtester-entities-table *ngIf="!isLoading" [entities]="groupsOnPage" [headers]="headers" [ignoreProperties]="ignoreProperties"
+                            (deleteEntity)="deleteGroup()" [canAction]="true"
                             [page]="pageNumber" [itemsPerPage]="offset"
                             (editEntity)="editGroup()" (clickEntity)="getStudentsByGroup()">
     </dtester-entities-table>

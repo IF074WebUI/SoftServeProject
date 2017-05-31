@@ -6,7 +6,7 @@ import { SpecialitiesService } from '../services/specialities.service';
 import { FacultyService } from '../faculties/faculty.service';
 import { Faculty } from '../faculties/Faculty';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import {GROUPS_HEADERS, IGNORE_PROPERTIES} from './groupConstants';
 @Component({
   selector: 'dtester-group',
   templateUrl: './group.component.html',
@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   providers: [FacultyService, SpecialitiesService]
 })
 export class GroupComponent implements OnInit {
+  isLoading: boolean = true;
   groupsOnPage: Group[];
   facultiesOnPage: Faculty[] = [];
   specialitiesOnPage: Speciality[] = [];
@@ -94,7 +95,7 @@ export class GroupComponent implements OnInit {
       --this.pageNumber;
     }
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
-      .subscribe(resp => this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']));
+      .subscribe(resp => {this.groupsOnPage = <Group[]>resp; this.isLoading = false;  });
   }
 // select for editing
   selectedGroup(group: Group) {
