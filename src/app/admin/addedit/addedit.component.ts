@@ -12,6 +12,7 @@ import {Student} from '../students/student';
 import {SpecialitiesService} from '../services/specialities.service';
 import {Speciality} from '../specialities/speciality';
 
+declare var $: any;
 
 @Component({
   selector: 'dtester-addedit',
@@ -26,11 +27,13 @@ export class AddeditComponent implements OnInit, ComponentCanDeactivate {
   specialities: Speciality[] = [];
   faculties: Faculty[] = [];
   entityService: any;
-
+  entityName: string;
+  method: string;
 
 
   HEADER: string;
   DESCRIPTION: string = 'Ввести опис';
+  MODAL_TITLE: string;
 
 
   entityId: number;
@@ -79,43 +82,68 @@ export class AddeditComponent implements OnInit, ComponentCanDeactivate {
       'chosenspecialityId': this.chosenSpeciality
     });
 
-    if (this.entityId !== 0) {
-      this.entityAddName.setValue('Hi');
-      this.entityEditDescription.setValue(this.Description);
-      this.HEADER = 'Редагувати назву';
-    } else {
-      this.HEADER = 'Ввести назву';
-    }
 
   }
 
+  showModal(method: string, entity: any, entityName: string) {
+    this.entityName = entityName;
+    this.method = method;
+    this.entityId = entity.id;
+    this.Name = entity.name;
+    this.Description = entity.description;
+    if (this.method === 'add') {
+      this.MODAL_TITLE = 'Створення нового' + '' + this.entityName;
+      this.HEADER = 'Ввести назву';
+      this.entityEditName.setValue('Hi');
+    }
+    if (this.method === 'edit') {
+      this.MODAL_TITLE = 'Редагування' + ''  + this.entityName + this.Name;
+      this.HEADER = 'Редагувати назву';
+      this.entityAddName.setValue('Hi');
+    }
+    if (this.method === 'delete') {
+      this.MODAL_TITLE = 'Видалення ' + '' + this.entityName + this.Name;
+      this.HEADER = 'Ви підтверджуєте видалення?';
+    }
+    $('#myModal').modal('show');
+  }
 
   confirmFacultySpeciality() {
     this.entityService = this.facultyService;
-      if (this.entityId === 0) {
-        this.entityService.addItem(this.entityAddName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
-      }
-      if (this.entityId !== 0) {
-        this.entityService.editItem(this.entityId, this.entityAddName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
-      }
+    if (this.method === 'add') {
+      this.entityService.addItem(this.entityAddName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
+    }
+    if (this.method === 'edit') {
+      this.entityService.editItem(this.entityId, this.entityAddName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
+    }
+    if (this.method === 'delete') {
+      this.entityService.deleteItem(this.entityId).subscribe(resp => console.log(resp));
+    }
+    this.EntityEditForm.reset();
   };
 
   confirmGroup() {
     this.entityService = this.groupService;
-      console.log('group works');
-      if (this.entityId === 0) {
-        this.entityService.createCroup(this.entityAddName.value, this.chosenSpeciality.value, this.chosenFaculty.value).subscribe((resp) => console.log(resp));
-      }
-      if (this.entityId !== 0) {
-        this.entityService.editGroup(this.entityId, this.entityAddName.value, this.chosenSpeciality.value, this.chosenFaculty.value).subscribe((resp) => console.log(resp));
-      }
-      this.EntityEditForm.reset();
+    console.log('group works');
+    if (this.method === 'add') {
+      this.entityService.createCroup(this.entityAddName.value, this.chosenSpeciality.value, this.chosenFaculty.value).subscribe((resp) => console.log(resp));
+    }
+    if (this.method === 'edit') {
+      this.entityService.editGroup(this.entityId, this.entityAddName.value, this.chosenSpeciality.value, this.chosenFaculty.value).subscribe((resp) => console.log(resp));
+    }
+    if (this.method === 'delete') {
+      this.entityService.deleteGroup(this.entityId).subscribe(resp => console.log(resp));
+    }
+    this.EntityEditForm.reset();
   }
 
-  goBack(): void {
+  goBack(): void { ///not working
     this.location.back();
   }
 
+  cancel() {
+    $('#myModal').modal('hide');
+  }
 
   ValidatorUniqName(control: AbstractControl) {
     return this.facultyService.searchByName(control.value).map((resp: Faculty[]) => {
@@ -128,6 +156,7 @@ export class AddeditComponent implements OnInit, ComponentCanDeactivate {
       }
     );
   }
+
 
   saved: boolean = false;
 

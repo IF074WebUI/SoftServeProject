@@ -1,4 +1,7 @@
-
+<dtester-addedit (addEntity)="addEntity($event)"
+               (editEntity)="editEntity($event)"
+               (deleteEntity)="deleteEntity($event)"
+></dtester-addedit>
 <!--serarch component -->
 <div class="input-group">
   <span class="input-group-addon" id="basic-addon1"> <i class="fa fa-search-plus" aria-hidden="true"></i>
@@ -6,9 +9,9 @@
   <dtester-search (searchCriteria)="search($event)"></dtester-search>
 </div>
 <!--Common component to display entities-->
-<dtester-entities-table [entities]="faculties" [headers]="headers"  [ignoreProperties]="ignoreProperties" (deleteEntity)="deleteFaculty($event, delContent)"
+<dtester-entities-table [entities]="faculties" [headers]="headers"  [ignoreProperties]="ignoreProperties" (deleteEntity)="del($event)"
                 [page]="page" [itemsPerPage]="countPerPage"
-                (editEntity)="editFacultyUniversal($event)"
+                (editEntity)="edit($event)"
                 (clickEntity)="getGroupsByFaculties($event)"></dtester-entities-table>
 <!--Pagination component-->
 <div class="text-center">
@@ -40,7 +43,7 @@
 <ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
 -->
 
-<button class="btn btn-lg btn-outline-primary" (click)="addFacultyUniversal()"> Створити новий факультет</button>
+<button class="btn btn-lg btn-outline-primary" (click)="add()"> Створити новий факультет</button>
 
 <button routerLink="/sidekicks">Go to sidekicks</button>
 <!-- Modal popup for adding -->

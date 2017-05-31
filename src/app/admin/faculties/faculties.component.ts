@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Faculty} from './Faculty';
 import {FacultyService} from './faculty.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NEWFACULTY, EDITRESULT, EDITFACULTY, DELETERESULT} from '../../constants';
+import {AddeditComponent } from '../addedit/addedit.component';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -16,6 +17,7 @@ import 'rxjs/add/operator/switchMap';
 })
 export class FacultiesComponent implements OnInit {
   faculties: Faculty[] = [];
+  faculty: Faculty;
   IGNORE_PROPERTIES: string[] = ['faculty_id'];
   page: number = 1; // current number of page
   count: number; // count all faculties
@@ -28,9 +30,9 @@ export class FacultiesComponent implements OnInit {
   facultyAddDescription: FormControl;
   modalHeader: string;
   countPerPage: number = 10;
-  add: boolean = false;
   id: number;
   ignoreProperties: string[];
+  @ViewChild(AddeditComponent) popup: AddeditComponent;
 
 
   constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
@@ -154,6 +156,17 @@ export class FacultiesComponent implements OnInit {
     });
   }
 
+  add() {
+    this.popup.showModal('add',  new Faculty(), 'faculty');
+  }
+
+  edit(faculty: Faculty) {
+    this.popup.showModal('edit', faculty, 'faculty');
+  }
+
+  del(faculty: Faculty) {
+    this.popup.showModal('delete', faculty, 'faculty');
+  }
   addFacultyUniversal() {
     this.router.navigate(['/admin/addedit'], {
       queryParams: {
