@@ -6,8 +6,6 @@ import { SpecialitiesService } from '../services/specialities.service';
 import { FacultyService } from '../faculties/faculty.service';
 import { Faculty } from '../faculties/Faculty';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GROUPS_HEADERS } from './groupConstants';
-import { IGNORE_PROPERTIES } from './groupConstants';
 
 @Component({
   selector: 'dtester-group',
@@ -183,5 +181,20 @@ export class GroupComponent implements OnInit {
       },
       err => this.router.navigate(['/bad_request']));
   }
+
+  /*
+ Made by Olena (method how to open universal component)
+
+  addGroupUniversal() {
+    this.router.navigate(['/admin/addedit'], {
+      queryParams: {
+        'id': 0,
+        'name': 0,
+        'description': '',
+        'entity': 'group'      }
+    });
+  }
+   */
+
 }
 

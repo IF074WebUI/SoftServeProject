@@ -83,45 +83,46 @@
     </nav>
   </div>
   <div class="col-md-3">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" (click)="getSpecialities(); getFaculties()">Додати нову групу</button>
-  </div>
+ <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" (click)="getSpecialities(); getFaculties()">Додати нову групу</button>
+    <!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" (click)="addGroupUniversal()">Додати нову групу</button>-->
+</div>
 </div>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Додавання групи</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="recipient-name" class="form-control-label">Оберіть назву факультету факультету:</label>
-            <select class="form-control" [(ngModel)]="selectedFacultyValue" name="selectedFacultyValue">
-              <option *ngFor="let faculty of facultiesOnPage" [ngValue]="faculty.faculty_id">{{faculty.faculty_name}}</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="recipient-name" class="form-control-label">Оберіть назку спеціальності:</label>
-            <select class="form-control" [(ngModel)]="selectedSpesailutyValue" name="selectedSpesailutyValue">
-              <option *ngFor="let specialyty of specialitiesOnPage" [ngValue]="specialyty.speciality_id">{{specialyty.speciality_name}}</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="group-text" class="form-control-label">Введіть назву групи:</label>
-            <input [(ngModel)]="groupName" name="groupName" class="form-control" id="group-name">
-          </div>
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Додавання групи</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label for="recipient-name" class="form-control-label">Оберіть назву факультету факультету:</label>
+          <select class="form-control" [(ngModel)]="selectedFacultyValue" name="selectedFacultyValue">
+            <option *ngFor="let faculty of facultiesOnPage" [ngValue]="faculty.faculty_id">{{faculty.faculty_name}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="recipient-name" class="form-control-label">Оберіть назку спеціальності:</label>
+          <select class="form-control" [(ngModel)]="selectedSpesailutyValue" name="selectedSpesailutyValue">
+            <option *ngFor="let specialyty of specialitiesOnPage" [ngValue]="specialyty.speciality_id">{{specialyty.speciality_name}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="group-text" class="form-control-label">Введіть назву групи:</label>
+          <input [(ngModel)]="groupName" name="groupName" class="form-control" id="group-name">
+        </div>
 
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button (click)="createCroup(groupName)" type="button" class="btn btn-primary" data-dismiss="modal">Send message</button>
-      </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+     <button (click)="createCroup(groupName)" type="button" class="btn btn-primary" data-dismiss="modal">Send message</button>
     </div>
   </div>
+</div>
 </div>
 <p></p>
 <!--group deleting-->

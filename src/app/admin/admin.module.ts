@@ -32,6 +32,10 @@ import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page
 import { ResultsComponent } from './results/results.component';
 import {ResultsService} from './services/results.service';
 import {AddeditComponent} from './addedit/addedit.component';
+import {ExitAboutGuard} from '../guards/exit.about.guard';
+import {BreadcrumbsService} from './services/breadcrumbs.service';
+import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
+import {LinksPipe} from './pipes/links.pipe';
 
 @NgModule({
   declarations: [
@@ -47,11 +51,13 @@ import {AddeditComponent} from './addedit/addedit.component';
     PaginationComponent,
     EntitiesTableComponent,
     SearchComponent,
+    LinksPipe,
     StudentsComponent,
     PopupComponent,
     ItemsPerPageComponent,
     ResultsComponent,
-    AddeditComponent
+    AddeditComponent,
+    BreadcrumbsComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -66,6 +72,7 @@ import {AddeditComponent} from './addedit/addedit.component';
     StatisticsService,
     ResultsService,
     SpecialitiesService,
+    BreadcrumbsService,
     TimetableService,
     GetRecordsByIdService,
     GroupService,
