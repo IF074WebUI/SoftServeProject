@@ -22,15 +22,17 @@ declare var $: any;
   providers: [FacultyService]
 })
 export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
-  @Output() addEntity: EventEmitter<T> = new EventEmitter();
-  @Output() editEntity: EventEmitter<T> = new EventEmitter();
+  @Output() addEntity: EventEmitter<Entity> = new EventEmitter();
+  @Output() editEntity: EventEmitter<Entity> = new EventEmitter();
+  @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
 
   student: Student = new Student();
   faculty: Faculty = new Faculty;
   group: Group = new Group;
   specialities: Speciality[] = [];
   faculties: Faculty[] = [];
-  entity: Entity[] = [];
+  entity: any;
+  objProp: any;
 
   HEADER: string;
   DESCRIPTION: string = 'Ввести опис';
@@ -46,12 +48,12 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
   numberOfProperties: number;
 
   // Output data
-  id: number;
-  addname: string;
-  editname: string;
-  editdescription: string;
-  chosenfacultyId: number;
-  chosenspecialityId: number;
+  // id: number;
+  // addname: string;
+  // editname: string;
+  // editdescription: string;
+  // chosenfacultyId: number;
+  // chosenspecialityId: number;
 
 
   entityAddName: FormControl;
@@ -92,41 +94,34 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
       'chosenfacultyId': this.chosenFaculty,
       'chosenspecialityId': this.chosenSpeciality
     });
-
-
   }
 
-  showModal(method: string, entityName: string, entity: any) {
-    this.numberOfProperties = 0;
+  showModal(method: string, entityName: string, inputentity: any) {
     this.method = method;
     this.entityName = entityName;
-    console.log(this.entityName);
-    /*
-     let objProp1 = Object.getOwnPropertyNames(entity1);
-     let objProp2 = Object.getOwnPropertyNames(entity2);
+    console.log(this.method);
+    this.entity = inputentity;
+    let objInputProp = Object.getOwnPropertyNames(inputentity);
 
-     for (let i = 0; i < objProp1.length; i++)
-     {
-     entity1[objProp1[+[i]]] = entity2[objProp2[+[i]]];
-     }
-     */
-    let objProp = Object.getOwnPropertyNames(entity);
+    //console.log(objInputProp);
 
-    console.log(objProp);
-    console.log(entity[objProp[+[1]]]);
-    this.entityId = (entity[objProp[+[3]]]);
+    this.entityId = inputentity[objInputProp[+[0]]];
+    console.log(this.entityId);
+    this.Name = inputentity[objInputProp[+[1]]];
+    this.Description = inputentity[objInputProp[+[2]]];
+
 
     if (this.method === 'add') {
       this.MODAL_TITLE = 'Створення нового' + '' + this.entityName;
       this.HEADER = 'Ввести назву';
-      this.entityEditName.setValue('Hi');
+      this.entityEditName.setValue('Hello');
     }
     if (this.method === 'edit') {
       this.MODAL_TITLE = 'Редагування' + '' + this.entityName;
       this.HEADER = 'Редагувати назву';
-      this.entityAddName.setValue('Hi2');
-      this.entityEditName.setValue(entity[objProp[+[1]]]);
-      this.entityEditDescription.setValue(entity[objProp[+[2]]]);
+      this.entityAddName.setValue('sraka');
+      this.entityEditName.setValue(this.Name);
+      this.entityEditDescription.setValue(this.Description);
     }
     if (this.method === 'delete') {
       this.MODAL_TITLE = 'Видалення ' + '' + this.entityName;
@@ -136,13 +131,35 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
   }
 
   confirm() {
-    if (this.method === 'add') {
+    //console.log(this.entityId);
 
+    // console.log(this.entityAddName.value);
+    console.log(this.method);
+    if (this.method === 'add') {
+      let newEntity: Entity = new Entity();
+      newEntity['id'] = this.entityId;
+      newEntity['addname'] = this.entityAddName.value;
+      newEntity['editname'] = this.entityEditName.value;
+      newEntity['editdescription'] = this.entityEditDescription.value;
+      newEntity['chosenfacultyId'] = this.chosenFaculty.value;
+      newEntity['chosenspecialityId'] = this.chosenSpeciality.value;
+      this.addEntity.emit(newEntity);
     }
     if (this.method === 'edit') {
-      this.editEntity.emit();
+      let editedEntity: Entity = new Entity();
+      editedEntity['id'] = this.entityId;
+      editedEntity['id'] = this.entityId;
+      editedEntity['addname'] = this.entityAddName.value;
+      editedEntity['editname'] = this.entityEditName.value;
+      editedEntity['editdescription'] = this.entityEditDescription.value;
+      editedEntity['chosenfacultyId'] = this.chosenFaculty.value;
+      editedEntity['chosenspecialityId'] = this.chosenSpeciality.value;
+      this.editEntity.emit(editedEntity);
     }
+  }
 
+  submitDel(){
+    this.deleteEntity.emit(this.entity);
   }
 
 
