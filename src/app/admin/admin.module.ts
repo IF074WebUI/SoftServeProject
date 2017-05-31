@@ -35,9 +35,9 @@ import { ResultsComponent } from './results/results.component';
 import {ResultsService} from './services/results.service';
 import {AddeditComponent} from './addedit/addedit.component';
 import {ExitAboutGuard} from '../guards/exit.about.guard';
-import {HistoryLinksService} from "./services/history-links.service";
-import { HistoryLinksComponent } from './history-links/history-links.component';
-import {LinksPipe} from "./pipes/links.pipe";
+import {BreadcrumbsService} from './services/breadcrumbs.service';
+import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
+import {LinksPipe} from './pipes/links.pipe';
 
 @NgModule({
   declarations: [
@@ -61,7 +61,7 @@ import {LinksPipe} from "./pipes/links.pipe";
     PopupComponent,
     ResultsComponent,
     AddeditComponent,
-    HistoryLinksComponent
+    BreadcrumbsComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -76,7 +76,7 @@ import {LinksPipe} from "./pipes/links.pipe";
     StatisticsService,
     ResultsService,
     SpecialitiesService,
-    HistoryLinksService,
+    BreadcrumbsService,
     TimetableService,
     GetRecordsByIdService,
     GroupService,
