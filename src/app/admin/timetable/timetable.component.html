@@ -5,7 +5,7 @@
                         [itemsPerPage]="recordsPerPage"
                         (editEntity)="getUpdatedTimetable($event)"
                         (deleteEntity)="getDeletedTimetable($event)"
-                        [ignoreProperties]="ignoreProperties">
+                        [displayPropertiesOrder]="displayPropertiesOrder">
 </dtester-entities-table>
 <dtester-pagination [countRecords]="countRecords" [recordsPerPage]="recordsPerPage" [currentPage]="page"
                     (pageChanged)="changePage($event)"></dtester-pagination>

@@ -24,10 +24,10 @@ export class TimetableComponent implements OnInit {
   deletedTimetable: Timetable;
   updatedTimetable: Timetable;
   headers: string[] = ['№', 'Навчальна група', 'Предмет', 'Час початку тестування', 'Час закінчення тестування'];
+  displayPropertiesOrder: string[] = ['group_name', 'subject_name', 'start_timeInterval', 'start_timeInterval'];
   recordsPerPage: number;
   page: number;
   countRecords: number;
-  ignoreProperties: string[] = ['timetable_id', 'subject_id', 'group_id', 'end_time', 'start_time', 'end_date', 'start_date'];
   constructor(private timetableService: TimetableService,
               private getRecordsByIdService: GetRecordsByIdService,
               private getAllRecordsService: GetAllRecordsService,
@@ -75,16 +75,16 @@ export class TimetableComponent implements OnInit {
         /*get names of groups*/
         this.getRecordsByIdService.getRecordsById('group', timetable.group_id).subscribe((groupData) => {
           timetable.group_name = groupData[0].group_name;
-          /*get names of subjects*/
-          this.getRecordsByIdService.getRecordsById('subject', timetable.subject_id).subscribe((subjectData) => {
-            timetable.subject_name = subjectData[0].subject_name;
-            /*edit date*/
-            timetable.end_time = timetable.end_time.slice(0, 5);
-            timetable.start_time = timetable.start_time.slice(0, 5);
-            timetable.start_timeInterval = `${timetable.start_time}, ${timetable.start_date}`;
-            timetable.end_timeInterval = `${timetable.end_time}, ${timetable.end_date}`;
-          });
         });
+        /*get names of subjects*/
+        this.getRecordsByIdService.getRecordsById('subject', timetable.subject_id).subscribe((subjectData) => {
+          timetable.subject_name = subjectData[0].subject_name;
+        });
+        /*edit date*/
+        timetable.end_time = timetable.end_time.slice(0, 5);
+        timetable.start_time = timetable.start_time.slice(0, 5);
+        timetable.start_timeInterval = `${timetable.start_time}, ${timetable.start_date}`;
+        timetable.end_timeInterval = `${timetable.end_time}, ${timetable.end_date}`;
       }
     });
   }
