@@ -172,6 +172,9 @@ export class GroupComponent implements OnInit {
         err => this.router.navigate(['/bad_request']));
     }
   }
+  onTimeTableNavigate(group: Group) {
+    this.router.navigate(['./timetable'], {queryParams: {'group_id': group.group_id}, relativeTo: this.route.parent});
+  }
 
   /*
  Made by Olena (method how to open universal component)
