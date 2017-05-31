@@ -33,6 +33,7 @@ import { ResultsComponent } from './results/results.component';
 import {ResultsService} from './services/results.service';
 import {AddeditComponent} from './addedit/addedit.component';
 import {ExitAboutGuard} from '../guards/exit.about.guard';
+import {GetRecordsRangeService} from './services/get-records-range.service';
 import {BreadcrumbsService} from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import {LinksPipe} from './pipes/links.pipe';
@@ -81,7 +82,9 @@ import { SpinnerComponent } from './universal/spinner/spinner.component';
     GetAllRecordsService,
     DeleteRecordByIdService,
     SubjectService,
-    StudentsService
+    StudentsService,
+    ExitAboutGuard,
+    GetRecordsRangeService
   ],
 })
 export class AdminModule {

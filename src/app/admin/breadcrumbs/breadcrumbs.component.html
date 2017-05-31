@@ -1,1 +1,5 @@
-<span>Історія переходів: </span><span *ngFor="let link of links; let l=last"><a [routerLink]="[link]" >{{link | links}}<span *ngIf="!l">/</span></a></span>
+<span>Історія переходів: </span>
+<ng-container *ngFor="let link of links; let l=last">
+  <a [routerLink]="[link.path]" [queryParams]="link.queryP">{{link.path | links}}
+  </a><ng-container *ngIf="!l">/</ng-container>
+</ng-container>
