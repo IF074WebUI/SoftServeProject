@@ -15,7 +15,7 @@ import 'rxjs/add/operator/switchMap';
   styleUrls: ['./faculties.component.css'],
   providers: [FacultyService]
 })
-export class FacultiesComponent implements OnInit {
+export class FacultiesComponent<T> implements OnInit {
   faculties: Faculty[] = [];
   faculty: Faculty;
   IGNORE_PROPERTIES: string[] = ['faculty_id'];
@@ -32,7 +32,7 @@ export class FacultiesComponent implements OnInit {
   countPerPage: number = 10;
   id: number;
   ignoreProperties: string[];
-  @ViewChild(AddeditComponent) popup: AddeditComponent;
+  @ViewChild(AddeditComponent) popup: AddeditComponent<T>;
 
 
   constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
@@ -137,7 +137,7 @@ export class FacultiesComponent implements OnInit {
 
 
   confirmAdd() {
-    this.http.addItem(this.facultyAddName.value, this.facultyAddDescription.value).subscribe(response => {
+    this.http.addItem('hik','kah').subscribe(response => {
         this.getCount();
         (this.count % 10 === 0) ? this.page = this.page + 1 : this.page;
         this.uploadAllPages(this.page);
@@ -155,19 +155,15 @@ export class FacultiesComponent implements OnInit {
     }, (reason) => {
     });
   }
-
+// Method for opening editing and deleting commo modal window
   add() {
-    this.popup.showModal('add',  new Faculty(), 'faculty');
+    this.popup.showModal('add', 'faculty', new Faculty() );
   }
-
   edit(faculty: Faculty) {
-    this.popup.showModal('edit', faculty, 'faculty');
+    this.popup.showModal('edit', 'faculty', faculty );
   }
 
-  del(faculty: Faculty) {
-    this.popup.showModal('delete', faculty, 'faculty');
-  }
-  addFacultyUniversal() {
+ /* addFacultyUniversal() {
     this.router.navigate(['/admin/addedit'], {
       queryParams: {
         'id': 0,
@@ -186,7 +182,7 @@ export class FacultiesComponent implements OnInit {
         'entity': 'faculty'
       }
     });
-  }
+  }*/
 
   ValidatorUniqName(control: AbstractControl) {
     return this.http.searchByName(control.value).map((resp: Faculty[]) => {
