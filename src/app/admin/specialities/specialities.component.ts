@@ -127,5 +127,6 @@ export class SpecialitiesComponent implements OnInit {
       err => this.router.navigate(['/bad_request']));
   }
   }
+
 }
 

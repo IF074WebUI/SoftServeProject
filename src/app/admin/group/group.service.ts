@@ -14,7 +14,7 @@ export class GroupService {
   constructor(private http: Http) { }
 
   getGroups() {
-    return this.http.get('http://' + HOST + this.entity + '/getRecords')
+    return this.http.get('http://' + HOST + '/Group' + '/getRecords')
       .map((resp: Response) => resp.json());
   }
 

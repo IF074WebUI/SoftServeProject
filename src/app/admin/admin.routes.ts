@@ -21,9 +21,10 @@ export const adminRoutes: Route[] = [
       {path: 'subject', component: SubjectComponent},
       {path: 'timetable', component: TimetableComponent},
       {path: 'specialities', component: SpecialitiesComponent},
+      {path: 'results', component: ResultsComponent},
       {path: 'students', component: StudentsComponent},
       {path: 'results', component: ResultsComponent},
-      {path: 'addedit', component: AddeditComponent, canDeactivate: [ExitAboutGuard]},
-
+      /*{path: 'addedit', component: AddeditComponent, canDeactivate: [ExitAboutGuard]}, */
+      {path: 'addedit', component: AddeditComponent},
     ]
   }];

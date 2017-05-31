@@ -12,13 +12,16 @@ export class EntitiesTableComponent<T> implements OnInit {
   @Input() itemsPerPage: number = 5;
   @Input() page: number = 1;
   @Input() entities: T[] = [];
+  @Input() displayPropertiesOrder: string[];
   @Input() ignoreProperties: string[];
   @Input() headers: string[] = [];
   @Input() canEdit: boolean = true;
   @Input() canDelete: boolean = true;
+  @Input() canAction: boolean = false;
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
   @Output() editEntity: EventEmitter<T> = new EventEmitter();
   @Output() clickEntity: EventEmitter<T> = new EventEmitter();
+  @Output() actionEntity: EventEmitter<T> = new EventEmitter();
 
   constructor() { }
 
@@ -26,7 +29,15 @@ export class EntitiesTableComponent<T> implements OnInit {
   }
 
   getProperties(entity: T): string[] {
-    return Object.getOwnPropertyNames(entity);
+    if (this.displayPropertiesOrder) {
+      return this.displayPropertiesOrder;
+    } else {
+      return Object.getOwnPropertyNames(entity);
+    }
+  }
+
+  actionEntityCallback(entity: T) {
+    this.actionEntity.emit(entity);
   }
 
   editEntityCallback(entity: T) {

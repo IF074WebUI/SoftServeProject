@@ -150,6 +150,19 @@ export class GroupComponent implements OnInit {
     console.log(group);
   }
 
+  /*
+ Made by Olena (method how to open universal component)
+
+  addGroupUniversal() {
+    this.router.navigate(['/admin/addedit'], {
+      queryParams: {
+        'id': 0,
+        'name': 0,
+        'description': '',
+        'entity': 'group'      }
+    });
+  }
+   */
 
 }
 

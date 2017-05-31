@@ -27,15 +27,15 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MdDialogModule, MdButtonModule} from '@angular/material';
 import {StudentsComponent} from './students/students.component';
 import {StudentsService} from './students/students.service';
-import {AddStudentComponent} from './students/add-student/add-student.component';
-import {EditStudentComponent} from './students/edit-student/edit-student.component';
-import {DeleteStudentComponent} from './students/delete-student/delete-student.component';
 import {PopupComponent} from './popup/popup.component';
 import { ResultsComponent } from './results/results.component';
 import {ResultsService} from './services/results.service';
 import {AddeditComponent} from './addedit/addedit.component';
 import {ExitAboutGuard} from '../guards/exit.about.guard';
 import {GetRecordsRangeService} from './services/get-records-range.service';
+import {BreadcrumbsService} from './services/breadcrumbs.service';
+import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
+import {LinksPipe} from './pipes/links.pipe';
 
 @NgModule({
   declarations: [
@@ -51,13 +51,12 @@ import {GetRecordsRangeService} from './services/get-records-range.service';
     PaginationComponent,
     EntitiesTableComponent,
     SearchComponent,
-    AddStudentComponent,
-    EditStudentComponent,
-    DeleteStudentComponent,
+    LinksPipe,
     StudentsComponent,
     PopupComponent,
     ResultsComponent,
-    AddeditComponent
+    AddeditComponent,
+    BreadcrumbsComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -72,6 +71,7 @@ import {GetRecordsRangeService} from './services/get-records-range.service';
     StatisticsService,
     ResultsService,
     SpecialitiesService,
+    BreadcrumbsService,
     TimetableService,
     GetRecordsByIdService,
     GroupService,
@@ -82,10 +82,6 @@ import {GetRecordsRangeService} from './services/get-records-range.service';
     ExitAboutGuard,
     GetRecordsRangeService
   ],
-  entryComponents: [
-    AddStudentComponent,
-    EditStudentComponent,
-    DeleteStudentComponent]
 })
 export class AdminModule {
 }
