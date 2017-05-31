@@ -28,9 +28,16 @@ import {MdDialogModule, MdButtonModule} from '@angular/material';
 import {StudentsComponent} from './students/students.component';
 import {StudentsService} from './students/students.service';
 import {PopupComponent} from './popup/popup.component';
+import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page.component';
 import { ResultsComponent } from './results/results.component';
 import {ResultsService} from './services/results.service';
 import {AddeditComponent} from './addedit/addedit.component';
+import {ExitAboutGuard} from '../guards/exit.about.guard';
+import {GetRecordsRangeService} from './services/get-records-range.service';
+import {BreadcrumbsService} from './services/breadcrumbs.service';
+import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
+import {LinksPipe} from './pipes/links.pipe';
+import { SpinnerComponent } from './universal/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -46,10 +53,14 @@ import {AddeditComponent} from './addedit/addedit.component';
     PaginationComponent,
     EntitiesTableComponent,
     SearchComponent,
+    LinksPipe,
     StudentsComponent,
     PopupComponent,
+    ItemsPerPageComponent,
     ResultsComponent,
-    AddeditComponent
+    AddeditComponent,
+    BreadcrumbsComponent,
+    SpinnerComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -64,13 +75,16 @@ import {AddeditComponent} from './addedit/addedit.component';
     StatisticsService,
     ResultsService,
     SpecialitiesService,
+    BreadcrumbsService,
     TimetableService,
     GetRecordsByIdService,
     GroupService,
     GetAllRecordsService,
     DeleteRecordByIdService,
     SubjectService,
-    StudentsService
+    StudentsService,
+    ExitAboutGuard,
+    GetRecordsRangeService
   ],
 })
 export class AdminModule {

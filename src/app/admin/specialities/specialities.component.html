@@ -18,8 +18,7 @@
 ></dtester-popup>
 <!--Common component to display entnties-->
 <dtester-entities-table [entities]="specialities" [headers]="headers" [ignoreProperties]="ignoreProperties"
-                (deleteEntity)="del($event)"
-                [page]="page" [itemsPerPage]="countPerPage"
+                (deleteEntity)="del($event)" [page]="page" [itemsPerPage]="countPerPage"
                 (editEntity)="edit($event)" (clickEntity)="getGroupsBySpeciality($event)">
 </dtester-entities-table>
 <!--Pagination component-->

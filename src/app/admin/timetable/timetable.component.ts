@@ -7,6 +7,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Timetable } from './timetable';
 import { Group } from '../group/group';
 import { timeValidator } from './time-validator';
+import { GetRecordsRangeService } from '../services/get-records-range.service';
+import { StatisticsService } from '../statistics/statistics.service';
 
 @Component({
   selector: 'app-timetable',
@@ -19,17 +21,19 @@ export class TimetableComponent implements OnInit {
   subjects = [];
   newTimetableForm: FormGroup;
   updateTimetableForm: FormGroup;
-  addTimetable: Timetable;
   deletedTimetable: Timetable;
   updatedTimetable: Timetable;
   headers: string[] = ['№', 'Навчальна група', 'Предмет', 'Час початку тестування', 'Час закінчення тестування'];
-  countPerPage: number;
+  displayPropertiesOrder: string[] = ['group_name', 'subject_name', 'start_timeInterval', 'start_timeInterval'];
+  recordsPerPage: number;
   page: number;
-  ignoreProperties: string[] = ['timetable_id', 'subject_id', 'group_id', 'end_time', 'start_time', 'end_date', 'start_date'];
+  countRecords: number;
   constructor(private timetableService: TimetableService,
               private getRecordsByIdService: GetRecordsByIdService,
               private getAllRecordsService: GetAllRecordsService,
-              private deleteRecordByIdService: DeleteRecordByIdService) {
+              private deleteRecordByIdService: DeleteRecordByIdService,
+              private getRecordsRangeService: GetRecordsRangeService,
+              private statisticsService: StatisticsService) {
     this.newTimetableForm = new FormGroup({
       'group_id': new FormControl('', Validators.required),
       'subject_id': new FormControl('', Validators.required),
@@ -54,29 +58,33 @@ export class TimetableComponent implements OnInit {
 
   ngOnInit() {
     this.page = 1;
-    this.countPerPage = 10;
+    this.recordsPerPage = 5;
     this.getTimetables();
     this.getGroups();
     this.getSubjects();
+    this.getCountRecords();
   }
-
-  getTimetables() {
-    this.getAllRecordsService.getAllRecords('timeTable').subscribe((data) => {
+  getTimetables(): void {
+    if (this.countRecords <= (this.page - 1) * this.recordsPerPage) {
+      --this.page;
+    }
+    this.getRecordsRangeService.getRecordsRange('timeTable', this.recordsPerPage, (this.page - 1) * this.recordsPerPage)
+      .subscribe((data) => {
       this.timeTables = data;
       for (const timetable of this.timeTables) {
         /*get names of groups*/
         this.getRecordsByIdService.getRecordsById('group', timetable.group_id).subscribe((groupData) => {
           timetable.group_name = groupData[0].group_name;
-          /*get names of subjects*/
-          this.getRecordsByIdService.getRecordsById('subject', timetable.subject_id).subscribe((subjectData) => {
-            timetable.subject_name = subjectData[0].subject_name;
-            /*edit date*/
-            timetable.end_time = timetable.end_time.slice(0, 5);
-            timetable.start_time = timetable.start_time.slice(0, 5);
-            timetable.start_timeInterval = `${timetable.start_time}, ${timetable.start_date}`;
-            timetable.end_timeInterval = `${timetable.end_time}, ${timetable.end_date}`;
-          });
         });
+        /*get names of subjects*/
+        this.getRecordsByIdService.getRecordsById('subject', timetable.subject_id).subscribe((subjectData) => {
+          timetable.subject_name = subjectData[0].subject_name;
+        });
+        /*edit date*/
+        timetable.end_time = timetable.end_time.slice(0, 5);
+        timetable.start_time = timetable.start_time.slice(0, 5);
+        timetable.start_timeInterval = `${timetable.start_time}, ${timetable.start_date}`;
+        timetable.end_timeInterval = `${timetable.end_time}, ${timetable.end_date}`;
       }
     });
   }
@@ -124,5 +132,14 @@ export class TimetableComponent implements OnInit {
     this.getAllRecordsService.getAllRecords('subject').subscribe((data) => {
       this.subjects = data;
     });
+  }
+  getCountRecords() {
+    this.statisticsService.getCountRecords('timeTable').subscribe((data) => {
+      this.countRecords = data.numberOfRecords;
+    });
+  }
+  changePage(page: number) {
+    this.page = page;
+    this.getTimetables();
   }
 }

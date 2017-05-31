@@ -1,3 +1,34 @@
+<div class="container">
+  <div class="row">
+    <h1>Групи</h1>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
+    </div>
+    <div class="col-md-7 croup-count">
+      <h5>зареєстровано груп: <span>{{countRecords}}</span></h5>
+    </div>
+    <div class="col-md-2">
+      <dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
+    </div>
+  </div>
+  <div class="row">
+    <dtester-spinner *ngIf="isLoading"></dtester-spinner>
+    <dtester-entities-table class="table" *ngIf="!isLoading" [entities]="groupsOnPage" [headers]="headers" [ignoreProperties]="ignoreProperties"
+                            (deleteEntity)="deleteGroup()" [canAction]="true"
+                            [page]="pageNumber" [itemsPerPage]="offset"
+                            (editEntity)="editGroup()" (clickEntity)="getStudentsByGroup()">
+    </dtester-entities-table>
+  </div>
+  <div class="row">
+    <div class="text-center">
+      <dtester-pagination [countRecords]="countRecords" [recordsPerPage]="offset" [currentPage]="pageNumber"
+                          (pageChanged)="changePage($event)"></dtester-pagination>
+    </div>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-md-2">
     <h1>Групи</h1>
