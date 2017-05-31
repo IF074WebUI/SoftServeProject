@@ -28,6 +28,7 @@ import {MdDialogModule, MdButtonModule} from '@angular/material';
 import {StudentsComponent} from './students/students.component';
 import {StudentsService} from './students/students.service';
 import {PopupComponent} from './popup/popup.component';
+import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page.component';
 import { ResultsComponent } from './results/results.component';
 import {ResultsService} from './services/results.service';
 import {AddeditComponent} from './addedit/addedit.component';
@@ -48,6 +49,7 @@ import {AddeditComponent} from './addedit/addedit.component';
     SearchComponent,
     StudentsComponent,
     PopupComponent,
+    ItemsPerPageComponent,
     ResultsComponent,
     AddeditComponent
   ],
