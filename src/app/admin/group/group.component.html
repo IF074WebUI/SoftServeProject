@@ -2,7 +2,6 @@
                  (editEntity)="confirmEdit($event)"
                  (deleteEntity)="confirmDelete($event)"
 ></dtester-addedit>
-<button (click)="add()" type="button" class="btn btn-primary" data-dismiss="modal">Add new group</button>
 
 <div class="container">
   <div class="row">
@@ -17,6 +16,7 @@
     </div>
     <div class="col-md-2">
       <dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
+
     </div>
   </div>
   <div class="row">
@@ -26,6 +26,7 @@
                             [page]="pageNumber" [itemsPerPage]="offset"
                             (editEntity)="edit($event)" (clickEntity)="getStudentsByGroup()" (actionEntity)="onTimeTableNavigate($event)">
     </dtester-entities-table>
+    <button (click)="add()" type="button" class="btn btn-primary" data-dismiss="modal">Add new group</button>
   </div>
   <div class="row">
     <div class="text-center">
