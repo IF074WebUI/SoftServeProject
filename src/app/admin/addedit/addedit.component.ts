@@ -121,11 +121,11 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
       'password': this.password,
       'password_confirm': this.passwordConfirm,
       'chosengroupId': this.chosenGroup,
-       // Group
+      // Group
       'chosenfacultyId': this.chosenFaculty,
       'chosenspecialityId': this.chosenSpeciality,
 
-       // Faculty/Speciality/Subjects
+      // Faculty/Speciality/Subjects
 
       'description': this.description,
 
@@ -175,18 +175,26 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
 
     console.log(this.method);
 
-    if(this.entityName === 'faculty'){
-         this.entity[objInputProp[+[2]]] = this.EntityEditForm.controls['description'].value;
+    if (this.entityName === 'faculty') {
+      this.entity[objInputProp[+[2]]] = this.EntityEditForm.controls['description'].value;
     }
-    if(this.entityName === 'student'){
+    if (this.entityName === 'student') {
       for (let i = 2; i <= 8; i++) {
-        this.entity[objInputProp[+[i - 1]]] = this.EntityEditForm.controls[prop[+[i]]].value; }
+        this.entity[objInputProp[+[i - 1]]] = this.EntityEditForm.controls[prop[+[i]]].value;
+      }
     }
-    if(this.entityName === 'questions'){
-      for (let i = 1; i <= 5; i++) {
-        this.entity[objInputProp[+[i]]] = this.EntityEditForm.controls[prop[+[i]]].value; }
+      if (this.entityName === 'group') {
+        for (let i = 10; i <= 11; i++) {
+          this.entity[objInputProp[+[i - 8]]] = this.EntityEditForm.controls[prop[+[i]]].value;
+        }
+    }
 
+    if (this.entityName === 'questions') {
+      for (let i = 1; i <= 5; i++) {
+        this.entity[objInputProp[+[i]]] = this.EntityEditForm.controls[prop[+[i]]].value;
+      }
     }
+
 
     if (this.method === 'add') {
       this.entity[objInputProp[+[1]]] = this.EntityEditForm.controls['addname'].value;
@@ -210,21 +218,34 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
   }
 
   ValidatorUniqName(control: AbstractControl) {
-    return this.facultyService.searchByName(control.value).map((resp: Faculty[]) => {
+    if (this.entityName === 'faculty') {
+      this.entityService = this.facultyService;
+    }
+    if (this.entityName === 'speciality') {
+      this.entityService = this.specialityService;
+    }
+    if (this.entityName === 'group') {
+      this.entityService = this.groupService;
+    }
+    let rezult = this.entityService.searchByName(control.value).map((resp: any) => {
         for (let key of resp) {
-          if (key['faculty_name'] === control.value.trim()) {
+          let Properties = Object.getOwnPropertyNames(key);
+          if (key[Properties[+[1]]] === control.value.trim()) {
             return {exists: true};
           }
         }
         return null;
       }
     );
+    return rezult;
   }
 
   saved: boolean = false;
+
   save() {
     this.saved = true;
   }
+
   canDeactivate(): boolean | Observable<boolean> {
     if (!this.saved) {
       return confirm("Ви впевнені, що хочете перейти на сторінку?");
