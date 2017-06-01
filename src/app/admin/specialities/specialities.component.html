@@ -4,11 +4,7 @@
     <i class="fa fa-plus-circle" aria-hidden="true"></i>
   </button>
   <!--Dropdown for items per page count-->
-  <select #s (change)="changeCountPerPage(s.value)">
-    <option>{{FIRST_DROPDOWN_ITEM}}</option>
-    <option>{{SECOND_DROPDOWN_ITEM}}</option>
-    <option>{{THIRD_DROPDOWN_ITEM}}</option>
-  </select>
+  <dtester-items-per-page [numberOfRecords]="count" (recordsPerPageChanged)="changeCountPerPage($event)"></dtester-items-per-page>
 </div>
 <!--Search component-->
 <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>

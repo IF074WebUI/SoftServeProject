@@ -1,3 +1,4 @@
+<dtester-items-per-page [numberOfRecords]="count" (recordsPerPageChanged)="changeCountPerPage($event)"></dtester-items-per-page>
 <dtester-entities-table [entities]="results" [ignoreProperties]="IGNORE_PROPERTIES" [headers]="RESULTS_HEADERS" [page]="1"
                         [itemsPerPage]="50" [canEdit]="false" (deleteEntity)="del($event)"></dtester-entities-table>
 <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
