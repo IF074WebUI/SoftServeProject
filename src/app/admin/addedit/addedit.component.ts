@@ -22,15 +22,16 @@ declare var $: any;
   providers: [FacultyService]
 })
 export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
-  @Output() addEntity: EventEmitter<Entity> = new EventEmitter();
-  @Output() editEntity: EventEmitter<Entity> = new EventEmitter();
+  @Output() addEntity: EventEmitter<T> = new EventEmitter();
+  @Output() editEntity: EventEmitter<T> = new EventEmitter();
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
 
   student: Student = new Student();
-  faculty: Faculty = new Faculty;
-  group: Group = new Group;
+  faculty: Faculty = new Faculty(null, '', '');
+  group: Group = new Group(null, '', null, null);
   specialities: Speciality[] = [];
   faculties: Faculty[] = [];
+  groups: Group[] = [];
   entity: any;
   objProp: any;
 
@@ -57,32 +58,54 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
 
 
   entityAddName: FormControl;
-  entityEditDescription: FormControl;
+  description: FormControl;
   EntityEditForm: FormGroup;
   entityEditName: FormControl;
   chosenSpeciality: FormControl;
   chosenFaculty: FormControl;
+  studentSurname: FormControl;
+  studentFname: FormControl;
+  chosenGroup: FormControl;
+  password: FormControl;
+  passwordConfirm: FormControl;
+  studentName: FormControl;
+  chosentestId: FormControl;
+  questionText: FormControl;
+  levelTINY: FormControl;
+  typeTiny: FormControl;
+  attachment: FormControl;
+  gradeBook: FormControl;
+  MODAL_CONFIRM_BODY: string = 'Ви дійсно бажаєте видалити дану сутність? ';
 
 
   constructor(private facultyService: FacultyService,
               private groupService: GroupService,
               private specialityService: SpecialitiesService,
               private location: Location, private route: ActivatedRoute, private router: Router) {
-    /*
-     this.entityId = +this.route.snapshot.queryParams['id'];
-     this.Name = this.route.snapshot.queryParams['name'];
-     this.Description = this.route.snapshot.queryParams['description'];
-     this.entity = this.route.snapshot.queryParams['entity'];
-     */
   }
 
   ngOnInit() {
     this.facultyService.getAllFaculties().subscribe(resp => this.faculties = resp);
     this.groupService.getSpeciality().subscribe(resp => this.specialities = resp);
+    this.groupService.getGroups().subscribe(resp => this.groups = resp);
 
     this.entityAddName = new FormControl('', Validators.required, this.ValidatorUniqName.bind(this));
     this.entityEditName = new FormControl('', Validators.required);
-    this.entityEditDescription = new FormControl('');
+    this.description = new FormControl('');
+    this.studentSurname = new FormControl('');
+    this.studentFname = new FormControl('');
+    this.chosenGroup = new FormControl('');
+    this.password = new FormControl('');
+    this.passwordConfirm = new FormControl('');
+    this.studentName = new FormControl('');
+    this.chosentestId = new FormControl('');
+    this.questionText = new FormControl('');
+    this.levelTINY = new FormControl('');
+    this.typeTiny = new FormControl('');
+    this.attachment = new FormControl('');
+    this.gradeBook = new FormControl('');
+
+
     this.chosenFaculty = new FormControl('');
     this.chosenSpeciality = new FormControl('');
 
@@ -90,26 +113,42 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
     this.EntityEditForm = new FormGroup({
       'addname': this.entityAddName,
       'editname': this.entityEditName,
-      'editdescription': this.entityEditDescription,
+      // student
+      'grade_book': this.gradeBook,
+      'student_name': this.studentName,
+      'student_surname': this.studentSurname,
+      'student_fname': this.studentFname,
+      'password': this.password,
+      'password_confirm': this.passwordConfirm,
+      'chosengroupId': this.chosenGroup,
+      // Group
       'chosenfacultyId': this.chosenFaculty,
-      'chosenspecialityId': this.chosenSpeciality
+      'chosenspecialityId': this.chosenSpeciality,
+
+      // Faculty/Speciality/Subjects
+
+      'description': this.description,
+
+      // Questions
+
+      'chosentestId': this.chosentestId,
+      'question_text': this.questionText,
+      'levelTINY': this.levelTINY,
+      'typeTiny': this.typeTiny,
+      'attachment': this.attachment
+
     });
   }
 
   showModal(method: string, entityName: string, inputentity: any) {
+
     this.method = method;
     this.entityName = entityName;
-    console.log(this.method);
     this.entity = inputentity;
+
+
     let objInputProp = Object.getOwnPropertyNames(inputentity);
-
-    //console.log(objInputProp);
-
-    this.entityId = inputentity[objInputProp[+[0]]];
-    console.log(this.entityId);
     this.Name = inputentity[objInputProp[+[1]]];
-    this.Description = inputentity[objInputProp[+[2]]];
-
 
     if (this.method === 'add') {
       this.MODAL_TITLE = 'Створення нового' + '' + this.entityName;
@@ -119,9 +158,9 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
     if (this.method === 'edit') {
       this.MODAL_TITLE = 'Редагування' + '' + this.entityName;
       this.HEADER = 'Редагувати назву';
-      this.entityAddName.setValue('sraka');
+      this.entityAddName.setValue('sraka2');
       this.entityEditName.setValue(this.Name);
-      this.entityEditDescription.setValue(this.Description);
+      this.description.setValue(this.Description);
     }
     if (this.method === 'delete') {
       this.MODAL_TITLE = 'Видалення ' + '' + this.entityName;
@@ -131,40 +170,45 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
   }
 
   confirm() {
-    //console.log(this.entityId);
+    let objInputProp = Object.getOwnPropertyNames(this.entity);
+    let prop = Object.getOwnPropertyNames(this.EntityEditForm.controls);
 
-    // console.log(this.entityAddName.value);
     console.log(this.method);
+
+    if (this.entityName === 'faculty') {
+      this.entity[objInputProp[+[2]]] = this.EntityEditForm.controls['description'].value;
+    }
+    if (this.entityName === 'student') {
+      for (let i = 2; i <= 8; i++) {
+        this.entity[objInputProp[+[i - 1]]] = this.EntityEditForm.controls[prop[+[i]]].value;
+      }
+    }
+      if (this.entityName === 'group') {
+        for (let i = 10; i <= 11; i++) {
+          this.entity[objInputProp[+[i - 8]]] = this.EntityEditForm.controls[prop[+[i]]].value;
+        }
+    }
+
+    if (this.entityName === 'questions') {
+      for (let i = 1; i <= 5; i++) {
+        this.entity[objInputProp[+[i]]] = this.EntityEditForm.controls[prop[+[i]]].value;
+      }
+    }
+
     if (this.method === 'add') {
-      let newEntity: Entity = new Entity();
-      newEntity['id'] = this.entityId;
-      newEntity['addname'] = this.entityAddName.value;
-      newEntity['editname'] = this.entityEditName.value;
-      newEntity['editdescription'] = this.entityEditDescription.value;
-      newEntity['chosenfacultyId'] = this.chosenFaculty.value;
-      newEntity['chosenspecialityId'] = this.chosenSpeciality.value;
-      this.addEntity.emit(newEntity);
+      this.entity[objInputProp[+[1]]] = this.EntityEditForm.controls['addname'].value;
+      console.log(this.entity);
+
+      this.addEntity.emit(this.entity);
     }
     if (this.method === 'edit') {
-      let editedEntity: Entity = new Entity();
-      editedEntity['id'] = this.entityId;
-      editedEntity['id'] = this.entityId;
-      editedEntity['addname'] = this.entityAddName.value;
-      editedEntity['editname'] = this.entityEditName.value;
-      editedEntity['editdescription'] = this.entityEditDescription.value;
-      editedEntity['chosenfacultyId'] = this.chosenFaculty.value;
-      editedEntity['chosenspecialityId'] = this.chosenSpeciality.value;
-      this.editEntity.emit(editedEntity);
+      this.entity[objInputProp[+[1]]] = this.EntityEditForm.controls['editname'].value;
+      this.editEntity.emit(this.entity);
     }
   }
 
-  submitDel(){
+  submitDel() {
     this.deleteEntity.emit(this.entity);
-  }
-
-
-  goBack(): void { ///not working
-    this.location.back();
   }
 
   cancel() {
@@ -173,17 +217,27 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
   }
 
   ValidatorUniqName(control: AbstractControl) {
-    return this.facultyService.searchByName(control.value).map((resp: Faculty[]) => {
+    if (this.entityName === 'faculty') {
+      this.entityService = this.facultyService;
+    }
+    if (this.entityName === 'speciality') {
+      this.entityService = this.specialityService;
+    }
+    if (this.entityName === 'group') {
+      this.entityService = this.groupService;
+    }
+    let rezult = this.entityService.searchByName(control.value).map((resp: any) => {
         for (let key of resp) {
-          if (key['faculty_name'] === control.value.trim()) {
+          let Properties = Object.getOwnPropertyNames(key);
+          if (key[Properties[+[1]]] === control.value.trim()) {
             return {exists: true};
           }
         }
         return null;
       }
     );
+    return rezult;
   }
-
 
   saved: boolean = false;
 
@@ -192,7 +246,6 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
   }
 
   canDeactivate(): boolean | Observable<boolean> {
-
     if (!this.saved) {
       return confirm("Ви впевнені, що хочете перейти на сторінку?");
     }
@@ -202,39 +255,9 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
   }
 
 
-  /*
-   confirmFacultySpeciality() {
-   this.entityService = this.facultyService;
-   if (this.method === 'add') {
-   this.entityService.addItem(this.entityAddName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
-   }
-   if (this.method === 'edit') {
-   this.entityService.editItem(this.entityId, this.entityEditName.value, this.entityEditDescription.value).subscribe((resp) => console.log(resp));
-   }
-   if (this.method === 'delete') {
-   this.entityService.deleteItem(this.entityId).subscribe(resp => console.log(resp));
-   }
-   this.EntityEditForm.reset();
-   this.editEntity.emit(edit);
+  goBack(): void { ///not working
+    this.location.back();
+  }
 
-   };
-
-
-
-
-   confirmGroup() {
-   this.entityService = this.groupService;
-   console.log('group works');
-   if (this.method === 'add') {
-   this.entityService.createCroup(this.entityAddName.value, this.chosenSpeciality.value, this.chosenFaculty.value).subscribe((resp) => console.log(resp));
-   }
-   if (this.method === 'edit') {
-   this.entityService.editGroup(this.entityId, this.entityAddName.value, this.chosenSpeciality.value, this.chosenFaculty.value).subscribe((resp) => console.log(resp));
-   }
-   if (this.method === 'delete') {
-   this.entityService.deleteGroup(this.entityId).subscribe(resp => console.log(resp));
-   }
-   this.EntityEditForm.reset();
-   }*/
 }
 

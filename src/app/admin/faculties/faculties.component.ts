@@ -8,7 +8,6 @@ import {NEWFACULTY, EDITRESULT, EDITFACULTY, DELETERESULT} from '../../constants
 import {AddeditComponent } from '../addedit/addedit.component';
 
 import 'rxjs/add/operator/switchMap';
-import {Entity} from "../addedit/Entity";
 
 @Component({
   selector: 'dtester-faculties',
@@ -110,11 +109,9 @@ export class FacultiesComponent<T> implements OnInit {
 
 // Confirm methods for add, edit, delete faculty
 
-  confirmAdd(entity: Entity) {
-    console.log(entity.addname);
-    console.log(entity.editname);
-    console.log(entity.editdescription);
-    this.http.addItem(entity.addname, entity.editdescription ).subscribe(response => {
+  confirmAdd(entity: Faculty) {
+    console.log(entity);
+    this.http.addItem(entity['faculty_name'], entity['faculty_description']).subscribe(response => {
         this.getCount();
         (this.count % 10 === 0) ? this.page = this.page + 1 : this.page;
         this.uploadAllPages(this.page);
@@ -123,11 +120,9 @@ export class FacultiesComponent<T> implements OnInit {
       error => this.router.navigate(['/bad_request'])
     );
   }
-  confirmEdit(entity: Entity) {
-    console.log(entity.addname);
-    console.log(entity.editname);
-    console.log(entity.editdescription);
-    this.http.editItem(entity.id, entity.editname, entity.editdescription ).subscribe(response => {
+  confirmEdit(entity: Faculty) {
+    console.log(entity);
+    this.http.editItem(entity['faculty_id'], entity['faculty_name'], entity['faculty_description'] ).subscribe(response => {
        this.uploadAllPages(this.page);
         this.popup.cancel();
       },
@@ -147,7 +142,7 @@ export class FacultiesComponent<T> implements OnInit {
 
 // Method for opening editing and deleting commo modal window
   add() {
-    this.popup.showModal('add', 'faculty', new Faculty() );
+    this.popup.showModal('add', 'faculty', new Faculty(null, '', '') );
   }
   edit(faculty: Faculty) {
     this.popup.showModal('edit', 'faculty', faculty );
@@ -155,27 +150,7 @@ export class FacultiesComponent<T> implements OnInit {
   del(faculty: Faculty){
     this.popup.showModal('delete', 'faculty', faculty);
   }
- /* addFacultyUniversal() {
-    this.router.navigate(['/admin/addedit'], {
-      queryParams: {
-        'id': 0,
-        'name': 0,
-        'description': '',
-        'entity': 'faculty'      }
-    });
-  }
-
-  editFacultyUniversal(faculty: Faculty) {
-    this.router.navigate(['/admin/addedit'], {
-      queryParams: {
-        'id': faculty['faculty_id'],
-        'name': faculty['faculty_name'],
-        'description': faculty['faculty_description'],
-        'entity': 'faculty'
-      }
-    });
-  }*/
-
+  // Validation
   ValidatorUniqName(control: AbstractControl) {
     return this.http.searchByName(control.value).map((resp: Faculty[]) => {
         for (let key of resp) {
