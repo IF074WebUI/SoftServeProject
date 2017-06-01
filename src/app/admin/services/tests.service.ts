@@ -11,4 +11,8 @@ export class TestsService {
     return this.http.get('http://' + HOST + '/test/getRecords/' + id).map(resp => resp.json());
   }
 
+  getAll(): Observable<any> {
+    return this.http.get('http://' + HOST + '/test/getRecords'  ).map(resp => resp.json());
+  }
+
 }

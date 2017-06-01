@@ -22,7 +22,9 @@ export class ResultsComponent implements OnInit {
 
   results: Result[];
   groups: Group[];
-  group: Group;
+  tests: {test_id: number, test_name: string, subject_id: number, tasks: number, time_for_test: string, enabled: number, attempts: number}[];
+  testId: number;
+  groupId: number;
   count: number;
   countPerPage: number = 10;
   page: number = 1;
@@ -61,6 +63,7 @@ export class ResultsComponent implements OnInit {
       }
     );
     this.groupsService.getGroups().subscribe((resp: Group[]) => this.groups = resp);
+    this.testsService.getAll().subscribe((resp: any) => this.tests = resp);
   }
 
   transformResults(): void {
@@ -96,8 +99,26 @@ export class ResultsComponent implements OnInit {
       err => this.router.navigate(['/bad_request']));
   }
 
-  getByGroup(groupId: number) {
+  setGroup(groupId: number) {
+    this.groupId = groupId;
+  }
 
+  setTest(testId: number) {
+    this.testId = testId;
+  }
+
+  findByGroupTest(): void {
+    this.resultsService.getAllByTestGroupDate(this.testId, this.groupId).subscribe((resp: Result[]) => {this.results = resp;
+      this.getCount();
+      this.transformResults();
+    });
+  }
+
+  findByStudent(result: Result): void {
+    this.resultsService.getAllByStudent(result.student_id).subscribe((resp: Result[]) => {this.results = resp;
+      this.getCount();
+      this.transformResults();
+    });
   }
 
   changePage(page: number) {

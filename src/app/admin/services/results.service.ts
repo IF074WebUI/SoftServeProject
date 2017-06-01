@@ -26,7 +26,7 @@ export class ResultsService {
     return this.http.get(`${RESULT_URI}countTestPassesByStudent/${studentId}}/${testId}`).map((resp: Response) => resp.json());
   }
 
-  getAllByTestGroupDate(testId: number, groupId: number, date: Date): Observable<Result[]> {
+  getAllByTestGroupDate(testId: number, groupId: number, date?: Date): Observable<Result[]> {
     if (date) {
       return this.http.get(`${RESULT_URI}getRecordsByTestGroupDate/${testId}/${groupId}/${date}`).map((resp: Response) => resp.json());
     } else {
