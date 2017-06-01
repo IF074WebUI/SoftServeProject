@@ -6,10 +6,10 @@
         <h5 class="modal-title" id="exampleModalLabel"><span>{{MODAL_TITLE}}</span></h5>
         <ng-template #edit><span *ngIf="action === 'edit'; else confirmHeader">{{MODAL_TITLE}}</span></ng-template>
         <ng-template #confirmHeader><span>{{MODAL_CONFIRM_HEADER}}</span></ng-template>
-        <button type="button" class="close" (click)="cancel()" aria-label="Close">
+        <button  type="button" class="close" (click)="cancel()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <button type="submit" class="btn btn-danger" (click)="submitDel()" >Підтвердити видалення</button>
+        <button  *ngIf="method == 'delete'" type="submit" class="btn btn-danger" (click)="submitDel()" >Підтвердити видалення</button>
       </div>
 
       <div *ngIf="method != 'delete'" class="modal-body">
