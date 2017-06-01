@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ResultsService} from '../services/results.service';
 import {Result} from './result';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router} from '@angular/router';
+import {ToastsManager} from 'ng2-toastr';
 
 @Component({
   selector: 'dtester-results',
@@ -18,7 +19,8 @@ export class ResultsComponent implements OnInit {
   countPerPage: number = 5;
   page: number = 1;
 
-  constructor(private resultsService: ResultsService, private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private resultsService: ResultsService, private router: Router, private activatedRoute: ActivatedRoute,
+  private toastr: ToastsManager) {
   }
 
   ngOnInit() {
@@ -73,10 +75,16 @@ export class ResultsComponent implements OnInit {
     this.getResults();
   }
 
+  changeCountPerPage(itemsPerPage: number) {    /* callback method to set count entities per page when dropdown item had been selected */
+    this.countPerPage = itemsPerPage;
+    this.getResults();
+  }
+
   del(result: Result) {
     this.resultsService.delete(result.session_id).subscribe(resp => {
         --this.count;
         this.getResults();
+        this.toastr.success(`Результат успішно видалений`);
       },
       err => this.router.navigate(['/bad_request']));
   }
