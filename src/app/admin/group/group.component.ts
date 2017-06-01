@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GroupService } from './group.service';
 import { Group } from './group';
 import { Speciality } from '../specialities/speciality';
@@ -7,6 +7,7 @@ import { FacultyService } from '../faculties/faculty.service';
 import { Faculty } from '../faculties/Faculty';
 import { ActivatedRoute, Router } from '@angular/router';
 import {GROUPS_HEADERS, IGNORE_PROPERTIES} from './groupConstants';
+import {AddeditComponent} from '../addedit/addedit.component';
 @Component({
   selector: 'dtester-group',
   templateUrl: './group.component.html',
@@ -14,6 +15,8 @@ import {GROUPS_HEADERS, IGNORE_PROPERTIES} from './groupConstants';
   providers: [FacultyService, SpecialitiesService]
 })
 export class GroupComponent implements OnInit {
+  @ViewChild(AddeditComponent) popup: AddeditComponent<Group>;
+
   isLoading: boolean;
   groupsOnPage: Group[];
   facultiesOnPage: Faculty[] = [];
@@ -172,20 +175,35 @@ export class GroupComponent implements OnInit {
         err => this.router.navigate(['/bad_request']));
     }
   }
-
-  /*
- Made by Olena (method how to open universal component)
-
-  addGroupUniversal() {
-    this.router.navigate(['/admin/addedit'], {
-      queryParams: {
-        'id': 0,
-        'name': 0,
-        'description': '',
-        'entity': 'group'      }
-    });
+  onTimeTableNavigate(group: Group) {
+    this.router.navigate(['./timetable'], {queryParams: {'group_id': group.group_id}, relativeTo: this.route.parent});
   }
-   */
+
+
+// Method for opening editing and deleting commo modal window
+
+  add() {
+    this.popup.showModal('add', 'group', new Group(null, '', null, null) );
+  }
+  edit(group: Group) {
+    this.popup.showModal('edit', 'group', group );
+  }
+  del(group: Group){
+    this.popup.showModal('delete', 'group', group);
+  }
+
+  // Confirm methods for add, edit, delete faculty
+
+  confirmAdd(entity: Group) {
+    console.log(entity);
+  }
+  confirmEdit(entity: Group) {
+    console.log(entity);
+
+  }
+  confirmDelete(group: Group) {
+    console.log(group);
+  };
 
 }
 

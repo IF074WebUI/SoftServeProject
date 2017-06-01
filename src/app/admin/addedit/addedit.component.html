@@ -1,93 +1,175 @@
-<h1>Модальне вікно</h1>
+<div class="modal fade" #modal id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"> <!--modal header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><span>{{MODAL_TITLE}}</span></h5>
+        <ng-template #edit><span *ngIf="action === 'edit'; else confirmHeader">{{MODAL_TITLE}}</span></ng-template>
+        <ng-template #confirmHeader><span>{{MODAL_CONFIRM_HEADER}}</span></ng-template>
+        <button type="button" class="close" (click)="cancel()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
 
+      <div class="modal-body">
+        <form [formGroup]="EntityEditForm" (ngSubmit)="confirm()"> <!--modal body   -->
+          <div  *ngIf="method != 'delete'">
+          <div *ngIf="method == 'add'" class="form-group"> <!--add name -->
+            <label>{{HEADER}}</label>
+            <input formControlName="addname" type="text" name="entity_add_name" required class="form-control"/>
+            <span
+              *ngIf="EntityEditForm.controls['addname'].hasError('required') && EntityEditForm.controls['addname'].touched"
+              class="validate_message">Вкажіть назву факультету</span>
+            <span
+              *ngIf="EntityEditForm.controls['addname'].hasError('exists') && EntityEditForm.controls['addname'].dirty"
+              class="validate_message">Факультет з такою назвою вже існує</span>
+          </div>
+          <div *ngIf="method == 'edit'" class="form-group"> <!--edit name    -->
+            <label>{{HEADER}}</label>
+            <input formControlName="editname" name="entity_edit_name" type="text" class="form-control" id="editname">
+            <span
+              *ngIf="EntityEditForm.controls['editname'].hasError('required') && EntityEditForm.controls['editname'].touched"
+              class="validate_message"> enter name{{MODAL_VALIDATION_CODE_REQUIRED}}</span>
+          </div>
+          <!-- student entity-->
 
-<form [formGroup]="EntityEditForm">
-  <div *ngIf="this.entityId !== 0" class="form-group">
-    <label>{{HEADER}}</label>
-    <input formControlName="editname" name="entity_edit_name" type="text" class="form-control" id="editname">
-    <span
-      *ngIf="EntityEditForm.controls['editname'].hasError('required') && EntityEditForm.controls['editname'].touched"
-      class="validate_message"> enter name{{MODAL_VALIDATION_CODE_REQUIRED}}</span>
-  </div>
-  <div *ngIf="this.entityId === 0" class="form-group">
-    <label>{{HEADER}}</label>
-    <input formControlName="addname" type="text" name="entity_add_name" required class="form-control"/>
-    <span
-      *ngIf="EntityEditForm.controls['addname'].hasError('required') && EntityEditForm.controls['addname'].touched"
-      class="validate_message">Вкажіть назву факультету</span>
-    <span
-      *ngIf="EntityEditForm.controls['addname'].hasError('exists') && EntityEditForm.controls['addname'].dirty"
-      class="validate_message">Факультет з такою назвою вже існує</span>
-  </div>
-  <div *ngIf="entity == 'faculty'" class="form-group">
-    <label>{{DESCRIPTION}}</label>
-    <textarea formControlName='editdescription' type="text" name='entity_description' required
-              class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
+          <div *ngIf="entityName === 'student'" class="form-group">
+            <input formControlName="grade_book" type="text" class="form-control" name="gradebook"
+                   placeholder="enter student name">
+          </div>
+
+          <div *ngIf="entityName === 'student'" class="form-group">
+            <input formControlName="student_name" type="text" class="form-control" id="name" name="name"
+                   placeholder="enter student name">
+          </div>
+
+          <div *ngIf="entityName === 'student'" class="form-group">
+            <input formControlName="student_surname" type="text" class="form-control" id="surname" name="surname"
+                   placeholder="enter student surname">
+          </div>
+
+          <div *ngIf="entityName === 'student'" class="form-group">
+            <input formControlName="student_fname" type="text" class="form-control" id="f_name" name="fname"
+                   placeholder="enter student fname">
+          </div>
+
+          <div *ngIf="entityName === 'student'" class="form-group">
+
+            <input formControlName="password" type="password" class="form-control" id="pwd" name="password" required
+                   placeholder="enter password">
+          </div>
+
+          <div *ngIf="entityName === 'student'" class="form-group">
+            <input formControlName="password_confirm" type="password" class="form-control"
+                   id="password_confirm" name="password" required placeholder="confirm password">
+          </div>
+
+          <div *ngIf="entityName === 'student'" class="form-group"> <!--faculty_id for group  -->
+            <label class="center-block">{{HEADER_GROUP}}</label>
+            <select class="form-control" formControlName="chosengroupId" placeholder="chose group">
+              <option *ngFor="let item of groups" [value]="item.group_id">{{item.group_name}}</option>
+            </select>
+          </div>
+
+          <!--PHOTO <div></div> -->
+
+          <!-- Groups-->
+
+          <div *ngIf="entityName === 'group'" class="form-group">
+            <!--faculty_id for group  *ngIf="entityName === 'group'"-->
+            <label class="center-block">{{HEADER_GROUP}}</label>
+            <select class="form-control" formControlName="chosenfacultyId" placeholder="chose faculty">
+              <option *ngFor="let item of faculties" [value]="item.faculty_id">{{item.faculty_name}}</option>
+            </select>
+          </div>
+
+          <div *ngIf="entityName === 'group'" class="form-group">
+            <!--speciality_id for group *ngIf="entityName === 'group'" -->
+            <label class="center-block">{{HEADER_GROUP}}</label>
+            <select class="form-control" formControlName="chosenspecialityId" placeholder="chose speciality">
+              <option *ngFor="let speciality of specialities" [value]="speciality.speciality_id">
+                {{speciality.speciality_name}}
+              </option>
+            </select>
+
+            <!-- Faculty/Speciality/Subjects -->
+
+          </div>
+          <div *ngIf="entityName === 'faculty'" class="form-group">
+            <!--add/edit description, surname of student  *ngIf="entityName === 'faculty'" -->
+            <label>{{DESCRIPTION}}</label>
+            <textarea formControlName='description' type="text" name='description' required
+                      class="form-control" placeholder=DESCRIPTION class="form-control" rows="5">
        </textarea>
-  </div>
+          </div>
 
-  <div *ngIf="entity == 'group'" class="form-group">
-    <label class="center-block">{{HEADER_GROUP}}</label>
-      <select class="form-control" formControlName="chosenfacultyId">
-        <option *ngFor="let faculty of faculties" [value]="faculty.faculty_id">{{faculty.faculty_name}}</option>
-      </select>
+          <!-- Questions -->
 
-  </div>
-  <div *ngIf="entity == 'group'" class="form-group">
-    <label class="center-block">{{HEADER_GROUP}}</label>
-      <select class="form-control" formControlName="chosenspecialityId">
-        <option *ngFor="let speciality of specialities" [value]="speciality.speciality_id">{{speciality.speciality_name}}</option>
-      </select>
-  </div>
-  <!-- Studend fields
-  <div class="form-group">
-    <label>Імя{{HEADER}}</label>
-    <input formControlName="studentfirstname" type="text" name="studentfirst_add" required class="form-control"/>
-  </div>
-  <div class="form-group">
-    <label>По-батьокові{{HEADER}}</label>
-    <input formControlName="studentsecondname" type="text" name="studentsecond_add" required class="form-control"/>
-  </div>
-  <div class="form-group">
-    <label>Прізвище{{HEADER}}</label>
-    <input formControlName="searname" type="text" name="searname_add" required class="form-control"/>
-  </div>
-  <div class="form-group">
-    <label>Пароль{{HEADER}}</label>
-    <input formControlName="password" type="text" name="pasword_add" required class="form-control"/>
-  </div>
-  <div class="form-group">
-    <label>Підтвердити пароль{{HEADER}}</label>
-    <input formControlName="confirmpassword" type="text" name="confirm_password" required class="form-control"/>
-  </div>
-  <div class="form-group">
-    <label>Група{{HEADER}}</label>
-  </div>
-  <div class="form-group">
-    <label class="center-block">State:
-      <select class="form-control" formControlName="group">
-        <option *ngFor="let group of getAllGroups()" [value]="group">{{group.group_name}}</option>
-      </select>
-    </label>
-  </div>
-</form>
- -->
-<div>
-  <div *ngIf="entity == 'faculty'" class="text-center">
-    <button type="submit" class="btn btn-danger" [disabled]="!EntityEditForm.valid" (click)="confirmFacultySpeciality()">
-      Confirm Faculty{{BUTTON_CONFIRM}}
-    </button>
-  </div>
-</div>
-  <div>
-    <div *ngIf="entity == 'group'" class="text-center">
-      <button type="submit" class="btn btn-danger" [disabled]="!EntityEditForm.valid" (click)="confirmGroup()">
-        Confirm Group{{BUTTON_CONFIRM}}
-      </button>
+
+          <div *ngIf="entityName === 'questions'" class="form-group">
+            <!--faculty_id for group  *ngIf="entityName === 'group'"-->
+            <label class="center-block">{{HEADER_GROUP}}</label>
+            <select class="form-control" formControlName="chosentestId" placeholder="chose name of test">
+              <option *ngFor="let item of tests" [value]="item.test_id">{{item.test_name}}</option>
+            </select>
+          </div>
+
+          <div *ngIf="entityName === 'questions'" class="form-group">
+            <!--add/edit description, surname of student  *ngIf="entityName === 'faculty'" -->
+            <label>{{DESCRIPTION}}</label>
+            <textarea formControlName='question_text' type="text" name='questionText' required
+                      class="form-control" placeholder="enter questiontext" class="form-control" rows="5">
+       </textarea>
+          </div>
+          <div *ngIf="entityName === 'questions'" class="form-group">
+            <select class="form-control" formControlName="levelTINY" placeholder="enter level of qiestion">
+              <option *ngFor="let item of levelTINY" [value]="item.item_id">
+                {{item.item_name}}
+              </option>
+            </select>
+          </div>
+
+          <div *ngIf="entityName === 'questions'" class="form-group">
+            <select class="form-control" formControlName="typeTiny" placeholder="enter type of question">
+              <option *ngFor="let item of typeTINY" [value]="item.item_id">
+                {{item.item_name}}
+              </option>
+            </select>
+          </div>
+
+          <div *ngIf="entityName === 'questions'" class="form-group">
+            <!--add/edit description, surname of student  *ngIf="entityName === 'faculty'" -->
+            <label>{{DESCRIPTION}}</label>
+            <textarea formControlName='attachment' type="text" name='attachment'
+                      class="form-control" placeholder="enter attachment to text" class="form-control" rows="5">
+       </textarea>
+          </div>
+          </div>
+
+          <!-- deleting submit -->
+          <div *ngIf="method === 'delete'">
+            <h5>{{MODAL_CONFIRM_BODY}}?</h5>
+            <div class="text-center">
+              <button type="button" class="btn btn-danger" (click)="submitDel()">Підтвердити{{BUTTON_CONFIRM}}
+              </button>
+              <button type="button" class="btn btn-secondary" (click)="cancel()">Відмінити{{BUTTON_CANCEL}}</button>
+            </div>
+          </div>
+          <!-- editing/adding submit -->
+          <div *ngIf="method != 'delete'">
+            <div class="text-center"> <!--submit add/edit for all-->
+              <button type="submit" class="btn btn-success" [disabled]="!EntityEditForm.valid">
+                Confirm {{BUTTON_CONFIRM}}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-  <button (click)="goBack()">Back</button>
+</div>
 
 
+<button (click)="goBack()">Back</button>
 
 

@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import { SpecialitiesService } from '../services/specialities.service';
 import { Speciality } from './speciality';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PopupComponent } from '../popup/popup.component';
+import {ToastsManager} from "ng2-toastr";
 
 @Component({
   selector: 'dtester-specialities',
@@ -14,7 +15,7 @@ export class SpecialitiesComponent implements OnInit {
 
   SPECIALITIES_HEADERS: string[] = ['№', 'код спеціальності', 'назва спеціальності'];
   IGNORE_PROPERTIES: string[] = ['speciality_id'];
-  NO_RECORDS: string = '';
+  NO_RECORDS: string = 'no records';
   SPECIALITIES_HEADER: string = 'Спеціальності';
   SPECIALITIES_ADD_TITLE: string = 'Додати спеціальність';
   FIRST_DROPDOWN_ITEM: number = 5;
@@ -32,8 +33,7 @@ export class SpecialitiesComponent implements OnInit {
   @ViewChild(PopupComponent) popup: PopupComponent;
 
   constructor(private specialitiesService: SpecialitiesService, private router: Router,
-   private activatedRoute: ActivatedRoute) {
-  }
+   private activatedRoute: ActivatedRoute, private toastr: ToastsManager) {}
 
   ngOnInit() {
     this.headers = this.SPECIALITIES_HEADERS;
@@ -73,6 +73,7 @@ export class SpecialitiesComponent implements OnInit {
         this.popup.hideModal();
         this.getSpecialities();             /* after add speciality get all specialities from backend */
         this.count++;
+        this.toastr.success(`Спеціальність ${speciality.speciality_name} успішно бережена`);
       },
       err => this.router.navigate(['/bad_request']));
   }
@@ -81,6 +82,7 @@ export class SpecialitiesComponent implements OnInit {
     this.specialitiesService.edit(speciality).subscribe(resp => {
         this.popup.hideModal();
         this.getSpecialities();             /* after update speciality get all specialities from backend */
+        this.toastr.success(`Спеціальність ${speciality.speciality_name} успішно відредагована`);
       },
       err => this.router.navigate(['/bad_request']));
   }
@@ -95,6 +97,7 @@ export class SpecialitiesComponent implements OnInit {
             this.popup.hideModal();
           --this.count;                   /* after delete speciality get all specialities from backend */
           this.getSpecialities();         /* also we reset new count of records to calculate pagination pages count */
+            this.toastr.success(`Спеціальність ${speciality.speciality_name} успішно видалена`);
         },
         err => this.router.navigate(['/bad_request']));
   }

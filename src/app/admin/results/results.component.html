@@ -1,4 +1,14 @@
-<dtester-entities-table [entities]="results" [ignoreProperties]="IGNORE_PROPERTIES" [headers]="RESULTS_HEADERS" [page]="1"
+
+<select class="selectpicker" data-style="btn-primary" (change)="getByGroup($event.target.value)">
+  <option disabled>Група</option>
+  <option *ngFor="let group of groups" [value]="group.group_id">
+    {{group.group_name}}
+  </option>
+</select>
+
+<dtester-items-per-page [numberOfRecords]="count" (recordsPerPageChanged)="changeCountPerPage($event)"></dtester-items-per-page>
+<dtester-entities-table [entities]="results" [ignoreProperties]="IGNORE_PROPERTIES" [headers]="RESULTS_HEADERS"
+                        [page]="1" [displayPropertiesOrder]="DISPLAY_ORDER"
                         [itemsPerPage]="50" [canEdit]="false" (deleteEntity)="del($event)"></dtester-entities-table>
 <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
                     (pageChanged)="changePage($event)"></dtester-pagination>
