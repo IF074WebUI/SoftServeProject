@@ -150,27 +150,7 @@ export class FacultiesComponent<T> implements OnInit {
   del(faculty: Faculty){
     this.popup.showModal('delete', 'faculty', faculty);
   }
- /* addFacultyUniversal() {
-    this.router.navigate(['/admin/addedit'], {
-      queryParams: {
-        'id': 0,
-        'name': 0,
-        'description': '',
-        'entity': 'faculty'      }
-    });
-  }
-
-  editFacultyUniversal(faculty: Faculty) {
-    this.router.navigate(['/admin/addedit'], {
-      queryParams: {
-        'id': faculty['faculty_id'],
-        'name': faculty['faculty_name'],
-        'description': faculty['faculty_description'],
-        'entity': 'faculty'
-      }
-    });
-  }*/
-
+  // Validation
   ValidatorUniqName(control: AbstractControl) {
     return this.http.searchByName(control.value).map((resp: Faculty[]) => {
         for (let key of resp) {

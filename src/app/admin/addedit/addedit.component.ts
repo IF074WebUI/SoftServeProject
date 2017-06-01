@@ -195,7 +195,6 @@ export class AddeditComponent<T> implements OnInit, ComponentCanDeactivate {
       }
     }
 
-
     if (this.method === 'add') {
       this.entity[objInputProp[+[1]]] = this.EntityEditForm.controls['addname'].value;
       console.log(this.entity);
