@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {ResultsService} from '../services/results.service';
-import {Result} from './result';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ToastsManager} from 'ng2-toastr';
-import {StudentsService} from '../students/students.service';
-import {Student} from '../students/student';
-import {TestsService} from '../services/tests.service';
-import {Group} from "../group/group";
-import {GroupService} from "../group/group.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { ResultsService } from '../services/results.service';
+import { Result } from './result';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr';
+import { StudentsService } from '../students/students.service';
+import { Student } from '../students/student';
+import { TestsService } from '../services/tests.service';
+import { Group } from '../group/group';
+import { GroupService } from '../group/group.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'dtester-results',
@@ -38,7 +38,7 @@ export class ResultsComponent implements OnInit {
               private testsService: TestsService) {
     this.groupControl = new FormControl('', Validators.required);
     this.testControl = new FormControl('', Validators.required);
-    this.dateControl = new FormControl('', Validators.required);
+    this.dateControl = new FormControl('');
     this.searchByGroupTestForm = new FormGroup({
       'group': this.groupControl,
       'test': this.testControl,
@@ -161,4 +161,22 @@ export class ResultsComponent implements OnInit {
       err => this.router.navigate(['/bad_request']));
   }
 
+  print(): void {
+    let printContents, popupWin;
+    printContents = document.getElementById('print-section').innerHTML;
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+    popupWin.document.open();
+    popupWin.document.write(`
+      <html>
+        <head>
+          <title>Print tab</title>
+          <style>
+          //........Customized style.......
+          </style>
+        </head>
+    <body onload="window.print();window.close()">${printContents}</body>
+      </html>`
+    );
+    popupWin.document.close();
+  }
 }
