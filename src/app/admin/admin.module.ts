@@ -39,6 +39,7 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import {LinksPipe} from './pipes/links.pipe';
 import { SpinnerComponent } from './universal/spinner/spinner.component';
 import {TestsService} from "./services/tests.service";
+import { TestsComponent } from './tests/tests.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import {TestsService} from "./services/tests.service";
     ResultsComponent,
     AddeditComponent,
     BreadcrumbsComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    TestsComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
