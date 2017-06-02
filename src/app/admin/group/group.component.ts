@@ -59,7 +59,7 @@ export class GroupComponent implements OnInit {
         if (resp['response'] === 'no records') {
           this.groupsOnPage = [];
         } else
-          this.groupsOnPage = resp
+          this.groupsOnPage = resp;
       });
     }
 
