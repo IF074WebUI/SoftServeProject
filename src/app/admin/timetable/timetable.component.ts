@@ -120,6 +120,7 @@ export class TimetableComponent implements OnInit {
   createTimeTable() {
     this.timetableService.createTimeTable(this.newTimetableForm.value)
       .subscribe(() => {
+        this.countRecords++;
         this.checkQueryParams();
         this.newTimetableForm.reset();
       });
@@ -149,6 +150,7 @@ export class TimetableComponent implements OnInit {
   deleteTimetable() {
     this.deleteRecordByIdService.deleteRecordsById('timeTable', this.deletedTimetable.timetable_id)
       .subscribe(() => {
+        this.countRecords--;
         this.checkQueryParams();
       });
   }

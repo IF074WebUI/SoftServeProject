@@ -7,6 +7,8 @@ import { FacultyService } from '../faculties/faculty.service';
 import { Faculty } from '../faculties/Faculty';
 import { ActivatedRoute, Router } from '@angular/router';
 import {GROUPS_HEADERS, IGNORE_PROPERTIES} from './groupConstants';
+import 'rxjs/add/operator/delay';
+import {SpinnerService} from '../universal/spinner/spinner.service';
 import {AddeditComponent} from '../addedit/addedit.component';
 @Component({
   selector: 'dtester-group',
@@ -23,7 +25,6 @@ export class GroupComponent implements OnInit {
   specialitiesOnPage: Speciality[] = [];
   groupforEdit: Group;
   groupforDelete: Group;
-  NO_RECORDS: string = 'no records';
   selectetGroup: Group;
   pageNumber: number = 1;
   offset = 5;   /*number of the records for the stating page*/
@@ -38,7 +39,9 @@ export class GroupComponent implements OnInit {
               private spesialityService: SpecialitiesService,
               private facultyService: FacultyService,
               private route: ActivatedRoute,
-              private router: Router ) {}
+              private router: Router,
+              private spinner: SpinnerService
+  ) {}
   ngOnInit() {
     this.headers = GROUPS_HEADERS;
     this.ignoreProperties = IGNORE_PROPERTIES;
@@ -62,7 +65,7 @@ export class GroupComponent implements OnInit {
         if (resp['response'] === 'no records') {
           this.groupsOnPage = [];
         } else
-          this.groupsOnPage = resp
+          this.groupsOnPage = resp;
       });
     }
 
@@ -84,14 +87,17 @@ export class GroupComponent implements OnInit {
   }
 
   getGroups(): void {
+    this.spinner.showSpinner();
     this.isLoading = true;
     this.getCountRecords()
     /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.countRecords <= (this.pageNumber - 1) * this.offset) {
       --this.pageNumber;
     }
-    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
-      .subscribe(resp => {this.groupsOnPage = <Group[]>resp; this.isLoading = false,  err => this.router.navigate(['/bad_request']);  });
+    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset).delay(3001)
+      .subscribe(resp => {this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']);
+      this.spinner.hideSpinner();
+      });
   }
 // select for editing
   selectedGroup(group: Group) {
