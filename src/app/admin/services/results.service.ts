@@ -15,48 +15,48 @@ export class ResultsService {
   }
 
   getAll(): Observable<Result[]> {
-    return this.http.get(`${RESULT_URI}/getRecords`).map((resp: Response) => resp.json());
+    return this.http.get(`${RESULT_URI}getRecords`).map((resp: Response) => resp.json());
   }
 
   getAllByStudent(studentId: number): Observable<Result[]> {
-    return this.http.get(`${RESULT_URI}/getRecordsbyStudent/${studentId}`).map((resp: Response) => resp.json());
+    return this.http.get(`${RESULT_URI}getRecordsbyStudent/${studentId}`).map((resp: Response) => resp.json());
   }
 
   countPassedByStudent(studentId: number, testId: number): Observable<number> {
-    return this.http.get(`${RESULT_URI}/countTestPassesByStudent/${studentId}}/${testId}`).map((resp: Response) => resp.json());
+    return this.http.get(`${RESULT_URI}countTestPassesByStudent/${studentId}}/${testId}`).map((resp: Response) => resp.json());
   }
 
-  getAllByTestGroupDate(testId: number, groupId: number, date: Date): Observable<Result[]> {
+  getAllByTestGroupDate(testId: number, groupId: number, date?: Date): Observable<Result[]> {
     if (date) {
-      return this.http.get(`${RESULT_URI}/getRecordsByTestGroupDate/${testId}/${groupId}/${date}`).map((resp: Response) => resp.json());
+      return this.http.get(`${RESULT_URI}getRecordsByTestGroupDate/${testId}/${groupId}/${date}`).map((resp: Response) => resp.json());
     } else {
-      return this.http.get(`${RESULT_URI}/getRecordsByTestGroupDate/${testId}/${groupId}`).map((resp: Response) => resp.json());
+      return this.http.get(`${RESULT_URI}getRecordsByTestGroupDate/${testId}/${groupId}`).map((resp: Response) => resp.json());
     }
   }
 
   getPassedTestsByGroup(groupId: number) {
-    return this.http.get(`${RESULT_URI}/getResultTestIdsByGroup/${groupId}`).map((resp: Response) => resp.json());
+    return this.http.get(`${RESULT_URI}getResultTestIdsByGroup/${groupId}`).map((resp: Response) => resp.json());
   }
 
   getPaginated(limit: number, offset: number): Observable<Result[]> {
-    return this.http.get(`${RESULT_URI}/getRecordsRange/${limit}/${offset}`).map((resp: Response) => resp.json());
+    return this.http.get(`${RESULT_URI}getRecordsRange/${limit}/${offset}`).map((resp: Response) => resp.json());
   }
 
   searchByName(criteria: string): Observable<Result[]> {
-    return this.http.get(`${RESULT_URI}/getRecordsBySearch/${criteria}`).map((resp: Response) => resp.json());
+    return this.http.get(`${RESULT_URI}getRecordsBySearch/${criteria}`).map((resp: Response) => resp.json());
   }
 
   getCount(): Observable<number> {
-    return this.http.get(`${RESULT_URI}/countRecords`).map((resp: Response) => resp.json()['numberOfRecords']);
+    return this.http.get(`${RESULT_URI}countRecords`).map((resp: Response) => resp.json()['numberOfRecords']);
   }
 
 
   delete(id: number): Observable<Result> {
-    return this.http.delete(`${RESULT_URI}/del/${id}`).map((resp: Response) => resp.json());
+    return this.http.delete(`${RESULT_URI}del/${id}`).map((resp: Response) => resp.json());
   }
 
   edit(speciality: Result): Observable<Result> {
-    return this.http.post(`${RESULT_URI}/update/${speciality['speciality_id']}`, JSON.stringify(speciality), this.options)
+    return this.http.post(`${RESULT_URI}update/${speciality['speciality_id']}`, JSON.stringify(speciality), this.options)
       .map((resp: Response) => resp.json());
   }
 

@@ -18,6 +18,7 @@ export class EntitiesTableComponent<T> implements OnInit {
   @Input() canEdit: boolean = true;
   @Input() canDelete: boolean = true;
   @Input() canAction: boolean = false;
+  @Input() btnClass: string = 'fa fa-compass';
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
   @Output() editEntity: EventEmitter<T> = new EventEmitter();
   @Output() clickEntity: EventEmitter<T> = new EventEmitter();

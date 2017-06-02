@@ -13,6 +13,11 @@ export class StudentsService {
   getAllStudents(): Observable<Student[]> {
     return this.http.get('http://' + HOST + '/student/getRecords').map(resp => resp.json());
   }
+
+  getStudentById(id: number): Observable<Student> {
+    return this.http.get('http://' + HOST + '/student/getRecords/' + id).map(resp => resp.json());
+  }
+
   getPaginated(limit: number, offset: number): Observable<Student[]> {
     return this.http.get('http://' + HOST + '/student/getRecordsRange/' + limit + '/' + offset).map((resp: Response) => resp.json());
   }

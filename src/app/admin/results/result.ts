@@ -1,4 +1,4 @@
-export class Result {
+export interface Result {
   session_id: number;
   student_id: number;
   test_id: number;
@@ -9,4 +9,6 @@ export class Result {
   questions: string;
   true_answers: string;
   answers: string;
+  student_name?: string;
+  test_name?: string;
 }

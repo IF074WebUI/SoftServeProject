@@ -1,3 +1,9 @@
+<dtester-addedit (addEntity)="confirmAdd($event)"
+                 (editEntity)="confirmEdit($event)"
+                 (deleteEntity)="confirmDelete($event)"
+></dtester-addedit>
+<button (click)="add()" type="button" class="btn btn-primary" data-dismiss="modal">Add new group</button>
+
 <div class="container">
   <div class="row">
     <h1>Групи</h1>
@@ -17,7 +23,7 @@
     <dtester-entities-table class="table" [entities]="groupsOnPage" [headers]="headers" [ignoreProperties]="ignoreProperties"
                             (deleteEntity)="deleteGroup()" [canAction]="true"
                             [page]="pageNumber" [itemsPerPage]="offset"
-                            (editEntity)="editGroup()" (clickEntity)="getStudentsByGroup()">
+                            (editEntity)="edit($event)" (clickEntity)="getStudentsByGroup()" (actionEntity)="onTimeTableNavigate($event)">
     </dtester-entities-table>
   </div>
   <div class="row">
@@ -119,7 +125,7 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-     <button (click)="createCroup(groupName)" type="button" class="btn btn-primary" data-dismiss="modal">Send message</button>
+     <!--<button (click)="add(groupName)" type="button" class="btn btn-primary" data-dismiss="modal">Send message</button>-->
     </div>
   </div>
 </div>

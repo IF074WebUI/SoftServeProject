@@ -30,15 +30,16 @@ import {StudentsService} from './students/students.service';
 import {PopupComponent} from './popup/popup.component';
 import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page.component';
 import { ResultsComponent } from './results/results.component';
-import {ResultsService} from './services/results.service';
-import {AddeditComponent} from './addedit/addedit.component';
-import {ExitAboutGuard} from '../guards/exit.about.guard';
-import {GetRecordsRangeService} from './services/get-records-range.service';
-import {BreadcrumbsService} from './services/breadcrumbs.service';
+import { ResultsService } from './services/results.service';
+import { AddeditComponent } from './addedit/addedit.component';
+import { ExitAboutGuard } from '../guards/exit.about.guard';
+import { GetRecordsRangeService } from './services/get-records-range.service';
+import { BreadcrumbsService } from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
-import {LinksPipe} from './pipes/links.pipe';
-import {SpinnerService} from './universal/spinner/spinner.service';
+import { LinksPipe } from './pipes/links.pipe';
+import { SpinnerService } from './universal/spinner/spinner.service';
 import { LoadingModule } from 'ngx-loading';
+import { TestsService } from './services/tests.service';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { LoadingModule } from 'ngx-loading';
     StudentsService,
     ExitAboutGuard,
     GetRecordsRangeService,
+    TestsService,
     SpinnerService
   ],
 })
