@@ -17,13 +17,14 @@ import { LoginGuard } from './guards/login.guard';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     AccessDeniedComponent,
     BadRequestComponent,
-    NotFoundComponent
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

@@ -37,7 +37,8 @@ import {GetRecordsRangeService} from './services/get-records-range.service';
 import {BreadcrumbsService} from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import {LinksPipe} from './pipes/links.pipe';
-import { SpinnerComponent } from './universal/spinner/spinner.component';
+import {SpinnerService} from './universal/spinner/spinner.service';
+import { LoadingModule } from 'ngx-loading';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,6 @@ import { SpinnerComponent } from './universal/spinner/spinner.component';
     ResultsComponent,
     AddeditComponent,
     BreadcrumbsComponent,
-    SpinnerComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -69,7 +69,8 @@ import { SpinnerComponent } from './universal/spinner/spinner.component';
     ReactiveFormsModule,
     NgbModule,
     MdDialogModule,
-    MdButtonModule
+    MdButtonModule,
+    LoadingModule
   ],
   providers: [
     StatisticsService,
@@ -84,7 +85,8 @@ import { SpinnerComponent } from './universal/spinner/spinner.component';
     SubjectService,
     StudentsService,
     ExitAboutGuard,
-    GetRecordsRangeService
+    GetRecordsRangeService,
+    SpinnerService
   ],
 })
 export class AdminModule {
