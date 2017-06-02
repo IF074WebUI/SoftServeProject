@@ -1,3 +1,7 @@
+<div class="my-container">
+  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  //...
+</div>
 <dtester-addedit (addEntity)="confirmAdd($event)"
                  (editEntity)="confirmEdit($event)"
                  (deleteEntity)="confirmDelete($event)"
