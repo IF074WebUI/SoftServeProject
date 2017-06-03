@@ -9,6 +9,7 @@ import {AddeditComponent } from '../addedit/addedit.component';
 
 import 'rxjs/add/operator/switchMap';
 import {Entity} from "../addedit/Entity";
+import {DynamicFormComponent} from "../universal/dynamic-form/container/dynamic-form/dynamic-form.component";
 
 @Component({
   selector: 'dtester-faculties',
@@ -33,7 +34,7 @@ export class FacultiesComponent<T> implements OnInit {
   countPerPage: number = 10;
   id: number;
   ignoreProperties: string[];
-  @ViewChild(AddeditComponent) popup: AddeditComponent<T>;
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
 
   constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
@@ -146,35 +147,11 @@ export class FacultiesComponent<T> implements OnInit {
   };
 
 // Method for opening editing and deleting commo modal window
+
   add() {
-    this.popup.showModal('add', 'faculty', new Faculty() );
-  }
-  edit(faculty: Faculty) {
-    this.popup.showModal('edit', 'faculty', faculty );
-  }
-  del(faculty: Faculty){
-    this.popup.showModal('delete', 'faculty', faculty);
-  }
- /* addFacultyUniversal() {
-    this.router.navigate(['/admin/addedit'], {
-      queryParams: {
-        'id': 0,
-        'name': 0,
-        'description': '',
-        'entity': 'faculty'      }
-    });
+    this.popup.showModal();
   }
 
-  editFacultyUniversal(faculty: Faculty) {
-    this.router.navigate(['/admin/addedit'], {
-      queryParams: {
-        'id': faculty['faculty_id'],
-        'name': faculty['faculty_name'],
-        'description': faculty['faculty_description'],
-        'entity': 'faculty'
-      }
-    });
-  }*/
 
   ValidatorUniqName(control: AbstractControl) {
     return this.http.searchByName(control.value).map((resp: Faculty[]) => {
@@ -204,6 +181,54 @@ export class FacultiesComponent<T> implements OnInit {
     this.id = faculty['faculty_id'];
     this.router.navigate(['/admin/group'], {queryParams: {'Id': this.id}});
   }
+
+
+
+  // Dynamic Module
+
+
+  formSubmitted(value) {
+    console.log(value);
+  }
+
+  config = [
+    {
+      type: 'number',
+      value: null,
+      label: 'ID факультету',
+      name: 'id',
+      placeholder: ''
+    },
+    {
+      type: 'input',
+      value: 'олена',
+      label: 'Назву факультету',
+      name: 'name',
+      placeholder: 'Введіть назву факультету'
+    },
+    {
+      type: 'select',
+      value: '',
+      label: 'Введіть назву факультету',
+      name: 'addname',
+      options: this.faculties,
+      placeholder: 'Виберіть факультет'
+    },
+
+    {
+      type: 'select',
+      value: 'Pizza',
+      label: 'Favourite food',
+      name: 'food',
+      options: ['Pizza', 'Hot Dogs', 'Knakworstje', 'Coffee'],
+      placeholder: 'Select an option'
+    },
+    {
+      label: 'Submit',
+      name: 'submit',
+      type: 'button'
+    }
+  ];
 }
 
 

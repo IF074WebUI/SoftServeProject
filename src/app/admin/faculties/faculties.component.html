@@ -1,7 +1,4 @@
-<dtester-addedit (addEntity)="confirmAdd($event)"
-               (editEntity)="confirmEdit($event)"
-               (deleteEntity)="confirmDelete($event)"
-></dtester-addedit>
+
 <!--serarch component -->
 <div class="input-group">
   <span class="input-group-addon" id="basic-addon1"> <i class="fa fa-search-plus" aria-hidden="true"></i>
@@ -18,6 +15,19 @@
   <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
                       (pageChanged)="changePage($event)"></dtester-pagination>
 </div>
+
+<div class="app">
+  <dynamic-form [config]="config"  (submitted)="formSubmitted($event)"></dynamic-form>
+</div>
+
+<button class="btn btn-lg btn-outline-primary" (click)="add()"> Створити новий факультет</button>
+
+
+
+
+
+
+
 
 
 <!--my old table and pagination
@@ -43,9 +53,10 @@
 <ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
 -->
 
-<button class="btn btn-lg btn-outline-primary" (click)="add()"> Створити новий факультет</button>
 
 <button routerLink="/sidekicks">Go to sidekicks</button>
+
+
 <!-- Modal popup for adding -->
 
 

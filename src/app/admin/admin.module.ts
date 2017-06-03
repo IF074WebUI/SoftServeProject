@@ -38,6 +38,7 @@ import {BreadcrumbsService} from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import {LinksPipe} from './pipes/links.pipe';
 import { SpinnerComponent } from './universal/spinner/spinner.component';
+import {DynamicFormModule} from "./universal/dynamic-form/dynamic-form.module";
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { SpinnerComponent } from './universal/spinner/spinner.component';
     ReactiveFormsModule,
     NgbModule,
     MdDialogModule,
-    MdButtonModule
+    MdButtonModule,
+    DynamicFormModule
   ],
   providers: [
     StatisticsService,
