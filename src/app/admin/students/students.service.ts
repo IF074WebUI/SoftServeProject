@@ -45,7 +45,7 @@ export class StudentsService {
         'student_surname': studentForm.student_surname,
         'student_name': studentForm.student_name,
         'student_fname': studentForm.student_fname,
-        'group_id': studentData.group_id,
+        'group_id': studentForm.group_id,
         'plain_password': studentData.plain_password,
         'photo': studentData.photo
       }
@@ -64,7 +64,7 @@ export class StudentsService {
         'student_surname': studentEditForm.editSurname,
         'student_name': studentEditForm.editName,
         'student_fname': studentEditForm.editF_name,
-        'group_id': studentEditData.group_id,
+        'group_id': studentEditForm.group_id,
         'plain_password': studentEditData.plain_password,
         'photo': studentEditData.photo,
       }

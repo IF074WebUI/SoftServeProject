@@ -15,7 +15,7 @@ fieldset legend, .edit-legend, .del-legend {
   padding-right: 7px;
 }
 
-input {
+input, select {
   width: 70%;
   margin: auto;
 }

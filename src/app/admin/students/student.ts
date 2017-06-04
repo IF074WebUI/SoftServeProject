@@ -13,6 +13,7 @@ export class Student {
   user_id?: number;
   group_id: number;
   photo: any;
+  group_name?: string;
 }
 
 

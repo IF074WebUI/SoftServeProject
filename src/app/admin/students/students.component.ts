@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Student } from './student';
 import { ActivatedRoute } from '@angular/router';
+import { Group } from '../group/group';
+import { GetRecordsByIdService } from '../services/get-records-by-id.service';
+import { GetAllRecordsService } from '../services/get-all-records.service';
 
 @Component({
   selector: 'dtester-students',
@@ -15,6 +18,7 @@ export class StudentsComponent implements OnInit {
 
   headers: string[] = [];
   ignoreProperties: string[] = [];
+  displayProperties: string[] = [];
 
   MAIN_HEADER = 'Студенти';
   MODAL_ADD = 'Додати студента';
@@ -35,6 +39,7 @@ export class StudentsComponent implements OnInit {
   studentForEdit: Student;
   studentForDel: Student;
   students: Student[];
+  groups: Group[];
   page = 1;
   count: number;
   countPerPage = 10;
@@ -67,26 +72,19 @@ export class StudentsComponent implements OnInit {
   studentEditGroupId = 1;
   studentEditPlainPassword = '1qaz2wsx';
 
-  constructor(private studentsService: StudentsService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private studentsService: StudentsService,
+              private router: Router,
+              private route: ActivatedRoute,
+              private getRecordsByIdService: GetRecordsByIdService,
+              private getAllRecordsService: GetAllRecordsService) {}
 
   ngOnInit() {
-    this.headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові'];
+    this.headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові', 'Група'];
     this.ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
-    // this.studentsService.getAllStudents().subscribe((data) => {
-    //   this.students = data;
-    // });
-    // this.getCount();
+    this.displayProperties = ['student_surname', 'student_name', 'student_fname', 'group_name'];
     this.getStudents();
-    const  groupId = this.route.snapshot.queryParams['group_id'];
-    if (groupId) {
-      this.studentsService.getStudentsByGroupId(groupId).subscribe(resp => {
-        if (resp['response'] === 'no records') {
-          this.students = [];
-        } else {
-          this.students = resp;
-        }
-      });
-    }
+    this.getGroups();
+    this.getStudentsByGroupId();
 
     this.studentName = new FormControl('');
     this.studentSurname = new FormControl('');
@@ -94,6 +92,7 @@ export class StudentsComponent implements OnInit {
     this.studentPassword = new FormControl('');
     this.studentPasswordConfirm = new FormControl('');
     this.studentForm = new FormGroup({
+      'group_id': new FormControl(''),
       'student_name': this.studentName,
       'student_surname': this.studentSurname,
       'student_fname': this.studentFname,
@@ -105,6 +104,7 @@ export class StudentsComponent implements OnInit {
     this.studentEditSurname = new FormControl('');
     this.studentEditFname = new FormControl('');
     this.studentEditForm = new FormGroup({
+      'group_id': new FormControl(''),
       'editName': this.studentEditName,
       'editSurname': this.studentEditSurname,
       'editF_name': this.studentEditFname
@@ -131,13 +131,26 @@ export class StudentsComponent implements OnInit {
     };
   }
 
+  getStudentsByGroupId() {
+    let  groupId = this.route.snapshot.queryParams['group_id'];
+    if (groupId) {
+      this.studentsService.getStudentsByGroupId(groupId).subscribe(resp => {
+        if (resp['response'] === 'no records') {
+          this.students = [];
+        } else {
+          this.getGroupName(resp);
+        }
+      });
+    }
+  }
+
   getStudents(): void {
     if (this.count <= (this.page - 1) * this.countPerPage) {
       --this.page;
     }
     this.getCount();
     this.studentsService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
-      .subscribe(resp => this.students = resp, err => this.router.navigate(['/bad_request']));
+      .subscribe(resp => this.getGroupName(resp), err => this.router.navigate(['/bad_request']));
   }
 
   getCount(): void {
@@ -188,6 +201,21 @@ export class StudentsComponent implements OnInit {
         this.students = <Student[]> resp;
         this.count = this.students.length;
       }
+    });
+  }
+
+  getGroupName(data) {
+    this.students = data;
+    for (let student of this.students) {
+      this.getRecordsByIdService.getRecordsById('group', student.group_id).subscribe((StudentData) => {
+        student.group_name = StudentData[0].group_name;
+      });
+    }
+  }
+
+  getGroups() {
+    this.getAllRecordsService.getAllRecords('group').subscribe((data) => {
+      this.groups = data;
     });
   }
 }
