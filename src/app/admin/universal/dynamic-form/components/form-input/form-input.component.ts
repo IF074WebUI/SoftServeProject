@@ -15,19 +15,8 @@ export class FormInputComponent {
 
 
 
-  constructor(private facultyService: FacultyService){
+  constructor(){
   }
 
 
-  ValidatorUniqName(control: AbstractControl) {
-    return this.facultyService.searchByName(control.value).map((resp: Faculty[]) => {
-        for (let key of resp) {
-          if (key['faculty_name'] === control.value.trim()) {
-            return {exists: true};
-          }
-        }
-        return null;
-      }
-    );
-  }
 }
