@@ -2,12 +2,14 @@
 
 <dtester-search (searchCriteria)="searchStudent($event)"></dtester-search>
 
+<dtester-items-per-page [numberOfRecords]="count" (recordsPerPageChanged)="changeCountPerPage($event)"></dtester-items-per-page>
+
 <dtester-entities-table [entities]="students"
                         [headers]="headers"
                         [page]="page"
                         [itemsPerPage]="countPerPage"
-                        (editEntity)="selectedStudent($event)"
-                        (deleteEntity)="selectedStudent($event)"
+                        (editEntity)="selectedStudentForEdit($event)"
+                        (deleteEntity)="selectedStudentForDel($event)"
                         [ignoreProperties]="ignoreProperties"
                         [displayPropertiesOrder]="displayProperties">
 </dtester-entities-table>
@@ -89,22 +91,22 @@
         <fieldset>
           <legend class="edit-legend">{{MODAL_EDIR_HEADER}}</legend>
           <div class="form-group">
-            <label class="form-control-label" for="groupEditId">Група:</label>
+            <label class="form-control-label" for="groupEditId">{{MODAL_GROUP_NAME}}</label>
             <select formControlName="group_id" id="groupEditId" class="form-control">
               <option *ngFor="let group of groups" [ngValue]="group.group_id">{{group.group_name}}</option>
             </select>
           </div>
           <div class="form-group">
             <label for="editName">{{MODAL_NAME}}</label>
-            <input formControlName="editName" type="text" class="form-control" id="editName" name="name" required >
+            <input formControlName="student_name" type="text" class="form-control" id="editName" name="name" required >
           </div>
           <div class="form-group">
             <label for="editSurname">{{MODAL_SURNAME}}</label>
-            <input formControlName="editSurname" type="text" class="form-control" id="editSurname" name="surname" required>
+            <input formControlName="student_surname" type="text" class="form-control" id="editSurname" name="surname" required>
           </div>
           <div class="form-group">
             <label for="editF_name">{{MODAL_F_NAME}}</label>
-            <input formControlName="editF_name" type="text" class="form-control" id="editF_name" name="surname" required>
+            <input formControlName="student_fname" type="text" class="form-control" id="editF_name" name="f_name" required>
           </div>
           <button class="btn btn-success my-button" type="submit" (click)="editStudent(editForm)"
                   data-dismiss="modal">{{MODAL_EDIT}}</button>

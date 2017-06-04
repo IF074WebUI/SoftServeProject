@@ -4,11 +4,9 @@ export class Student {
   password_confirm: string;
   email: string;
   gradebook_id: string;
-  name: {
-    student_surname: string;
-    student_name: string;
-    student_fname: string;
-  };
+  student_surname: string;
+  student_name: string;
+  student_fname: string;
   plain_password: string;
   user_id?: number;
   group_id: number;
