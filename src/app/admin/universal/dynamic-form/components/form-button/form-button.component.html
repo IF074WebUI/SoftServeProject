@@ -1,6 +1,6 @@
 <div
   class="dynamic-field form-button"
   [formGroup]="group">
-  <button type="submit" class="btn btn-primary btn-lg"> {{ config.label }}</button>
+  <button  [disabled]="!group.valid" type="submit" class="btn btn-primary btn-lg"> {{ config.label }}</button>
 
 </div>

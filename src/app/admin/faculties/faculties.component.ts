@@ -10,6 +10,7 @@ import {AddeditComponent } from '../addedit/addedit.component';
 import 'rxjs/add/operator/switchMap';
 import {Entity} from "../addedit/Entity";
 import {DynamicFormComponent} from "../universal/dynamic-form/container/dynamic-form/dynamic-form.component";
+import {QuestionBase} from "./config";
 
 @Component({
   selector: 'dtester-faculties',
@@ -23,6 +24,21 @@ export class FacultiesComponent<T> implements OnInit {
   IGNORE_PROPERTIES: string[] = ['faculty_id'];
   page: number = 1; // current number of page
   count: number; // count all faculties
+  countPerPage: number = 10;
+  id: number;
+  ignoreProperties: string[];
+
+  // for dynamic forms
+  value: string;
+  description: string;
+  options: Array<string>;
+ // config: QuestionBase<T>[];
+
+
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
+
+/*
+  modalHeader: string;
   facultyEditForm: FormGroup;
   facultyEditName: FormControl;
   facultyEditDescription: FormControl;
@@ -30,12 +46,7 @@ export class FacultiesComponent<T> implements OnInit {
   facultyAddForm: FormGroup;
   facultyAddName: FormControl;
   facultyAddDescription: FormControl;
-  modalHeader: string;
-  countPerPage: number = 10;
-  id: number;
-  ignoreProperties: string[];
-  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
-
+  */
 
   constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
               private router: Router) {
@@ -43,6 +54,7 @@ export class FacultiesComponent<T> implements OnInit {
 
   ngOnInit() {
     this.ignoreProperties = this.IGNORE_PROPERTIES;
+    /*
     this.facultyEditName = new FormControl('', Validators.required);
     this.facultyEditDescription = new FormControl('');
     this.facultyEditId = new FormControl('');
@@ -58,8 +70,7 @@ export class FacultiesComponent<T> implements OnInit {
       'name': this.facultyAddName,
       'description': this.facultyAddDescription
     });
-
-
+*/
     this.http.countAllRecords().subscribe((resp) => {
         this.count = resp['numberOfRecords'];
       },
@@ -99,15 +110,9 @@ export class FacultiesComponent<T> implements OnInit {
     );
   }
 
-  deleteFaculty(faculty: Faculty, content) {
-    this.modalService.open(content).result.then((result) => {
-      this.confirmDelete(faculty);
-      alert(DELETERESULT);
-    }, (reason) => {
-    });
-  }
 
 
+/*
 
 // Confirm methods for add, edit, delete faculty
 
@@ -146,13 +151,13 @@ export class FacultiesComponent<T> implements OnInit {
     );
   };
 
-// Method for opening editing and deleting commo modal window
-
-  add() {
-    this.popup.showModal();
-  }
-
-
+ deleteFaculty(faculty: Faculty, content) {
+ this.modalService.open(content).result.then((result) => {
+ this.confirmDelete(faculty);
+ alert(DELETERESULT);
+ }, (reason) => {
+ });
+ }
   ValidatorUniqName(control: AbstractControl) {
     return this.http.searchByName(control.value).map((resp: Faculty[]) => {
         for (let key of resp) {
@@ -164,6 +169,7 @@ export class FacultiesComponent<T> implements OnInit {
       }
     );
   }
+*/
 
   search(text: string) {
     this.http.searchFaculty(text).subscribe(resp => {
@@ -187,48 +193,87 @@ export class FacultiesComponent<T> implements OnInit {
   // Dynamic Module
 
 
+// Method for opening editing and deleting commo modal window
+
+  add() {
+    // this.config =
+    //   [new QuestionBase('id', null, 'ID факультету', 'faculty_id', '',  false),
+    //     new QuestionBase('input', '', 'Введіть назву факультету', 'faculty_name', '',  true),
+    //     new QuestionBase('input', '', 'Введіть опис факульету', 'faculty_description', '',  false),
+    //     new QuestionBase('button', '', 'Зберегти', 'submit', '',  false)];
+    // console.log(this.config);
+    this.popup.showModal();
+  }
+
+ edit(faculty: Faculty){
+   // this.config =
+   //   [new QuestionBase('id', '', 'ID факультету', 'faculty_id', '',  false),
+   //     new QuestionBase('input', faculty['faculty_name'], 'Введіть назву факультету', 'faculty_name', '',  true),
+   //     new QuestionBase('input', faculty['faculty_description'], 'Введіть опис факульету', 'faculty_description', '',  false),
+   //     new QuestionBase('button', '', 'Зберегти', 'submit', '',  false)];
+   // console.log(this.config);
+   this.popup.showModal();
+ }
+
   formSubmitted(value) {
     console.log(value);
+    if (value['faculty_id'] != null){ this.http.editItem(value['faculty_id'], value['faculty_name'], value['faculty_description']).subscribe(response => {
+        this.uploadAllPages(this.page);
+        this.popup.cancel();
+      },
+      error => this.router.navigate(['/bad_request'])
+    );} else {
+    this.http.addItem(value['faculty_name'], value['faculty_description']).subscribe(response => {
+        this.getCount();
+        (this.count % 10 === 0) ? this.page = this.page + 1 : this.page;
+        this.uploadAllPages(this.page);
+        this.popup.cancel();
+      },
+      error => this.router.navigate(['/bad_request'])
+    );}
   }
+
+
 
   config = [
     {
-      type: 'number',
+      type: 'id',
       value: null,
       label: 'ID факультету',
-      name: 'id',
+      name: 'faculty_id',
       placeholder: ''
     },
     {
       type: 'input',
-      value: 'олена',
+      value: 'test',
       label: 'Назву факультету',
-      name: 'name',
-      placeholder: 'Введіть назву факультету'
+      name: 'faculty_name',
+      placeholder: 'Введіть назву факультету',
+      required: true
     },
     {
-      type: 'select',
-      value: '',
-      label: 'Введіть назву факультету',
-      name: 'addname',
-      options: this.faculties,
-      placeholder: 'Виберіть факультет'
+      type: 'input',
+      value: 'it works',
+      label: 'Опис факультету',
+      name: 'faculty_description',
+      placeholder: 'Введіть опис факультету',
+      required: false
     },
-
+    // {
+    //   type: 'select',
+    //   value: '',
+    //   label: 'Id факультету',
+    //   name: 'chosefaculty',
+    //   placeholder: 'ВChose факультету',
+    //   required: false
+    // },
     {
-      type: 'select',
-      value: 'Pizza',
-      label: 'Favourite food',
-      name: 'food',
-      options: ['Pizza', 'Hot Dogs', 'Knakworstje', 'Coffee'],
-      placeholder: 'Select an option'
-    },
-    {
-      label: 'Submit',
+      label: 'Підтвердити',
       name: 'submit',
       type: 'button'
     }
   ];
+
 }
 
 

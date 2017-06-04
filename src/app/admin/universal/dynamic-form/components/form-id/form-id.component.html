@@ -2,9 +2,7 @@
   class="dynamic-field form-input"
   [formGroup]="group">
   <label>{{ config.label }}</label>
-  <input
-    type="text"
+  <input type="hidden"
     [attr.placeholder]="config.placeholder"
     [formControlName]="config.name" />
-  </div>
-
+</div>

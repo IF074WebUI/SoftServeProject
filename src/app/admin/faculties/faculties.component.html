@@ -22,6 +22,7 @@
 
 <button class="btn btn-lg btn-outline-primary" (click)="add()"> Створити новий факультет</button>
 
+<button routerLink="/sidekicks">Go to sidekicks</button>
 
 
 
@@ -54,12 +55,11 @@
 -->
 
 
-<button routerLink="/sidekicks">Go to sidekicks</button>
-
 
 <!-- Modal popup for adding -->
 
 
+<!--
  <ng-template #addContent let-c="close" let-d="dismiss">
 
 
@@ -89,10 +89,11 @@
     </button>
   </div>
 </ng-template>
+-->
 
 
 <!-- Modal popup for deleting -->
-
+<!--
 <ng-template #delContent let-c="close" let-d="dismiss">
   <div class="modal-header">
     <h4 class="modal-title">Видалення факультету</h4>
@@ -107,9 +108,10 @@
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Підтвердити</button>
   </div>
 </ng-template>
+-->
 
 <!-- Modal popup for editing -->
-
+<!--
 <ng-template #editContent let-c="close" let-d="dismiss">
   <div class="modal-header">
     <h4 class="modal-title">{{modalHeader}}</h4>
@@ -134,3 +136,5 @@
     </button>
   </div>
 </ng-template>
+-->
+
