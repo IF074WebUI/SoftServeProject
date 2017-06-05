@@ -6,6 +6,7 @@ import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl} from '
 import {FacultyService} from "../../../../faculties/faculty.service";
 import {Faculty} from "../../../../faculties/Faculty";
 import {FormAddnameComponent} from "../../components/form-addname/form-addname.component";
+import {min} from "rxjs/operator/min";
 
 declare var $: any;
 @Component({
@@ -52,7 +53,6 @@ export class DynamicFormComponent implements OnInit, DoCheck, AfterViewInit, Aft
   @Output()
   submitted: EventEmitter<any> = new EventEmitter<any>();
   form: FormGroup;
-  search: Array<string> =[];
 
 
   constructor(private fb: FormBuilder, private facultyService: FacultyService) {
@@ -63,18 +63,19 @@ export class DynamicFormComponent implements OnInit, DoCheck, AfterViewInit, Aft
 
 
   }
-  ngAfterViewInit(){
+
+  ngAfterViewInit() {
     // this.uniqname();
   }
 
-  ngAfterViewChecked(){
+  ngAfterViewChecked() {
   }
 
-  ngDoCheck(){
+  ngDoCheck() {
 
   }
 
-  ngOnChanges(){
+  ngOnChanges() {
 
   }
 
@@ -84,56 +85,56 @@ export class DynamicFormComponent implements OnInit, DoCheck, AfterViewInit, Aft
 // }
   createGroup() {
     const group = this.fb.group({});
-    this.config.forEach(control => {(control.required == true) ? group.addControl(control.name, this.fb.control('', Validators.required)) : group.addControl(control.name, this.fb.control(''))
+    this.config.forEach(control => {
+      (control.required == true) ? group.addControl(control.name, this.fb.control('', [Validators.required])) : group.addControl(control.name, this.fb.control(''))
     });
 
 
-      return group;
+    return group;
 
   }
 
-    showModal()
-    {
-      $('#myModal').modal('show');
-    }
-    cancel()
-    {
-      $('#myModal').modal('hide');
-      this.form.reset();
+  showModal() {
+    $('#myModal').modal('show');
+  }
+
+  cancel() {
+    $('#myModal').modal('hide');
+    this.form.reset();
 
 
+  }
 
-    }
-    sendItem(entity: any){
+  sendItem(entity: any) {
 
     this.entity = entity;
     let InputEntityNames = Object.getOwnPropertyNames(entity);
-      console.log(this.entity);
+    console.log(this.entity);
 
     let FormNames = Object.getOwnPropertyNames(this.form.controls);
-    for (let i=0; i < InputEntityNames.length; i++){
+    for (let i = 0; i < InputEntityNames.length; i++) {
       this.form.controls[FormNames[+[i]]].setValue(this.entity[InputEntityNames[+[i]]]);
     }
 
 
-    }
+  }
 
-  ValidatorUniqName(control: string) {
-    console.log('valid works');
-    return this.facultyService.searchByName(control).map((resp: Faculty[]) => {
-      console.log('next step');
+  ValidatorUniqName(name: FormControl) {
+    console.log('name');
+    return this.facultyService.searchByName(name['faculty_name'].value).map((resp: Faculty[]) => {
+        console.log('next step');
         for (let key of resp) {
-          if (key['faculty_name'] === control.trim()) {
+          if (key['faculty_name'] === name['faculty_name'].value.trim()) {
             console.log('exist');
             return {exists: true};
           }
         }
-      console.log('not exist');
+        console.log('not exist');
 
-      return null;
+        return null;
       }
     );
   }
 
 
-  }
+}

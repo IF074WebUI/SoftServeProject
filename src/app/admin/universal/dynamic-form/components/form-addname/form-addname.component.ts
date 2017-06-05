@@ -8,16 +8,21 @@ import {FacultyService} from "../../../../faculties/faculty.service";
   templateUrl: './form-addname.component.html',
   styleUrls: ['./form-addname.component.css']
 })
-export class FormAddnameComponent implements OnInit{
+export class FormAddnameComponent implements OnInit {
   config;
   group: FormGroup;
-rezult: any;
-  constructor(private facultyService: FacultyService){}
+
+  constructor(private facultyService: FacultyService) {
+  }
 
 
   ngOnInit() {
-   this.rezult = this.group.controls['faculty_name'].valueChanges.debounceTime(700).subscribe(resp => {this.ValidatorUniqName(resp).subscribe(resp => console.log(resp))});
-   console.log(this.rezult)}
+     this.group.controls['faculty_name'].valueChanges.debounceTime(700).subscribe(resp => {
+        this.ValidatorUniqName(resp).subscribe(resp => console.log(resp))
+      });
+
+  }
+
 
   ValidatorUniqName(control: string) {
     console.log('valid works');
@@ -36,6 +41,6 @@ rezult: any;
     );
   }
 
-  }
+}
 
 

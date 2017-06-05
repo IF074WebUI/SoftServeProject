@@ -6,4 +6,7 @@
     type="text"
     [attr.placeholder]="config.placeholder"
    [formControlName]="config.name" />
+  <small [hidden]="group.controls[config.name].valid" class="text-danger">
+    Введіть назву
+  </small>
 </div>
