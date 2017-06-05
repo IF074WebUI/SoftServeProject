@@ -42,6 +42,8 @@ import { TestsService } from './services/tests.service';
 import { DetailedComponent } from './detailed/detailed.component';
 import { SpinnerService } from './universal/spinner/spinner.service';
 import { LoadingModule } from 'ngx-loading';
+import { QuestionsService } from './services/questions.service';
+import { AnswersService } from './services/answers.service';
 
 
 @NgModule({
@@ -93,7 +95,9 @@ import { LoadingModule } from 'ngx-loading';
     ExitAboutGuard,
     GetRecordsRangeService,
     TestsService,
-    SpinnerService
+    SpinnerService,
+    QuestionsService,
+    AnswersService
   ],
 })
 export class AdminModule {

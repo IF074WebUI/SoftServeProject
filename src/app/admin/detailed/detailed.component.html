@@ -1,4 +1,43 @@
+<h3 class="text-center">Результати тестування</h3>
+<h5>Студент: {{student?.student_surname}} {{student?.student_name}} {{student?.student_fname}}</h5>
+<h5>Група: {{group?.group_name}}</h5>
 <div id="print-section">
-  Some stuff of student {{studentId}}
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item" *ngFor="let result of results; let i=index">
+      <a class="nav-link" (click)="setActive(i)" [class.active]="i === active_id" data-toggle="tab"
+         [href]="'#' + result.session_id" role="tab">Тест №{{i + 1}}</a>
+    </li>
+  </ul>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div *ngFor="let result of results; let i=index" class="tab-pane" [class.active]="i === active_id"
+         [id]="'#' + result.session_id" role="tabpanel">
+      Результат: {{result.result}}
+      <div *ngFor="let question of result.questions; let l=last; let j=index">
+        <h4 class="text-center">Питання {{j + 1}}</h4>
+        <div class="row">
+          <div class="col-5">
+            <div>Рівень складності {{question.level}}</div>
+            <div>{{question.question_text}}</div>
+            <div>Відповіді: </div>
+            <div *ngFor="let answer of question.answers">
+              <div *ngIf="answer.text">
+                Текст відповіді: {{answer.text}}
+              </div>
+              <img [src]="answer.attachment">
+              <div>Правильна відповідь: {{answer.true_answer}}</div>
+              <div>Дана студентом відповідь <span *ngIf="question.true === 1; else wrong">правильна</span>
+              <ng-template #wrong>неправильна</ng-template>
+              </div>
+            </div>
+          </div>
+          <div class="col-7">
+            <img [src]="question.attachment">
+          </div>
+        </div>
+        <hr *ngIf="!l">
+      </div>
+    </div>
+  </div>
 </div>
 <button (click)="print()"><i class="fa fa-print" aria-hidden="true"></i></button>

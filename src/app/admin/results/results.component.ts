@@ -102,9 +102,6 @@ export class ResultsComponent implements OnInit {
     }
     this.resultsService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
       .subscribe((resp: Result[]) => {
-        resp.forEach((res: Result) => {
-          res.questions = res.questions.replace(new RegExp('&quot;', 'g'), '');
-        });
         this.results = resp;
         this.transformResults();
       }, err => this.router.navigate(['/bad_request']));
@@ -114,14 +111,6 @@ export class ResultsComponent implements OnInit {
     this.resultsService.getCount().subscribe(resp => this.count = resp,
       err => this.router.navigate(['/bad_request']));
   }
-
-  // setGroup(groupId: number) {
-  //   this.groupId = groupId;
-  // }
-
-  // setTest(testId: number) {
-  //   this.testId = testId;
-  // }
 
   findByGroupTest(): void {
     this.resultsService.getAllByTestGroupDate(this.testControl.value, this.groupControl.value, this.dateControl.value)
@@ -169,9 +158,13 @@ export class ResultsComponent implements OnInit {
     popupWin.document.write(`
       <html>
         <head>
-          <title>Print tab</title>
+          <title>Результати тестування</title>
           <style>
-          //........Customized style.......
+          @media print {
+  .print-section {
+    color: red !important;
+    -webkit-print-color-adjust: exact;
+  }
           </style>
         </head>
     <body onload="window.print();window.close()">${printContents}</body>
