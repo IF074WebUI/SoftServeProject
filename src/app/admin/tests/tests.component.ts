@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { GetAllRecordsService } from '../services/get-all-records.service';
 import { Test } from './test';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TestsService } from '../services/tests.service';
+
+declare var $: any;
 
 @Component({
   selector: 'app-tests',
@@ -13,21 +13,11 @@ import { TestsService } from '../services/tests.service';
 export class TestsComponent implements OnInit {
   tests: Test[] = [];
   subjects = [];
+  updatedTest: Test;
   headers: string[];
   displayPropertiesOrder: string[];
-  newTestForm: FormGroup;
   constructor(private getAllRecordsService: GetAllRecordsService,
-              private getRecordsByIdService: GetRecordsByIdService,
-              private testsService: TestsService) {
-    this.newTestForm = new FormGroup({
-      'test_name': new FormControl('', Validators.required),
-      'tasks': new FormControl('', Validators.required),
-      'time_for_test': new FormControl('', Validators.required),
-      'enabled': new FormControl('', Validators.required),
-      'attempts': new FormControl('', Validators.required),
-      'subject_id': new FormControl('', Validators.required)
-    });
-  }
+              private getRecordsByIdService: GetRecordsByIdService) {}
   ngOnInit() {
     this.getAllTests();
     this.getSubjects();
@@ -42,15 +32,7 @@ export class TestsComponent implements OnInit {
         this.setNameOfSubject(test);
         this.setEnabledDescription(test);
       }
-      console.log(this.tests);
     });
-  }
-  createTest() {
-    this.testsService.createTest(this.newTestForm.value)
-      .subscribe(() => {
-        this.getAllTests();
-        this.newTestForm.reset();
-      });
   }
   getSubjects() {
     this.getAllRecordsService.getAllRecords('subject').subscribe((data) => {
@@ -69,5 +51,8 @@ export class TestsComponent implements OnInit {
       test.enabled_description = 'Доступно';
     }
   }
-
+  getUpdatedTest(test: Test) {
+    this.updatedTest = test;
+    $('#add-update-test').modal('show');
+  }
 }

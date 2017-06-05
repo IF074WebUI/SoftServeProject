@@ -1,59 +1,13 @@
 <h2>Тести</h2>
 <dtester-entities-table [entities]="tests"
                         [headers]="headers"
+                        (editEntity)="getUpdatedTest($event)"
                         [displayPropertiesOrder]="displayPropertiesOrder">
 </dtester-entities-table>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-new-timetabel" data-whatever="@mdo">Додати тест</button>
+
 
 <!--modal of adding new timetable-->
 
-<div class="modal fade" id="modal-new-timetabel" tabindex="-1" role="dialog" aria-labelledby="modalAddTimetable" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalAddTimetable">Додати тест</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form [formGroup]="newTestForm" (ngSubmit)="createTest()">
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="form-control-label" for="testName">Назва тесту</label>
-            <input type="text" formControlName="test_name" id="testName" class="form-control">
-          </div>
-          <div class="form-group">
-            <label class="form-control-label" for="tasks" >Кількість завдань</label>
-            <input type="number" formControlName="tasks" id="tasks" class="form-control" min="1">
-          </div>
-          <div class="form-group">
-            <label class="form-control-label" for="timeForTest">Тривалість тесту</label>
-            <input type="text" formControlName="time_for_test" id="timeForTest" class="form-control">
-          </div>
-          <div class="form-group">
-            <label class="form-control-label" for="enabled">Статус:</label>
-            <select formControlName="enabled" id="enabled" class="form-control">
-              <option value="0">Недоступний</option>
-              <option value="1">Доступний</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-control-label" for="attempts">Кількість спроб</label>
-            <input type="number" formControlName="attempts" id="attempts" class="form-control" min="1">
-          </div>
-          <div class="form-group">
-            <label class="form-control-label" for="subjectId">Предмет:</label>
-            <select formControlName="subject_id" id="subjectId" class="form-control">
-              <option *ngFor="let subject of subjects" [ngValue]="subject.subject_id">{{subject.subject_name}}</option>
-            </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-          <button  type="submit" class="btn btn-primary">Додати</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+<app-add-test [subjects]="subjects" (getTests)="getAllTests()" [updatedTest]="updatedTest"></app-add-test>
+

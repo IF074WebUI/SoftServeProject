@@ -28,4 +28,16 @@ export class TestsService {
     return this.http.post('http://' + HOST + '/test/insertData', bodyForSendingNewTest)
       .map((resp) => resp.json());
   }
+  updateTest(updateTest, updateTestId): Observable<Response> {
+    const bodyForSendingUpdateTest = JSON.stringify({
+      test_name: updateTest.test_name,
+      tasks: updateTest.tasks,
+      time_for_test: updateTest.time_for_test,
+      enabled: updateTest.enabled,
+      attempts: updateTest.attempts,
+      subject_id: updateTest.subject_id
+    });
+    return this.http.post('http://' + HOST + '/test/update/' + updateTestId, bodyForSendingUpdateTest)
+      .map((resp) => resp.json());
+  }
 }
