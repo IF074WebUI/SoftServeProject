@@ -11,6 +11,7 @@ import { ResultsComponent } from './results/results.component';
 import { AddeditComponent } from './addedit/addedit.component';
 import { ExitAboutGuard } from '../guards/exit.about.guard';
 import { DetailedComponent } from './detailed/detailed.component';
+import { StudentProfileComponent } from './student-profile/student-profile.component';
 
 export const adminRoutes: Route[] = [
   {
@@ -28,5 +29,6 @@ export const adminRoutes: Route[] = [
       {path: 'results', component: ResultsComponent},
       /*{path: 'addedit', component: AddeditComponent, canDeactivate: [ExitAboutGuard]}, */
       {path: 'addedit', component: AddeditComponent},
+      {path: 'profile', component: StudentProfileComponent}
     ]
   }];

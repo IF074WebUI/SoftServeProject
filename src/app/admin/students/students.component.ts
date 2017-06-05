@@ -51,7 +51,7 @@ export class StudentsComponent implements OnInit {
 
   constructor(private studentsService: StudentsService,
               private router: Router,
-              private route: ActivatedRoute,
+              private activatedRoute: ActivatedRoute,
               private getRecordsByIdService: GetRecordsByIdService,
               private getAllRecordsService: GetAllRecordsService) {}
 
@@ -96,7 +96,7 @@ export class StudentsComponent implements OnInit {
   }
 
   getStudentsForGroup() {
-    let  groupId = this.route.snapshot.queryParams['group_id'];
+    const  groupId = this.activatedRoute.snapshot.queryParams['group_id'];
     if (groupId) {
       this.studentsService.getStudentsByGroupId(groupId).subscribe(resp => {
         if (resp['response'] === 'no records') {
@@ -182,7 +182,7 @@ export class StudentsComponent implements OnInit {
 
   getStudentsWithGroupName(data) {
     this.students = data;
-    for (let student of this.students) {
+    for (const student of this.students) {
       this.getRecordsByIdService.getRecordsById('group', student.group_id).subscribe((StudentData) => {
         student.group_name = StudentData[0].group_name;
       });
@@ -193,5 +193,9 @@ export class StudentsComponent implements OnInit {
     this.getAllRecordsService.getAllRecords('group').subscribe((data) => {
       this.groups = data;
     });
+  }
+
+  goToStudentProfile(student: Student) {
+    this.router.navigate(['./profile'], {queryParams: {'user_id': student.user_id}, relativeTo: this.activatedRoute.parent});
   }
 }

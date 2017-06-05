@@ -42,6 +42,7 @@ import { TestsService } from './services/tests.service';
 import { DetailedComponent } from './detailed/detailed.component';
 import { SpinnerService } from './universal/spinner/spinner.service';
 import { LoadingModule } from 'ngx-loading';
+import { StudentProfileComponent } from './student-profile/student-profile.component';
 
 
 @NgModule({
@@ -66,7 +67,8 @@ import { LoadingModule } from 'ngx-loading';
     AddeditComponent,
     BreadcrumbsComponent,
     SpinnerComponent,
-    DetailedComponent
+    DetailedComponent,
+    StudentProfileComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

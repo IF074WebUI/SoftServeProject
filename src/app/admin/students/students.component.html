@@ -11,7 +11,8 @@
                         (editEntity)="selectedStudentForEdit($event)"
                         (deleteEntity)="selectedStudentForDel($event)"
                         [ignoreProperties]="ignoreProperties"
-                        [displayPropertiesOrder]="displayProperties">
+                        [displayPropertiesOrder]="displayProperties"
+                        (clickEntity)="goToStudentProfile($event)">
 </dtester-entities-table>
 
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAdd" data-whatever="@mdo">{{MODAL_ADD}}</button>
@@ -59,7 +60,7 @@
             {{MODAL_REQUIRED}}
           </div>
           <button class="btn btn-success my-button" type="submit" (click)="addStudent(addForm)"
-                  data-dismiss="modal" [disabled]="!studentForm.valid">{{MODAL_ADD_ACTION}}</button>
+                  data-dismiss="modal">{{MODAL_ADD_ACTION}}</button>
           <button class="btn btn-secondary my-button" type="button" data-dismiss="modal" (click)="studentForm.reset()">{{MODAL_CANSEL}}</button>
         </fieldset>
       </form>
