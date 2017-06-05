@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentsService} from './students.service';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Student } from './student';
 import { ActivatedRoute } from '@angular/router';
 import { Group } from '../group/group';
@@ -25,8 +25,6 @@ export class StudentsComponent implements OnInit {
   MODAL_NAME = 'Ім\'я:';
   MODAL_SURNAME = 'Прізвище:';
   MODAL_F_NAME = 'Пo-батькові:';
-  MODAL_PASSWORD = 'Пароль:';
-  MODAL_CONFIRM_PASSWORD = 'Підтвердіть пароль:';
   MODAL_ADD_ACTION = 'Додати';
   MODAL_CANSEL = 'Відміна';
   MODAL_DEL_HEADER = 'Видалення';
@@ -35,6 +33,7 @@ export class StudentsComponent implements OnInit {
   MODAL_EDIR_HEADER = 'Редагувати студента';
   MODAL_EDIT = 'Редагувати';
   MODAL_GROUP_NAME = 'Група:';
+  MODAL_REQUIRED = 'Поле обов\'язкове до заповнення';
 
   studentForEdit: Student;
   studentForDel: Student;
@@ -63,11 +62,9 @@ export class StudentsComponent implements OnInit {
 
     this.studentForm = new FormGroup({
       'group_id': new FormControl(''),
-      'student_name': new FormControl(''),
-      'student_surname': new FormControl(''),
-      'student_fname': new FormControl(''),
-      'password': new FormControl(''),
-      'password_confirm': new FormControl('')
+      'student_name': new FormControl('', Validators.required),
+      'student_surname': new FormControl('', Validators.required),
+      'student_fname': new FormControl('', Validators.required)
     });
 
     this.studentEditForm = new FormGroup({
@@ -81,6 +78,8 @@ export class StudentsComponent implements OnInit {
       'username' : 'test' + Math.random(),
       'email' : 'test' + Math.random() + '@mail.if.ua',
       'gradebook_id' : 'If-' + Math.random().toFixed(9),
+      'password': '1qaz2wsx',
+      'password_confirm': '1qaz2wsx',
       'plain_password' : '1qaz2wsx',
       'photo' : ''
     };

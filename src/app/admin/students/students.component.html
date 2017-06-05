@@ -39,28 +39,28 @@
           </div>
           <div class="form-group">
             <label for="name">{{MODAL_NAME}}</label>
-            <input formControlName="student_name" type="text" class="form-control" id="name" name="name" required >
+            <input formControlName="student_name" type="text" class="form-control" id="name">
+          </div>
+          <div class="invalid" *ngIf="studentForm.controls['student_name'].hasError('required') && studentForm.controls['student_name'].touched">
+            {{MODAL_REQUIRED}}
           </div>
           <div class="form-group">
             <label for="surname">{{MODAL_SURNAME}}</label>
-            <input formControlName="student_surname" type="text" class="form-control" id="surname" name="surname" required>
+            <input formControlName="student_surname" type="text" class="form-control" id="surname">
+          </div>
+          <div class="invalid" *ngIf="studentForm.controls['student_surname'].hasError('required') && studentForm.controls['student_surname'].touched">
+            {{MODAL_REQUIRED}}
           </div>
           <div class="form-group">
             <label for="f_name">{{MODAL_F_NAME}}</label>
-            <input formControlName="student_fname" type="text" class="form-control" id="f_name" name="surname" required>
+            <input formControlName="student_fname" type="text" class="form-control" id="f_name">
           </div>
-          <div class="form-group">
-            <label for="pwd">{{MODAL_PASSWORD}}</label>
-            <input formControlName="password" type="password" class="form-control" id="pwd" name="password" required>
-          </div>
-          <div class="form-group">
-            <label for="password_confirm">{{MODAL_CONFIRM_PASSWORD}}</label>
-            <input formControlName="password_confirm" type="password" class="form-control"
-                   id="password_confirm" name="password" required>
+          <div class="invalid" *ngIf="studentForm.controls['student_fname'].hasError('required') && studentForm.controls['student_fname'].touched">
+            {{MODAL_REQUIRED}}
           </div>
           <button class="btn btn-success my-button" type="submit" (click)="addStudent(addForm)"
-                  data-dismiss="modal">{{MODAL_ADD_ACTION}}</button>
-          <button class="btn btn-secondary my-button" type="button" data-dismiss="modal">{{MODAL_CANSEL}}</button>
+                  data-dismiss="modal" [disabled]="!studentForm.valid">{{MODAL_ADD_ACTION}}</button>
+          <button class="btn btn-secondary my-button" type="button" data-dismiss="modal" (click)="studentForm.reset()">{{MODAL_CANSEL}}</button>
         </fieldset>
       </form>
     </div>
@@ -98,15 +98,24 @@
           </div>
           <div class="form-group">
             <label for="editName">{{MODAL_NAME}}</label>
-            <input formControlName="student_name" type="text" class="form-control" id="editName" name="name" required >
+            <input formControlName="student_name" type="text" class="form-control" id="editName">
+          </div>
+          <div class="invalid" *ngIf="studentForm.controls['student_name'].hasError('required') && studentForm.controls['student_name'].touched">
+            {{MODAL_REQUIRED}}
           </div>
           <div class="form-group">
             <label for="editSurname">{{MODAL_SURNAME}}</label>
-            <input formControlName="student_surname" type="text" class="form-control" id="editSurname" name="surname" required>
+            <input formControlName="student_surname" type="text" class="form-control" id="editSurname">
+          </div>
+          <div class="invalid" *ngIf="studentForm.controls['student_surname'].hasError('required') && studentForm.controls['student_surname'].touched">
+            {{MODAL_REQUIRED}}
           </div>
           <div class="form-group">
             <label for="editF_name">{{MODAL_F_NAME}}</label>
-            <input formControlName="student_fname" type="text" class="form-control" id="editF_name" name="f_name" required>
+            <input formControlName="student_fname" type="text" class="form-control" id="editF_name">
+          </div>
+          <div class="invalid" *ngIf="studentForm.controls['student_fname'].hasError('required') && studentForm.controls['student_fname'].touched">
+            {{MODAL_REQUIRED}}
           </div>
           <button class="btn btn-success my-button" type="submit" (click)="editStudent(editForm)"
                   data-dismiss="modal">{{MODAL_EDIT}}</button>

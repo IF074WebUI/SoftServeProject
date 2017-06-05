@@ -38,8 +38,8 @@ export class StudentsService {
     let body = JSON.stringify(
       {
         'username': studentData.username,
-        'password': studentForm.password,
-        'password_confirm': studentForm.password_confirm,
+        'password': studentData.password,
+        'password_confirm': studentData.password_confirm,
         'email': studentData.email,
         'gradebook_id': studentData.gradebook_id,
         'student_surname': studentForm.student_surname,
