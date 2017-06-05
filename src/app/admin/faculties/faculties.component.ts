@@ -2,15 +2,10 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Faculty} from './Faculty';
 import {FacultyService} from './faculty.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {NEWFACULTY, EDITRESULT, EDITFACULTY, DELETERESULT} from '../../constants';
-import {AddeditComponent } from '../addedit/addedit.component';
 
 import 'rxjs/add/operator/switchMap';
-import {Entity} from "../addedit/Entity";
 import {DynamicFormComponent} from "../universal/dynamic-form/container/dynamic-form/dynamic-form.component";
-import {QuestionBase} from "./config";
 
 @Component({
   selector: 'dtester-faculties',
@@ -27,50 +22,61 @@ export class FacultiesComponent<T> implements OnInit {
   countPerPage: number = 10;
   id: number;
   ignoreProperties: string[];
-
-  // for dynamic forms
-  value: string;
-  description: string;
-  options: Array<string>;
- // config: QuestionBase<T>[];
-
+  text: string;
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
-/*
-  modalHeader: string;
-  facultyEditForm: FormGroup;
-  facultyEditName: FormControl;
-  facultyEditDescription: FormControl;
-  facultyEditId: FormControl;
-  facultyAddForm: FormGroup;
-  facultyAddName: FormControl;
-  facultyAddDescription: FormControl;
-  */
+
+
+  configs = [
+    {
+      type: 'id',
+      text: null,
+      label: 'ID факультету',
+      name: 'faculty_id',
+      placeholder: '',
+      required: false
+    },
+    {
+      type: 'addname',
+      text: '',
+      label: 'Введіть назву факультету',
+      name: 'faculty_name',
+      placeholder: 'Введіть назву факультету',
+      required: true
+    },
+    {
+      type: 'input',
+      text: '',
+      label: 'Введіть опис факультету',
+      name: 'faculty_description',
+      placeholder: 'Введіть опис факультету',
+      required: false
+    },
+    // {
+    //   type: 'select',
+    //   value: '',
+    //   label: 'Id факультету',
+    //   name: 'chosefaculty',
+    //   placeholder: 'ВChose факультету',
+    //   required: false
+    // },
+    {
+      label: 'Підтвердити',
+      name: 'submit',
+      type: 'button'
+    }
+  ];
+
 
   constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
               private router: Router) {
+
   }
 
   ngOnInit() {
     this.ignoreProperties = this.IGNORE_PROPERTIES;
-    /*
-    this.facultyEditName = new FormControl('', Validators.required);
-    this.facultyEditDescription = new FormControl('');
-    this.facultyEditId = new FormControl('');
-    this.facultyEditForm = new FormGroup({
-      'id': this.facultyEditId,
-      'name': this.facultyEditName,
-      'description': this.facultyEditDescription
-    });
 
-    this.facultyAddName = new FormControl('', Validators.required, this.ValidatorUniqName.bind(this));
-    this.facultyAddDescription = new FormControl('');
-    this.facultyAddForm = new FormGroup({
-      'name': this.facultyAddName,
-      'description': this.facultyAddDescription
-    });
-*/
     this.http.countAllRecords().subscribe((resp) => {
         this.count = resp['numberOfRecords'];
       },
@@ -111,66 +117,6 @@ export class FacultiesComponent<T> implements OnInit {
   }
 
 
-
-/*
-
-// Confirm methods for add, edit, delete faculty
-
-  confirmAdd(entity: Entity) {
-    console.log(entity.addname);
-    console.log(entity.editname);
-    console.log(entity.editdescription);
-    this.http.addItem(entity.addname, entity.editdescription ).subscribe(response => {
-        this.getCount();
-        (this.count % 10 === 0) ? this.page = this.page + 1 : this.page;
-        this.uploadAllPages(this.page);
-        this.popup.cancel();
-      },
-      error => this.router.navigate(['/bad_request'])
-    );
-  }
-  confirmEdit(entity: Entity) {
-    console.log(entity.addname);
-    console.log(entity.editname);
-    console.log(entity.editdescription);
-    this.http.editItem(entity.id, entity.editname, entity.editdescription ).subscribe(response => {
-       this.uploadAllPages(this.page);
-        this.popup.cancel();
-      },
-      error => this.router.navigate(['/bad_request'])
-    );
-  }
-  confirmDelete(faculty: Faculty) {
-    this.http.deleteItem(faculty['faculty_id']).subscribe((resp) => {
-        this.getCount();
-        (this.count % this.countPerPage === 1) ? this.page = this.page - 1 : this.page; // number of items per page is 10
-        this.uploadAllPages(this.page);
-        this.popup.cancel();
-      },
-      error => this.router.navigate(['/bad_request'])
-    );
-  };
-
- deleteFaculty(faculty: Faculty, content) {
- this.modalService.open(content).result.then((result) => {
- this.confirmDelete(faculty);
- alert(DELETERESULT);
- }, (reason) => {
- });
- }
-  ValidatorUniqName(control: AbstractControl) {
-    return this.http.searchByName(control.value).map((resp: Faculty[]) => {
-        for (let key of resp) {
-          if (key['faculty_name'] === control.value.trim()) {
-            return {exists: true};
-          }
-        }
-        return null;
-      }
-    );
-  }
-*/
-
   search(text: string) {
     this.http.searchFaculty(text).subscribe(resp => {
       if (resp['response'] === 'no records') {
@@ -196,28 +142,18 @@ export class FacultiesComponent<T> implements OnInit {
 // Method for opening editing and deleting commo modal window
 
   add() {
-    // this.config =
-    //   [new QuestionBase('id', null, 'ID факультету', 'faculty_id', '',  false),
-    //     new QuestionBase('input', '', 'Введіть назву факультету', 'faculty_name', '',  true),
-    //     new QuestionBase('input', '', 'Введіть опис факульету', 'faculty_description', '',  false),
-    //     new QuestionBase('button', '', 'Зберегти', 'submit', '',  false)];
-    // console.log(this.config);
+    this.popup.sendItem(new Faculty);
     this.popup.showModal();
   }
 
  edit(faculty: Faculty){
-   // this.config =
-   //   [new QuestionBase('id', '', 'ID факультету', 'faculty_id', '',  false),
-   //     new QuestionBase('input', faculty['faculty_name'], 'Введіть назву факультету', 'faculty_name', '',  true),
-   //     new QuestionBase('input', faculty['faculty_description'], 'Введіть опис факульету', 'faculty_description', '',  false),
-   //     new QuestionBase('button', '', 'Зберегти', 'submit', '',  false)];
-   // console.log(this.config);
+   this.popup.sendItem(faculty);
    this.popup.showModal();
  }
 
   formSubmitted(value) {
     console.log(value);
-    if (value['faculty_id'] != null){ this.http.editItem(value['faculty_id'], value['faculty_name'], value['faculty_description']).subscribe(response => {
+    if (value['faculty_id']){ this.http.editItem(value['faculty_id'], value['faculty_name'], value['faculty_description']).subscribe(response => {
         this.uploadAllPages(this.page);
         this.popup.cancel();
       },
@@ -225,7 +161,7 @@ export class FacultiesComponent<T> implements OnInit {
     );} else {
     this.http.addItem(value['faculty_name'], value['faculty_description']).subscribe(response => {
         this.getCount();
-        (this.count % 10 === 0) ? this.page = this.page + 1 : this.page;
+        (this.count % this.countPerPage === 0) ? this.page = this.page + 1 : this.page;
         this.uploadAllPages(this.page);
         this.popup.cancel();
       },
@@ -233,46 +169,6 @@ export class FacultiesComponent<T> implements OnInit {
     );}
   }
 
-
-
-  config = [
-    {
-      type: 'id',
-      value: null,
-      label: 'ID факультету',
-      name: 'faculty_id',
-      placeholder: ''
-    },
-    {
-      type: 'input',
-      value: 'test',
-      label: 'Назву факультету',
-      name: 'faculty_name',
-      placeholder: 'Введіть назву факультету',
-      required: true
-    },
-    {
-      type: 'input',
-      value: 'it works',
-      label: 'Опис факультету',
-      name: 'faculty_description',
-      placeholder: 'Введіть опис факультету',
-      required: false
-    },
-    // {
-    //   type: 'select',
-    //   value: '',
-    //   label: 'Id факультету',
-    //   name: 'chosefaculty',
-    //   placeholder: 'ВChose факультету',
-    //   required: false
-    // },
-    {
-      label: 'Підтвердити',
-      name: 'submit',
-      type: 'button'
-    }
-  ];
 
 }
 

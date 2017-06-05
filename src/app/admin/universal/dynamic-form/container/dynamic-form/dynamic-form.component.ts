@@ -1,5 +1,11 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
+import {
+  Component, Input, OnInit, Output, EventEmitter, ViewChild, DoCheck, AfterContentInit,
+  AfterViewChecked, AfterViewInit, OnChanges
+} from '@angular/core';
+import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl} from '@angular/forms';
+import {FacultyService} from "../../../../faculties/faculty.service";
+import {Faculty} from "../../../../faculties/Faculty";
+import {FormAddnameComponent} from "../../components/form-addname/form-addname.component";
 
 declare var $: any;
 @Component({
@@ -12,7 +18,7 @@ declare var $: any;
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
               aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Modal title</h4>
+            <h4 class="modal-title">{{MODAL_TITLE}}</h4>
           </div>
           <div class="modal-body">
 
@@ -37,27 +43,54 @@ declare var $: any;
 
   `
 })
-export class DynamicFormComponent implements OnInit {
+export class DynamicFormComponent implements OnInit, DoCheck, AfterViewInit, AfterViewChecked, OnChanges {
   @Input()
   config: any[] = [];
+  @Input()
+  entity: any;
 
   @Output()
   submitted: EventEmitter<any> = new EventEmitter<any>();
-
   form: FormGroup;
+  search: Array<string> =[];
 
-  constructor(private fb: FormBuilder) {
+
+  constructor(private fb: FormBuilder, private facultyService: FacultyService) {
   }
 
   ngOnInit() {
     this.form = this.createGroup();
+
+
+  }
+  ngAfterViewInit(){
+    // this.uniqname();
   }
 
+  ngAfterViewChecked(){
+  }
+
+  ngDoCheck(){
+
+  }
+
+  ngOnChanges(){
+
+  }
+
+
+// uniqname(){
+//    this.form.controls['faculty_name'].valueChanges.debounceTime(700).subscribe(resp => {this.ValidatorUniqName(resp).subscribe(resp => console.log(resp))});
+// }
   createGroup() {
     const group = this.fb.group({});
-    this.config.forEach(control => { (control.required == true) ? group.addControl(control.name, this.fb.control('', Validators.required)) : group.addControl(control.name, this.fb.control(''))} )
+    this.config.forEach(control => {(control.required == true) ? group.addControl(control.name, this.fb.control('', Validators.required)) : group.addControl(control.name, this.fb.control(''))
+    });
+
+
       return group;
-    }
+
+  }
 
     showModal()
     {
@@ -66,6 +99,41 @@ export class DynamicFormComponent implements OnInit {
     cancel()
     {
       $('#myModal').modal('hide');
+      this.form.reset();
+
+
+
     }
+    sendItem(entity: any){
+
+    this.entity = entity;
+    let InputEntityNames = Object.getOwnPropertyNames(entity);
+      console.log(this.entity);
+
+    let FormNames = Object.getOwnPropertyNames(this.form.controls);
+    for (let i=0; i < InputEntityNames.length; i++){
+      this.form.controls[FormNames[+[i]]].setValue(this.entity[InputEntityNames[+[i]]]);
+    }
+
+
+    }
+
+  ValidatorUniqName(control: string) {
+    console.log('valid works');
+    return this.facultyService.searchByName(control).map((resp: Faculty[]) => {
+      console.log('next step');
+        for (let key of resp) {
+          if (key['faculty_name'] === control.trim()) {
+            console.log('exist');
+            return {exists: true};
+          }
+        }
+      console.log('not exist');
+
+      return null;
+      }
+    );
+  }
+
 
   }
