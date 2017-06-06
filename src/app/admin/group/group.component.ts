@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {GROUPS_HEADERS, IGNORE_PROPERTIES} from './groupConstants';
 import 'rxjs/add/operator/delay';
 import {SpinnerService} from '../universal/spinner/spinner.service';
-import {AddeditComponent} from '../addedit/addedit.component';
+
 @Component({
   selector: 'dtester-group',
   templateUrl: './group.component.html',
@@ -17,7 +17,6 @@ import {AddeditComponent} from '../addedit/addedit.component';
   providers: [FacultyService, SpecialitiesService]
 })
 export class GroupComponent implements OnInit {
-  @ViewChild(AddeditComponent) popup: AddeditComponent<Group>;
 
   isLoading: boolean;
   groupsOnPage: Group[];
@@ -187,29 +186,29 @@ export class GroupComponent implements OnInit {
 
 
 // Method for opening editing and deleting commo modal window
+//
+//   add() {
+//     this.popup.showModal('add', 'group', new Group(null, '', null, null) );
+//   }
+//   edit(group: Group) {
+//     this.popup.showModal('edit', 'group', group );
+//   }
+//   del(group: Group){
+//     this.popup.showModal('delete', 'group', group);
+//   }
 
-  add() {
-    this.popup.showModal('add', 'group', new Group(null, '', null, null) );
-  }
-  edit(group: Group) {
-    this.popup.showModal('edit', 'group', group );
-  }
-  del(group: Group){
-    this.popup.showModal('delete', 'group', group);
-  }
-
-  // Confirm methods for add, edit, delete faculty
-
-  confirmAdd(entity: Group) {
-    console.log(entity);
-  }
-  confirmEdit(entity: Group) {
-    console.log(entity);
-
-  }
-  confirmDelete(group: Group) {
-    console.log(group);
-  };
+  // // Confirm methods for add, edit, delete faculty
+  //
+  // confirmAdd(entity: Group) {
+  //   console.log(entity);
+  // }
+  // confirmEdit(entity: Group) {
+  //   console.log(entity);
+  //
+  // }
+  // confirmDelete(group: Group) {
+  //   console.log(group);
+  // };
 
 }
 

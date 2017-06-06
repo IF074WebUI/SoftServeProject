@@ -1,0 +1,11 @@
+<div
+  class="dynamic-field form-select"
+  [formGroup]="group">
+  <label>{{ config.label }}</label>
+  <select [formControlName]="config.name">
+    <option value="">{{ config.placeholder }}</option>
+    <option [value]=item.faculty_id *ngFor="let item of faculties">
+      {{ item['faculty_name'] }}
+    </option>
+  </select>
+</div>
