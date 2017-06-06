@@ -1,18 +1,19 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {TestsService} from '../../services/tests.service';
-import {Test} from '../test';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TestsService } from '../../services/tests.service';
+import { Test } from '../test';
 
 declare var $: any;
 
 @Component({
-  selector: 'app-add-test',
-  templateUrl: './add-test.component.html',
-  styleUrls: ['./add-test.component.css']
+  selector: 'app-add-update-test',
+  templateUrl: './add-update-test.component.html',
+  styleUrls: ['./add-update-test.component.css']
 })
-export class AddTestComponent implements OnInit, OnChanges {
+export class AddUpdateTestComponent implements OnInit, OnChanges {
   @Input() subjects = [];
   @Input() updatedTest: Test;
+  @Input() action: string;
   @Output() getTests = new EventEmitter();
   testForm: FormGroup;
   constructor(private testsService: TestsService) {
@@ -27,7 +28,7 @@ export class AddTestComponent implements OnInit, OnChanges {
   }
   ngOnInit() {};
   ngOnChanges() {
-    if (this.updatedTest) {
+    if (this.action === 'update') {
       this.testForm.setValue({
         'test_name': this.updatedTest.test_name,
         'tasks': this.updatedTest.tasks,
@@ -36,6 +37,22 @@ export class AddTestComponent implements OnInit, OnChanges {
         'attempts': this.updatedTest.attempts,
         'subject_id': this.updatedTest.subject_id
       });
+    } else {
+      this.testForm.setValue({
+        'test_name': '',
+        'tasks': '',
+        'time_for_test': '',
+        'enabled': '',
+        'attempts': '',
+        'subject_id': ''
+      });
+    }
+  }
+  actionTest() {
+    if (this.action === 'update') {
+      this.updateTest();
+    } else {
+      this.createTest();
     }
   }
   createTest() {
@@ -49,7 +66,6 @@ export class AddTestComponent implements OnInit, OnChanges {
   updateTest() {
     this.testsService.updateTest(this.testForm.value, this.updatedTest.test_id)
       .subscribe(() => {
-      console.log(this.updatedTest);
         this.testForm.reset();
         this.getTests.emit();
         $('#add-update-test').modal('hide');

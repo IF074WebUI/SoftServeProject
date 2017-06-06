@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import { GetAllRecordsService } from '../services/get-all-records.service';
 import { Test } from './test';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
@@ -16,6 +16,7 @@ export class TestsComponent implements OnInit {
   updatedTest: Test;
   deletedTest: Test;
   headers: string[];
+  action: string;
   displayPropertiesOrder: string[];
   constructor(private getAllRecordsService: GetAllRecordsService,
               private getRecordsByIdService: GetRecordsByIdService) {}
@@ -52,8 +53,13 @@ export class TestsComponent implements OnInit {
       test.enabled_description = 'Доступно';
     }
   }
+  openModalAddTest() {
+    $('#add-update-test').modal('show');
+    this.action = 'add';
+  }
   getUpdatedTest(test: Test) {
     this.updatedTest = test;
+    this.action = 'update';
     $('#add-update-test').modal('show');
   }
   getDeletedTest(test: Test) {

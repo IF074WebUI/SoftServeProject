@@ -40,7 +40,7 @@ import {LinksPipe} from './pipes/links.pipe';
 import { SpinnerComponent } from './universal/spinner/spinner.component';
 import {TestsService} from './services/tests.service';
 import { TestsComponent } from './tests/tests.component';
-import { AddTestComponent } from './tests/add-test/add-test.component';
+import { AddUpdateTestComponent } from './tests/add-update-test/add-update-test.component';
 import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
 
 @NgModule({
@@ -66,7 +66,7 @@ import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
     BreadcrumbsComponent,
     SpinnerComponent,
     TestsComponent,
-    AddTestComponent,
+    AddUpdateTestComponent,
     DeleteTestComponent
   ],
   imports: [
