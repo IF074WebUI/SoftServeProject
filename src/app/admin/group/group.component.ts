@@ -94,7 +94,7 @@ export class GroupComponent implements OnInit {
     if (this.countRecords <= (this.pageNumber - 1) * this.offset) {
       --this.pageNumber;
     }
-    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset).delay(3001)
+    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset).delay(301)
       .subscribe(resp => {this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']);
       this.spinner.hideSpinner();
       });
@@ -106,10 +106,7 @@ export class GroupComponent implements OnInit {
   }
 // deleting groups
   deleteGroup() {
-    this.getGroupsService.deleteGroup(this.groupforDelete['group_id'])
-      .subscribe(() => {
-        this.getGroups();
-      });
+
   }
 // editing groups
   editGroup(groupName: string) {
@@ -194,7 +191,7 @@ export class GroupComponent implements OnInit {
   edit(group: Group) {
     this.popup.showModal('edit', 'group', group );
   }
-  del(group: Group){
+  del(group: Group) {
     this.popup.showModal('delete', 'group', group);
   }
 

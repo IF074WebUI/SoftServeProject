@@ -1,0 +1,4 @@
+<dtester-entities-table class="table" [entities]="testDetails" [headers]="headers" [ignoreProperties]="ignoreProperties"
+                        (deleteEntity)=del($event) [canAction]="true"
+                        (editEntity)="edit($event)" (clickEntity)="getStudentsByGroup()" (actionEntity)="onTimeTableNavigate($event)">
+</dtester-entities-table>
