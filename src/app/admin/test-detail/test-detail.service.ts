@@ -19,8 +19,8 @@ export class TestDetailService {
   }
 
   createTestDetail(testId: number, level: number, tasks: number, rate: number ): Observable<Response> {
-    const bodyForSendingNewGroups = JSON.stringify({test_id: testId, level: level, tasks: tasks, rate: rate});
-    return this.http.post('http://' + HOST + ENTITY + '/insertData', bodyForSendingNewGroups)
+    const bodyForSendingTestDetails = JSON.stringify({test_id: testId, level: level, tasks: tasks, rate: rate});
+    return this.http.post('http://' + HOST + ENTITY + '/insertData', bodyForSendingTestDetails)
       .map((resp: Response) => resp.json());
   }
   deleteGroup(id: number) {

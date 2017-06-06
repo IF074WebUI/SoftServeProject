@@ -1,7 +1,11 @@
-<h2>{{MAIN_HEADER}}"{{testName}}"</h2>
-<dtester-entities-table class="table" [entities]="testDetails" [headers]="headers" [ignoreProperties]="ignoreProperties"
-                        (deleteEntity)=del($event) [canAction]="true"
-                        (editEntity)="edit($event)" (clickEntity)="getStudentsByGroup()" (actionEntity)="onTimeTableNavigate($event)">
+
+<h3>{{MAIN_HEADER}}"{{testName}}"</h3>
+<dtester-entities-table class="table"
+                        [entities]="testDetails"
+                        [headers]="headers"
+                        [ignoreProperties]="ignoreProperties"
+                        (deleteEntity)=del($event)
+                        (editEntity)="edit($event)" >
 </dtester-entities-table>
 <p>{{COUNT_OF_TASKS}}{{countOfTasks}}</p>
 <button (click)="createTestDetail()">dkghdjklfg</button>
