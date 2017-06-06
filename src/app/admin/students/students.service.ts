@@ -37,17 +37,17 @@ export class StudentsService {
   insert(studentForm, studentData): Observable<Student> {
     let body = JSON.stringify(
       {
-        'username': studentData.username,
+        'username': studentForm.username,
         'password': studentData.password,
         'password_confirm': studentData.password_confirm,
-        'email': studentData.email,
-        'gradebook_id': studentData.gradebook_id,
+        'email': studentForm.email,
+        'gradebook_id': studentForm.gradebook_id,
         'student_surname': studentForm.student_surname,
         'student_name': studentForm.student_name,
         'student_fname': studentForm.student_fname,
         'group_id': studentForm.group_id,
         'plain_password': studentData.plain_password,
-        'photo': studentData.photo
+        'photo': studentForm.photo
       }
     );
     return this.http.post('http://' + HOST + '/Student/insertData', body).map(resp => resp.json());

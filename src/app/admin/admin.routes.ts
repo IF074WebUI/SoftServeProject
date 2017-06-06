@@ -29,6 +29,6 @@ export const adminRoutes: Route[] = [
       {path: 'results', component: ResultsComponent},
       /*{path: 'addedit', component: AddeditComponent, canDeactivate: [ExitAboutGuard]}, */
       {path: 'addedit', component: AddeditComponent},
-      {path: 'profile', component: StudentProfileComponent}
+      {path: 'profile/:user_id', component: StudentProfileComponent}
     ]
   }];
