@@ -201,6 +201,6 @@ export class StudentsComponent implements OnInit {
   }
 
   goToStudentProfile(student: Student) {
-    this.router.navigate(['./profile', student.user_id], {relativeTo: this.activatedRoute.parent});
+    this.router.navigate(['students', student.user_id], {relativeTo: this.activatedRoute.parent});
   }
 }
