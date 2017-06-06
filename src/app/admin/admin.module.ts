@@ -41,6 +41,7 @@ import { SpinnerComponent } from './universal/spinner/spinner.component';
 import {TestsService} from './services/tests.service';
 import { TestsComponent } from './tests/tests.component';
 import { AddTestComponent } from './tests/add-test/add-test.component';
+import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { AddTestComponent } from './tests/add-test/add-test.component';
     BreadcrumbsComponent,
     SpinnerComponent,
     TestsComponent,
-    AddTestComponent
+    AddTestComponent,
+    DeleteTestComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

@@ -14,6 +14,7 @@ export class TestsComponent implements OnInit {
   tests: Test[] = [];
   subjects = [];
   updatedTest: Test;
+  deletedTest: Test;
   headers: string[];
   displayPropertiesOrder: string[];
   constructor(private getAllRecordsService: GetAllRecordsService,
@@ -54,5 +55,9 @@ export class TestsComponent implements OnInit {
   getUpdatedTest(test: Test) {
     this.updatedTest = test;
     $('#add-update-test').modal('show');
+  }
+  getDeletedTest(test: Test) {
+    this.deletedTest = test;
+    $('#delete-test').modal('show');
   }
 }

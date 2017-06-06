@@ -17,17 +17,17 @@ export class AddTestComponent implements OnInit, OnChanges {
   testForm: FormGroup;
   constructor(private testsService: TestsService) {
     this.testForm = new FormGroup({
-      'test_name': new FormControl('1', Validators.required),
-      'tasks': new FormControl('1', Validators.required),
-      'time_for_test': new FormControl('1', Validators.required),
-      'enabled': new FormControl('1', Validators.required),
-      'attempts': new FormControl('1', Validators.required),
-      'subject_id': new FormControl('1', Validators.required)
+      'test_name': new FormControl('', Validators.required),
+      'tasks': new FormControl('', Validators.required),
+      'time_for_test': new FormControl('', Validators.required),
+      'enabled': new FormControl('', Validators.required),
+      'attempts': new FormControl('', Validators.required),
+      'subject_id': new FormControl('', Validators.required)
     });
   }
   ngOnInit() {};
   ngOnChanges() {
-    if(this.updatedTest) {
+    if (this.updatedTest) {
       this.testForm.setValue({
         'test_name': this.updatedTest.test_name,
         'tasks': this.updatedTest.tasks,
