@@ -160,7 +160,8 @@ export class GroupComponent implements OnInit {
     console.log(group);
   }
     // search group
-  startSearch(criteria: string) {         /* callback method for output in search component */
+  startSearch(criteria: string) {   /* callback method for output in search component */
+    this.spinner.showSpinner();
     if (criteria === '') {
       this.getGroups();
     } else {
@@ -169,10 +170,10 @@ export class GroupComponent implements OnInit {
           if (resp['response'] === 'no records') {    /* check condition: if no records presented for search criteria */
             this.groupsOnPage = [];
             this.countRecords = this.groupsOnPage.length;
-            this.isLoading = false;
+            this.spinner.hideSpinner();
           } else {
             this.groupsOnPage = <Group[]>resp;         /* present all specialities */
-            this.isLoading = false;
+            this.spinner.hideSpinner();
           }
         },
         err => this.router.navigate(['/bad_request']));

@@ -61,7 +61,7 @@ export class TestDetailComponent implements OnInit {
   }
 
   createTestDetail() {
-    this.testDetailService.createTestDetail(+this.curenntTestId, 1, 1, 1).subscribe(() => this.getTestDetails());
+    this.testDetailService.createTestDetail(+this.curenntTestId, 5, 1, 1).subscribe(() => this.getTestDetails());
   }
 
 }
