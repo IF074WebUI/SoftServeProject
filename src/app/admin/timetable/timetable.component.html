@@ -128,7 +128,7 @@
            Не коректні часові межі
           </span>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-          <button  type="submit" class="btn btn-success" [disabled]="!updateTimetableForm.valid">Редагувати</button>
+          <button  type="submit" class="btn btn-success" [disabled]="!updateTimetableForm.valid || updateTimetableForm.untouched">Редагувати</button>
         </div>
       </form>
     </div>
