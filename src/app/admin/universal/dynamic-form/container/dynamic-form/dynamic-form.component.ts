@@ -3,55 +3,25 @@ import {
   AfterViewChecked, AfterViewInit, OnChanges
 } from '@angular/core';
 import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl} from '@angular/forms';
-import {FacultyService} from "../../../../faculties/faculty.service";
-import {Faculty} from "../../../../faculties/Faculty";
-import {FormAddnameComponent} from "../../components/form-addname/form-addname.component";
-import {min} from "rxjs/operator/min";
+import {FacultyService} from '../../../../faculties/faculty.service';
 
 declare var $: any;
 @Component({
   selector: 'dynamic-form',
   styleUrls: ['dynamic-form.component.scss'],
-  template: `
-    <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">{{MODAL_TITLE}}</h4>
-          </div>
-          <div class="modal-body">
-
-            <form class="form-group"
-                  class="dynamic-form"
-                  [formGroup]="form"
-                  (ngSubmit)="submitted.emit(form.value)">
-              <ng-container
-                *ngFor="let field of config;"
-                dynamicField
-                [config]="field"
-                [group]="form">
-              </ng-container>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-  `
+  templateUrl: './dynamic-form.component.html',
 })
 export class DynamicFormComponent implements OnInit, DoCheck, AfterViewInit, AfterViewChecked, OnChanges {
   @Input()
   config: any[] = [];
   @Input()
   entity: any;
+  Properties: Array<string>;
 
   @Output()
   submitted: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  deleteEntity: EventEmitter<any> = new EventEmitter<any>();
   form: FormGroup;
 
 
@@ -80,13 +50,10 @@ export class DynamicFormComponent implements OnInit, DoCheck, AfterViewInit, Aft
   }
 
 
-// uniqname(){
-//    this.form.controls['faculty_name'].valueChanges.debounceTime(700).subscribe(resp => {this.ValidatorUniqName(resp).subscribe(resp => console.log(resp))});
-// }
   createGroup() {
     const group = this.fb.group({});
     this.config.forEach(control => {
-      (control.required == true) ? group.addControl(control.name, this.fb.control('', [Validators.required])) : group.addControl(control.name, this.fb.control(''))
+      (control.required === true) ? group.addControl(control.name, this.fb.control('', [Validators.required])) : group.addControl(control.name, this.fb.control(''));
     });
 
 
@@ -101,8 +68,6 @@ export class DynamicFormComponent implements OnInit, DoCheck, AfterViewInit, Aft
   cancel() {
     $('#myModal').modal('hide');
     this.form.reset();
-
-
   }
 
   sendItem(entity: any) {
@@ -119,22 +84,35 @@ export class DynamicFormComponent implements OnInit, DoCheck, AfterViewInit, Aft
 
   }
 
-  ValidatorUniqName(name: FormControl) {
-    console.log('name');
-    return this.facultyService.searchByName(name['faculty_name'].value).map((resp: Faculty[]) => {
-        console.log('next step');
-        for (let key of resp) {
-          if (key['faculty_name'] === name['faculty_name'].value.trim()) {
-            console.log('exist');
-            return {exists: true};
-          }
-        }
-        console.log('not exist');
+  Delete(entity: any) {
+    this.entity = entity;
 
-        return null;
-      }
-    );
+    // this.Properties = Object.getOwnPropertyNames(this.entity);
+    // console.log(this.Properties);
+    $('#delModal').modal('show');
+
   }
+  submitDelete() {
+    console.log(this.entity);
+    this.deleteEntity.emit(this.entity);
+  }
+  //
+  // ValidatorUniqName(name: FormControl) {
+  //   console.log('name');
+  //   return this.facultyService.searchByName(name['faculty_name'].value).map((resp: Faculty[]) => {
+  //       console.log('next step');
+  //       for (let key of resp) {
+  //         if (key['faculty_name'] === name['faculty_name'].value.trim()) {
+  //           console.log('exist');
+  //           return {exists: true};
+  //         }
+  //       }
+  //       console.log('not exist');
+  //
+  //       return null;
+  //     }
+  //   );
+  // }
 
 
 }

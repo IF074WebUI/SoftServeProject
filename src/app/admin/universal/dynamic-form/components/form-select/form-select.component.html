@@ -4,8 +4,8 @@
   <label>{{ config.label }}</label>
   <select [formControlName]="config.name">
     <option value="">{{ config.placeholder }}</option>
-    <option [value]=item.faculty_id *ngFor="let item of faculties">
-      {{ item['faculty_name'] }}
+    <option [value]="item[Properties[[0]]]" *ngFor="let item of entities">
+      {{ item[Properties[[1]]] }}
     </option>
   </select>
 </div>

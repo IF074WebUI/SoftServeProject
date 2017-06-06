@@ -27,7 +27,6 @@ export class FacultiesComponent<T> implements OnInit {
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
 
-
   configs = [
     {
       type: 'id',
@@ -53,14 +52,6 @@ export class FacultiesComponent<T> implements OnInit {
       placeholder: 'Введіть опис факультету',
       required: false
     },
-    // {
-    //   type: 'select',
-    //   value: '',
-    //   label: 'Id факультету',
-    //   name: 'chosefaculty',
-    //   placeholder: 'ВChose факультету',
-    //   required: false
-    // },
     {
       label: 'Підтвердити',
       name: 'submit',
@@ -135,7 +126,6 @@ export class FacultiesComponent<T> implements OnInit {
   }
 
 
-
   // Dynamic Module
 
 
@@ -146,29 +136,46 @@ export class FacultiesComponent<T> implements OnInit {
     this.popup.showModal();
   }
 
- edit(faculty: Faculty){
-   this.popup.sendItem(faculty);
-   this.popup.showModal();
- }
+  edit(faculty: Faculty) {
+    this.popup.sendItem(faculty);
+    this.popup.showModal();
+  }
+
+  del(faculty: Faculty) {
+    this.popup.Delete(faculty);
+  }
 
   formSubmitted(value) {
     console.log(value);
-    if (value['faculty_id']){ this.http.editItem(value['faculty_id'], value['faculty_name'], value['faculty_description']).subscribe(response => {
-        this.uploadAllPages(this.page);
-        this.popup.cancel();
-      },
-      error => this.router.navigate(['/bad_request'])
-    );} else {
-    this.http.addItem(value['faculty_name'], value['faculty_description']).subscribe(response => {
-        this.getCount();
-        (this.count % this.countPerPage === 0) ? this.page = this.page + 1 : this.page;
-        this.uploadAllPages(this.page);
-        this.popup.cancel();
-      },
-      error => this.router.navigate(['/bad_request'])
-    );}
+    if (value['faculty_id']) {
+      this.http.editItem(value['faculty_id'], value['faculty_name'], value['faculty_description']).subscribe(response => {
+          this.uploadAllPages(this.page);
+          this.popup.cancel();
+        },
+        error => this.router.navigate(['/bad_request'])
+      );
+    } else {
+      this.http.addItem(value['faculty_name'], value['faculty_description']).subscribe(response => {
+          this.getCount();
+          (this.count % this.countPerPage === 0) ? this.page = this.page + 1 : this.page;
+          this.uploadAllPages(this.page);
+          this.popup.cancel();
+        },
+        error => this.router.navigate(['/bad_request'])
+      );
+    }
   }
 
+
+  submitDelete(faculty: Faculty) {
+    this.http.deleteItem(faculty['faculty_id']).subscribe(response => {
+        this.uploadAllPages(this.page);
+        this.popup.cancel();
+      },
+      error => this.router.navigate(['/bad_request'])
+    );
+    this.popup.cancel();
+  }
 
 }
 

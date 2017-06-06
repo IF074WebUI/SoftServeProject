@@ -1,7 +1,5 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {FormGroup, Validators, FormControl, AbstractControl} from '@angular/forms';
-import {FacultyService} from "../../../../faculties/faculty.service";
-import {Faculty} from "../../../../faculties/Faculty";
 
 @Component({
   selector: 'app-form-input',
