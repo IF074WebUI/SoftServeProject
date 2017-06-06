@@ -41,8 +41,10 @@ import { TestsService } from './services/tests.service';
 import { DetailedComponent } from './detailed/detailed.component';
 import { SpinnerService } from './universal/spinner/spinner.service';
 import { LoadingModule } from 'ngx-loading';
-
 import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
+import { TestsComponent } from './tests/tests.component';
+import { AddUpdateTestComponent } from './tests/add-update-test/add-update-test.component';
+import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,10 @@ import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
     ResultsComponent,
     BreadcrumbsComponent,
     SpinnerComponent,
-    DetailedComponent
+    DetailedComponent,
+    TestsComponent,
+    AddUpdateTestComponent,
+    DeleteTestComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

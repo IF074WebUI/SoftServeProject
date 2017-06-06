@@ -10,6 +10,7 @@ import { StudentsComponent } from './students/students.component';
 import { ResultsComponent } from './results/results.component';
 import {ExitAboutGuard} from '../guards/exit.about.guard';
 import { DetailedComponent } from './detailed/detailed.component';
+import { TestsComponent } from './tests/tests.component';
 
 export const adminRoutes: Route[] = [
   {
@@ -25,6 +26,7 @@ export const adminRoutes: Route[] = [
       {path: 'students', component: StudentsComponent},
       {path: 'results/:studentId', component: DetailedComponent},
       {path: 'results', component: ResultsComponent},
+      {path: 'tests', component: TestsComponent},
       /*{path: 'addedit', component: AddeditComponent, canDeactivate: [ExitAboutGuard]}, */
     ]
   }];

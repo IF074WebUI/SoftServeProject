@@ -18,9 +18,12 @@
     <a class="nav-link">Результати</a>
   </li>
   <li class="nav-item" routerLinkActive="active">
+    <a class="nav-link" [routerLink]="['tests']">Тести</a>
+  </li>
+  <li class="nav-item" routerLinkActive="active">
     <a class="nav-link" [routerLink]="['timetable']">Розклад</a>
   </li>
-  <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+  <li class="nav-item" routerLinkActive="active">
   <a class="nav-link" [routerLink]="['statistics']">Статистика</a>
 </li>
   <li class="nav-item logout" (click)="logout()">

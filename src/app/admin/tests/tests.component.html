@@ -1,0 +1,13 @@
+<h2>Тести</h2>
+
+<dtester-entities-table [entities]="tests"
+                        [headers]="headers"
+                        (editEntity)="getUpdatedTest($event)"
+                        (deleteEntity)="getDeletedTest($event)"
+                        [displayPropertiesOrder]="displayPropertiesOrder">
+</dtester-entities-table>
+
+<button type="button" class="btn btn-primary"(click)="openModalAddTest()">Додати тест</button>
+
+<app-add-update-test (getTests)="getAllTests()" [updatedTest]="updatedTest" [subjects]="subjects" [action]="action"></app-add-update-test>
+<app-delete-test [deletedTest]="deletedTest" (getTests)="getAllTests()" ></app-delete-test>
