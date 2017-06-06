@@ -12,72 +12,19 @@
                     [recordsPerPage]="recordsPerPage"
                     [currentPage]="page"
                     (pageChanged)="changePage($event)"></dtester-pagination>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-new-timetabel" data-whatever="@mdo">Запланувати тестування</button>
-
-<!--modal of adding new timetable-->
-
-<div [ngClass]="{'modal': true, 'fade': true, 'show': showModal}"id="modal-new-timetabel" tabindex="-1" role="dialog" aria-labelledby="modalAddTimetable" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalAddTimetable">Запланувати тестування</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form [formGroup]="newTimetableForm" (ngSubmit)="createTimeTable()">
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="form-control-label" for="groupId">Група:</label>
-            <select formControlName="group_id" id="groupId" class="form-control">
-              <option *ngFor="let group of groups" [ngValue]="group.group_id">{{group.group_name}}</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-control-label" for="subjectId">Предмет:</label>
-            <select formControlName="subject_id" id="subjectId" class="form-control">
-              <option *ngFor="let subject of subjects" [ngValue]="subject.subject_id">{{subject.subject_name}}</option>
-            </select>
-          </div>
-
-          <div formGroupName="time_limits">
-            <div class="form-group">
-              <label class="form-control-label">Початкова дата:</label>
-              <input type="date" formControlName="start_date" class="form-control">
-            </div>
-            <div class="form-group">
-              <label class="form-control-label">Початковий час:</label>
-              <input type="time" formControlName="start_time" class="form-control">
-            </div>
-            <div class="form-group">
-              <label class="form-control-label">Кінцева дата:</label>
-              <input type="date" formControlName="end_date" class="form-control">
-            </div>
-            <div class="form-group">
-              <label class="form-control-label">Кінцевий час:</label>
-              <input type="time" formControlName="end_time" class="form-control">
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <span class="error"
-                *ngIf="!newTimetableForm.controls['time_limits'].valid
-                && newTimetableForm.get(['time_limits', 'start_date']).touched
-                && newTimetableForm.get(['time_limits', 'end_date']).touched
-                && newTimetableForm.get(['time_limits', 'end_time']).touched
-                && newTimetableForm.get(['time_limits', 'start_time']).touched;">
-           Не коректні часові межі
-          </span>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-          <button  type="submit" class="btn btn-primary" [disabled]="!newTimetableForm.valid">Запланувати</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+<button type="button" class="btn btn-primary" (click)="openModalAddTimetable()">Запланувати тестування</button>
+<app-delete-timetable [deletedTimetable]="deletedTimetable"
+                      (getTimetableRecords)="checkQueryParams()"
+                      (getCountRecords)="getCountRecords()"></app-delete-timetable>
+<app-add-update-timetable [groups]="groups"
+                          [subjects]="subjects"
+                          [action]="action"
+                          [updatedTimetable]="updatedTimetable"
+                          (getTimetableRecords)="checkQueryParams()"
+                          (getCountRecords)="getCountRecords()"></app-add-update-timetable>
 
 <!--modal of updating timetable-->
-
+<!--
 <div [ngClass]="{'modal': true, 'fade': true, 'show': showModal} "id="modal-update-timetabel" tabindex="-1" role="dialog" aria-labelledby="modalAddTimetable" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -137,24 +84,4 @@
 
 <!--modal of deleting timetable-->
 
-<div class="modal fade" id="modal-delete-timetabel" tabindex="-1" role="dialog" aria-labelledby="modalDeleteTimetable" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalDeleteTimetable">Видалення тестування</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <p>Ви впевнені, що хочете видалити тестування з дисципліни <q><b>{{deletedTimetable?.subject_name}}</b></q> для групи <b>{{deletedTimetable?.group_name}}</b>?</p>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-        <button  (click)="deleteTimetable()" type="button" class="btn btn-danger" data-dismiss="modal">Видалити</button>
-      </div>
-    </div>
-  </div>
-</div>
+

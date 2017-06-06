@@ -4,8 +4,7 @@ import {DeleteRecordByIdService} from '../../services/delete-record-by-id.servic
 
 @Component({
   selector: 'app-delete-test',
-  templateUrl: './delete-test.component.html',
-  styleUrls: ['./delete-test.component.css']
+  templateUrl: './delete-test.component.html'
 })
 export class DeleteTestComponent implements OnInit {
   @Input() deletedTest: Test;

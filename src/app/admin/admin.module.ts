@@ -42,6 +42,8 @@ import {TestsService} from './services/tests.service';
 import { TestsComponent } from './tests/tests.component';
 import { AddUpdateTestComponent } from './tests/add-update-test/add-update-test.component';
 import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
+import { DeleteTimetableComponent } from './timetable/delete-timetable/delete-timetable.component';
+import { AddUpdateTimetableComponent } from './timetable/add-update-timetable/add-update-timetable.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
     SpinnerComponent,
     TestsComponent,
     AddUpdateTestComponent,
-    DeleteTestComponent
+    DeleteTestComponent,
+    DeleteTimetableComponent,
+    AddUpdateTimetableComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
