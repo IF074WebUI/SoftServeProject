@@ -7,7 +7,7 @@ import { FacultyService } from '../faculties/faculty.service';
 import { Faculty } from '../faculties/Faculty';
 import { ActivatedRoute, Router } from '@angular/router';
 import {GROUPS_HEADERS, IGNORE_PROPERTIES} from './groupConstants';
-import 'rxjs/add/operator/delay';
+
 import {SpinnerService} from '../universal/spinner/spinner.service';
 import {AddeditComponent} from '../addedit/addedit.component';
 @Component({

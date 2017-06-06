@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { TestDetailService } from './test-detail.service';
 import { TestDetail } from './testDetail';
 import { TEST_DETAIL_HEADERS, IGNORE_PROPERTIES } from './testDetailConsntants';
+import { ActivatedRoute } from '@angular/router';
+import { SpinnerService } from '../universal/spinner/spinner.service';
+import 'rxjs/add/operator/delay';
+
 
 @Component({
   selector: 'dtester-test-detail',
@@ -11,22 +15,53 @@ import { TEST_DETAIL_HEADERS, IGNORE_PROPERTIES } from './testDetailConsntants';
 })
 export class TestDetailComponent implements OnInit {
   testDetails: TestDetail[];
-  testId: number = 1;
+  testId: number = 2;
   headers: string[];            /* array of headers */
   ignoreProperties: string[];
-  pageNumber: number = 1;
-  offset = 5;   /*number of the records for the stating page*/
   countRecords: number;
+  curenntTestId: number;
 
-  constructor(private testDetailService: TestDetailService) { }
+  COUNT_OF_TASKS: string = 'Необхідна кількість завданнь: ';
+  countOfTasks: number = 0;
+  MAIN_HEADER: string = 'Деталі тесту ';
+  testName: string;
+
+  constructor(private testDetailService: TestDetailService,
+              private route: ActivatedRoute,
+              private spinner: SpinnerService) { }
   ngOnInit() {
+    this.spinner.showSpinner()
     this.headers = TEST_DETAIL_HEADERS;
     this.ignoreProperties = IGNORE_PROPERTIES;
 
+    let testId: number = this.route.snapshot.queryParams['test_id'];
+    let testName: string = this.route.snapshot.queryParams['test_name'];
+    this.testName = testName;
+    this.curenntTestId = testId;
+    if (testId) {
+      this.testDetailService.getTestDetails(testId).delay(300)
+        .subscribe(res => {
+          if (res['response'] === 'no records') {
+            this.testDetails = [];
+            this.spinner.hideSpinner();
+          } else {
+            this.testDetails = res;
+            for (let testDetail of this.testDetails) {
+              this.countOfTasks = this.countOfTasks + +testDetail.tasks;
+            }
+            this.spinner.hideSpinner();
+          }
+        });
+
+    }
   }
-  showDetails() {
-    this.testDetailService.getTestDetails(this.testId)
+  getTestDetails() {
+    this.testDetailService.getTestDetails(this.curenntTestId)
       .subscribe(res => this.testDetails = res);
+  }
+
+  createTestDetail() {
+    this.testDetailService.createTestDetail(this.curenntTestId, 2, 3, 10).subscribe(() => this.getTestDetails());
   }
 
 }

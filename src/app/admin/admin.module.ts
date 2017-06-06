@@ -14,7 +14,7 @@ import {GetRecordsByIdService} from './services/get-records-by-id.service';
 import {SubjectComponent} from './subject/subject.component';
 import {SubjectDetailComponent} from './subject/subject-detail/subject-detail.component';
 import {SubjectService} from './subject/subject.service';
-import {GroupService} from './group/group.service';
+import { GroupService } from './group/group.service';
 import {SpecialitiesComponent} from './specialities/specialities.component';
 import {SpecialitiesService} from './services/specialities.service';
 import {PaginationComponent} from './universal/pagination/pagination.component';
@@ -37,12 +37,14 @@ import { GetRecordsRangeService } from './services/get-records-range.service';
 import { BreadcrumbsService } from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { LinksPipe } from './pipes/links.pipe';
-import { SpinnerComponent } from './universal/spinner/spinner.component';
 import { TestsService } from './services/tests.service';
 import { DetailedComponent } from './detailed/detailed.component';
 import { SpinnerService } from './universal/spinner/spinner.service';
 import { LoadingModule } from 'ngx-loading';
-
+import { TestsComponent } from './tests/tests.component';
+import { AddUpdateTestComponent } from './tests/add-update-test/add-update-test.component';
+import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
+import { TestDetailComponent } from './test-detail/test-detail.component';
 
 @NgModule({
   declarations: [
@@ -65,8 +67,11 @@ import { LoadingModule } from 'ngx-loading';
     ResultsComponent,
     AddeditComponent,
     BreadcrumbsComponent,
-    SpinnerComponent,
-    DetailedComponent
+    DetailedComponent,
+    TestsComponent,
+    AddUpdateTestComponent,
+    DeleteTestComponent,
+    TestDetailComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
