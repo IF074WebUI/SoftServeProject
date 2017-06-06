@@ -10,7 +10,6 @@ import { GROUP_ENITY } from './groupConstants';
 
 @Injectable()
 export class GroupService {
-  private entity = '/Group';
   groups: Group[] = [];
   constructor(private http: Http) { }
 
