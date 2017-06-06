@@ -85,8 +85,9 @@ export class DetailedComponent implements OnInit {
       d.setHours(+splitS[0]);
       d.setMinutes(+splitS[1]);
       d.setSeconds(+splitS[2]);
-    return d;
+      return d;
     }
+
     let s: Date = parseStringIntoDate(start);
     let e: Date = parseStringIntoDate(end);
     let interval: number = (e.getTime() - s.getTime()) / 1000;
@@ -108,7 +109,9 @@ export class DetailedComponent implements OnInit {
         <head>
           <title>Print tab</title>
           <style>
-          //........Customized style.......
+          @media print {  
+            .hidden-print   { display: none !important; }
+          }
           </style>
         </head>
     <body onload="window.print();window.close()">${printContents}</body>

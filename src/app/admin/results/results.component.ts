@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ResultsService } from '../services/results.service';
-import { Result } from './result';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastsManager } from 'ng2-toastr';
-import { StudentsService } from '../students/students.service';
-import { Student } from '../students/student';
-import { TestsService } from '../services/tests.service';
-import { Group } from '../group/group';
-import { GroupService } from '../group/group.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {ResultsService} from '../services/results.service';
+import {Result} from './result';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ToastsManager} from 'ng2-toastr';
+import {StudentsService} from '../students/students.service';
+import {Student} from '../students/student';
+import {TestsService} from '../services/tests.service';
+import {Group} from '../group/group';
+import {GroupService} from '../group/group.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'dtester-results',
@@ -18,7 +18,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class ResultsComponent implements OnInit {
 
   RESULTS_HEADERS: string[] = ['№', 'студент', 'тест', 'початок', 'закінчення', 'дата', 'результат'];
-  IGNORE_PROPERTIES: string[] = ['session_id', 'true_answers', 'answers', 'questions', 'student_id', ];
+  IGNORE_PROPERTIES: string[] = ['session_id', 'true_answers', 'answers', 'questions', 'student_id',];
   DISPLAY_ORDER: string[] = ['student_name', 'test_name', 'start_time', 'end_time', 'session_date', 'result'];
 
   results: Result[];
@@ -34,7 +34,7 @@ export class ResultsComponent implements OnInit {
   dateControl: FormControl;
 
   constructor(private resultsService: ResultsService, private router: Router, private activatedRoute: ActivatedRoute,
-  private toastr: ToastsManager, private studentsService: StudentsService, private groupsService: GroupService,
+              private toastr: ToastsManager, private studentsService: StudentsService, private groupsService: GroupService,
               private testsService: TestsService) {
     this.groupControl = new FormControl('', Validators.required);
     this.testControl = new FormControl('', Validators.required);
@@ -42,35 +42,36 @@ export class ResultsComponent implements OnInit {
     this.searchByGroupTestForm = new FormGroup({
       'group': this.groupControl,
       'test': this.testControl,
-      'date': this.dateControl});
+      'date': this.dateControl
+    });
   }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
-      let studentId = params['student'];
-      let testId = params['test'];
-      let groupId = params['group'];
-      let date = params['date'];
-      if (studentId) {
-        this.resultsService.getAllByStudent(studentId).subscribe((resp: Result[]) => {
-          this.results = resp;
-          this.transformResults();
-        }, err => this.router.navigate(['/bad_request']));
-      } else if (testId && groupId) {
-        this.resultsService.getAllByTestGroupDate(testId, groupId, date).subscribe((resp: Result[]) => {
-          this.results = resp;
-          this.transformResults();
-        }, err => this.router.navigate(['/bad_request']));
-      } else if (groupId) {
-        this.resultsService.getPassedTestsByGroup(groupId).subscribe((resp: Result[]) => {
-          this.RESULTS_HEADERS = ['№', 'id тесту'];
-          this.results = resp;
-          this.transformResults();
-        }, err => this.router.navigate(['/bad_request']));
-      } else {
-        this.getResults();
-        this.getCount();
-      }
+        let studentId = params['student'];
+        let testId = params['test'];
+        let groupId = params['group'];
+        let date = params['date'];
+        if (studentId) {
+          this.resultsService.getAllByStudent(studentId).subscribe((resp: Result[]) => {
+            this.results = resp;
+            this.transformResults();
+          }, err => this.router.navigate(['/bad_request']));
+        } else if (testId && groupId) {
+          this.resultsService.getAllByTestGroupDate(testId, groupId, date).subscribe((resp: Result[]) => {
+            this.results = resp;
+            this.transformResults();
+          }, err => this.router.navigate(['/bad_request']));
+        } else if (groupId) {
+          this.resultsService.getPassedTestsByGroup(groupId).subscribe((resp: Result[]) => {
+            this.RESULTS_HEADERS = ['№', 'id тесту'];
+            this.results = resp;
+            this.transformResults();
+          }, err => this.router.navigate(['/bad_request']));
+        } else {
+          this.getResults();
+          this.getCount();
+        }
       }
     );
     this.groupsService.getGroups().subscribe((resp: Group[]) => this.groups = resp);
@@ -83,10 +84,11 @@ export class ResultsComponent implements OnInit {
       this.count = 0;
       return;
     }
-    this.results.map((result: Result) => { this.studentsService.getStudentById(result.student_id)
-      .subscribe((resp: Student) => {
-      result['student_name'] = resp[0]['student_name'] + ' ' + resp[0]['student_surname'];
-    });
+    this.results.map((result: Result) => {
+      this.studentsService.getStudentById(result.student_id)
+        .subscribe((resp: Student) => {
+          result['student_name'] = resp[0]['student_name'] + ' ' + resp[0]['student_surname'];
+        });
       this.testsService.getTestById(result.test_id)
         .subscribe((resp: any) => {
           result['test_name'] = resp[0]['test_name'];
@@ -114,14 +116,16 @@ export class ResultsComponent implements OnInit {
 
   findByGroupTest(): void {
     this.resultsService.getAllByTestGroupDate(this.testControl.value, this.groupControl.value, this.dateControl.value)
-      .subscribe((resp: Result[]) => {this.results = resp;
-      this.count = this.results.length;
-      this.transformResults();
-    });
+      .subscribe((resp: Result[]) => {
+        this.results = resp;
+        this.count = this.results.length;
+        this.transformResults();
+      });
   }
 
   findByStudent(result: Result): void {
-    this.resultsService.getAllByStudent(result.student_id).subscribe((resp: Result[]) => {this.results = resp;
+    this.resultsService.getAllByStudent(result.student_id).subscribe((resp: Result[]) => {
+      this.results = resp;
       this.count = this.results.length;
       this.transformResults();
     });
@@ -160,11 +164,9 @@ export class ResultsComponent implements OnInit {
         <head>
           <title>Результати тестування</title>
           <style>
-          @media print {
-  .print-section {
-    color: red !important;
-    -webkit-print-color-adjust: exact;
-  }
+          @media print {  
+            .hidden-print   { display: none !important; }
+          }
           </style>
         </head>
     <body onload="window.print();window.close()">${printContents}</body>
