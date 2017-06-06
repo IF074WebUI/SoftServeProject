@@ -40,7 +40,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-danger" data-dismiss="modal" (click)="submitDelete()">Підтвердити {{CONFIRM_DELETE}}</button>
+        <button type="submit" class="btn btn-danger" data-dismiss="modal" (click)="deleteEntity.emit(entity)">Підтвердити {{CONFIRM_DELETE}}</button>
 
         <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
       </div>

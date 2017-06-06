@@ -4,9 +4,9 @@ import {FacultyService} from '../../../../faculties/faculty.service';
 
 
 @Component({
-  selector: 'app-form-addname',
-  templateUrl: './form-addname.component.html',
-  styleUrls: ['./form-addname.component.css']
+  selector: 'app-form-uniqname',
+  templateUrl: './form-uniqname.component.html',
+  styleUrls: ['./form-uniqname.component.css']
 })
 export class FormAddnameComponent implements OnInit {
   config;

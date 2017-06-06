@@ -129,7 +129,7 @@ export class FacultiesComponent<T> implements OnInit {
   // Dynamic Module
 
 
-// Method for opening editing and deleting commo modal window
+// Methods for opening editing and deleting commo modal window
 
   add() {
     this.popup.sendItem(new Faculty('', '', ''));
@@ -144,6 +144,7 @@ export class FacultiesComponent<T> implements OnInit {
   del(faculty: Faculty) {
     this.popup.Delete(faculty);
   }
+  // Method for  add/edit, delete form submiting
 
   formSubmitted(value) {
     console.log(value);
@@ -152,7 +153,7 @@ export class FacultiesComponent<T> implements OnInit {
           this.uploadAllPages(this.page);
           this.popup.cancel();
         },
-        error => this.router.navigate(['/bad_request'])
+        error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
       );
     } else {
       this.http.addItem(value['faculty_name'], value['faculty_description']).subscribe(response => {
@@ -161,7 +162,7 @@ export class FacultiesComponent<T> implements OnInit {
           this.uploadAllPages(this.page);
           this.popup.cancel();
         },
-        error => this.router.navigate(['/bad_request'])
+        error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
       );
     }
   }

@@ -1,7 +1,7 @@
-import {
-  Component, Input, OnInit, Output, EventEmitter, ViewChild, DoCheck, AfterContentInit,
-  AfterViewChecked, AfterViewInit, OnChanges
-} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+
+import {ActivatedRoute, Router} from '@angular/router';
+
 import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl} from '@angular/forms';
 import {FacultyService} from '../../../../faculties/faculty.service';
 
@@ -11,7 +11,7 @@ declare var $: any;
   styleUrls: ['dynamic-form.component.scss'],
   templateUrl: './dynamic-form.component.html',
 })
-export class DynamicFormComponent implements OnInit, DoCheck, AfterViewInit, AfterViewChecked, OnChanges {
+export class DynamicFormComponent implements OnInit {
   @Input()
   config: any[] = [];
   @Input()
@@ -25,77 +25,59 @@ export class DynamicFormComponent implements OnInit, DoCheck, AfterViewInit, Aft
   form: FormGroup;
 
 
-  constructor(private fb: FormBuilder, private facultyService: FacultyService) {
+  constructor(private fb: FormBuilder, private facultyService: FacultyService, private route: ActivatedRoute,  private router: Router) {
   }
 
   ngOnInit() {
     this.form = this.createGroup();
-
-
   }
-
-  ngAfterViewInit() {
-    // this.uniqname();
-  }
-
-  ngAfterViewChecked() {
-  }
-
-  ngDoCheck() {
-
-  }
-
-  ngOnChanges() {
-
-  }
-
 
   createGroup() {
     const group = this.fb.group({});
     this.config.forEach(control => {
       (control.required === true) ? group.addControl(control.name, this.fb.control('', [Validators.required])) : group.addControl(control.name, this.fb.control(''));
     });
-
-
     return group;
-
   }
+
+// Methods for parents
 
   showModal() {
     $('#myModal').modal('show');
   }
+
+  submitDelete(entity) {
+    console.log(this.entity);
+    this.deleteEntity.emit(this.entity);
+  }
+
+  sendItem(entity: any) {
+    this.entity = entity;
+    let InputEntityNames = Object.getOwnPropertyNames(entity);
+    let FormNames = Object.getOwnPropertyNames(this.form.controls);
+    for (let i = 0; i < InputEntityNames.length; i++) {
+      this.form.controls[FormNames[+[i]]].setValue(this.entity[InputEntityNames[+[i]]]);
+    }
+  }
+
+  Delete(entity: any) {
+    this.entity = entity;
+    // this.Properties = Object.getOwnPropertyNames(this.entity);
+    // console.log(this.Properties);
+    $('#delModal').modal('show');
+  }
+
+  // Method for closing modal
 
   cancel() {
     $('#myModal').modal('hide');
     this.form.reset();
   }
 
-  sendItem(entity: any) {
-
-    this.entity = entity;
-    let InputEntityNames = Object.getOwnPropertyNames(entity);
-    console.log(this.entity);
-
-    let FormNames = Object.getOwnPropertyNames(this.form.controls);
-    for (let i = 0; i < InputEntityNames.length; i++) {
-      this.form.controls[FormNames[+[i]]].setValue(this.entity[InputEntityNames[+[i]]]);
-    }
-
-
+  badUniqName(name: string) {
+    this.router.navigate(['/error_pages/bad_uniqname/'], {queryParams: {'bad_name': name}});
   }
 
-  Delete(entity: any) {
-    this.entity = entity;
-
-    // this.Properties = Object.getOwnPropertyNames(this.entity);
-    // console.log(this.Properties);
-    $('#delModal').modal('show');
-
-  }
-  submitDelete() {
-    console.log(this.entity);
-    this.deleteEntity.emit(this.entity);
-  }
   //
   // ValidatorUniqName(name: FormControl) {
   //   console.log('name');
