@@ -78,6 +78,26 @@ export class DetailedComponent implements OnInit {
     this.active_id = i;
   }
 
+  calcutateTimeInterval(start: string, end: string): string {
+    function parseStringIntoDate(s: string): Date {
+      let splitS = s.split(':');
+      let d: Date = new Date();
+      d.setHours(+splitS[0]);
+      d.setMinutes(+splitS[1]);
+      d.setSeconds(+splitS[2]);
+    return d;
+    }
+    let s: Date = parseStringIntoDate(start);
+    let e: Date = parseStringIntoDate(end);
+    let interval: number = (e.getTime() - s.getTime()) / 1000;
+    let seconds = Math.floor(interval % 60);
+    interval /= 60;
+    let minutes = Math.floor(interval % 60);
+    interval /= 60;
+    let hours = Math.floor(interval / 24);
+    return [hours, minutes, seconds].join(':');
+  }
+
   print(): void {
     let printContents, popupWin;
     printContents = document.getElementById('print-section').innerHTML;
