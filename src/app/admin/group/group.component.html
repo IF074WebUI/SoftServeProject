@@ -1,11 +1,8 @@
-<div class="my-container">
-  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  //...
-</div>
 <dtester-addedit (addEntity)="confirmAdd($event)"
                  (editEntity)="confirmEdit($event)"
                  (deleteEntity)="confirmDelete($event)"
 ></dtester-addedit>
+
 
 <div class="container">
   <div class="row">
@@ -20,13 +17,11 @@
     </div>
     <div class="col-md-2">
       <dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
-
     </div>
   </div>
   <div class="row">
-    <dtester-spinner *ngIf="isLoading"></dtester-spinner>
-    <dtester-entities-table class="table" *ngIf="!isLoading" [entities]="groupsOnPage" [headers]="headers" [ignoreProperties]="ignoreProperties"
-                            (deleteEntity)="del($event)" [canAction]="true"
+    <dtester-entities-table class="table" [entities]="groupsOnPage" [headers]="headers" [ignoreProperties]="ignoreProperties"
+                            (deleteEntity)=del($event) [canAction]="true"
                             [page]="pageNumber" [itemsPerPage]="offset"
                             (editEntity)="edit($event)" (clickEntity)="getStudentsByGroup()" (actionEntity)="onTimeTableNavigate($event)">
     </dtester-entities-table>
@@ -96,6 +91,7 @@
   </div>
   <div class="col-md-3">
  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" (click)="getSpecialities(); getFaculties()">Додати нову групу</button>
+    <!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" (click)="addGroupUniversal()">Додати нову групу</button>-->
 </div>
 </div>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -7,6 +7,8 @@ import { FacultyService } from '../faculties/faculty.service';
 import { Faculty } from '../faculties/Faculty';
 import { ActivatedRoute, Router } from '@angular/router';
 import {GROUPS_HEADERS, IGNORE_PROPERTIES} from './groupConstants';
+
+import {SpinnerService} from '../universal/spinner/spinner.service';
 import {AddeditComponent} from '../addedit/addedit.component';
 @Component({
   selector: 'dtester-group',
@@ -23,7 +25,6 @@ export class GroupComponent implements OnInit {
   specialitiesOnPage: Speciality[] = [];
   groupforEdit: Group;
   groupforDelete: Group;
-  NO_RECORDS: string = 'no records';
   selectetGroup: Group;
   pageNumber: number = 1;
   offset = 5;   /*number of the records for the stating page*/
@@ -38,7 +39,9 @@ export class GroupComponent implements OnInit {
               private spesialityService: SpecialitiesService,
               private facultyService: FacultyService,
               private route: ActivatedRoute,
-              private router: Router ) {}
+              private router: Router,
+              private spinner: SpinnerService
+  ) {}
   ngOnInit() {
     this.headers = GROUPS_HEADERS;
     this.ignoreProperties = IGNORE_PROPERTIES;
@@ -62,7 +65,7 @@ export class GroupComponent implements OnInit {
         if (resp['response'] === 'no records') {
           this.groupsOnPage = [];
         } else
-          this.groupsOnPage = resp
+          this.groupsOnPage = resp;
       });
     }
 
@@ -84,14 +87,17 @@ export class GroupComponent implements OnInit {
   }
 
   getGroups(): void {
+    this.spinner.showSpinner();
     this.isLoading = true;
     this.getCountRecords()
     /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.countRecords <= (this.pageNumber - 1) * this.offset) {
       --this.pageNumber;
     }
-    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset)
-      .subscribe(resp => {this.groupsOnPage = <Group[]>resp; this.isLoading = false,  err => this.router.navigate(['/bad_request']);  });
+    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset).delay(301)
+      .subscribe(resp => {this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']);
+      this.spinner.hideSpinner();
+      });
   }
 // select for editing
   selectedGroup(group: Group) {
@@ -100,10 +106,7 @@ export class GroupComponent implements OnInit {
   }
 // deleting groups
   deleteGroup() {
-    this.getGroupsService.deleteGroup(this.groupforDelete['group_id'])
-      .subscribe(() => {
-        this.getGroups();
-      });
+
   }
 // editing groups
   editGroup(groupName: string) {
@@ -157,7 +160,8 @@ export class GroupComponent implements OnInit {
     console.log(group);
   }
     // search group
-  startSearch(criteria: string) {         /* callback method for output in search component */
+  startSearch(criteria: string) {   /* callback method for output in search component */
+    this.spinner.showSpinner();
     if (criteria === '') {
       this.getGroups();
     } else {
@@ -166,10 +170,10 @@ export class GroupComponent implements OnInit {
           if (resp['response'] === 'no records') {    /* check condition: if no records presented for search criteria */
             this.groupsOnPage = [];
             this.countRecords = this.groupsOnPage.length;
-            this.isLoading = false;
+            this.spinner.hideSpinner();
           } else {
             this.groupsOnPage = <Group[]>resp;         /* present all specialities */
-            this.isLoading = false;
+            this.spinner.hideSpinner();
           }
         },
         err => this.router.navigate(['/bad_request']));
@@ -188,7 +192,7 @@ export class GroupComponent implements OnInit {
   edit(group: Group) {
     this.popup.showModal('edit', 'group', group );
   }
-  del(group: Group){
+  del(group: Group) {
     this.popup.showModal('delete', 'group', group);
   }
 

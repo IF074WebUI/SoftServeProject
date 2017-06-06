@@ -14,7 +14,7 @@ import {GetRecordsByIdService} from './services/get-records-by-id.service';
 import {SubjectComponent} from './subject/subject.component';
 import {SubjectDetailComponent} from './subject/subject-detail/subject-detail.component';
 import {SubjectService} from './subject/subject.service';
-import {GroupService} from './group/group.service';
+import { GroupService } from './group/group.service';
 import {SpecialitiesComponent} from './specialities/specialities.component';
 import {SpecialitiesService} from './services/specialities.service';
 import {PaginationComponent} from './universal/pagination/pagination.component';
@@ -30,15 +30,21 @@ import {StudentsService} from './students/students.service';
 import {PopupComponent} from './popup/popup.component';
 import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page.component';
 import { ResultsComponent } from './results/results.component';
-import {ResultsService} from './services/results.service';
-import {AddeditComponent} from './addedit/addedit.component';
-import {ExitAboutGuard} from '../guards/exit.about.guard';
-import {GetRecordsRangeService} from './services/get-records-range.service';
-import {BreadcrumbsService} from './services/breadcrumbs.service';
+import { ResultsService } from './services/results.service';
+import { AddeditComponent } from './addedit/addedit.component';
+import { ExitAboutGuard } from '../guards/exit.about.guard';
+import { GetRecordsRangeService } from './services/get-records-range.service';
+import { BreadcrumbsService } from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
-import {LinksPipe} from './pipes/links.pipe';
-import { SpinnerComponent } from './universal/spinner/spinner.component';
-import {TestsService} from "./services/tests.service";
+import { LinksPipe } from './pipes/links.pipe';
+import { TestsService } from './services/tests.service';
+import { DetailedComponent } from './detailed/detailed.component';
+import { SpinnerService } from './universal/spinner/spinner.service';
+import { LoadingModule } from 'ngx-loading';
+import { TestsComponent } from './tests/tests.component';
+import { AddUpdateTestComponent } from './tests/add-update-test/add-update-test.component';
+import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
+import { TestDetailComponent } from './test-detail/test-detail.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +67,11 @@ import {TestsService} from "./services/tests.service";
     ResultsComponent,
     AddeditComponent,
     BreadcrumbsComponent,
-    SpinnerComponent
+    DetailedComponent,
+    TestsComponent,
+    AddUpdateTestComponent,
+    DeleteTestComponent,
+    TestDetailComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -70,7 +80,8 @@ import {TestsService} from "./services/tests.service";
     ReactiveFormsModule,
     NgbModule,
     MdDialogModule,
-    MdButtonModule
+    MdButtonModule,
+    LoadingModule
   ],
   providers: [
     StatisticsService,
@@ -86,7 +97,8 @@ import {TestsService} from "./services/tests.service";
     StudentsService,
     ExitAboutGuard,
     GetRecordsRangeService,
-    TestsService
+    TestsService,
+    SpinnerService
   ],
 })
 export class AdminModule {

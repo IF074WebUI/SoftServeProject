@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
 
 
 @Injectable()
 export class SpinnerService {
-  public loaderStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public loaderStatus: Subject<boolean> = new Subject<boolean>();
 
+  showSpinner() {
+    this.loaderStatus.next(true);
+  }
 
-  displayLoader(value: boolean) {
-    this.loaderStatus.next(value);
+  hideSpinner() {
+    this.loaderStatus.next(false);
   }
 
 }

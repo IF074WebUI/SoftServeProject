@@ -19,13 +19,14 @@ import {ToastModule} from "ng2-toastr";
 import {LoadingModule} from "ngx-loading";
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     AccessDeniedComponent,
     BadRequestComponent,
-    NotFoundComponent
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

@@ -6,7 +6,9 @@ export const timeValidator = (control: AbstractControl): {[key: string]: boolean
   const endDateArr: string[] = control.get('end_date').value.split('-');
   const endTimeArr: string[] = control.get('end_time').value.split(':');
   const startTimeIntervalArr: number[] = arrFromSrtToNum(startDateArr.concat(startTimeArr));
+  startTimeIntervalArr[1]--;
   const endTimeIntervalArr: number[] = arrFromSrtToNum(endDateArr.concat(endTimeArr));
+  endTimeIntervalArr[1]--;
   const startTimeInterval = +new Date(
     startTimeIntervalArr[0],
     startTimeIntervalArr[1],
@@ -19,7 +21,8 @@ export const timeValidator = (control: AbstractControl): {[key: string]: boolean
     endTimeIntervalArr[2],
     endTimeIntervalArr[3],
     endTimeIntervalArr[4]);
-  if (startTimeInterval < endTimeInterval) {
+  const now = Date.now();
+  if (startTimeInterval < endTimeInterval && now < startTimeInterval) {
     return null;
   } else {
     return { 'timeValidation': true };
