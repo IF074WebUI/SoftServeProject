@@ -31,14 +31,13 @@ import {PopupComponent} from './popup/popup.component';
 import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page.component';
 import { ResultsComponent } from './results/results.component';
 import {ResultsService} from './services/results.service';
-import {AddeditComponent} from './addedit/addedit.component';
 import {ExitAboutGuard} from '../guards/exit.about.guard';
 import {GetRecordsRangeService} from './services/get-records-range.service';
 import {BreadcrumbsService} from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import {LinksPipe} from './pipes/links.pipe';
 import { SpinnerComponent } from './universal/spinner/spinner.component';
-import {DynamicFormModule} from "./universal/dynamic-form/dynamic-form.module";
+import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
 
 @NgModule({
   declarations: [
@@ -59,7 +58,6 @@ import {DynamicFormModule} from "./universal/dynamic-form/dynamic-form.module";
     PopupComponent,
     ItemsPerPageComponent,
     ResultsComponent,
-    AddeditComponent,
     BreadcrumbsComponent,
     SpinnerComponent
   ],
