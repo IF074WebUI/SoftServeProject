@@ -36,7 +36,6 @@ import { ExitAboutGuard } from '../guards/exit.about.guard';
 import { GetRecordsRangeService } from './services/get-records-range.service';
 import { BreadcrumbsService } from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
-import { LinksPipe } from './pipes/links.pipe';
 import { SpinnerComponent } from './universal/spinner/spinner.component';
 import { TestsService } from './services/tests.service';
 import { DetailedComponent } from './detailed/detailed.component';
@@ -60,7 +59,6 @@ import { AnswersService } from './services/answers.service';
     PaginationComponent,
     EntitiesTableComponent,
     SearchComponent,
-    LinksPipe,
     StudentsComponent,
     PopupComponent,
     ItemsPerPageComponent,

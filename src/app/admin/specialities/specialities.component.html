@@ -1,8 +1,6 @@
 <h3 class="text-center">{{SPECIALITIES_HEADER}}</h3>
 <div class="header-group">
-  <button class="btn btn-sm btn-primary" [title]="SPECIALITIES_ADD_TITLE" (click)="add()" data-target="#myModal">
-    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-  </button>
+
   <!--Dropdown for items per page count-->
   <dtester-items-per-page [numberOfRecords]="count" (recordsPerPageChanged)="changeCountPerPage($event)"></dtester-items-per-page>
 </div>
@@ -17,6 +15,9 @@
                 (deleteEntity)="del($event)" [page]="page" [itemsPerPage]="countPerPage"
                 (editEntity)="edit($event)" (clickEntity)="getGroupsBySpeciality($event)">
 </dtester-entities-table>
+<button class="btn btn-sm btn-primary" [title]="SPECIALITIES_ADD_TITLE" (click)="add()" data-target="#myModal">
+  Додати спеціальність
+</button>
 <!--Pagination component-->
 <div class="text-center">
   <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
