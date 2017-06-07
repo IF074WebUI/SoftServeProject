@@ -119,7 +119,11 @@ export class StudentsComponent implements OnInit {
     }
     this.getCount();
     this.studentsService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
-      .subscribe(resp => this.getStudentsWithGroupName(resp), err => this.router.navigate(['/bad_request']));
+      .subscribe(resp => {
+        console.log(resp);
+        this.getStudentsWithGroupName(resp),
+        err => this.router.navigate(['/bad_request'])
+        });
   }
 
   getCount(): void {
