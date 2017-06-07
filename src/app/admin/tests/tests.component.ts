@@ -73,6 +73,5 @@ export class TestsComponent implements OnInit {
 
   getTestDetailsByTest (test: Test) {
     this.router.navigate(['./testDetails'], {queryParams: {'test_id': test.test_id, 'test_name': test.test_name}, relativeTo: this.route.parent});
-    console.log(Test);
   }
 }

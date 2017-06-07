@@ -48,14 +48,17 @@ export class TestDetailComponent implements OnInit {
             this.spinner.hideSpinner();
           } else {
             this.testDetails = res;
-            for (let testDetail of this.testDetails) {
-              this.countOfTasks = this.countOfTasks + +testDetail.tasks;
-              this.countOfRate = this.countOfRate + (+testDetail.tasks * +testDetail.rate);
-            }
+            this.getCountOfTestDetails();
             this.spinner.hideSpinner();
           }
         });
 
+    }
+  }
+  getCountOfTestDetails(){
+    for (let testDetail of this.testDetails) {
+      this.countOfTasks = this.countOfTasks + +testDetail.tasks;
+      this.countOfRate = this.countOfRate + (+testDetail.tasks * +testDetail.rate);
     }
   }
   getTestDetails() {
