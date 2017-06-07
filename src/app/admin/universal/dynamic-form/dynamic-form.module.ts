@@ -9,6 +9,7 @@ import { DynamicFieldDirective } from './components/dynamic-field/dynamic-field.
 import { FormIdComponent } from './components/form-id/form-id.component';
 import {FormSelectSpecialityComponent} from './components/form-select-speciality/form-select-speciality.component';
 import { FormTextareaComponent } from './components/form-textarea/form-textarea.component';
+import { FormEmailComponent } from './components/form-email/form-email.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { FormTextareaComponent } from './components/form-textarea/form-textarea.
     DynamicFieldDirective,
     FormIdComponent,
     FormSelectSpecialityComponent,
-    FormTextareaComponent
+    FormTextareaComponent,
+    FormEmailComponent
   ],
   exports: [DynamicFormComponent],
   entryComponents: [
@@ -32,7 +34,8 @@ import { FormTextareaComponent } from './components/form-textarea/form-textarea.
     FormSelectComponent,
     FormIdComponent,
     FormSelectSpecialityComponent,
-    FormTextareaComponent
+    FormTextareaComponent,
+    FormEmailComponent
   ]
 })
 export class DynamicFormModule {}
