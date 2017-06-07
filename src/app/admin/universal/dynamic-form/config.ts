@@ -24,14 +24,6 @@ export const FACULTY_CONFIG =
       placeholder: 'Введіть опис факультету',
       required: false
     },
-    // {
-    //   type: 'select',
-    //   value: '',
-    //   label: 'Id факультету',
-    //   name: 'Faculty',
-    //   placeholder: 'ВChose факультету',
-    //   required: false
-    // },
     {
       label: 'Підтвердити',
       name: 'submit',
