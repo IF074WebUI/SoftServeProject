@@ -1,0 +1,9 @@
+.form-group{
+  width: 45%;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.error{
+  color: red;
+}

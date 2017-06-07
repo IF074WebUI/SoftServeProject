@@ -10,4 +10,5 @@ export interface Timetable {
   group_name?: string;
   start_timeInterval?: string;
   end_timeInterval?: string;
+  deprecated?: boolean;
 }
