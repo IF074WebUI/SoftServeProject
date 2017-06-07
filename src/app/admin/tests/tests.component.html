@@ -4,8 +4,9 @@
                         [headers]="headers"
                         (editEntity)="getUpdatedTest($event)"
                         (deleteEntity)="getDeletedTest($event)"
-                        (clickEntity)="getTestDetailsByTest($event)"
-                        [displayPropertiesOrder]="displayPropertiesOrder">
+                        [displayPropertiesOrder]="displayPropertiesOrder"
+                        [canAction]="true"
+                        (actionEntity)="getTestDetailsByTest($event)">
 </dtester-entities-table>
 
 <button type="button" class="btn btn-primary"(click)="openModalAddTest()">Додати тест</button>

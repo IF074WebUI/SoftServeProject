@@ -113,8 +113,7 @@ export class GroupComponent implements OnInit {
     this.getGroupsService.editGroup(this.groupforEdit['group_id'], groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
       .subscribe(() => {
         this.getGroups();
-        this.getGroups();
-      });
+    });
   }
   // pagination
     getCountRecords() {
