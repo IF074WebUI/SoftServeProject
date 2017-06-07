@@ -31,7 +31,6 @@ import {PopupComponent} from './popup/popup.component';
 import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page.component';
 import { ResultsComponent } from './results/results.component';
 import { ResultsService } from './services/results.service';
-import { AddeditComponent } from './addedit/addedit.component';
 import { ExitAboutGuard } from '../guards/exit.about.guard';
 import { GetRecordsRangeService } from './services/get-records-range.service';
 import { BreadcrumbsService } from './services/breadcrumbs.service';
@@ -45,6 +44,8 @@ import { TestsComponent } from './tests/tests.component';
 import { AddUpdateTestComponent } from './tests/add-update-test/add-update-test.component';
 import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
 import { TestDetailComponent } from './test-detail/test-detail.component';
+
+import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,6 @@ import { TestDetailComponent } from './test-detail/test-detail.component';
     PopupComponent,
     ItemsPerPageComponent,
     ResultsComponent,
-    AddeditComponent,
     BreadcrumbsComponent,
     DetailedComponent,
     TestsComponent,
@@ -80,6 +80,8 @@ import { TestDetailComponent } from './test-detail/test-detail.component';
     ReactiveFormsModule,
     NgbModule,
     MdDialogModule,
+    MdButtonModule,
+    DynamicFormModule,
     MdButtonModule,
     LoadingModule
   ],

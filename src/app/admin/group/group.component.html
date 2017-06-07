@@ -1,7 +1,6 @@
-<dtester-addedit (addEntity)="confirmAdd($event)"
-                 (editEntity)="confirmEdit($event)"
-                 (deleteEntity)="confirmDelete($event)"
-></dtester-addedit>
+<div class="app">
+  <dynamic-form [config]="configs" (submitted)="formSubmitted($event)"></dynamic-form>
+</div>
 
 
 <div class="container">

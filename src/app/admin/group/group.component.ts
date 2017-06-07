@@ -9,7 +9,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {GROUPS_HEADERS, IGNORE_PROPERTIES} from './groupConstants';
 
 import {SpinnerService} from '../universal/spinner/spinner.service';
-import {AddeditComponent} from '../addedit/addedit.component';
+import {DynamicFormComponent} from "../universal/dynamic-form/container/dynamic-form/dynamic-form.component";
+import {GROUP_CONFIG} from "../universal/dynamic-form/config";
+
 @Component({
   selector: 'dtester-group',
   templateUrl: './group.component.html',
@@ -17,7 +19,6 @@ import {AddeditComponent} from '../addedit/addedit.component';
   providers: [FacultyService, SpecialitiesService]
 })
 export class GroupComponent implements OnInit {
-  @ViewChild(AddeditComponent) popup: AddeditComponent<Group>;
 
   isLoading: boolean;
   groupsOnPage: Group[];
@@ -34,6 +35,8 @@ export class GroupComponent implements OnInit {
   headers: string[];            /* array of headers */
   ignoreProperties: string[];
 
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
+  configs = GROUP_CONFIG;
 
   constructor(private getGroupsService: GroupService,
               private spesialityService: SpecialitiesService,
@@ -183,30 +186,54 @@ export class GroupComponent implements OnInit {
   }
 
 
-// Method for opening editing and deleting commo modal window
+// Methods for opening editing and deleting commo modal window
 
   add() {
-    this.popup.showModal('add', 'group', new Group(null, '', null, null) );
+    this.popup.sendItem(new Group('', '', '', ''));
+    this.popup.showModal();
   }
+
   edit(group: Group) {
-    this.popup.showModal('edit', 'group', group );
-  }
-  del(group: Group) {
-    this.popup.showModal('delete', 'group', group);
+    this.popup.sendItem(group);
+    this.popup.showModal();
   }
 
-  // Confirm methods for add, edit, delete faculty
-
-  confirmAdd(entity: Group) {
-    console.log(entity);
+  del(faculty: Faculty) {
+    this.popup.Delete(faculty);
   }
-  confirmEdit(entity: Group) {
-    console.log(entity);
+  // Method for  add/edit, delete form submiting
 
+  formSubmitted(value) {
+    console.log(value);
+    // if (value['faculty_id']) {
+    //   this.http.editItem(value['faculty_id'], value['faculty_name'], value['faculty_description']).subscribe(response => {
+    //       this.uploadAllPages(this.page);
+    //       this.popup.cancel();
+    //     },
+    //     error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
+    //   );
+    // } else {
+    //   this.http.addItem(value['faculty_name'], value['faculty_description']).subscribe(response => {
+    //       this.getCount();
+    //       (this.count % this.countPerPage === 0) ? this.page = this.page + 1 : this.page;
+    //       this.uploadAllPages(this.page);
+    //       this.popup.cancel();
+    //     },
+    //     error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
+    //   );
+    // }
   }
-  confirmDelete(group: Group) {
-    console.log(group);
-  };
+
+  //
+  // submitDelete(faculty: Faculty) {
+  //   this.http.deleteItem(faculty['faculty_id']).subscribe(response => {
+  //       this.uploadAllPages(this.page);
+  //       this.popup.cancel();
+  //     },
+  //     error => this.router.navigate(['/bad_request'])
+  //   );
+  //   this.popup.cancel();
+  // }
 
 }
 
