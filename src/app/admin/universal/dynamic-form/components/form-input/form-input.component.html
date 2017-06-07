@@ -6,6 +6,8 @@
     type="text"
     [attr.placeholder]="config.placeholder"
     [formControlName]="config.name" />
-
+  <label class="control-label" [hidden]="group.controls[config.name].valid" class="text-danger">
+    Введіть назву
+  </label>
   </div>
 

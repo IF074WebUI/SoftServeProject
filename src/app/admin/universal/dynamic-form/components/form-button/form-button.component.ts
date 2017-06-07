@@ -7,8 +7,6 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./form-button.component.css']
 })
 export class FormButtonComponent {
-
   config;
   group: FormGroup;
-
 }
