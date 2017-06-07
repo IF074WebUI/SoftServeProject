@@ -93,7 +93,7 @@ export class FacultiesComponent<T> implements OnInit {
 
   getGroupsByFaculties(faculty: Faculty) {
     this.id = faculty['faculty_id'];
-    this.router.navigate(['/admin/group'], {queryParams: {'Id': this.id}});
+    this.router.navigate(['/admin/group'], {queryParams: {'facultyId': this.id}});
   }
 
 

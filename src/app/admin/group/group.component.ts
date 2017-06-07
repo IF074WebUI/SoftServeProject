@@ -51,16 +51,17 @@ export class GroupComponent implements OnInit {
 
     this.getGroups();
 
-    // let facultyId = this.route.snapshot.queryParams['facultyId'];
-    // console.log(facultyId);
-    // if (facultyId) {
-    //   this.getGroupsService.getGroupsByFaculty(facultyId).subscribe(resp => {
-    //     if (resp['response'] === 'no records') {
-    //       this.groupsOnPage = [];
-    //     } else {
-    //       this.groupsOnPage = resp;
-    //     });
-    // }
+    let facultyId = this.route.snapshot.queryParams['facultyId'];
+    console.log(facultyId);
+    if (facultyId) {
+      this.getGroupsService.getGroupsByFaculty(facultyId).subscribe(resp => {
+        if (resp['response'] === 'no records') {
+          this.groupsOnPage = [];
+        } else
+          this.groupsOnPage = resp;
+        });
+    }
+
 
     let specialityId = this.route.snapshot.queryParams['specialityId'];
     if (specialityId) {
@@ -91,7 +92,6 @@ export class GroupComponent implements OnInit {
 
   getGroups(): void {
     this.spinner.showSpinner();
-    this.isLoading = true;
     this.getCountRecords()
     /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.countRecords <= (this.pageNumber - 1) * this.offset) {
