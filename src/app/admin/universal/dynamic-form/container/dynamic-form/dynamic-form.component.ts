@@ -16,16 +16,25 @@ export class DynamicFormComponent implements OnInit {
   config: any[] = [];
   @Input()
   entity: any;
+  entityForDelete: any;
   Properties: Array<string>;
 
   @Output()
   submitted: EventEmitter<any> = new EventEmitter<any>();
   @Output()
-  deleteEntity: EventEmitter<any> = new EventEmitter<any>();
+  youCanDelete: EventEmitter<any> = new EventEmitter<any>();
   form: FormGroup;
+  action: string;
+
+  MODAL_ADD_TITLE = 'Редагування';
+  MODAL_DELETE_TITLE = 'Видалення';
+  TITLE: string;
+  CONFIRM_ANSWER = 'Ви підтверджуєте видалення ';
+  CONFIRM_DELETE = 'Видалити';
+  CLOSE = 'Закрити';
 
 
-  constructor(private fb: FormBuilder, private facultyService: FacultyService, private route: ActivatedRoute,  private router: Router) {
+  constructor(private fb: FormBuilder, private facultyService: FacultyService, private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit() {
@@ -43,39 +52,40 @@ export class DynamicFormComponent implements OnInit {
 // Methods for parents
 
   showModal() {
-    $('#myModal').modal('show');
+    $('#add_edit_deletePopup').modal('show');
   }
 
   submitDelete(entity) {
     console.log(this.entity);
-    this.deleteEntity.emit(this.entity);
+    this.youCanDelete.emit(this.entityForDelete);
   }
 
   sendItem(entity: any) {
+    this.action = 'add_edit';
     this.entity = entity;
     let InputEntityNames = Object.getOwnPropertyNames(entity);
     let FormNames = Object.getOwnPropertyNames(this.form.controls);
     for (let i = 0; i < InputEntityNames.length; i++) {
       this.form.controls[FormNames[+[i]]].setValue(this.entity[InputEntityNames[+[i]]]);
     }
+    this.TITLE = this.MODAL_ADD_TITLE;
+
   }
 
-  Delete(entity: any) {
-    this.entity = entity;
-    // this.Properties = Object.getOwnPropertyNames(this.entity);
-    // console.log(this.Properties);
-    $('#delModal').modal('show');
+  deleteEntity(entity: any) {
+    this.action = 'delete';
+    this.entityForDelete = entity;
+    this.Properties = Object.getOwnPropertyNames(this.entityForDelete);
+    this.TITLE = this.MODAL_DELETE_TITLE;
+    this.CONFIRM_ANSWER = this.CONFIRM_ANSWER + '' + this.entityForDelete[this.Properties[1]] + '?';
+    $('#add_edit_deletePopup').modal('show');
   }
 
   // Method for closing modal
 
   cancel() {
-    $('#myModal').modal('hide');
+    $('#add_edit_deletePopup').modal('hide');
     this.form.reset();
-  }
-
-  badUniqName(name: string) {
-    this.router.navigate(['/error_pages/bad_uniqname/'], {queryParams: {'bad_name': name}});
   }
 
   //
