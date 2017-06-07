@@ -40,10 +40,15 @@
               <input type="time" formControlName="end_time" class="form-control">
             </div>
           </div>
+
         </div>
         <div class="modal-footer">
           <span class="error"
-                *ngIf="!timetableForm.controls['time_limits'].valid;">
+                *ngIf="!timetableForm.controls['time_limits'].valid
+                && timetableForm.get(['time_limits', 'start_date']).touched
+                && timetableForm.get(['time_limits', 'end_date']).touched
+                && timetableForm.get(['time_limits', 'end_time']).touched
+                && timetableForm.get(['time_limits', 'start_time']).touched;">
            Не коректні часові межі
           </span>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
@@ -54,13 +59,4 @@
   </div>
 </div>
 
-<!--
-<span class="error"
-                *ngIf="!timetableForm.controls['time_limits'].valid
-                && timetableForm.get(['time_limits', 'start_date']).touched
-                && timetableForm.get(['time_limits', 'end_date']).touched
-                && timetableForm.get(['time_limits', 'end_time']).touched
-                && timetableForm.get(['time_limits', 'start_time']).touched;">
-           Не коректні часові межі
-          </span>
--->
+<!--<button  type="submit" class="btn btn-success" [disabled]="!updateTimetableForm.valid || updateTimetableForm.untouched">Редагувати</button>-->

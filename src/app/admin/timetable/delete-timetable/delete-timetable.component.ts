@@ -8,8 +8,7 @@ import {DeleteRecordByIdService} from '../../services/delete-record-by-id.servic
 })
 export class DeleteTimetableComponent implements OnInit {
   @Input() deletedTimetable: Timetable;
-  @Output() getTimetableRecords = new EventEmitter();
-  @Output() getCountRecords = new EventEmitter();
+  @Output() changeNumberOfRecords = new EventEmitter<string>();
 
   constructor(private deleteRecordByIdService: DeleteRecordByIdService) { }
 
@@ -18,8 +17,7 @@ export class DeleteTimetableComponent implements OnInit {
   deleteTimetable() {
     this.deleteRecordByIdService.deleteRecordsById('timeTable', this.deletedTimetable.timetable_id)
       .subscribe(() => {
-        this.getCountRecords.emit();
-        this.getTimetableRecords.emit();
+        this.changeNumberOfRecords.emit('deletingRecord');
       });
   }
 

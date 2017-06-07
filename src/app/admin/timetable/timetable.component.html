@@ -8,80 +8,19 @@
                         [displayPropertiesOrder]="displayPropertiesOrder">
 </dtester-entities-table>
 <dtester-pagination *ngIf="!groupQueryParam"
-                    [countRecords]="countRecords"
+                    [countRecords]="numberOfRecords"
                     [recordsPerPage]="recordsPerPage"
                     [currentPage]="page"
                     (pageChanged)="changePage($event)"></dtester-pagination>
 <button type="button" class="btn btn-primary" (click)="openModalAddTimetable()">Запланувати тестування</button>
 <app-delete-timetable [deletedTimetable]="deletedTimetable"
                       (getTimetableRecords)="checkQueryParams()"
-                      (getCountRecords)="getCountRecords()"></app-delete-timetable>
+                      (changeNumberOfRecords)="changeNumberOfRecords($event)"></app-delete-timetable>
 <app-add-update-timetable [groups]="groups"
                           [subjects]="subjects"
                           [action]="action"
                           [updatedTimetable]="updatedTimetable"
                           (getTimetableRecords)="checkQueryParams()"
-                          (getCountRecords)="getCountRecords()"></app-add-update-timetable>
-
-<!--modal of updating timetable-->
-<!--
-<div [ngClass]="{'modal': true, 'fade': true, 'show': showModal} "id="modal-update-timetabel" tabindex="-1" role="dialog" aria-labelledby="modalAddTimetable" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalUpdatingTimetable">Редагувати тестування</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form [formGroup]="updateTimetableForm" (ngSubmit)="updateTimeTable()">
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="form-control-label">Група:</label>
-            <select formControlName="group_id" class="form-control">
-              <option *ngFor="let group of groups" [ngValue]="group.group_id">{{group.group_name}}</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-control-label">Предмет:</label>
-            <select formControlName="subject_id" class="form-control">
-              <option *ngFor="let subject of subjects" [ngValue]="subject.subject_id">{{subject.subject_name}}</option>
-            </select>
-          </div>
-
-          <div formGroupName="time_limits">
-            <div class="form-group">
-              <label class="form-control-label">Початкова дата:</label>
-              <input type="date" formControlName="start_date" class="form-control">
-            </div>
-            <div class="form-group">
-              <label class="form-control-label">Початковий час:</label>
-              <input type="time" formControlName="start_time" class="form-control">
-            </div>
-            <div class="form-group">
-              <label class="form-control-label">Кінцева дата:</label>
-              <input type="date" formControlName="end_date" class="form-control">
-            </div>
-            <div class="form-group">
-              <label class="form-control-label">Кінцевий час:</label>
-              <input type="time" formControlName="end_time" class="form-control">
-            </div>
-          </div>
-
-        </div>
-        <div class="modal-footer">
-          <span class="error"
-                *ngIf="!updateTimetableForm.controls['time_limits'].valid;">
-           Не коректні часові межі
-          </span>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
-          <button  type="submit" class="btn btn-success" [disabled]="!updateTimetableForm.valid || updateTimetableForm.untouched">Редагувати</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!--modal of deleting timetable-->
+                          (changeNumberOfRecords)="changeNumberOfRecords($event)"></app-add-update-timetable>
 
 
