@@ -172,7 +172,7 @@ export class GroupComponent implements OnInit {
             this.countRecords = this.groupsOnPage.length;
             this.spinner.hideSpinner();
           } else {
-            this.groupsOnPage = <Group[]>resp;         /* present all specialities */
+            this.groupsOnPage = <Group[]>resp;
             this.spinner.hideSpinner();
           }
         },
