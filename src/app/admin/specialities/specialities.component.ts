@@ -4,6 +4,7 @@ import { Speciality } from './speciality';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PopupComponent } from '../popup/popup.component';
 import {ToastsManager} from "ng2-toastr";
+import {SpinnerService} from "../universal/spinner/spinner.service";
 
 @Component({
   selector: 'dtester-specialities',
@@ -33,7 +34,7 @@ export class SpecialitiesComponent implements OnInit {
   @ViewChild(PopupComponent) popup: PopupComponent;
 
   constructor(private specialitiesService: SpecialitiesService, private router: Router,
-   private activatedRoute: ActivatedRoute, private toastr: ToastsManager) {}
+   private activatedRoute: ActivatedRoute, private toastr: ToastsManager, private spinnerService: SpinnerService) {}
 
   ngOnInit() {
     this.headers = this.SPECIALITIES_HEADERS;
@@ -43,12 +44,14 @@ export class SpecialitiesComponent implements OnInit {
   }
 
   getSpecialities(): void {
+    this.spinnerService.showSpinner();
     /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.count <= (this.page - 1) * this.countPerPage) {
       --this.page;
     }
     this.specialitiesService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
-      .subscribe(resp => this.specialities = resp, err => this.router.navigate(['/bad_request']));
+      .subscribe(resp => {this.specialities = resp;
+      this.spinnerService.hideSpinner(); }, err => this.router.navigate(['/bad_request']));
   }
 
   getCount(): void {
@@ -113,10 +116,11 @@ export class SpecialitiesComponent implements OnInit {
   }
 
   startSearch(criteria: string) {         /* callback method for output in search component */
-  if (criteria === '') {
+    if (criteria === '') {
     this.getSpecialities();
     this.getCount();
   } else {
+      this.spinnerService.showSpinner();
     this.specialitiesService.searchByName(criteria).subscribe(resp => {
       if (resp['response'] === this.NO_RECORDS) {    /* check condition: if no records presented for search criteria */
         this.specialities = [];
@@ -126,6 +130,7 @@ export class SpecialitiesComponent implements OnInit {
         this.page = 2;
         this.specialities = resp;         /* present all specialities */
       }
+      this.spinnerService.hideSpinner();
     },
       err => this.router.navigate(['/bad_request']));
   }

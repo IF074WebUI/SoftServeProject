@@ -35,7 +35,6 @@ import { ExitAboutGuard } from '../guards/exit.about.guard';
 import { GetRecordsRangeService } from './services/get-records-range.service';
 import { BreadcrumbsService } from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
-import { LinksPipe } from './pipes/links.pipe';
 import { SpinnerComponent } from './universal/spinner/spinner.component';
 import { TestsComponent } from './tests/tests.component';
 import { AddUpdateTestComponent } from './tests/add-update-test/add-update-test.component';
@@ -48,7 +47,8 @@ import { SpinnerService } from './universal/spinner/spinner.service';
 import { LoadingModule } from 'ngx-loading';
 import { TestDetailComponent } from './test-detail/test-detail.component';
 import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
-
+import { QuestionsService } from './services/questions.service';
+import { AnswersService } from './services/answers.service';
 
 @NgModule({
   declarations: [
@@ -64,7 +64,6 @@ import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
     PaginationComponent,
     EntitiesTableComponent,
     SearchComponent,
-    LinksPipe,
     StudentsComponent,
     PopupComponent,
     ItemsPerPageComponent,
@@ -106,7 +105,9 @@ import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
     ExitAboutGuard,
     GetRecordsRangeService,
     TestsService,
-    SpinnerService
+    SpinnerService,
+    QuestionsService,
+    AnswersService
   ],
 })
 export class AdminModule {

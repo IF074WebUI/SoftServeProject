@@ -1,0 +1,12 @@
+.student-photo {
+  max-height: 100px;
+  margin-left: 150px;
+}
+
+.student-headers {
+  display: inline-block;
+}
+
+.print {
+  float: right;
+}
