@@ -6,11 +6,11 @@ import { SpecialitiesService } from '../services/specialities.service';
 import { FacultyService } from '../faculties/faculty.service';
 import { Faculty } from '../faculties/Faculty';
 import { ActivatedRoute, Router } from '@angular/router';
-import {GROUPS_HEADERS, IGNORE_PROPERTIES} from './groupConstants';
+import { GROUPS_HEADERS, IGNORE_PROPERTIES } from './groupConstants';
 
-import {SpinnerService} from '../universal/spinner/spinner.service';
-import {DynamicFormComponent} from "../universal/dynamic-form/container/dynamic-form/dynamic-form.component";
-import {GROUP_CONFIG} from "../universal/dynamic-form/config";
+import { SpinnerService } from '../universal/spinner/spinner.service';
+import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import { GROUP_CONFIG } from '../universal/dynamic-form/config';
 
 @Component({
   selector: 'dtester-group',
@@ -34,7 +34,7 @@ export class GroupComponent implements OnInit {
   selectedSpesailutyValue: number;
   headers: string[];            /* array of headers */
   ignoreProperties: string[];
-
+  CREATING_NEW_GROUP = 'Додати нову групу';
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = GROUP_CONFIG;
 
@@ -51,17 +51,16 @@ export class GroupComponent implements OnInit {
 
     this.getGroups();
 
-    let facultyId = this.route.snapshot.queryParams['facultyId'];
-    console.log(facultyId);
-    if (facultyId) {
-      this.getGroupsService.getGroupsByFaculty(facultyId).subscribe(resp => {
-        if (resp['response'] === 'no records') {
-          this.groupsOnPage = [];
-        } else
-          this.groupsOnPage = resp;
-        });
-    }
-
+    // let facultyId = this.route.snapshot.queryParams['facultyId'];
+    // console.log(facultyId);
+    // if (facultyId) {
+    //   this.getGroupsService.getGroupsByFaculty(facultyId).subscribe(resp => {
+    //     if (resp['response'] === 'no records') {
+    //       this.groupsOnPage = [];
+    //     } else {
+    //       this.groupsOnPage = resp;
+    //     });
+    // }
 
     let specialityId = this.route.snapshot.queryParams['specialityId'];
     if (specialityId) {
@@ -186,7 +185,7 @@ export class GroupComponent implements OnInit {
   }
 
 
-// Methods for opening editing and deleting commo modal window
+// Method for opening editing and deleting commo modal window
 
   add() {
     this.popup.sendItem(new Group('', '', '', ''));
@@ -211,7 +210,7 @@ export class GroupComponent implements OnInit {
           this.getGroups();
           this.popup.cancel();
         },
-        error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
+        error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
       );
     } else {
           this.getGroupsService.createCroup(value['group_name'], value['Speciality'], value['Faculty'])
@@ -219,21 +218,21 @@ export class GroupComponent implements OnInit {
               this.getGroups();
               this.popup.cancel();
         },
-        error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
+        error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
       );
     }
   }
 
-  //
-  // submitDelete(faculty: Faculty) {
-  //   this.http.deleteItem(faculty['faculty_id']).subscribe(response => {
-  //       this.uploadAllPages(this.page);
-  //       this.popup.cancel();
-  //     },
-  //     error => this.router.navigate(['/bad_request'])
-  //   );
-  //   this.popup.cancel();
-  // }
+
+  submitDelete(group: Group) {
+    this.getGroupsService.deleteGroup(Group['group_id']).subscribe(response => {
+        this.getGroups()
+        this.popup.cancel();
+      },
+      error => this.router.navigate(['/bad_request'])
+    );
+    this.popup.cancel();
+  }
 
 }
 
