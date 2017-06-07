@@ -1,21 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {GetAllRecordsService} from '../../../../services/get-all-records.service';
+
 @Component({
-  selector: 'app-form-select',
-  templateUrl: './form-select.component.html',
-  styleUrls: ['./form-select.component.css']
+  selector: 'app-form-select-speciality',
+  templateUrl: './form-select-speciality.component.html',
+  styleUrls: ['./form-select-speciality.component.css']
 })
-export class FormSelectComponent<T> implements OnInit {
+export class FormSelectSpecialityComponent<T> implements OnInit {
   config;
   group: FormGroup;
   entities: Array<T>;
   Properties: Array<string>;
 
-
-  constructor(private entityService: GetAllRecordsService) {
-  }
-
+  constructor(private entityService: GetAllRecordsService) { }
 
   ngOnInit() {
     this.entityService.getAllRecords(this.config.name).subscribe(resp => {
@@ -27,7 +25,4 @@ export class FormSelectComponent<T> implements OnInit {
 
   }
 
-
 }
-
-

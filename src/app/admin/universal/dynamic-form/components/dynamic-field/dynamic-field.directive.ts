@@ -6,11 +6,13 @@ import { FormInputComponent } from '../form-input/form-input.component';
 import { FormSelectComponent } from '../form-select/form-select.component';
 import { FormAddnameComponent } from '../form-uniqname/form-uniqname.component';
 import {FormIdComponent} from '../form-id/form-id.component';
+import {FormSelectSpecialityComponent} from "../form-select-speciality/form-select-speciality.component";
 
 const components = {
   button: FormButtonComponent,
   input: FormInputComponent,
   select: FormSelectComponent,
+  select_speciality: FormSelectSpecialityComponent,
   addname: FormAddnameComponent,
   id: FormIdComponent
 };
