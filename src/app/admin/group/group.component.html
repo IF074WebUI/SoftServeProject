@@ -22,7 +22,7 @@
     <dtester-entities-table class="table" [entities]="groupsOnPage" [headers]="headers" [ignoreProperties]="ignoreProperties"
                             (deleteEntity)=del($event) [canAction]="true"
                             [page]="pageNumber" [itemsPerPage]="offset"
-                            (editEntity)="edit($event)" (clickEntity)="getStudentsByGroup()" (actionEntity)="onTimeTableNavigate($event)">
+                            (editEntity)="edit($event)" (clickEntity)="getStudentsByGroup($event)" (actionEntity)="onTimeTableNavigate($event)">
     </dtester-entities-table>
     <button (click)="add()" type="button" class="btn btn-primary" data-dismiss="modal">Add new group</button>
   </div>

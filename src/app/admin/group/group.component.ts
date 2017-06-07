@@ -205,23 +205,23 @@ export class GroupComponent implements OnInit {
 
   formSubmitted(value) {
     console.log(value);
-    // if (value['faculty_id']) {
-    //   this.http.editItem(value['faculty_id'], value['faculty_name'], value['faculty_description']).subscribe(response => {
-    //       this.uploadAllPages(this.page);
-    //       this.popup.cancel();
-    //     },
-    //     error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
-    //   );
-    // } else {
-    //   this.http.addItem(value['faculty_name'], value['faculty_description']).subscribe(response => {
-    //       this.getCount();
-    //       (this.count % this.countPerPage === 0) ? this.page = this.page + 1 : this.page;
-    //       this.uploadAllPages(this.page);
-    //       this.popup.cancel();
-    //     },
-    //     error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
-    //   );
-    // }
+    if (value['group_id']) {
+      this.getGroupsService.editGroup(value['group_id'], value['group_name'], value['Faculty'], value['Speciality'])
+        .subscribe(response => {
+          this.getGroups();
+          this.popup.cancel();
+        },
+        error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
+      );
+    } else {
+          this.getGroupsService.createCroup(value['group_name'], value['Speciality'], value['Faculty'])
+            .subscribe(response => {
+              this.getGroups();
+              this.popup.cancel();
+        },
+        error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
+      );
+    }
   }
 
   //
