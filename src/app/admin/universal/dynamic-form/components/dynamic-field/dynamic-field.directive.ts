@@ -7,6 +7,7 @@ import { FormSelectComponent } from '../form-select/form-select.component';
 import {FormIdComponent} from '../form-id/form-id.component';
 import {FormSelectSpecialityComponent} from '../form-select-speciality/form-select-speciality.component';
 import {FormTextareaComponent} from '../form-textarea/form-textarea.component';
+import {FormEmailComponent} from '../form-email/form-email.component';
 
 const components = {
   button: FormButtonComponent,
@@ -14,7 +15,8 @@ const components = {
   select: FormSelectComponent,
   select_speciality: FormSelectSpecialityComponent,
   id: FormIdComponent,
-  textarea: FormTextareaComponent
+  textarea: FormTextareaComponent,
+  email: FormEmailComponent
 };
 
 

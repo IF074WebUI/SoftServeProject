@@ -18,6 +18,10 @@ export class GroupService {
       .map((resp: Response) => resp.json());
   }
 
+  getGroupById(id: number): Observable<Group> {
+    return this.http.get('http://' + HOST + GROUP_ENITY + '/getRecords/' + id).map((resp: Response) => resp.json());
+  }
+
   getPaginatedPage(pageNumber: number, offset: number) {
     return this.http.get('http://' + HOST + GROUP_ENITY + '/getRecordsRange/' + offset + '/' + (pageNumber - 1) * offset )
       .map((resp: Response) => resp.json());
