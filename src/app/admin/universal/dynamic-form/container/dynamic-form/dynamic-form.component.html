@@ -1,14 +1,14 @@
-<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+<div class="modal fade" tabindex="-1" role="dialog" id="add_edit_deletePopup">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
           aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">{{MODAL_TITLE}}</h4>
+        <h4 class="modal-title"><span *ngIf="action === 'add_edit'">{{TITLE}}</span></h4>
+        <h4 class="modal-title"><span *ngIf="action === 'delete'">{{TITLE}}</span></h4>
       </div>
       <div class="modal-body">
-
-        <form class="form-group"
+        <form *ngIf="action == 'add_edit'" class="form-group"
               class="dynamic-form"
               [formGroup]="form"
               (ngSubmit)="submitted.emit(form.value)">
@@ -19,31 +19,39 @@
             [group]="form">
           </ng-container>
         </form>
+
+      <div  *ngIf="action == 'delete'">
+       {{CONFIRM_ANSWER}}?
+      </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
+        <div *ngIf="action == 'delete'" class="modal-footer">
+          <button type="submit" class="btn btn-danger" data-dismiss="modal" (click)="submitDelete()" > {{CONFIRM_DELETE}}</button>
+        </div>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{CLOSE}}</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<!--Modal for deleting -->
-<div class="modal fade" tabindex="-1" role="dialog" id="delModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-          aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">{{MODAL_TITLE_DELETE}}</h4>
-      </div>
-      <div class="modal-body">
-        Ви підтверджуєте видалення ?
 
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-danger" data-dismiss="modal" (click)="deleteEntity.emit(entity)">Підтвердити {{CONFIRM_DELETE}}</button>
+<!--&lt;!&ndash;Modal for deleting &ndash;&gt;-->
+<!--<div class="modal fade" tabindex="-1" role="dialog" id="delModal">-->
+  <!--<div class="modal-dialog" role="document">-->
+    <!--<div class="modal-content">-->
+      <!--<div class="modal-header">-->
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span-->
+          <!--aria-hidden="true">&times;</span></button>-->
+        <!--<h4 class="modal-title">{{MODAL_TITLE_DELETE}}</h4>-->
+      <!--</div>-->
+      <!--<div class="modal-body">-->
+        <!--Ви підтверджуєте видалення ?-->
 
-        <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+      <!--</div>-->
+      <!--<div class="modal-footer">-->
+        <!--<button type="submit" class="btn btn-danger" data-dismiss="modal" >Підтвердити {{CONFIRM_DELETE}}</button>-->
+
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>-->
+      <!--</div>-->
+    <!--</div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
+  <!--</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;-->
+<!--</div>&lt;!&ndash; /.modal &ndash;&gt;-->
