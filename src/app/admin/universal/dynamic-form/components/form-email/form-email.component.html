@@ -1,0 +1,14 @@
+<div
+  class="dynamic-field form-input" class="form-group"
+  [formGroup]="group">
+  <label>{{ config.label }}</label>
+  <input class="form-control"
+         type="email"
+         [attr.placeholder]="config.placeholder"
+         [formControlName]="config.name" />
+  <small [hidden]="">
+    Email is required and format should be <i>john@doe.com</i>.
+  </small>
+
+</div>
+<!-- required pattern="^[a-zA-Z0–9_.+-]+@[a-zA-Z0–9-]+.[a-zA-Z0–9-.]+$" -->

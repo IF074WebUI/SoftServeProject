@@ -115,14 +115,6 @@ export const STUDENT_CONFIG =
       placeholder: `Введіть прізвище студента`,
       required: true
     },
-    // {
-    //   type: 'uniqname',
-    //   text: '',
-    //   label: `Username`,
-    //   name: 'username',
-    //   placeholder: `Введіть username студента`,
-    //   required: true
-    // },
     {
       type: 'input',
       text: '',
@@ -131,7 +123,14 @@ export const STUDENT_CONFIG =
       placeholder: `Введіть номер залікової книжки студента`,
       required: false
     },
-
+    {
+      type: 'email',
+      text: '',
+      label: `Електронна пошта студента`,
+      name: 'email',
+      placeholder: `Введіть адрес електроної пошти студента`,
+      required: false
+    },
     {
       label: 'Підтвердити',
       name: 'submit',
