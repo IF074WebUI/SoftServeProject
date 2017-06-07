@@ -1,78 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { SubjectService } from './subject.service';
-
-
-export class Subject {
-  subject_id: number;
-  subject_name: string;
-  subject_description: string;
-}
+import { GetAllRecordsService } from '../services/get-all-records.service';
+import { Subject } from './subject';
 
 @Component({
   selector: 'app-subject',
   templateUrl: './subject.component.html',
-  styleUrls: ['./subject.component.css'],
-  providers: [SubjectService]
+  styleUrls: ['./subject.component.css']
 })
 export class SubjectComponent implements OnInit {
-  subject: any;
-  subjects: Subject[];
-  selectedSubject: Subject;
-  page: number;
-  pageCount: number;
-  limit = 5;
+  subjects: Subject[] = [];
+  headers: string[];
+  displayPropertiesOrder: string[];
+  constructor(private getAllRecordsService: GetAllRecordsService) { }
 
-  constructor(private subjectService: SubjectService) { }
-  getSubjects(): void {
-    this.subjectService.getPagenationSubjects(this.page, this.limit).subscribe(data => {
+  ngOnInit() {
+    this.getSubjects();
+    this.headers = ['№', 'Назва предмету', 'Опис' ];
+    this.displayPropertiesOrder = ['subject_name', 'subject_description'];
+  }
+  getSubjects() {
+    this.getAllRecordsService.getAllRecords('subject').subscribe((data) => {
       this.subjects = data;
+      console.log(this.subjects);
     });
   }
-  getNumberOfPages(): void {
-    let recordsCount: number;
-    this.subjectService.getNumberOfRecords().subscribe(data => {
-      recordsCount = data['numberOfRecords'];
-      this.pageCount = Math.ceil(recordsCount / this.limit);
-    });
-  }
-  addSubject(subject_name: string, subject_description: string) {
-    this.subjectService.createSubject(subject_name, subject_description)
-      .subscribe();
-    this.getSubjects();
-  }
-  deleteSubject(subject: Subject): void {
-    this.subjectService
-      .delete(subject.subject_id)
-      .then(() => {
-        this.subjects = this.subjects.filter(h => h !== subject);
-        if (this.selectedSubject === subject) {
-          this.selectedSubject = null;
-        }
-      });
-  }
-  ngOnInit(): void {
-    this.page = 1;
-    this.getSubjects();
-    this.getNumberOfPages();
-  }
-  onSelect(subject: Subject): void {
-    this.selectedSubject = subject;
-  }
-  onUpdate(subject: Subject): void {
-    this.subjectService.update(subject);
-  }
-  increasePage(): void {
-    if (this.page < this.pageCount) {
-      this.page += 1;
-      this.getSubjects();
-    }
-  }
-  decreasePage(): void {
-    if (this.page > 1) {
-      this.page -= 1;
-      this.getSubjects();
-    }
-  }
+
 }
-
-
