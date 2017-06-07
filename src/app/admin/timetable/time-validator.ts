@@ -29,7 +29,7 @@ export const timeValidator = (control: AbstractControl): {[key: string]: boolean
   }
 };
 
-function arrFromSrtToNum(arr: string[]) {
+export function arrFromSrtToNum(arr: string[]) {
   const arrOfNumbers: number[] = [];
   for ( let i = 0; i < arr.length; i++) {
     arrOfNumbers[i] = +arr[i];

@@ -19,7 +19,7 @@ export class AddUpdateTimetableComponent implements OnInit, OnChanges {
   @Input() action: string;
   timetableForm: FormGroup;
   @Output() getTimetableRecords = new EventEmitter();
-  @Output() getCountRecords = new EventEmitter();
+  @Output() changeNumberOfRecords = new EventEmitter<string>();
   constructor(private timetableService: TimetableService) {
     this.timetableForm = new FormGroup({
       'group_id': new FormControl('', Validators.required),
@@ -69,8 +69,7 @@ export class AddUpdateTimetableComponent implements OnInit, OnChanges {
   createTimeTable() {
     this.timetableService.createTimeTable(this.timetableForm.value)
       .subscribe(() => {
-        this.getTimetableRecords.emit();
-        this.getCountRecords.emit();
+        this.changeNumberOfRecords.emit('addingRecord');
         $('#add-update-timetable').modal('hide');
       });
   }
@@ -81,5 +80,4 @@ export class AddUpdateTimetableComponent implements OnInit, OnChanges {
         $('#add-update-timetable').modal('hide');
       });
   }
-
 }
