@@ -22,16 +22,9 @@ export class GroupComponent implements OnInit {
 
   isLoading: boolean;
   groupsOnPage: Group[];
-  facultiesOnPage: Faculty[] = [];
-  specialitiesOnPage: Speciality[] = [];
-  groupforEdit: Group;
-  groupforDelete: Group;
-  selectetGroup: Group;
   pageNumber: number = 1;
   offset = 5;   /*number of the records for the stating page*/
   countRecords: number;
-  selectedFacultyValue: number;
-  selectedSpesailutyValue: number;
   headers: string[];            /* array of headers */
   ignoreProperties: string[];
   CREATING_NEW_GROUP = 'Додати нову групу';
@@ -39,8 +32,6 @@ export class GroupComponent implements OnInit {
   configs = GROUP_CONFIG;
 
   constructor(private getGroupsService: GroupService,
-              private spesialityService: SpecialitiesService,
-              private facultyService: FacultyService,
               private route: ActivatedRoute,
               private router: Router,
               private spinner: SpinnerService
@@ -74,21 +65,6 @@ export class GroupComponent implements OnInit {
 
   }
 
-  createCroup(groupName: string) {
-    this.getGroupsService.createCroup(groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
-      .subscribe(() => {this.getGroups();
-      });
-  }
-  // get Specialities and Faculties
-  getSpecialities() {
-    this.spesialityService.getAll()
-      .subscribe((data) => this.specialitiesOnPage = <Speciality[]>data);
-  }
-  getFaculties() {
-    this.facultyService.getAllFaculties()
-      .subscribe( (data) => this.facultiesOnPage = <Faculty[]>data );
-  }
-
   getGroups(): void {
     this.spinner.showSpinner();
     this.getCountRecords()
@@ -101,50 +77,11 @@ export class GroupComponent implements OnInit {
       this.spinner.hideSpinner();
       });
   }
-// select for editing
-  selectedGroup(group: Group) {
-    this.groupforDelete = group;
-    this.groupforEdit = group;
-  }
-// deleting groups
-  deleteGroup() {
 
-  }
-// editing groups
-  editGroup(groupName: string) {
-    this.getGroupsService.editGroup(this.groupforEdit['group_id'], groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
-      .subscribe(() => {
-        this.getGroups();
-    });
-  }
-  // pagination
     getCountRecords() {
       this.getGroupsService.getCountGroups()
         .subscribe(resp => this.countRecords = resp );
     }
-  previousPage() {
-    this.getCountRecords();
-    let numberOfLastPage: number;
-    numberOfLastPage = Math.ceil(+this.countRecords / this.offset);
-    if (this.pageNumber > 1 ) {
-      this.pageNumber--;
-    } else {
-      this.pageNumber = numberOfLastPage;
-    }
-    this.getGroups();
-    }
-
-  nextPage() {
-    this.getCountRecords();
-    let numberOfLastPage: number;
-    numberOfLastPage = Math.ceil(+this.countRecords / this.offset);
-    if (this.pageNumber < numberOfLastPage) {
-      this.pageNumber++;
-    } else {
-      this.pageNumber = 1;
-    }
-    this.getGroups();
-  }
 
   changePage(page: number) {              /* callback method for change page pagination output event */
     this.pageNumber = page;
@@ -163,17 +100,19 @@ export class GroupComponent implements OnInit {
     // search group
   startSearch(criteria: string) {   /* callback method for output in search component */
     this.spinner.showSpinner();
-    if (criteria === '') {
+    if (criteria === '' || +criteria <= 0 ) {
       this.getGroups();
     } else {
-      this.isLoading = true;
-      this.getGroupsService.searchByName(criteria).subscribe(resp => {
+      this.getGroupsService.searchByName(criteria)
+        .subscribe(resp => {
           if (resp['response'] === 'no records') {    /* check condition: if no records presented for search criteria */
             this.groupsOnPage = [];
             this.countRecords = this.groupsOnPage.length;
             this.spinner.hideSpinner();
           } else {
-            this.groupsOnPage = <Group[]>resp;
+            this.countRecords = 0;
+            this.pageNumber = 2;
+            this.groupsOnPage = resp;
             this.spinner.hideSpinner();
           }
         },
