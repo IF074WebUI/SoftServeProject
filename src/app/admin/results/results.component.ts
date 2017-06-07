@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {ResultsService} from '../services/results.service';
-import {Result} from './result';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ToastsManager} from 'ng2-toastr';
-import {StudentsService} from '../students/students.service';
-import {Student} from '../students/student';
-import {TestsService} from '../services/tests.service';
-import {Group} from "../group/group";
-import {GroupService} from "../group/group.service";
+import { Component, OnInit } from '@angular/core';
+import { ResultsService } from '../services/results.service';
+import { Result } from './result';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr';
+import { StudentsService } from '../students/students.service';
+import { Student } from '../students/student';
+import { TestsService } from '../services/tests.service';
+import { Group } from '../group/group';
+import { GroupService } from '../group/group.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'dtester-results',
@@ -23,15 +24,25 @@ export class ResultsComponent implements OnInit {
   results: Result[];
   groups: Group[];
   tests: {test_id: number, test_name: string, subject_id: number, tasks: number, time_for_test: string, enabled: number, attempts: number}[];
-  testId: number;
-  groupId: number;
   count: number;
   countPerPage: number = 10;
   page: number = 1;
 
+  searchByGroupTestForm: FormGroup;
+  groupControl: FormControl;
+  testControl: FormControl;
+  dateControl: FormControl;
+
   constructor(private resultsService: ResultsService, private router: Router, private activatedRoute: ActivatedRoute,
   private toastr: ToastsManager, private studentsService: StudentsService, private groupsService: GroupService,
               private testsService: TestsService) {
+    this.groupControl = new FormControl('', Validators.required);
+    this.testControl = new FormControl('', Validators.required);
+    this.dateControl = new FormControl('');
+    this.searchByGroupTestForm = new FormGroup({
+      'group': this.groupControl,
+      'test': this.testControl,
+      'date': this.dateControl});
   }
 
   ngOnInit() {
@@ -67,6 +78,11 @@ export class ResultsComponent implements OnInit {
   }
 
   transformResults(): void {
+    if (!Array.isArray(this.results)) {
+      this.results = [];
+      this.count = 0;
+      return;
+    }
     this.results.map((result: Result) => { this.studentsService.getStudentById(result.student_id)
       .subscribe((resp: Student) => {
       result['student_name'] = resp[0]['student_name'] + ' ' + resp[0]['student_surname'];
@@ -99,26 +115,31 @@ export class ResultsComponent implements OnInit {
       err => this.router.navigate(['/bad_request']));
   }
 
-  setGroup(groupId: number) {
-    this.groupId = groupId;
-  }
+  // setGroup(groupId: number) {
+  //   this.groupId = groupId;
+  // }
 
-  setTest(testId: number) {
-    this.testId = testId;
-  }
+  // setTest(testId: number) {
+  //   this.testId = testId;
+  // }
 
   findByGroupTest(): void {
-    this.resultsService.getAllByTestGroupDate(this.testId, this.groupId).subscribe((resp: Result[]) => {this.results = resp;
-      this.getCount();
+    this.resultsService.getAllByTestGroupDate(this.testControl.value, this.groupControl.value, this.dateControl.value)
+      .subscribe((resp: Result[]) => {this.results = resp;
+      this.count = this.results.length;
       this.transformResults();
     });
   }
 
   findByStudent(result: Result): void {
     this.resultsService.getAllByStudent(result.student_id).subscribe((resp: Result[]) => {this.results = resp;
-      this.getCount();
+      this.count = this.results.length;
       this.transformResults();
     });
+  }
+
+  detailedByStudent(result: Result) {
+    this.router.navigate(['./results', result.student_id], {relativeTo: this.activatedRoute.parent});
   }
 
   changePage(page: number) {
@@ -140,4 +161,22 @@ export class ResultsComponent implements OnInit {
       err => this.router.navigate(['/bad_request']));
   }
 
+  print(): void {
+    let printContents, popupWin;
+    printContents = document.getElementById('print-section').innerHTML;
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+    popupWin.document.open();
+    popupWin.document.write(`
+      <html>
+        <head>
+          <title>Print tab</title>
+          <style>
+          //........Customized style.......
+          </style>
+        </head>
+    <body onload="window.print();window.close()">${printContents}</body>
+      </html>`
+    );
+    popupWin.document.close();
+  }
 }

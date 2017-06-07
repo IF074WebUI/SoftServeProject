@@ -18,13 +18,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {ToastModule} from "ng2-toastr";
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     AccessDeniedComponent,
     BadRequestComponent,
-    NotFoundComponent
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

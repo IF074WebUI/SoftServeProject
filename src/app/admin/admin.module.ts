@@ -30,13 +30,12 @@ import {StudentsService} from './students/students.service';
 import {PopupComponent} from './popup/popup.component';
 import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page.component';
 import { ResultsComponent } from './results/results.component';
-import {ResultsService} from './services/results.service';
-import {AddeditComponent} from './addedit/addedit.component';
-import {ExitAboutGuard} from '../guards/exit.about.guard';
-import {GetRecordsRangeService} from './services/get-records-range.service';
-import {BreadcrumbsService} from './services/breadcrumbs.service';
+import { ResultsService } from './services/results.service';
+import { ExitAboutGuard } from '../guards/exit.about.guard';
+import { GetRecordsRangeService } from './services/get-records-range.service';
+import { BreadcrumbsService } from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
-import {LinksPipe} from './pipes/links.pipe';
+import { LinksPipe } from './pipes/links.pipe';
 import { SpinnerComponent } from './universal/spinner/spinner.component';
 import {TestsService} from './services/tests.service';
 import { TestsComponent } from './tests/tests.component';
@@ -44,6 +43,11 @@ import { AddUpdateTestComponent } from './tests/add-update-test/add-update-test.
 import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
 import { DeleteTimetableComponent } from './timetable/delete-timetable/delete-timetable.component';
 import { AddUpdateTimetableComponent } from './timetable/add-update-timetable/add-update-timetable.component';
+import { DetailedComponent } from './detailed/detailed.component';
+import { SpinnerService } from './universal/spinner/spinner.service';
+import { LoadingModule } from 'ngx-loading';
+import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
+
 
 @NgModule({
   declarations: [
@@ -64,14 +68,14 @@ import { AddUpdateTimetableComponent } from './timetable/add-update-timetable/ad
     PopupComponent,
     ItemsPerPageComponent,
     ResultsComponent,
-    AddeditComponent,
     BreadcrumbsComponent,
     SpinnerComponent,
     TestsComponent,
     AddUpdateTestComponent,
     DeleteTestComponent,
     DeleteTimetableComponent,
-    AddUpdateTimetableComponent
+    AddUpdateTimetableComponent,
+    DetailedComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -80,7 +84,10 @@ import { AddUpdateTimetableComponent } from './timetable/add-update-timetable/ad
     ReactiveFormsModule,
     NgbModule,
     MdDialogModule,
-    MdButtonModule
+    MdButtonModule,
+    DynamicFormModule,
+    MdButtonModule,
+    LoadingModule
   ],
   providers: [
     StatisticsService,
@@ -96,7 +103,8 @@ import { AddUpdateTimetableComponent } from './timetable/add-update-timetable/ad
     StudentsService,
     ExitAboutGuard,
     GetRecordsRangeService,
-    TestsService
+    TestsService,
+    SpinnerService
   ],
 })
 export class AdminModule {
