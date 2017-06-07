@@ -197,15 +197,15 @@ export class GroupComponent implements OnInit {
     this.popup.showModal();
   }
 
-  del(faculty: Faculty) {
-    this.popup.deleteEntity(faculty);
+  del(group: Group) {
+    this.popup.deleteEntity(group);
   }
   // Method for  add/edit, delete form submiting
 
   formSubmitted(value) {
     console.log(value);
     if (value['group_id']) {
-      this.getGroupsService.editGroup(value['group_id'], value['group_name'], value['Faculty'], value['Speciality'])
+      this.getGroupsService.editGroup(+value['group_id'], value['group_name'], value['Faculty'], value['Speciality'])
         .subscribe(response => {
           this.getGroups();
           this.popup.cancel();
@@ -225,13 +225,9 @@ export class GroupComponent implements OnInit {
 
 
   submitDelete(group: Group) {
-    this.getGroupsService.deleteGroup(Group['group_id']).subscribe(response => {
-        this.getGroups()
-        this.popup.cancel();
-      },
+    this.getGroupsService.deleteGroup(group['group_id']).subscribe(response => this.getGroups(),
       error => this.router.navigate(['/bad_request'])
     );
-    this.popup.cancel();
   }
 
 }
