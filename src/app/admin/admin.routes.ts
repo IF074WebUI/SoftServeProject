@@ -8,8 +8,8 @@ import { TimetableComponent } from './timetable/timetable.component';
 import { SpecialitiesComponent } from './specialities/specialities.component';
 import { StudentsComponent } from './students/students.component';
 import { ResultsComponent } from './results/results.component';
-import { DetailedComponent } from './detailed/detailed.component';
 import { TestsComponent } from './tests/tests.component';
+import { DetailedComponent } from './detailed/detailed.component';
 import { TestDetailComponent } from './test-detail/test-detail.component';
 
 export const adminRoutes: Route[] = [
@@ -27,7 +27,7 @@ export const adminRoutes: Route[] = [
       {path: 'results/:studentId', component: DetailedComponent},
       {path: 'results', component: ResultsComponent},
       {path: 'tests', component: TestsComponent},
+      {path: 'tests', component: TestsComponent},
       {path: 'testDetails', component: TestDetailComponent},
-      /*{path: 'addedit', component: AddeditComponent, canDeactivate: [ExitAboutGuard]}, */
     ]
   }];
