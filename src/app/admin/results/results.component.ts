@@ -11,6 +11,8 @@ import {GroupService} from '../group/group.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {QueryParamsHandling} from "@angular/router/src/config";
 import {SpinnerService} from "../universal/spinner/spinner.service";
+import {TestDetailService} from "../test-detail/test-detail.service";
+import {TestDetail} from "../test-detail/testDetail";
 
 @Component({
   selector: 'dtester-results',
@@ -19,9 +21,9 @@ import {SpinnerService} from "../universal/spinner/spinner.service";
 })
 export class ResultsComponent implements OnInit {
 
-  RESULTS_HEADERS: string[] = ['№', 'студент', 'тест', 'група', 'дата', 'результат'];
+  RESULTS_HEADERS: string[] = ['№', 'студент', 'тест', 'група', 'дата', '% від максимуму', 'результат'];
   IGNORE_PROPERTIES: string[] = ['session_id', 'true_answers', 'start_time', 'end_time', 'answers', 'questions', 'student_id'];
-  DISPLAY_ORDER: string[] = ['student_name', 'test_name', 'group_name', 'session_date', 'result'];
+  DISPLAY_ORDER: string[] = ['student_name', 'test_name', 'group_name', 'session_date', 'percentage', 'result'];
 
   results: Result[];
   groups: Group[];
@@ -37,7 +39,8 @@ export class ResultsComponent implements OnInit {
 
   constructor(private resultsService: ResultsService, private router: Router, private activatedRoute: ActivatedRoute,
               private toastr: ToastsManager, private studentsService: StudentsService, private groupsService: GroupService,
-              private testsService: TestsService, private spinnerService: SpinnerService) {
+              private testsService: TestsService, private spinnerService: SpinnerService,
+              private testDetailsService: TestDetailService) {
     this.groupControl = new FormControl('', Validators.required);
     this.testControl = new FormControl('', Validators.required);
     this.dateControl = new FormControl('');
@@ -77,20 +80,30 @@ export class ResultsComponent implements OnInit {
     this.testsService.getAll().subscribe((resp: any) => this.tests = resp);
   }
 
-  transformResults(): void {
+  async transformResults() {
     if (!Array.isArray(this.results)) {
       this.results = [];
       this.count = 0;
       this.spinnerService.hideSpinner();
       return;
     }
-    this.results.map((result: Result) => {
+    await this.results.map((result: Result, i: number) => {
       this.studentsService.getStudentById(result.student_id)
         .subscribe((resp: Student) => {
-          this.groupsService.getGroupById(resp.group_id).subscribe((group: Group) =>
-          result['group_name'] = group[0]['group_name']);
           result['student_name'] = resp[0]['student_name'] + ' ' + resp[0]['student_surname'];
-          this.spinnerService.hideSpinner();
+          this.groupsService.getGroupById(resp[0].group_id).subscribe((group: Group) => {
+            result['group_name'] = group[0]['group_name'];
+            if (i === this.results.length - 1)
+              this.spinnerService.hideSpinner();
+          });
+          this.testDetailsService.getTestDetails(result.test_id).subscribe((tDetails: TestDetail[]) => {
+            let sum: number = 0;
+            for (let tDetail of tDetails) {
+              sum += +tDetail.rate;
+            }
+            result['percentage'] = (result.result * 100 / sum).toFixed(2);
+
+          });
         });
       this.testsService.getTestById(result.test_id)
         .subscribe((resp: any) => {
@@ -111,7 +124,6 @@ export class ResultsComponent implements OnInit {
       .subscribe((resp: Result[]) => {
         this.results = resp;
         this.transformResults();
-        this.spinnerService.hideSpinner();
       }, err => this.router.navigate(['/bad_request']));
   }
 
@@ -122,13 +134,16 @@ export class ResultsComponent implements OnInit {
 
   findByGroupTest(): void {
     let qp = this.dateControl.value !== '' ?
-      {test: this.testControl.value, group: this.groupControl.value, date: this.dateControl.value} :
-      {test: this.testControl.value, group: this.groupControl.value};
+    {test: this.testControl.value, group: this.groupControl.value, date: this.dateControl.value} :
+    {test: this.testControl.value, group: this.groupControl.value};
     this.router.navigate(['./results'], {queryParams: qp, relativeTo: this.activatedRoute.parent});
   }
 
   findByStudent(result: Result): void {
-    this.router.navigate(['./results'], {queryParams: {student: result.student_id}, relativeTo: this.activatedRoute.parent});
+    this.router.navigate(['./results'], {
+      queryParams: {student: result.student_id},
+      relativeTo: this.activatedRoute.parent
+    });
   }
 
   detailedByStudent(result: Result) {

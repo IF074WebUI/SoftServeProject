@@ -49,6 +49,7 @@ import { TestDetailComponent } from './test-detail/test-detail.component';
 import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
 import { QuestionsService } from './services/questions.service';
 import { AnswersService } from './services/answers.service';
+import {TestDetailService} from "./test-detail/test-detail.service";
 
 @NgModule({
   declarations: [
@@ -107,7 +108,8 @@ import { AnswersService } from './services/answers.service';
     TestsService,
     SpinnerService,
     QuestionsService,
-    AnswersService
+    AnswersService,
+    TestDetailService
   ],
 })
 export class AdminModule {
