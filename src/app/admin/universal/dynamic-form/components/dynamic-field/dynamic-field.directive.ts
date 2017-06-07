@@ -23,17 +23,19 @@ const components = {
   selector: '[dynamicField]'
 })
 export class DynamicFieldDirective implements OnInit {
-  @Input()
-  config;
+  component;
 
   @Input()
+  config;
+  @Input()
   group: FormGroup;
+
   constructor(
     private resolver: ComponentFactoryResolver,
     private container: ViewContainerRef
   ) {}
 
-  component;
+
 
   ngOnInit() {
     const component = components[this.config.type];
