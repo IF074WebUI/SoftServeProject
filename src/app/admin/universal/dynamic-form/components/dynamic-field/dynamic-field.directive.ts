@@ -4,17 +4,17 @@ import { FormGroup } from '@angular/forms';
 import { FormButtonComponent } from '../form-button/form-button.component';
 import { FormInputComponent } from '../form-input/form-input.component';
 import { FormSelectComponent } from '../form-select/form-select.component';
-import { FormAddnameComponent } from '../form-uniqname/form-uniqname.component';
 import {FormIdComponent} from '../form-id/form-id.component';
 import {FormSelectSpecialityComponent} from '../form-select-speciality/form-select-speciality.component';
+import {FormTextareaComponent} from '../form-textarea/form-textarea.component';
 
 const components = {
   button: FormButtonComponent,
   input: FormInputComponent,
   select: FormSelectComponent,
   select_speciality: FormSelectSpecialityComponent,
-  addname: FormAddnameComponent,
-  id: FormIdComponent
+  id: FormIdComponent,
+  textarea: FormTextareaComponent
 };
 
 

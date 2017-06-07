@@ -9,7 +9,7 @@ export const FACULTY_CONFIG =
       required: false
     },
     {
-      type: 'addname',
+      type: 'input',
       text: '',
       label: 'Введіть назву факультету',
       name: 'faculty_name',
@@ -17,7 +17,7 @@ export const FACULTY_CONFIG =
       required: true
     },
     {
-      type: 'input',
+      type: 'textarea',
       text: '',
       label: 'Введіть опис факультету',
       name: 'faculty_description',
@@ -30,6 +30,7 @@ export const FACULTY_CONFIG =
       type: 'button'
     }
   ];
+
 
 export const GROUP_CONFIG =
   [

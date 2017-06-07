@@ -1,5 +1,5 @@
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
-import {FormGroup, Validators, FormControl, AbstractControl} from '@angular/forms';
+import {Component} from '@angular/core';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-form-input',
@@ -10,11 +10,7 @@ export class FormInputComponent {
   config;
   group: FormGroup;
 
-
-
-
   constructor(){
   }
-
 
 }

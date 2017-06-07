@@ -27,13 +27,10 @@ export class FacultiesComponent<T> implements OnInit {
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
-
   configs = FACULTY_CONFIG;
-
 
   constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
               private router: Router) {
-
   }
 
   ngOnInit() {
@@ -78,7 +75,6 @@ export class FacultiesComponent<T> implements OnInit {
     );
   }
 
-
   search(text: string) {
     this.http.searchFaculty(text).subscribe(resp => {
       if (resp['response'] === 'no records') {
@@ -96,9 +92,7 @@ export class FacultiesComponent<T> implements OnInit {
     this.router.navigate(['/admin/group'], {queryParams: {'facultyId': this.id}});
   }
 
-
   // Dynamic Module
-
 
 // Methods for opening editing and deleting commo modal window
 
@@ -115,6 +109,7 @@ export class FacultiesComponent<T> implements OnInit {
   delete(faculty: Faculty) {
     this.popup.deleteEntity(faculty);
   }
+
   // Method for  add/edit, delete form submiting
 
   formSubmitted(value) {
@@ -137,7 +132,6 @@ export class FacultiesComponent<T> implements OnInit {
       );
     }
   }
-
 
   submitDelete(faculty: Faculty) {
     this.http.deleteItem(faculty['faculty_id']).subscribe(response => {
