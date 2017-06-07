@@ -2,6 +2,7 @@ import {Component, OnInit } from '@angular/core';
 import { GetAllRecordsService } from '../services/get-all-records.service';
 import { Test } from './test';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 declare var $: any;
 
@@ -19,7 +20,10 @@ export class TestsComponent implements OnInit {
   action: string;
   displayPropertiesOrder: string[];
   constructor(private getAllRecordsService: GetAllRecordsService,
-              private getRecordsByIdService: GetRecordsByIdService) {}
+              private getRecordsByIdService: GetRecordsByIdService,
+              private route: ActivatedRoute,
+              private router: Router,
+  ) {}
   ngOnInit() {
     this.getAllTests();
     this.getSubjects();
@@ -65,5 +69,9 @@ export class TestsComponent implements OnInit {
   getDeletedTest(test: Test) {
     this.deletedTest = test;
     $('#delete-test').modal('show');
+  }
+
+  getTestDetailsByTest (test: Test) {
+    this.router.navigate(['./testDetails'], {queryParams: {'test_id': test.test_id, 'test_name': test.test_name}, relativeTo: this.route.parent});
   }
 }

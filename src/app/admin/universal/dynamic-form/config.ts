@@ -50,7 +50,7 @@ export const GROUP_CONFIG =
       required: true
     },
     {
-      type: 'select',
+      type: 'select_speciality',
       text: '',
       label: 'Спеціальність',
       name: 'Speciality',

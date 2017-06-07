@@ -1,0 +1,12 @@
+
+<h3 class="text-center">{{MAIN_HEADER}}"{{testName}}"</h3>
+<dtester-entities-table class="table"
+                        [entities]="testDetails"
+                        [headers]="headers"
+                        [ignoreProperties]="ignoreProperties"
+                        (deleteEntity)=del($event)
+                        (editEntity)="edit($event)" >
+</dtester-entities-table>
+<p>{{COUNT_OF_RATE}}<span>{{countOfRate}}</span></p>
+<p>{{COUNT_OF_TASKS}}<span>{{countOfTasks}}</span></p>
+<button (click)="createTestDetail()">test Button</button>

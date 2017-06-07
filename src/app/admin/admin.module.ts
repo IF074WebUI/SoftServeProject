@@ -37,15 +37,16 @@ import { BreadcrumbsService } from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { LinksPipe } from './pipes/links.pipe';
 import { SpinnerComponent } from './universal/spinner/spinner.component';
-import {TestsService} from './services/tests.service';
 import { TestsComponent } from './tests/tests.component';
 import { AddUpdateTestComponent } from './tests/add-update-test/add-update-test.component';
 import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
 import { DeleteTimetableComponent } from './timetable/delete-timetable/delete-timetable.component';
 import { AddUpdateTimetableComponent } from './timetable/add-update-timetable/add-update-timetable.component';
+import { TestsService } from './services/tests.service';
 import { DetailedComponent } from './detailed/detailed.component';
 import { SpinnerService } from './universal/spinner/spinner.service';
 import { LoadingModule } from 'ngx-loading';
+import { TestDetailComponent } from './test-detail/test-detail.component';
 import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
 
 
@@ -75,7 +76,8 @@ import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
     DeleteTestComponent,
     DeleteTimetableComponent,
     AddUpdateTimetableComponent,
-    DetailedComponent
+    DetailedComponent,
+    TestDetailComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
