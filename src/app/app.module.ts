@@ -16,7 +16,6 @@ import { NotFoundComponent } from './error_pages/not-found/not-found.component';
 import { LoginGuard } from './guards/login.guard';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {ToastModule} from "ng2-toastr";
-import { BadUniqnameComponent } from './error_pages/bad-uniqname/bad-uniqname.component';
 
 
 
@@ -27,7 +26,6 @@ import { BadUniqnameComponent } from './error_pages/bad-uniqname/bad-uniqname.co
     AccessDeniedComponent,
     BadRequestComponent,
     NotFoundComponent,
-    BadUniqnameComponent,
   ],
   imports: [
     BrowserModule,

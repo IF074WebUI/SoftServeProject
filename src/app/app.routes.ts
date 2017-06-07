@@ -6,7 +6,6 @@ import { AccessDeniedComponent } from './error_pages/access-denied/access-denied
 import { LoginGuard } from './guards/login.guard';
 import { BadRequestComponent } from './error_pages/bad-request/bad-request.component';
 import { NotFoundComponent } from './error_pages/not-found/not-found.component';
-import {BadUniqnameComponent} from "./error_pages/bad-uniqname/bad-uniqname.component";
 
 export const routes: Route[] = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
@@ -15,7 +14,6 @@ export const routes: Route[] = [
   { path: 'student', loadChildren: './student/student.module#StudentModule', canLoad: [StudentGuard] },
   { path: 'denied', component: AccessDeniedComponent },
   { path: 'bad_request', component: BadRequestComponent },
-  { path: 'bad_uniqname', component: BadUniqnameComponent },
   { path: '**', component: NotFoundComponent }
 ];
 
