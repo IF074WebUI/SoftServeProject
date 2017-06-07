@@ -199,7 +199,7 @@ export class GroupComponent implements OnInit {
   }
 
   del(faculty: Faculty) {
-    this.popup.Delete(faculty);
+    this.popup.deleteEntity(faculty);
   }
   // Method for  add/edit, delete form submiting
 
