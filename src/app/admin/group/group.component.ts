@@ -57,12 +57,12 @@ export class GroupComponent implements OnInit {
     if (specialityId) {
       this.getGroupsService.getGroupsBySpeciality(specialityId).subscribe(resp => {
         if (resp['response'] === 'no records') {
-          this.groupsOnPage = [];
-        } else
-          this.groupsOnPage = resp;
+          this.groupsOnPage = [], error => this.router.navigate(['/bad_request']);
+        } else {
+          this.groupsOnPage = resp, error => this.router.navigate(['/bad_request']);
+        }
       });
     }
-
   }
 
   getGroups(): void {
@@ -73,7 +73,7 @@ export class GroupComponent implements OnInit {
       --this.pageNumber;
     }
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset).delay(301)
-      .subscribe(resp => {this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']);
+      .subscribe(resp => { this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']);
       this.spinner.hideSpinner();
       });
   }
