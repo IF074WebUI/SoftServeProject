@@ -4,10 +4,11 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidatorFn } from '@angular/forms';
 import {FacultyService} from '../../../../faculties/faculty.service';
+import {Faculty} from "../../../../faculties/Faculty";
 
 
 interface Validator<T extends FormControl> {
-  (c:T): {[error: string]:any};
+  (c: T): {[error: string]: any};
 }
 
 function validateEmail(c: FormControl) {
@@ -20,11 +21,33 @@ function validateEmail(c: FormControl) {
   };
 }
 
+//
+// function validateName(c: AbstractControl) {
+//   console.log(c);
+//   let array = [];
+//  // this.facultyService.searchByName(c.value).map(resp =>  array = resp);
+//  console.log(array);
+//   // return array.test(c.value) ? null :  {valid: false};
+//   //
+//   // this.facultyService.searchByName(c.value).map((resp: Faculty[]) => {
+//   //     console.log('next step');
+//   //     for (let key of resp) {
+//   //       if (key['faculty_name'] === c.value.trim()) {
+//   //         console.log('exist');
+//   //       }
+//   //     }
+//   //     console.log('not exist');
+//   // }  ? null :
+//   // );
+// }
+
+
 declare var $: any;
 @Component({
   selector: 'dynamic-form',
   styleUrls: ['dynamic-form.component.scss'],
   templateUrl: './dynamic-form.component.html',
+  providers: [FacultyService]
 })
 export class DynamicFormComponent implements OnInit {
   @Input()
@@ -58,8 +81,8 @@ export class DynamicFormComponent implements OnInit {
   createGroup() {
     const group = this.fb.group({});
     this.config.forEach(control => {
-     if (control.type === 'email') { group.addControl(control.name, this.fb.control('',  Validators.compose([Validators.required, validateEmail])))};
-      (control.required === true) ? group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required, Validators.minLength(5)]))) : group.addControl(control.name, this.fb.control(''));
+     if (control.type === 'email') { group.addControl(control.name, this.fb.control('',  Validators.compose([validateEmail])))};
+      (control.required === true) ? group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]))) : group.addControl(control.name, this.fb.control(''));
     });
     return group;
   }
@@ -71,7 +94,6 @@ export class DynamicFormComponent implements OnInit {
   }
 
   submitDelete(entity) {
-    console.log(this.entity);
     this.youCanDelete.emit(this.entityForDelete);
   }
 
@@ -103,23 +125,21 @@ export class DynamicFormComponent implements OnInit {
     this.form.reset();
   }
 
-  //
-  // ValidatorUniqName(name: FormControl) {
-  //   console.log('name');
-  //   return this.facultyService.searchByName(name['faculty_name'].value).map((resp: Faculty[]) => {
-  //       console.log('next step');
-  //       for (let key of resp) {
-  //         if (key['faculty_name'] === name['faculty_name'].value.trim()) {
-  //           console.log('exist');
-  //           return {exists: true};
-  //         }
-  //       }
-  //       console.log('not exist');
-  //
-  //       return null;
-  //     }
-  //   );
-  // }
-
-
+//   function validateName(c: AbstractControl) {
+//   console.log(c);
+//   let array = [];
+//   let UNIQ_NAME = this.facultyService.searchByName(c.value).subscribe(resp =>  array = resp)
+//   return this.facultyService.searchByName(c.value).map((resp: Faculty[]) => {
+//     console.log('next step');
+//     for (let key of resp) {
+//       if (key['faculty_name'] === c.value.trim()) {
+//         console.log('exist');
+//       }
+//     }
+//     console.log('not exist');
+//   }  ? null : {valid: false};
+// );
 }
+
+
+
