@@ -46,10 +46,10 @@ export class DynamicFormComponent implements OnInit {
     $('#myModal').modal('show');
   }
 
-  submitDelete(entity) {
-    console.log(this.entity);
-    this.deleteEntity.emit(this.entity);
-  }
+  // submitDelete(entity) {
+  //   console.log(this.entity);
+  //   this.deleteEntity.emit(this.entity);
+  // }
 
   sendItem(entity: any) {
     this.entity = entity;
@@ -59,9 +59,10 @@ export class DynamicFormComponent implements OnInit {
       this.form.controls[FormNames[+[i]]].setValue(this.entity[InputEntityNames[+[i]]]);
     }
   }
+  entity_name: string;
 
-  Delete(entity: any) {
-    this.entity = entity;
+  Delete(entity_name: any) {
+    this.entity_name = entity_name;
     // this.Properties = Object.getOwnPropertyNames(this.entity);
     // console.log(this.Properties);
     $('#delModal').modal('show');
@@ -73,10 +74,11 @@ export class DynamicFormComponent implements OnInit {
     $('#myModal').modal('hide');
     this.form.reset();
   }
+  submitDelete(){
 
-  badUniqName(name: string) {
-    this.router.navigate(['/error_pages/bad_uniqname/'], {queryParams: {'bad_name': name}});
-  }
+    this.deleteEntity.emit(this.entity_name);
+}
+
 
   //
   // ValidatorUniqName(name: FormControl) {

@@ -142,7 +142,7 @@ export class FacultiesComponent<T> implements OnInit {
   }
 
   del(faculty: Faculty) {
-    this.popup.Delete(faculty);
+    this.popup.Delete(faculty['faculty_name']);
   }
   // Method for  add/edit, delete form submiting
 
@@ -153,7 +153,7 @@ export class FacultiesComponent<T> implements OnInit {
           this.uploadAllPages(this.page);
           this.popup.cancel();
         },
-        error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
+        error => this.router.navigate(['/bad_request'])
       );
     } else {
       this.http.addItem(value['faculty_name'], value['faculty_description']).subscribe(response => {
@@ -162,19 +162,20 @@ export class FacultiesComponent<T> implements OnInit {
           this.uploadAllPages(this.page);
           this.popup.cancel();
         },
-        error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
+        error => this.router.navigate(['/bad_request'])
       );
     }
   }
 
 
-  submitDelete(faculty: Faculty) {
-    this.http.deleteItem(faculty['faculty_id']).subscribe(response => {
-        this.uploadAllPages(this.page);
-        this.popup.cancel();
-      },
-      error => this.router.navigate(['/bad_request'])
-    );
+  submitDelete(entity_name: string) {
+    console.log(entity_name);
+    // this.http.deleteItem(faculty['faculty_id']).subscribe(response => {
+    //     this.uploadAllPages(this.page);
+    //     this.popup.cancel();
+    //   },
+    //   error => this.router.navigate(['/bad_request'])
+    // );
     this.popup.cancel();
   }
 
