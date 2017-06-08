@@ -24,7 +24,7 @@ export class SubjectComponent implements OnInit {
 
   ngOnInit() {
     this.page = 1;
-    this.recordsPerPage = 7;
+    this.recordsPerPage = 5;
     this.getCountRecords();
     this.getSubjectsRange();
     this.headers = ['№', 'Назва предмету', 'Опис' ];
@@ -46,6 +46,10 @@ export class SubjectComponent implements OnInit {
   }
   changePage(page: number) {
     this.page = page;
+    this.getSubjectsRange();
+  }
+  changeNumberOfRecordsPerPage(newNumberOfRecordsPerPage: number) {
+    this.recordsPerPage = newNumberOfRecordsPerPage;
     this.getSubjectsRange();
   }
   startSearch(criteria: string) {
