@@ -1,13 +1,9 @@
   <dynamic-form [config]="configs" (submitted)="formSubmitted($event)" (youCanDelete)="submitDelete($event)"></dynamic-form>
-  <div class="container">
-    <h1 >Групи</h1>
-    <div class="row">
-      <dtester-search class="col-lg-3" (searchCriteria)="startSearch($event)"></dtester-search>
-      <h5 class="col-lg-7">зареєстровано груп: <span>{{countRecords}}</span></h5>
-      <dtester-items-per-page class="col-lg-2" [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
-    </div>
+  <h1 >Групи</h1>
+  <p class="col-lg-7">зареєстровано груп: <span>{{countRecords}}</span></p>
+  <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
+  <dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
 
-  </div>
 
   <dtester-entities-table class="table" [entities]="groupsOnPage" [headers]="headers" [ignoreProperties]="ignoreProperties"
                             (deleteEntity)=del($event) [canAction]="true"
