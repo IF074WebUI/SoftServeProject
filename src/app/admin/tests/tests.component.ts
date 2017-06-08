@@ -21,12 +21,15 @@ export class TestsComponent implements OnInit {
   displayPropertiesOrder: string[];
   action: string;
   subjectQueryParam: string;
+  btnClass: string;
   constructor(private getAllRecordsService: GetAllRecordsService,
               private getRecordsByIdService: GetRecordsByIdService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
               private getTestsBySubjectService: GetTestsBySubjectService
-  ) {}
+  ) {
+    this.btnClass = 'fa fa-venus-double';
+  }
   ngOnInit() {
     this.getQueryParams()
     this.getSubjects();
