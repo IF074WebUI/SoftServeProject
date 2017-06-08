@@ -35,8 +35,6 @@ export class TestDetailComponent implements OnInit {
               private route: ActivatedRoute,
               private spinner: SpinnerService,
               private router: Router) {
-    this.countOfTasks = 0;
-    this.countOfRate = 0;
     this.CREATE_NEW_DETAIL = 'Додати нову деталь';
   }
 
@@ -67,11 +65,14 @@ export class TestDetailComponent implements OnInit {
     this.spinner.showSpinner();
     this.testDetailService.getTestDetails(this.curenntTestId)
       .subscribe(res => {
-        this.testDetails = <TestDetail[]>res, this.spinner.hideSpinner(); },
+        this.testDetails = <TestDetail[]>res, this.getCountOfTestDetails(), this.spinner.hideSpinner(); },
           err => this.router.navigate(['/bad_request']));
-    }
+
+  }
 
   getCountOfTestDetails() {
+    this.countOfTasks = 0;
+    this.countOfRate = 0;
     for (let testDetail of this.testDetails) {
       this.countOfTasks = this.countOfTasks + +testDetail.tasks;
       this.countOfRate = this.countOfRate + (+testDetail.tasks * +testDetail.rate);
@@ -106,7 +107,6 @@ del(testDetail: TestDetail) {
 // Method for  add/edit, delete form submiting
 
 formSubmitted(testDetail: TestDetail) {
-  console.log(testDetail);
   if (testDetail['id']) {
     this.testDetailService.editTestDetail(testDetail['id'], this.curenntTestId, testDetail['level'], testDetail['tasks'], testDetail['rate'])
       .subscribe(response => {
@@ -127,7 +127,6 @@ formSubmitted(testDetail: TestDetail) {
 }
 
 submitDelete(testDetail: TestDetail) {
-    console.log(testDetail);
   this.testDetailService.deleteDetail(testDetail['id']).subscribe(response => this.uploadPage());
  }
 }
