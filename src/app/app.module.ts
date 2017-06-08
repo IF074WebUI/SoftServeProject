@@ -17,6 +17,7 @@ import { LoginGuard } from './guards/login.guard';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {ToastModule} from "ng2-toastr";
 import {LoadingModule} from "ngx-loading";
+import {FacultyService} from "./admin/faculties/faculty.service";
 
 
 
@@ -38,7 +39,7 @@ import {LoadingModule} from "ngx-loading";
     BrowserAnimationsModule,
     LoadingModule
   ],
-  providers: [LoginService, AdminGuard, StudentGuard, LoginGuard],
+  providers: [LoginService, AdminGuard, StudentGuard, LoginGuard, FacultyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

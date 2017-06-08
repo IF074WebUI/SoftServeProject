@@ -6,7 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import 'rxjs/add/operator/switchMap';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
-import {STUDENT_CONFIG} from '../universal/dynamic-form/config';
+import {FACULTY_CONFIG} from '../universal/dynamic-form/config';
 
 @Component({
   selector: 'dtester-faculties',
@@ -27,7 +27,7 @@ export class FacultiesComponent<T> implements OnInit {
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
-  configs = STUDENT_CONFIG;
+  configs = FACULTY_CONFIG;
 
   constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
               private router: Router) {
