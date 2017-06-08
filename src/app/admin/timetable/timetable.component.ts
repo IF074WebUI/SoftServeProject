@@ -8,6 +8,7 @@ import { GetRecordsRangeService } from '../services/get-records-range.service';
 import { StatisticsService } from '../statistics/statistics.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { arrFromSrtToNum } from './time-validator';
+import { Subject } from '../subject/subject';
 
 declare var $: any;
 
@@ -19,7 +20,7 @@ declare var $: any;
 export class TimetableComponent implements OnInit {
   timeTables: Timetable[] = [];
   groups: Group[] = [];
-  subjects = [];
+  subjects: Subject[] = [];
   deletedTimetable: Timetable;
   updatedTimetable: Timetable;
   headers: string[];
