@@ -44,8 +44,9 @@ import { DetailedComponent } from './detailed/detailed.component';
 import { SpinnerService } from './universal/spinner/spinner.service';
 import { LoadingModule } from 'ngx-loading';
 import { TestDetailComponent } from './test-detail/test-detail.component';
-import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
+import { DynamicFormModule } from './universal/dynamic-form/dynamic-form.module';
 import { SubjectComponent } from './subject/subject.component';
+import { GetRecordsBySearchService } from './services/get-records-by-search.service';
 
 
 @NgModule({
@@ -102,7 +103,8 @@ import { SubjectComponent } from './subject/subject.component';
     ExitAboutGuard,
     GetRecordsRangeService,
     TestsService,
-    SpinnerService
+    SpinnerService,
+    GetRecordsBySearchService
   ],
 })
 export class AdminModule {

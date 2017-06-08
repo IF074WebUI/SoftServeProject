@@ -1,6 +1,15 @@
 <h2>Предмети</h2>
 
+<dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
+
 <dtester-entities-table [entities]="subjects"
                         [headers]="headers"
+                        [page]="page"
+                        [itemsPerPage]="recordsPerPage"
                         [displayPropertiesOrder]="displayPropertiesOrder">
 </dtester-entities-table>
+
+<dtester-pagination [countRecords]="numberOfRecords"
+                    [recordsPerPage]="recordsPerPage"
+                    [currentPage]="page"
+                    (pageChanged)="changePage($event)"></dtester-pagination>
