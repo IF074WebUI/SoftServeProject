@@ -7,3 +7,10 @@ select {
 .croup-count {
   margin-top: 20px;
 }
+p {
+  padding: 0;
+}
+span {
+  font-weight: bold;
+}
+

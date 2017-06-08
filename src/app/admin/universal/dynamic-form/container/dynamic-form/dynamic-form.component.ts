@@ -2,12 +2,13 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidatorFn } from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl} from '@angular/forms';
 import {FacultyService} from '../../../../faculties/faculty.service';
+import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
 
 
 interface Validator<T extends FormControl> {
-  (c:T): {[error: string]:any};
+  (c: T): { [error: string]: any };
 }
 
 function validateEmail(c: FormControl) {
@@ -20,11 +21,27 @@ function validateEmail(c: FormControl) {
   };
 }
 
+
+function validateName(c: AbstractControl) {
+  return this.get_records_by_search.getRecordsBySearch(this.entity_name, c.value).map((resp) => {
+      for (let key of resp) {
+        if (key['faculty_name'] === c.value.trim()) {
+          return {exists: true};
+        }
+      }
+      return null;
+    }
+  );
+}
+
+
 declare var $: any;
+
 @Component({
   selector: 'dynamic-form',
   styleUrls: ['dynamic-form.component.scss'],
   templateUrl: './dynamic-form.component.html',
+  providers: [FacultyService]
 })
 export class DynamicFormComponent implements OnInit {
   @Input()
@@ -40,6 +57,8 @@ export class DynamicFormComponent implements OnInit {
   youCanDelete: EventEmitter<any> = new EventEmitter<any>();
   form: FormGroup;
   action: string;
+  entity_name: string;
+
 
   MODAL_ADD_TITLE = 'Редагування';
   MODAL_DELETE_TITLE = 'Видалення';
@@ -48,7 +67,7 @@ export class DynamicFormComponent implements OnInit {
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';
 
-  constructor(private fb: FormBuilder, private facultyService: FacultyService, private route: ActivatedRoute, private router: Router) {
+  constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService, private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit() {
@@ -58,8 +77,21 @@ export class DynamicFormComponent implements OnInit {
   createGroup() {
     const group = this.fb.group({});
     this.config.forEach(control => {
-     if (control.type === 'email') { group.addControl(control.name, this.fb.control('',  Validators.compose([Validators.required, validateEmail])))};
-      (control.required === true) ? group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required, Validators.minLength(5)]))) : group.addControl(control.name, this.fb.control(''));
+      if (control.type === 'email') {
+        group.addControl(control.name, this.fb.control('', Validators.compose([validateEmail])));
+      }
+      if (control.required) {
+        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
+      }
+      if (control.requiresAsync) {
+        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
+      }
+      if (control.requiredMax) {
+        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.maxLength(10)])));
+      }
+      else {
+        group.addControl(control.name, this.fb.control(''));
+      }
     });
     return group;
   }
@@ -71,13 +103,15 @@ export class DynamicFormComponent implements OnInit {
   }
 
   submitDelete(entity) {
-    console.log(this.entity);
     this.youCanDelete.emit(this.entityForDelete);
   }
 
-  sendItem(entity: any) {
+
+  sendItem(entity: any, entity_name?: string) {
     this.action = 'add_edit';
     this.entity = entity;
+    this.entity_name = entity_name;
+    console.log(this.entity_name);
     let InputEntityNames = Object.getOwnPropertyNames(entity);
     let FormNames = Object.getOwnPropertyNames(this.form.controls);
     for (let i = 0; i < InputEntityNames.length; i++) {
@@ -103,23 +137,7 @@ export class DynamicFormComponent implements OnInit {
     this.form.reset();
   }
 
-  //
-  // ValidatorUniqName(name: FormControl) {
-  //   console.log('name');
-  //   return this.facultyService.searchByName(name['faculty_name'].value).map((resp: Faculty[]) => {
-  //       console.log('next step');
-  //       for (let key of resp) {
-  //         if (key['faculty_name'] === name['faculty_name'].value.trim()) {
-  //           console.log('exist');
-  //           return {exists: true};
-  //         }
-  //       }
-  //       console.log('not exist');
-  //
-  //       return null;
-  //     }
-  //   );
-  // }
-
-
 }
+
+
+

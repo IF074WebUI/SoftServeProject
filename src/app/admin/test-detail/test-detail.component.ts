@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { TestDetailService } from './test-detail.service';
 import { TestDetail } from './testDetail';
 import { TEST_DETAIL_HEADERS, IGNORE_PROPERTIES } from './testDetailConsntants';
 import { ActivatedRoute } from '@angular/router';
 import { SpinnerService } from '../universal/spinner/spinner.service';
 import 'rxjs/add/operator/delay';
-
+import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 
 @Component({
   selector: 'dtester-test-detail',
@@ -14,23 +14,28 @@ import 'rxjs/add/operator/delay';
   providers: [TestDetailService]
 })
 export class TestDetailComponent implements OnInit {
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   testDetails: TestDetail[];
-  testId: number = 2;
   headers: string[];            /* array of headers */
   ignoreProperties: string[];
   countRecords: number;
   curenntTestId: number;
 
   COUNT_OF_TASKS: string = 'Необхідна кількість завданнь: ';
-  countOfTasks: number = 0;
+  countOfTasks: number ;
   COUNT_OF_RATE: string = 'Загальна кількість балів за тест: ';
-  countOfRate: number = 0;
+  countOfRate: number ;
   MAIN_HEADER: string = 'Деталі тесту ';
   testName: string;
+  CREATE_NEW_DETAIL: string;
 
   constructor(private testDetailService: TestDetailService,
               private route: ActivatedRoute,
-              private spinner: SpinnerService) { }
+              private spinner: SpinnerService) {
+    this.countOfTasks = 0;
+    this.countOfRate = 0;
+    this.CREATE_NEW_DETAIL = 'Додати нову деталь';
+  }
   ngOnInit() {
     this.spinner.showSpinner()
     this.headers = TEST_DETAIL_HEADERS;
@@ -55,7 +60,7 @@ export class TestDetailComponent implements OnInit {
 
     }
   }
-  getCountOfTestDetails(){
+  getCountOfTestDetails() {
     for (let testDetail of this.testDetails) {
       this.countOfTasks = this.countOfTasks + +testDetail.tasks;
       this.countOfRate = this.countOfRate + (+testDetail.tasks * +testDetail.rate);
