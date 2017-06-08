@@ -6,7 +6,11 @@
                         [headers]="headers"
                         [page]="page"
                         [itemsPerPage]="recordsPerPage"
-                        [displayPropertiesOrder]="displayPropertiesOrder">
+                        [displayPropertiesOrder]="displayPropertiesOrder"
+                        [canAction]="true"
+                        [btnClass]="btnClass"
+                        (actionEntity)="onTimeTableNavigate($event)"
+                        (clickEntity)="onTestsNavigate($event)">
 </dtester-entities-table>
 
 <dtester-pagination [countRecords]="numberOfRecords"

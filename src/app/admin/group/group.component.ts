@@ -34,6 +34,7 @@ export class GroupComponent implements OnInit {
   selectedSpesailutyValue: number;
   headers: string[];            /* array of headers */
   ignoreProperties: string[];
+  btnClass: string = 'fa fa-calendar';
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = GROUP_CONFIG;
