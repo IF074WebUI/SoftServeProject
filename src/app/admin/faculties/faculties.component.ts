@@ -6,7 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import 'rxjs/add/operator/switchMap';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
-import {STUDENT_CONFIG} from '../universal/dynamic-form/config';
+import {FACULTY_CONFIG} from '../universal/dynamic-form/config';
 import {SpinnerService} from '../universal/spinner/spinner.service';
 
 @Component({
@@ -28,7 +28,7 @@ export class FacultiesComponent<T> implements OnInit {
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
-  configs = STUDENT_CONFIG;
+  configs = FACULTY_CONFIG;
 
   constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
               private router: Router, private spinner: SpinnerService) {
@@ -107,7 +107,7 @@ export class FacultiesComponent<T> implements OnInit {
 // Methods for opening editing and deleting common modal window
 
   add() {
-    this.popup.sendItem(new Faculty('', '', ''));
+    this.popup.sendItem(new Faculty('', '', ''), 'Faculty');
     this.popup.showModal();
   }
 

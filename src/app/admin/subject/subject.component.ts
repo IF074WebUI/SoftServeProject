@@ -3,7 +3,7 @@ import { Subject } from './subject';
 import { StatisticsService } from '../statistics/statistics.service';
 import { GetRecordsRangeService } from '../services/get-records-range.service';
 import { GetRecordsBySearchService } from '../services/get-records-by-search.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-subject',
@@ -17,10 +17,12 @@ export class SubjectComponent implements OnInit {
   numberOfRecords: number;
   recordsPerPage: number;
   page: number;
+  btnClass: string = 'fa fa-calendar';
   constructor(private statisticsService: StatisticsService,
               private getRecordsRangeService: GetRecordsRangeService,
               private getRecordsBySearchService: GetRecordsBySearchService,
-              private router: Router) { }
+              private router: Router,
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.page = 1;
@@ -70,5 +72,10 @@ export class SubjectComponent implements OnInit {
         err => this.router.navigate(['/bad_request']));
     }
   }
-
+  onTimeTableNavigate(subject: Subject) {
+    this.router.navigate(['./timetable'], {queryParams: {'subject_id': subject.subject_id}, relativeTo: this.activatedRoute.parent});
+  }
+  onTestsNavigate(subject: Subject) {
+    this.router.navigate(['./tests'], {queryParams: {'subject_id': subject.subject_id}, relativeTo: this.activatedRoute.parent});
+  }
 }
