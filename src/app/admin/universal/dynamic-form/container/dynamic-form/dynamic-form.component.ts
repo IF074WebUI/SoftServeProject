@@ -2,8 +2,23 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidatorFn } from '@angular/forms';
 import {FacultyService} from '../../../../faculties/faculty.service';
+
+
+interface Validator<T extends FormControl> {
+  (c:T): {[error: string]:any};
+}
+
+function validateEmail(c: FormControl) {
+  let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+
+  return EMAIL_REGEXP.test(c.value) ? null : {
+    validateEmail: {
+      valid: false
+    }
+  };
+}
 
 declare var $: any;
 @Component({
@@ -33,7 +48,6 @@ export class DynamicFormComponent implements OnInit {
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';
 
-
   constructor(private fb: FormBuilder, private facultyService: FacultyService, private route: ActivatedRoute, private router: Router) {
   }
 
@@ -44,7 +58,8 @@ export class DynamicFormComponent implements OnInit {
   createGroup() {
     const group = this.fb.group({});
     this.config.forEach(control => {
-      (control.required === true) ? group.addControl(control.name, this.fb.control('', [Validators.required])) : group.addControl(control.name, this.fb.control(''));
+     if (control.type === 'email') { group.addControl(control.name, this.fb.control('',  Validators.compose([Validators.required, validateEmail])))};
+      (control.required === true) ? group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required, Validators.minLength(5)]))) : group.addControl(control.name, this.fb.control(''));
     });
     return group;
   }
