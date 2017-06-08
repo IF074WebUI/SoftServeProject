@@ -17,8 +17,8 @@ export class TestsComponent implements OnInit {
   updatedTest: Test;
   deletedTest: Test;
   headers: string[];
-  action: string;
   displayPropertiesOrder: string[];
+  action: string;
   constructor(private getAllRecordsService: GetAllRecordsService,
               private getRecordsByIdService: GetRecordsByIdService,
               private route: ActivatedRoute,
