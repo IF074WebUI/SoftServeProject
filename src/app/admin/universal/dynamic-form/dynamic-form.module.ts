@@ -6,8 +6,13 @@ import { FormInputComponent } from './components/form-input/form-input.component
 import { FormSelectComponent } from './components/form-select/form-select.component';
 import { FormButtonComponent } from './components/form-button/form-button.component';
 import { DynamicFieldDirective } from './components/dynamic-field/dynamic-field.directive';
-import { FormAddnameComponent } from './components/form-uniqname/form-uniqname.component';
 import { FormIdComponent } from './components/form-id/form-id.component';
+import {FormSelectSpecialityComponent} from './components/form-select-speciality/form-select-speciality.component';
+import { FormTextareaComponent } from './components/form-textarea/form-textarea.component';
+import { FormEmailComponent } from './components/form-email/form-email.component';
+import { FormSelectWithOptionsComponent } from './components/form-select-with-options/form-select-with-options.component';
+import {FacultyService} from '../../faculties/faculty.service';
+import { FormSelectTestDetailByIdComponent } from './components/form-select-test-detail-by-id/form-select-test-detail-by-id.component';
 
 @NgModule({
   imports: [
@@ -20,16 +25,27 @@ import { FormIdComponent } from './components/form-id/form-id.component';
     FormSelectComponent,
     FormButtonComponent,
     DynamicFieldDirective,
-    FormAddnameComponent,
-    FormIdComponent
+    FormIdComponent,
+    FormSelectSpecialityComponent,
+    FormTextareaComponent,
+    FormEmailComponent,
+    FormSelectWithOptionsComponent,
+    FormSelectWithOptionsComponent,
+    FormSelectTestDetailByIdComponent
   ],
   exports: [DynamicFormComponent],
   entryComponents: [
     FormButtonComponent,
     FormInputComponent,
     FormSelectComponent,
-    FormAddnameComponent,
-    FormIdComponent
-  ]
+    FormIdComponent,
+    FormSelectSpecialityComponent,
+    FormTextareaComponent,
+    FormEmailComponent,
+    FormSelectWithOptionsComponent,
+    FormSelectTestDetailByIdComponent
+  ],
+  providers: [FacultyService]
+
 })
 export class DynamicFormModule {}

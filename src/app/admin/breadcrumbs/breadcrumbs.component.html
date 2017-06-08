@@ -1,5 +1,4 @@
-<span>Історія переходів: </span>
-<ng-container *ngFor="let link of links; let l=last">
-  <a [routerLink]="[link.path]" [queryParams]="link.queryP">{{link.path | links}}
-  </a><ng-container *ngIf="!l">/</ng-container>
-</ng-container>
+<nav class="breadcrumb">
+  <a class="breadcrumb-item" [class.active]="l" [routerLink]="[link.path]"
+     *ngFor="let link of links; last as l">{{link.name}}</a>
+</nav>

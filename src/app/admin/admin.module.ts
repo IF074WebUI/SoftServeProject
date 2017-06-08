@@ -11,9 +11,6 @@ import {TimetableService} from './timetable/timetable.service';
 import {FacultiesComponent} from './faculties/faculties.component';
 import {CommonModule} from '@angular/common';
 import {GetRecordsByIdService} from './services/get-records-by-id.service';
-import {SubjectComponent} from './subject/subject.component';
-import {SubjectDetailComponent} from './subject/subject-detail/subject-detail.component';
-import {SubjectService} from './subject/subject.service';
 import {GroupService} from './group/group.service';
 import {SpecialitiesComponent} from './specialities/specialities.component';
 import {SpecialitiesService} from './services/specialities.service';
@@ -35,14 +32,24 @@ import { ExitAboutGuard } from '../guards/exit.about.guard';
 import { GetRecordsRangeService } from './services/get-records-range.service';
 import { BreadcrumbsService } from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
-import { LinksPipe } from './pipes/links.pipe';
 import { SpinnerComponent } from './universal/spinner/spinner.component';
+import { TestsComponent } from './tests/tests.component';
+import { AddUpdateTestComponent } from './tests/add-update-test/add-update-test.component';
+import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
+import { DeleteTimetableComponent } from './timetable/delete-timetable/delete-timetable.component';
+import { AddUpdateTimetableComponent } from './timetable/add-update-timetable/add-update-timetable.component';
 import { TestsService } from './services/tests.service';
 import { DetailedComponent } from './detailed/detailed.component';
 import { SpinnerService } from './universal/spinner/spinner.service';
 import { LoadingModule } from 'ngx-loading';
-
-import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
+import { TestDetailComponent } from './test-detail/test-detail.component';
+import { DynamicFormModule } from './universal/dynamic-form/dynamic-form.module';
+import { QuestionsService } from './services/questions.service';
+import { AnswersService } from './services/answers.service';
+import { TestDetailService } from './test-detail/test-detail.service';
+import { SubjectComponent } from './subject/subject.component';
+import { GetRecordsBySearchService } from './services/get-records-by-search.service';
+import { GetTestsBySubjectService } from './services/get-tests-by-subject.service';
 
 @NgModule({
   declarations: [
@@ -51,21 +58,25 @@ import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
     StatisticsComponent,
     GroupComponent,
     FacultiesComponent,
-    SubjectComponent,
-    SubjectDetailComponent,
     TimetableComponent,
     SpecialitiesComponent,
     PaginationComponent,
     EntitiesTableComponent,
     SearchComponent,
-    LinksPipe,
     StudentsComponent,
     PopupComponent,
     ItemsPerPageComponent,
     ResultsComponent,
     BreadcrumbsComponent,
     SpinnerComponent,
-    DetailedComponent
+    TestsComponent,
+    AddUpdateTestComponent,
+    DeleteTestComponent,
+    DeleteTimetableComponent,
+    AddUpdateTimetableComponent,
+    DetailedComponent,
+    TestDetailComponent,
+    SubjectComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -89,12 +100,16 @@ import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
     GroupService,
     GetAllRecordsService,
     DeleteRecordByIdService,
-    SubjectService,
     StudentsService,
     ExitAboutGuard,
     GetRecordsRangeService,
     TestsService,
-    SpinnerService
+    SpinnerService,
+    QuestionsService,
+    AnswersService,
+    TestDetailService,
+    GetRecordsBySearchService,
+    GetTestsBySubjectService
   ],
 })
 export class AdminModule {

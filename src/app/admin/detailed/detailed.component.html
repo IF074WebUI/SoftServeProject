@@ -1,4 +1,75 @@
-<div id="print-section">
-  Some stuff of student {{studentId}}
+<h3 class="text-center">Результати тестування</h3>
+<div *ngIf="results?.length; else empty">
+  <div class="student-headers">
+    <h5>Студент: {{student?.student_surname}} {{student?.student_name}} {{student?.student_fname}}</h5>
+    <h5>Група: {{group?.group_name}}</h5>
+  </div>
+
+  <img class="student-photo" *ngIf="student?.photo" [src]="student?.photo">
+  <button class="btn btn-primary print" (click)="print()"><i class="fa fa-print" aria-hidden="true"></i></button>
+  <div id="print-section">
+    <ul class="nav nav-tabs hidden-print" role="tablist">
+      <li class="nav-item" *ngFor="let result of results; let i=index">
+        <a class="nav-link" (click)="setActive(i)" [class.active]="i === active_id" data-toggle="tab"
+           [href]="'#' + result.session_id" role="tab">{{tests[i]?.test_name}}</a>
+      </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div *ngFor="let result of results; let i=index" class="tab-pane" [class.active]="i === active_id"
+           [id]="'#' + result.session_id" role="tabpanel">
+        <h4 class="text-center">Інформація по пройденому тесту</h4>
+        <ul>
+          <li>час початку: {{result.start_time}}; час закінчення: {{result.end_time}}</li>
+          <li>тривалість проходження: {{calcutateTimeInterval(result.start_time, result.end_time)}}</li>
+          <li>кількість запитань: {{result.questions.length}}</li>
+          <li>результат: {{result.result}}</li>
+        </ul>
+        <p>
+          <button class="btn btn-primary hidden-print" type="button" data-toggle="collapse"
+                  [attr.data-target]="'#' + result.session_id" aria-expanded="false" aria-controls="collapseExample">
+            Деталі тесту
+          </button>
+        </p>
+        <div class="collapse" [id]="result.session_id">
+          <div class="card card-block">
+            <div *ngFor="let question of result.questions; let l=last; let j=index">
+              <h5 class="text-center">Питання {{j + 1}}</h5>
+              <div class="row">
+                <div class="col-5">
+                  <div>Складність: {{question.level}}</div>
+                  <div class="text-center"><b>{{question.question_text}}</b></div>
+                  <div>Відповіді:</div>
+                  <ul *ngFor="let answer of question.answers">
+                    <li *ngIf="answer.answer_text">
+                      {{answer.answer_text}} (
+                      <span [ngStyle]="{color: 'green'}" *ngIf="answer.true_answer == 1; else wrong">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                </span>
+                      <ng-template #wrong>
+                  <span [ngStyle]="{color: 'red'}">
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                  </span>
+                      </ng-template>
+                      )
+                    </li>
+                    <img [src]="answer.attachment">
+                  </ul>
+                </div>
+                <div class="col-7">
+                  <img [src]="question.attachment">
+                </div>
+              </div>
+              <hr *ngIf="!l">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<button (click)="print()"><i class="fa fa-print" aria-hidden="true"></i></button>
+<ng-template #empty>
+  <div class="text-center">Результати відсутні</div>
+</ng-template>
+
+

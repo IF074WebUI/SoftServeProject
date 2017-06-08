@@ -1,3 +1,7 @@
 button, tr {
   cursor: pointer;
 }
+
+.deprecated{
+  background-color: orange !important;
+}

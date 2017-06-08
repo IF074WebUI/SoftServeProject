@@ -1,24 +1,33 @@
 <table *ngIf="entities?.length; else empty" class="table table-striped table-sm table-hover">
   <thead>
   <tr>
-    <th *ngFor="let header of headers">{{header}}</th>
+    <th *ngFor="let header of headers; index as headerIndex">{{header}}
+      <ng-container *ngIf="sortIndexes.includes(headerIndex - 1)">
+        <i class="fa fa-sort" aria-hidden="true" *ngIf="!order[headerIndex] || order[headerIndex] === '' " (click)="sortEntities(headerIndex - 1, 'desc')"></i>
+        <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="order[headerIndex] === 'desc'" (click)="sortEntities(headerIndex - 1, 'asc')"></i>
+        <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="order[headerIndex] === 'asc'" (click)="sortEntities(headerIndex - 1, '')"></i>
+      </ng-container>
+    </th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let entity of entities; let i = index">
+  <tr *ngFor="let entity of entities; let i = index" [ngClass]="{'table-warning': entity.deprecated}">
     <td>{{i + itemsPerPage * (page - 1) + 1}}</td>
     <ng-container *ngFor="let name of getProperties(entity)">
       <td *ngIf="!ignoreProperties?.includes(name)" (click)="clickEntityCallback(entity)">{{entity[name]}}</td>
     </ng-container>
-    <td>
+    <td class="hidden-print">
       <div class="btn-group" role="group" aria-label="Basic example">
-        <button *ngIf="canAction" type="button" class="btn btn-warning btn-sm" (click)="actionEntityCallback(entity)" data-toggle="modal" data-whatever="@mdo">
+        <button *ngIf="canAction" type="button" class="btn btn-warning btn-sm" (click)="actionEntityCallback(entity)"
+                data-toggle="modal" data-whatever="@mdo">
           <i [class]="btnClass" aria-hidden="true"></i>
         </button>
-        <button *ngIf="canEdit" type="button" class="btn btn-success btn-sm" (click)="editEntityCallback(entity)" data-toggle="modal" data-target="#modal-update-timetabel" data-whatever="@mdo">
+        <button *ngIf="canEdit" type="button" class="btn btn-success btn-sm" (click)="editEntityCallback(entity)"
+                data-toggle="modal" data-target="#modal-update-timetabel" data-whatever="@mdo">
           <i class="fa fa-pencil" aria-hidden="true"></i>
         </button>
-        <button *ngIf="canDelete" type="button" class="btn btn-danger btn-sm" (click)="deleteEntityCallback(entity)" data-toggle="modal" data-target="#modal-delete-timetabel" data-whatever="@mdo">
+        <button *ngIf="canDelete" type="button" class="btn btn-danger btn-sm" (click)="deleteEntityCallback(entity)"
+                data-toggle="modal" data-target="#modal-delete-timetabel" data-whatever="@mdo">
           <i class="fa fa-trash" aria-hidden="true"></i>
         </button>
       </div>
