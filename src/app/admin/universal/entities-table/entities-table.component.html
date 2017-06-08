@@ -6,7 +6,6 @@
         <i class="fa fa-sort" aria-hidden="true" *ngIf="!order[headerIndex] || order[headerIndex] === '' " (click)="sortEntities(headerIndex - 1, 'desc')"></i>
         <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="order[headerIndex] === 'desc'" (click)="sortEntities(headerIndex - 1, 'asc')"></i>
         <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="order[headerIndex] === 'asc'" (click)="sortEntities(headerIndex - 1, '')"></i>
-
       </ng-container>
     </th>
   </tr>
