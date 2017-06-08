@@ -121,6 +121,7 @@ export class DetailedComponent implements OnInit {
     printContents = document.getElementById('print-section').innerHTML;
     popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
     popupWin.document.open();
+
     popupWin.document.write(`
       <html>
         <head>
@@ -132,7 +133,7 @@ export class DetailedComponent implements OnInit {
           </style>
         </head>
     <body onload="window.print();window.close()">
-      <h3>Студент ${this.student.name}</h3>
+      <h3>Студент ${this.student['student_surname'] + ' ' + this.student['student_name'] + ' ' + this.student['student_fname']}</h3>
           ${printContents}
     </body>
       </html>`

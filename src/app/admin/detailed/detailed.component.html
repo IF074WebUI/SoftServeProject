@@ -7,18 +7,19 @@
 
   <img class="student-photo" *ngIf="student?.photo" [src]="student?.photo">
   <button class="btn btn-primary print" (click)="print()"><i class="fa fa-print" aria-hidden="true"></i></button>
-  <div id="print-section">
-    <ul class="nav nav-tabs hidden-print" role="tablist">
+  <div>
+    <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item" *ngFor="let result of results; let i=index">
         <a class="nav-link" (click)="setActive(i)" [class.active]="i === active_id" data-toggle="tab"
            [href]="'#' + result.session_id" role="tab">{{tests[i]?.test_name}}</a>
       </li>
     </ul>
     <!-- Tab panes -->
-    <div class="tab-content">
-      <div *ngFor="let result of results; let i=index" class="tab-pane" [class.active]="i === active_id"
+    <div class="tab-content" id="print-section">
+      <div *ngFor="let result of results; let i=index" class="tab-pane"
+           [ngClass]="{'active': i === active_id, 'hidden-print': i !== active_id}"
            [id]="'#' + result.session_id" role="tabpanel">
-        <h4 class="text-center">Інформація по пройденому тесту</h4>
+        <h4 class="text-center">Інформація по тесту {{tests[i]?.test_name}}</h4>
         <ul>
           <li>час початку: {{result.start_time}}; час закінчення: {{result.end_time}}</li>
           <li>тривалість проходження: {{calcutateTimeInterval(result.start_time, result.end_time)}}</li>
