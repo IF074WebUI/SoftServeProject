@@ -11,7 +11,7 @@ import {FormSelectSpecialityComponent} from './components/form-select-speciality
 import { FormTextareaComponent } from './components/form-textarea/form-textarea.component';
 import { FormEmailComponent } from './components/form-email/form-email.component';
 import { FormSelectWithOptionsComponent } from './components/form-select-with-options/form-select-with-options.component';
-import {FacultyService} from "../../faculties/faculty.service";
+import {FacultyService} from '../../faculties/faculty.service';
 
 @NgModule({
   imports: [

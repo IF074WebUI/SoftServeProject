@@ -14,8 +14,10 @@ import {SpinnerService} from "../universal/spinner/spinner.service";
 
 export class SpecialitiesComponent implements OnInit {
 
-  SPECIALITIES_HEADERS: string[] = ['№', 'код спеціальності', 'назва спеціальності'];
+  SPECIALITIES_HEADERS: string[] = ['№', 'назва спеціальності', 'код спеціальності'];
   IGNORE_PROPERTIES: string[] = ['speciality_id'];
+  DISPLAY_PROPERTIES_ORDER: string[] = ['speciality_name', 'speciality_code'];
+  SORT_PROPERTIES: string[] = ['speciality_name'];
   NO_RECORDS: string = 'no records';
   SPECIALITIES_HEADER: string = 'Спеціальності';
   SPECIALITIES_ADD_TITLE: string = 'Додати спеціальність';
@@ -29,7 +31,9 @@ export class SpecialitiesComponent implements OnInit {
   count: number;                /* count of all specialities */
   countPerPage = 5;             /* count of specialities per page */
   headers: string[];            /* array of headers */
+  sortProperties: string[];
   ignoreProperties: string[];
+  displayPropertiesOrder: string[];
   editName: string = '';
   @ViewChild(PopupComponent) popup: PopupComponent;
 
@@ -39,6 +43,8 @@ export class SpecialitiesComponent implements OnInit {
   ngOnInit() {
     this.headers = this.SPECIALITIES_HEADERS;
     this.ignoreProperties = this.IGNORE_PROPERTIES;
+    this.sortProperties = this.SORT_PROPERTIES;
+    this.displayPropertiesOrder = this.DISPLAY_PROPERTIES_ORDER
     this.getSpecialities();       /* get specialities for start page and count of specialities for pagination */
     this.getCount();
   }

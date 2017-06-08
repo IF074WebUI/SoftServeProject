@@ -7,6 +7,16 @@
                         (deleteEntity)=del($event)
                         (editEntity)="edit($event)" >
 </dtester-entities-table>
-<p>{{COUNT_OF_RATE}}<span>{{countOfRate}}</span></p>
-<p>{{COUNT_OF_TASKS}}<span>{{countOfTasks}}</span></p>
-<button (click)="createTestDetail()">test Button</button>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8">
+      <p>{{COUNT_OF_RATE}}<span>{{countOfRate}}</span></p>
+      <p>{{COUNT_OF_TASKS}}<span>{{countOfTasks}}</span></p>
+    </div>
+    <div class="col-lg-4">
+      <button (click)="add()" type="button" class="btn btn-primary btn-sm" data-dismiss="modal">{{CREATE_NEW_DETAIL}}</button>
+    </div>
+  </div>
+</div>
+
+

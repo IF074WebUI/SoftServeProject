@@ -23,13 +23,13 @@ export class TestDetailService {
     return this.http.post('http://' + HOST + ENTITY + '/insertData', bodyForSendingTestDetails)
       .map((resp: Response) => resp.json());
   }
-  deleteGroup(id: number) {
+  deleteDetail(id: number) {
     return this.http.delete('http://' + HOST + ENTITY + '/del/' + id)
       .map((resp: Response) => resp.json());
   }
   editTestDetail(id: number, testId: number, level: number, tasks: number, rate: number) {
-    const bodyForSendingEditedGroups = JSON.stringify({test_id: testId, level: level, tasks: tasks, rate: rate});
-    return this.http.post('http://' + HOST + ENTITY + '/update/' + id, bodyForSendingEditedGroups)
+    const bodyForSendingEditedTestDetails = JSON.stringify({test_id: testId, level: level, tasks: tasks, rate: rate});
+    return this.http.post('http://' + HOST + ENTITY + '/update/' + id, bodyForSendingEditedTestDetails)
       .map((resp) => resp.json());
   }
 }

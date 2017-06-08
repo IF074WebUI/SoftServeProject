@@ -2,13 +2,13 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl } from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl} from '@angular/forms';
 import {FacultyService} from '../../../../faculties/faculty.service';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
 
 
 interface Validator<T extends FormControl> {
-  (c: T): {[error: string]: any};
+  (c: T): { [error: string]: any };
 }
 
 function validateEmail(c: FormControl) {
@@ -77,11 +77,21 @@ export class DynamicFormComponent implements OnInit {
   createGroup() {
     const group = this.fb.group({});
     this.config.forEach(control => {
-     if (control.type === 'email') { group.addControl(control.name, this.fb.control('',  Validators.compose([validateEmail]))); }
-    if  (control.required)  {group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]))); }
-     if (control.requiresAsync)  {group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)]))); }
-     if(control.requiredMax) {group.addControl(control.name, this.fb.control('',  Validators.compose([Validators.maxLength(10)]))); }
-     else {group.addControl(control.name, this.fb.control('')); }
+      if (control.type === 'email') {
+        group.addControl(control.name, this.fb.control('', Validators.compose([validateEmail])));
+      }
+      if (control.required) {
+        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
+      }
+      if (control.requiresAsync) {
+        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
+      }
+      if (control.requiredMax) {
+        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.maxLength(10)])));
+      }
+      else {
+        group.addControl(control.name, this.fb.control(''));
+      }
     });
     return group;
   }

@@ -1,7 +1,14 @@
 <table *ngIf="entities?.length; else empty" class="table table-striped table-sm table-hover">
   <thead>
   <tr>
-    <th *ngFor="let header of headers">{{header}}</th>
+    <th *ngFor="let header of headers; index as headerIndex">{{header}}
+      <ng-container *ngIf="sortIndexes.includes(headerIndex - 1)">
+        <i class="fa fa-sort" aria-hidden="true" *ngIf="!order[headerIndex] || order[headerIndex] === '' " (click)="sortEntities(headerIndex - 1, 'desc')"></i>
+        <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="order[headerIndex] === 'desc'" (click)="sortEntities(headerIndex - 1, 'asc')"></i>
+        <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="order[headerIndex] === 'asc'" (click)="sortEntities(headerIndex - 1, '')"></i>
+
+      </ng-container>
+    </th>
   </tr>
   </thead>
   <tbody>

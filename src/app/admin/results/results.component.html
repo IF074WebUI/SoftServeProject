@@ -29,7 +29,7 @@
 <dtester-items-per-page [numberOfRecords]="count" (recordsPerPageChanged)="changeCountPerPage($event)">
 </dtester-items-per-page>
 <dtester-entities-table id="print-section" [entities]="results" [ignoreProperties]="IGNORE_PROPERTIES"
-                        [headers]="RESULTS_HEADERS"
+                        [headers]="RESULTS_HEADERS" [sortProperties]="sortProperties"
                         [page]="page" [displayPropertiesOrder]="DISPLAY_ORDER" [itemsPerPage]="countPerPage"
                         [canAction]="true"
                         [btnClass]="'fa fa-address-card'" [canEdit]="false" (deleteEntity)="del($event)"
