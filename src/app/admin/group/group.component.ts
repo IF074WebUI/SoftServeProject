@@ -7,9 +7,11 @@ import { FacultyService } from '../faculties/faculty.service';
 import { Faculty } from '../faculties/Faculty';
 import { ActivatedRoute, Router } from '@angular/router';
 import {GROUPS_HEADERS, IGNORE_PROPERTIES} from './groupConstants';
-import 'rxjs/add/operator/delay';
+
 import {SpinnerService} from '../universal/spinner/spinner.service';
-import {AddeditComponent} from '../addedit/addedit.component';
+import {DynamicFormComponent} from "../universal/dynamic-form/container/dynamic-form/dynamic-form.component";
+import {GROUP_CONFIG} from "../universal/dynamic-form/config";
+
 @Component({
   selector: 'dtester-group',
   templateUrl: './group.component.html',
@@ -17,7 +19,6 @@ import {AddeditComponent} from '../addedit/addedit.component';
   providers: [FacultyService, SpecialitiesService]
 })
 export class GroupComponent implements OnInit {
-  @ViewChild(AddeditComponent) popup: AddeditComponent<Group>;
 
   isLoading: boolean;
   groupsOnPage: Group[];
@@ -34,6 +35,8 @@ export class GroupComponent implements OnInit {
   headers: string[];            /* array of headers */
   ignoreProperties: string[];
 
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
+  configs = GROUP_CONFIG;
 
   constructor(private getGroupsService: GroupService,
               private spesialityService: SpecialitiesService,
@@ -94,7 +97,7 @@ export class GroupComponent implements OnInit {
     if (this.countRecords <= (this.pageNumber - 1) * this.offset) {
       --this.pageNumber;
     }
-    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset).delay(3001)
+    this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset).delay(301)
       .subscribe(resp => {this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']);
       this.spinner.hideSpinner();
       });
@@ -106,18 +109,14 @@ export class GroupComponent implements OnInit {
   }
 // deleting groups
   deleteGroup() {
-    this.getGroupsService.deleteGroup(this.groupforDelete['group_id'])
-      .subscribe(() => {
-        this.getGroups();
-      });
+
   }
 // editing groups
   editGroup(groupName: string) {
     this.getGroupsService.editGroup(this.groupforEdit['group_id'], groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
       .subscribe(() => {
         this.getGroups();
-        this.getGroups();
-      });
+    });
   }
   // pagination
     getCountRecords() {
@@ -163,7 +162,8 @@ export class GroupComponent implements OnInit {
     console.log(group);
   }
     // search group
-  startSearch(criteria: string) {         /* callback method for output in search component */
+  startSearch(criteria: string) {   /* callback method for output in search component */
+    this.spinner.showSpinner();
     if (criteria === '') {
       this.getGroups();
     } else {
@@ -172,10 +172,10 @@ export class GroupComponent implements OnInit {
           if (resp['response'] === 'no records') {    /* check condition: if no records presented for search criteria */
             this.groupsOnPage = [];
             this.countRecords = this.groupsOnPage.length;
-            this.isLoading = false;
+            this.spinner.hideSpinner();
           } else {
-            this.groupsOnPage = <Group[]>resp;         /* present all specialities */
-            this.isLoading = false;
+            this.groupsOnPage = <Group[]>resp;
+            this.spinner.hideSpinner();
           }
         },
         err => this.router.navigate(['/bad_request']));
@@ -186,30 +186,54 @@ export class GroupComponent implements OnInit {
   }
 
 
-// Method for opening editing and deleting commo modal window
+// Methods for opening editing and deleting commo modal window
 
   add() {
-    this.popup.showModal('add', 'group', new Group(null, '', null, null) );
+    this.popup.sendItem(new Group('', '', '', ''));
+    this.popup.showModal();
   }
+
   edit(group: Group) {
-    this.popup.showModal('edit', 'group', group );
-  }
-  del(group: Group){
-    this.popup.showModal('delete', 'group', group);
+    this.popup.sendItem(group);
+    this.popup.showModal();
   }
 
-  // Confirm methods for add, edit, delete faculty
-
-  confirmAdd(entity: Group) {
-    console.log(entity);
+  del(faculty: Faculty) {
+    this.popup.deleteEntity(faculty);
   }
-  confirmEdit(entity: Group) {
-    console.log(entity);
+  // Method for  add/edit, delete form submiting
 
+  formSubmitted(value) {
+    console.log(value);
+    // if (value['faculty_id']) {
+    //   this.http.editItem(value['faculty_id'], value['faculty_name'], value['faculty_description']).subscribe(response => {
+    //       this.uploadAllPages(this.page);
+    //       this.popup.cancel();
+    //     },
+    //     error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
+    //   );
+    // } else {
+    //   this.http.addItem(value['faculty_name'], value['faculty_description']).subscribe(response => {
+    //       this.getCount();
+    //       (this.count % this.countPerPage === 0) ? this.page = this.page + 1 : this.page;
+    //       this.uploadAllPages(this.page);
+    //       this.popup.cancel();
+    //     },
+    //     error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
+    //   );
+    // }
   }
-  confirmDelete(group: Group) {
-    console.log(group);
-  };
+
+  //
+  // submitDelete(faculty: Faculty) {
+  //   this.http.deleteItem(faculty['faculty_id']).subscribe(response => {
+  //       this.uploadAllPages(this.page);
+  //       this.popup.cancel();
+  //     },
+  //     error => this.router.navigate(['/bad_request'])
+  //   );
+  //   this.popup.cancel();
+  // }
 
 }
 

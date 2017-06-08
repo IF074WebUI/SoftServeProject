@@ -31,19 +31,27 @@ import {PopupComponent} from './popup/popup.component';
 import { ItemsPerPageComponent } from './universal/items-per-page/items-per-page.component';
 import { ResultsComponent } from './results/results.component';
 import { ResultsService } from './services/results.service';
-import { AddeditComponent } from './addedit/addedit.component';
 import { ExitAboutGuard } from '../guards/exit.about.guard';
 import { GetRecordsRangeService } from './services/get-records-range.service';
 import { BreadcrumbsService } from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
-import { LinksPipe } from './pipes/links.pipe';
 import { SpinnerComponent } from './universal/spinner/spinner.component';
+import { TestsComponent } from './tests/tests.component';
+import { AddUpdateTestComponent } from './tests/add-update-test/add-update-test.component';
+import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
+import { DeleteTimetableComponent } from './timetable/delete-timetable/delete-timetable.component';
+import { AddUpdateTimetableComponent } from './timetable/add-update-timetable/add-update-timetable.component';
 import { TestsService } from './services/tests.service';
 import { DetailedComponent } from './detailed/detailed.component';
 import { SpinnerService } from './universal/spinner/spinner.service';
 import { LoadingModule } from 'ngx-loading';
 import { StudentProfileComponent } from './student-profile/student-profile.component';
 
+import { TestDetailComponent } from './test-detail/test-detail.component';
+import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
+import { QuestionsService } from './services/questions.service';
+import { AnswersService } from './services/answers.service';
+import {TestDetailService} from "./test-detail/test-detail.service";
 
 @NgModule({
   declarations: [
@@ -59,15 +67,19 @@ import { StudentProfileComponent } from './student-profile/student-profile.compo
     PaginationComponent,
     EntitiesTableComponent,
     SearchComponent,
-    LinksPipe,
     StudentsComponent,
     PopupComponent,
     ItemsPerPageComponent,
     ResultsComponent,
-    AddeditComponent,
     BreadcrumbsComponent,
     SpinnerComponent,
+    TestsComponent,
+    AddUpdateTestComponent,
+    DeleteTestComponent,
+    DeleteTimetableComponent,
+    AddUpdateTimetableComponent,
     DetailedComponent,
+    TestDetailComponent,
     StudentProfileComponent
   ],
   imports: [
@@ -78,6 +90,7 @@ import { StudentProfileComponent } from './student-profile/student-profile.compo
     NgbModule,
     MdDialogModule,
     MdButtonModule,
+    DynamicFormModule,
     LoadingModule
   ],
   providers: [
@@ -95,7 +108,10 @@ import { StudentProfileComponent } from './student-profile/student-profile.compo
     ExitAboutGuard,
     GetRecordsRangeService,
     TestsService,
-    SpinnerService
+    SpinnerService,
+    QuestionsService,
+    AnswersService,
+    TestDetailService
   ],
 })
 export class AdminModule {

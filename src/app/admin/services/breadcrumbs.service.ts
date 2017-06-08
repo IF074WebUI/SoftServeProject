@@ -1,61 +1,37 @@
 import { Injectable } from '@angular/core';
-import {Router, RoutesRecognized, Event} from '@angular/router';
+import {Router, Event, NavigationEnd} from '@angular/router';
+import {Subject} from "rxjs/Subject";
 
 @Injectable()
 export class BreadcrumbsService {
 
-  links: {path: string, queryP: {}}[] = [];
+  linksS: Subject<{path: string, name: string}[]> = new Subject();
+  links: {path: string, name: string}[];
 
   constructor(private router: Router) {
-    router.events.subscribe((event: Event) => { if (event instanceof RoutesRecognized) {
-      if (!this.containsURL(this.links, event.url)) {
-        if (this.links.length === 5) {
-          this.links.shift();
-        }
-        this.links.push(this.transformLink(event.url));
+    router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd) {
+        let urls: string[] = this.parseURL(event.url);
+
+          this.links = [];
+          for (let url of urls) {
+            this.links.push({path: this.generatePath(url, event.url), name: url});
+          }
+          this.linksS.next(this.links);
       }
-    }
     });
   }
 
-  transformLink(link: string): {path: string, queryP: {}} {
-    let questionPosition = link.indexOf('?');
-    if (questionPosition === -1) {
-      return {path: link , queryP: null};
+  parseURL(url: string): string[] {
+    let i: number = url.indexOf('?');
+    if (i !== -1) {
+      url = url.slice(0, i);
     }
-    let path = link.slice(0, questionPosition);
-    return {path: path, queryP: this.formQueryParams(link.slice(questionPosition + 1))};
+    return url.split('/').slice(2);
   }
 
-  formQueryParams(s: string) {
-    let queryParamsObj = {};
-    let queryArr = s.split('&');
-    for (let i = 0; i < queryArr.length; i++) {
-      let expr = queryArr[i].split('=');
-      queryParamsObj[expr[0]] = expr[1];
-    }
-    return queryParamsObj;
+  generatePath(url: string, fullUrl: string): string {
+    let i: number = fullUrl.indexOf(url);
+    return fullUrl.slice(0, i) + url;
   }
-
-  containsURL(l: {path: string, queryP: {}}[], url: string): boolean {
-    for (let i = 0; i < l.length; i++) {
-      if (this.concatPath(l[i]) === url) {
-        return true;
-      }
-      }
-      return false;
-  }
-
-  concatPath(p: {path: string, queryP: {}}): string {
-    let result: string = p['path'];
-    if (p['queryP']) {
-      result += '?';
-      let i = 1;
-      for (let prop in p['queryP']) {
-        result += prop + '=' + p['queryP'][prop] + (Object.keys(p['queryP']).length >= i ? '' : '&');
-      }
-    }
-    return result;
-  }
-
 }

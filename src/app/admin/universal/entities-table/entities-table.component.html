@@ -5,14 +5,15 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let entity of entities; let i = index">
+  <tr *ngFor="let entity of entities; let i = index" [ngClass]="{'deprecated': entity.deprecated}">
     <td>{{i + itemsPerPage * (page - 1) + 1}}</td>
     <ng-container *ngFor="let name of getProperties(entity)">
       <td *ngIf="!ignoreProperties?.includes(name)" (click)="clickEntityCallback(entity)">{{entity[name]}}</td>
     </ng-container>
-    <td>
+    <td class="hidden-print">
       <div class="btn-group" role="group" aria-label="Basic example">
-        <button *ngIf="canAction" type="button" class="btn btn-warning btn-sm" (click)="actionEntityCallback(entity)" data-toggle="modal" data-whatever="@mdo">
+        <button *ngIf="canAction" type="button" class="btn btn-warning btn-sm" (click)="actionEntityCallback(entity)"
+                data-toggle="modal" data-whatever="@mdo">
           <i [class]="btnClass" aria-hidden="true"></i>
         </button>
         <button *ngIf="canEdit" type="button" class="btn btn-success btn-sm" (click)="editEntityCallback(entity)" data-toggle="modal" data-target="#modal-update-timetabel,#modalEdit" data-whatever="@mdo">

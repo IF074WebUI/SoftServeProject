@@ -34,24 +34,24 @@ export class StudentsService {
       return this.http.get('http://' + HOST + '/student/getStudentsByGroup/' +  groupId).map((resp: Response) => resp.json());
     }
 
-    getAdminUser(user_id: number) {
+  getAdminUser(user_id: number) {
     return this.http.get('http://' + HOST + '/AdminUser/getRecords/' + user_id).map(resp => resp.json());
     }
 
   insert(studentForm, studentData): Observable<Student> {
     let body = JSON.stringify(
       {
-        'username': studentForm.username,
+        'username': studentData.username,
         'password': studentData.password,
         'password_confirm': studentData.password_confirm,
         'email': studentForm.email,
-        'gradebook_id': studentForm.gradebook_id,
-        'student_surname': studentForm.student_surname,
+        'gradebook_id': studentForm.gradebook,
+        'student_surname': studentForm.student_second_name,
         'student_name': studentForm.student_name,
         'student_fname': studentForm.student_fname,
-        'group_id': studentForm.group_id,
+        'group_id': studentForm.Group,
         'plain_password': studentData.plain_password,
-        'photo': studentForm.photo
+        'photo': studentData.photo
       }
     );
     return this.http.post('http://' + HOST + '/Student/insertData', body).map(resp => resp.json());

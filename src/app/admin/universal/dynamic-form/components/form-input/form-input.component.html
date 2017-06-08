@@ -1,0 +1,13 @@
+<div
+  class="dynamic-field form-input" class="form-group"
+  [formGroup]="group">
+  <label>{{ config.label }}</label>
+  <input class="form-control"
+    type="text"
+    [attr.placeholder]="config.placeholder"
+    [formControlName]="config.name" />
+  <label class="control-label" [hidden]="group.controls[config.name].valid" class="text-danger">
+    Введіть назву
+  </label>
+  </div>
+
