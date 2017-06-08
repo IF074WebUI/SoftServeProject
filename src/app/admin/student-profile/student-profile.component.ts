@@ -12,12 +12,14 @@ import { ActivatedRoute } from '@angular/router';
 export class StudentProfileComponent implements OnInit {
   user_id;
   student: Student;
+  AdminUser;
 
   constructor(private studentsService: StudentsService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(resp => this.user_id = resp['user_id']);
     this.getStudent();
+    this.getAdminUser();
   }
 
   getStudent() {
@@ -26,5 +28,12 @@ export class StudentProfileComponent implements OnInit {
       console.log(this.student);
    });
    };
+
+  getAdminUser() {
+    this.studentsService.getAdminUser(this.user_id).subscribe(resp => {
+      this.AdminUser = resp[0];
+      console.log(this.AdminUser);
+    });
+  }
 }
 

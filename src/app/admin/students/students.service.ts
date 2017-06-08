@@ -34,6 +34,10 @@ export class StudentsService {
       return this.http.get('http://' + HOST + '/student/getStudentsByGroup/' +  groupId).map((resp: Response) => resp.json());
     }
 
+    getAdminUser(user_id: number) {
+    return this.http.get('http://' + HOST + '/AdminUser/getRecords/' + user_id).map(resp => resp.json());
+    }
+
   insert(studentForm, studentData): Observable<Student> {
     let body = JSON.stringify(
       {
