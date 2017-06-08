@@ -1,4 +1,7 @@
-<h2>Розклад проведення тестування <span *ngIf="groupQueryParam">групи: {{timeTables[0]?.group_name}}</span></h2>
+<h2>Розклад проведення тестування
+  <span *ngIf="groupQueryParam">групи: {{timeTables[0]?.group_name}}</span>
+  <span *ngIf="subjectQueryParam">з : {{timeTables[0]?.group_name}}</span>
+</h2>
 <dtester-entities-table [entities]="timeTables"
                         [headers]="headers"
                         [page]="page"
@@ -7,7 +10,7 @@
                         (deleteEntity)="getDeletedTimetable($event)"
                         [displayPropertiesOrder]="displayPropertiesOrder">
 </dtester-entities-table>
-<dtester-pagination *ngIf="!groupQueryParam"
+<dtester-pagination *ngIf="!groupQueryParam && !subjectQueryParam"
                     [countRecords]="numberOfRecords"
                     [recordsPerPage]="recordsPerPage"
                     [currentPage]="page"

@@ -27,7 +27,9 @@ export class GroupComponent implements OnInit {
   countRecords: number;
   headers: string[];            /* array of headers */
   ignoreProperties: string[];
+  btnClass: string = 'fa fa-calendar';
   CREATING_NEW_GROUP = 'Додати нову групу';
+
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = GROUP_CONFIG;
 

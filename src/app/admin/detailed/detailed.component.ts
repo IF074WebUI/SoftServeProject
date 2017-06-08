@@ -10,6 +10,8 @@ import {Question} from "./question";
 import {QuestionsService} from "../services/questions.service";
 import {AnswersService} from "../services/answers.service";
 import {Answer} from "./answer";
+import {TestsService} from "../services/tests.service";
+import {Test} from "../tests/test";
 
 @Component({
   selector: 'dtester-detailed',
@@ -24,11 +26,13 @@ export class DetailedComponent implements OnInit {
   student: Student;
   results: Result[];
   group: Group;
+  tests: Test[] = [];
   active_id: number = 0;
 
   constructor(private activatedRoute: ActivatedRoute, private studentService: StudentsService,
               private resultService: ResultsService, private groupService: GroupService,
-              private questionsService: QuestionsService, private answersService: AnswersService) {
+              private questionsService: QuestionsService, private answersService: AnswersService,
+              private testsService: TestsService) {
   }
 
   ngOnInit() {
@@ -76,6 +80,9 @@ export class DetailedComponent implements OnInit {
           res['questions'] = quest;
         });
         this.results = resp;
+        for (let result of resp) {
+          this.testsService.getTestById(result.test_id).subscribe((response: Test) => this.tests.push(response[0]));
+        }
       }
     });
   }
@@ -117,14 +124,17 @@ export class DetailedComponent implements OnInit {
     popupWin.document.write(`
       <html>
         <head>
-          <title>Print tab</title>
+          <title>Результати тестування</title>
           <style>
           @media print {  
             .hidden-print   { display: none !important; }
           }
           </style>
         </head>
-    <body onload="window.print();window.close()">${printContents}</body>
+    <body onload="window.print();window.close()">
+      <h3>Студент ${this.student.name}</h3>
+          ${printContents}
+    </body>
       </html>`
     );
     popupWin.document.close();

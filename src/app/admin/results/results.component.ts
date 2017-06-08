@@ -13,6 +13,7 @@ import {QueryParamsHandling} from "@angular/router/src/config";
 import {SpinnerService} from "../universal/spinner/spinner.service";
 import {TestDetailService} from "../test-detail/test-detail.service";
 import {TestDetail} from "../test-detail/testDetail";
+import {Test} from "../tests/test";
 
 @Component({
   selector: 'dtester-results',
@@ -21,13 +22,15 @@ import {TestDetail} from "../test-detail/testDetail";
 })
 export class ResultsComponent implements OnInit {
 
-  RESULTS_HEADERS: string[] = ['№', 'студент', 'тест', 'група', 'дата', '% від максимуму', 'результат'];
+  RESULTS_HEADERS: string[] = ['№', 'студент', 'тест', 'група', 'дата', '%', 'результат'];
   IGNORE_PROPERTIES: string[] = ['session_id', 'true_answers', 'start_time', 'end_time', 'answers', 'questions', 'student_id'];
+  SORT_PROPERTIES: string[] = ['student_name', 'percentage'];
   DISPLAY_ORDER: string[] = ['student_name', 'test_name', 'group_name', 'session_date', 'percentage', 'result'];
 
   results: Result[];
   groups: Group[];
-  tests: {test_id: number, test_name: string, subject_id: number, tasks: number, time_for_test: string, enabled: number, attempts: number}[];
+  sortProperties: string[];
+  tests: Test[];
   count: number;
   countPerPage: number = 10;
   page: number = 1;
@@ -53,6 +56,7 @@ export class ResultsComponent implements OnInit {
 
   ngOnInit() {
     this.spinnerService.showSpinner();
+    this.sortProperties = this.SORT_PROPERTIES;
     this.activatedRoute.queryParams.subscribe(params => {
         let studentId = params['student'];
         let testId = params['test'];
@@ -77,7 +81,7 @@ export class ResultsComponent implements OnInit {
       }
     );
     this.groupsService.getGroups().subscribe((resp: Group[]) => this.groups = resp);
-    this.testsService.getAll().subscribe((resp: any) => this.tests = resp);
+    this.testsService.getAll().subscribe((resp: Test[]) => this.tests = resp);
   }
 
   async transformResults() {
@@ -90,7 +94,7 @@ export class ResultsComponent implements OnInit {
     await this.results.map((result: Result, i: number) => {
       this.studentsService.getStudentById(result.student_id)
         .subscribe((resp: Student) => {
-          result['student_name'] = resp[0]['student_name'] + ' ' + resp[0]['student_surname'];
+          result['student_name'] = resp[0]['student_surname'] + ' ' + resp[0]['student_name'];
           this.groupsService.getGroupById(resp[0].group_id).subscribe((group: Group) => {
             result['group_name'] = group[0]['group_name'];
             if (i === this.results.length - 1)
@@ -99,7 +103,7 @@ export class ResultsComponent implements OnInit {
           this.testDetailsService.getTestDetails(result.test_id).subscribe((tDetails: TestDetail[]) => {
             let sum: number = 0;
             for (let tDetail of tDetails) {
-              sum += +tDetail.rate;
+              sum += +tDetail.rate * tDetail.tasks;
             }
             result['percentage'] = (result.result * 100 / sum).toFixed(2);
 
@@ -109,9 +113,7 @@ export class ResultsComponent implements OnInit {
         .subscribe((resp: any) => {
           result['test_name'] = resp[0]['test_name'];
         });
-
     });
-
   }
 
   getResults(): void {

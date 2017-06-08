@@ -11,10 +11,10 @@ export const FACULTY_CONFIG =
     {
       type: 'input',
       text: '',
-      label: 'Введіть назву факультету',
+      label: 'Назву факультету',
       name: 'faculty_name',
       placeholder: 'Введіть назву факультету',
-      required: true
+      requiresAsync: true
     },
     {
       type: 'textarea',
@@ -31,7 +31,72 @@ export const FACULTY_CONFIG =
     }
   ];
 
+export const SPECIALITY_CONFIG =
+  [
+    {
+      type: 'id',
+      text: null,
+      label: 'ID спеціальності',
+      name: 'speciality_id',
+      placeholder: '',
+      required: false
+    },
+    {
+      type: 'input',
+      text: '',
+      label: 'Код спеціальності',
+      name: 'speciality_code',
+      placeholder: 'Введіть код спеціальності',
+      required: false
+    },
+    {
+      type: 'input',
+      text: '',
+      label: 'Назва спеціальності',
+      name: 'speciality_name',
+      placeholder: 'Введіть назву спеціальності',
+      requiresAsync: true
+    },
+    {
+      label: 'Підтвердити',
+      name: 'submit',
+      type: 'button'
+    }
+  ];
 
+
+export const SUBJECTS_CONFIG =
+  [
+    {
+      type: 'id',
+      text: null,
+      label: 'ID предмету',
+      name: 'subject_id',
+      placeholder: '',
+      required: false
+    },
+    {
+      type: 'input',
+      text: '',
+      label: 'Назва предмету',
+      name: 'subject_name',
+      placeholder: 'Введіть назву предмету',
+      requiresAsync: true
+    },
+    {
+      type: 'textarea',
+      text: '',
+      label: 'Опис предмету',
+      name: 'subject_description',
+      placeholder: 'Введіть опис предмету',
+      required: false
+    },
+    {
+      label: 'Підтвердити',
+      name: 'submit',
+      type: 'button'
+    }
+  ];
 export const GROUP_CONFIG =
   [
     {
@@ -48,7 +113,7 @@ export const GROUP_CONFIG =
       label: 'Назва групи',
       name: 'group_name',
       placeholder: 'Введіть назву групи',
-      required: true
+      requiredMax: true
     },
     {
       type: 'select_speciality',
@@ -181,4 +246,5 @@ export const TEST_DETAIL_CONFIG = [
     type: 'button'
   }
 ];
+
 

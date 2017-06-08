@@ -46,9 +46,10 @@ import { TestDetailComponent } from './test-detail/test-detail.component';
 import { DynamicFormModule } from './universal/dynamic-form/dynamic-form.module';
 import { QuestionsService } from './services/questions.service';
 import { AnswersService } from './services/answers.service';
-import {TestDetailService} from './test-detail/test-detail.service';
+import { TestDetailService } from './test-detail/test-detail.service';
 import { SubjectComponent } from './subject/subject.component';
 import { GetRecordsBySearchService } from './services/get-records-by-search.service';
+import { GetTestsBySubjectService } from './services/get-tests-by-subject.service';
 
 @NgModule({
   declarations: [
@@ -107,7 +108,8 @@ import { GetRecordsBySearchService } from './services/get-records-by-search.serv
     QuestionsService,
     AnswersService,
     TestDetailService,
-    GetRecordsBySearchService
+    GetRecordsBySearchService,
+    GetTestsBySubjectService
   ],
 })
 export class AdminModule {

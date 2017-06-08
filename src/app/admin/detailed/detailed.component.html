@@ -11,7 +11,7 @@
     <ul class="nav nav-tabs hidden-print" role="tablist">
       <li class="nav-item" *ngFor="let result of results; let i=index">
         <a class="nav-link" (click)="setActive(i)" [class.active]="i === active_id" data-toggle="tab"
-           [href]="'#' + result.session_id" role="tab">Тест №{{i + 1}}</a>
+           [href]="'#' + result.session_id" role="tab">{{tests[i]?.test_name}}</a>
       </li>
     </ul>
     <!-- Tab panes -->
