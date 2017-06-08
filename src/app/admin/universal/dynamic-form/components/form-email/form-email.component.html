@@ -6,9 +6,9 @@
          type="email"
          [attr.placeholder]="config.placeholder"
          [formControlName]="config.name" />
-  <small [hidden]="">
+  <small [hidden]="group.controls[config.name].hasError('null')">
     Email is required and format should be <i>john@doe.com</i>.
   </small>
 
 </div>
-<!-- required pattern="^[a-zA-Z0–9_.+-]+@[a-zA-Z0–9-]+.[a-zA-Z0–9-.]+$" -->
+<!--  [hidden]="!group.controls[config.name].hasError('pattern')" required pattern="^[a-zA-Z0–9_.+-]+@[a-zA-Z0–9-]+.[a-zA-Z0–9-.]+$" -->
