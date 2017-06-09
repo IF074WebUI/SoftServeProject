@@ -5,7 +5,7 @@ import { GetRecordsRangeService } from '../services/get-records-range.service';
 import { GetRecordsBySearchService } from '../services/get-records-by-search.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
-import { GROUP_CONFIG } from '../universal/dynamic-form/config';
+import {GROUP_CONFIG, SUBJECTS_CONFIG} from '../universal/dynamic-form/config';
 
 @Component({
   selector: 'app-subject',
@@ -22,7 +22,7 @@ export class SubjectComponent implements OnInit {
   btnClass: string = 'fa fa-calendar';
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
-  configs = GROUP_CONFIG;
+  configs = SUBJECTS_CONFIG;
   constructor(private statisticsService: StatisticsService,
               private getRecordsRangeService: GetRecordsRangeService,
               private getRecordsBySearchService: GetRecordsBySearchService,
@@ -87,7 +87,7 @@ export class SubjectComponent implements OnInit {
   // Method for opening editing and deleting common modal window
 
   add() {
-    this.popup.sendItem(new Subject());
+    this.popup.sendItem(new Subject(), 'subject');
     this.popup.showModal();
   }
 
@@ -98,5 +98,9 @@ export class SubjectComponent implements OnInit {
 
   del(subject: Subject) {
     this.popup.deleteEntity(subject);
+  }
+
+  formSubmitted(value) {
+    console.log(value);
   }
 }

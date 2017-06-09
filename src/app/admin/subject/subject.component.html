@@ -10,9 +10,11 @@
                         [canAction]="true"
                         [btnClass]="btnClass"
                         (actionEntity)="onTimeTableNavigate($event)"
-                        (clickEntity)="onTestsNavigate($event)">
+                        (clickEntity)="onTestsNavigate($event)"
+                        (deleteEntity)="del($event)"
+                        (editEntity)="edit($event)">
 </dtester-entities-table>
-
+<button class=""(click)="add()" type="button" class="btn btn-primary" data-dismiss="modal">Створити предмет</button>
 <dtester-pagination [countRecords]="numberOfRecords"
                     [recordsPerPage]="recordsPerPage"
                     [currentPage]="page"

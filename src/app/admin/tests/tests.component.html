@@ -1,4 +1,4 @@
-<h2>Тести <span *ngIf="subjectQueryParam">з : {{tests[0]?.subject_name}}</span></h2>
+<h2 *ngIf="tests.length">Тести з :{{tests[0]?.subject_name}}</h2>
 
 <dtester-entities-table [entities]="tests"
                         [headers]="headers"
