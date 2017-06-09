@@ -113,8 +113,8 @@ export const GROUP_CONFIG =
       label: 'Назва групи',
       name: 'group_name',
       placeholder: 'Введіть назву групи',
-      required: false,
-      requiredMax: true
+      required: true,
+      requiredMax: 10
     },
     {
       type: 'select_speciality',
@@ -122,7 +122,7 @@ export const GROUP_CONFIG =
       label: 'Спеціальність',
       name: 'Speciality',
       placeholder: 'Виберіть спеціальність',
-      required: true
+      required: false
     },
     {
       type: 'select',
@@ -130,7 +130,7 @@ export const GROUP_CONFIG =
       label: 'Факультет',
       name: 'Faculty',
       placeholder: 'Виберіть факультет',
-      required: true
+      required: false
     },
     {
       label: 'Підтвердити',
@@ -195,7 +195,7 @@ export const STUDENT_CONFIG =
       label: `Електронна пошта студента`,
       name: 'email',
       placeholder: `Введіть адрес електроної пошти студента`,
-      required: false
+      emailPattern: true
     },
     {
       label: 'Підтвердити',
@@ -226,7 +226,8 @@ export const TEST_DETAIL_CONFIG = [
     label: 'Номер рівня завдань',
     name: 'level',
     options: [],
-    placeholder: 'Select an option'
+    placeholder: 'Select an option',
+    validateTestDetail: true
   },
   {
     type: 'select_with_options',
