@@ -22,6 +22,7 @@ export class StudentsComponent implements OnInit {
   headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові', 'Група'];
   ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
   displayProperties = ['student_surname', 'student_name', 'student_fname', 'group_name'];
+  sortProperties = ['student_surname', 'student_name', 'student_fname', 'group_name'];
 
   configs = STUDENT_CONFIG;
 
@@ -54,7 +55,7 @@ export class StudentsComponent implements OnInit {
   count: number;
   countPerPage = 10;
 
-  studentForEdit: Student;
+  studentForEdit;
 
   studentForm: FormGroup;
   // password = '' + Math.random();
@@ -226,11 +227,15 @@ export class StudentsComponent implements OnInit {
     this.popup.showModal();
   }
 
-  // edit(student: Student) {
-  //   console.log(student);
-  //   this.popup.sendItem(student);
-  //   this.popup.showModal();
-  // }
+  edit(student: Student) {
+    this.studentForEdit = student;
+    this.getRecordsByIdService.getRecordsById('AdminUser', this.studentForEdit.user_id).subscribe(data => {
+      this.studentForEdit.email = data[0].email;
+    });
+    console.log(this.studentForEdit);
+    this.popup.sendItem({email: this.studentForEdit.email, gradebook_id: this.studentForEdit.gradebook_id, student_surname: this.studentForEdit.student_surname, student_name: this.studentForEdit.student_name, student_fname: this.studentForEdit.student_fname, group_id: this.studentForEdit.group_id});
+    this.popup.showModal();
+  }
 
   formSubmitted(value) {
     console.log(value);

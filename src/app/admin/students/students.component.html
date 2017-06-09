@@ -13,7 +13,9 @@
                         [ignoreProperties]="ignoreProperties"
                         [displayPropertiesOrder]="displayProperties"
                         [canAction]="true"
-                        [canEdit]="true">
+                        (editEntity)="edit($event)"
+                        [canEdit]="true"
+                        [sortProperties]="sortProperties">
 </dtester-entities-table>
 
 <div class="app">

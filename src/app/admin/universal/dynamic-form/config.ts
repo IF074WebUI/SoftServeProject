@@ -184,7 +184,7 @@ export const STUDENT_CONFIG =
       type: 'select',
       text: '',
       label: 'Група',
-      name: 'Group',
+      name: 'group',
       placeholder: 'Виберіть групу',
       required: false
     },
