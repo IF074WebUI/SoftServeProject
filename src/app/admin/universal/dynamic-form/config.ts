@@ -113,6 +113,7 @@ export const GROUP_CONFIG =
       label: 'Назва групи',
       name: 'group_name',
       placeholder: 'Введіть назву групи',
+      required: false,
       requiredMax: true
     },
     {
@@ -223,6 +224,7 @@ export const TEST_DETAIL_CONFIG = [
     type: 'select_with_options',
     label: 'Номер рівня завдань',
     name: 'level',
+    text: '',
     options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
     placeholder: 'Select an option'
   },
@@ -246,5 +248,51 @@ export const TEST_DETAIL_CONFIG = [
     type: 'button'
   }
 ];
+export const QUESTION_CONFIG = [
+  {
+    type: 'id',
+    text: null,
+    label: 'ID питання',
+    name: 'question_id',
+    placeholder: '',
+    required: false
+  },
+  {
+    type: 'id',
+    text: null,
+    label: 'ID тесту',
+    name: 'test_id',
+    placeholder: '',
+    required: false
+  },
+  {
+    type: 'textarea',
+    label: 'Номер рівня завдань',
+    name: 'question_text',
+    options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+    placeholder: 'Select an option'
+  },
+  {
+    type: 'select',
+    label: 'Кількіст завдань',
+    name: 'level',
+    options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+    placeholder: 'Select an option'
+  },
+  {
+    type: 'select_with_options',
+    label: 'Кількіст балів',
+    name: 'type',
+    options: ['1', '2'],
+    placeholder: 'Select an option'
+  },
+  {
+    label: 'Зберегти',
+    name: 'submit',
+    type: 'button'
+  }
+];
+
+
 
 

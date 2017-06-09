@@ -12,7 +12,7 @@ export class FormInputComponent {
   group: FormGroup;
   MODAL_VALIDATION_NAME_REQUIRED = 'Введіть назву';
   MODAL_VALIDATION_NAME_EXISTS = 'Введена назва вже існує';
-
+  MODAL_VALIDATION_NAME_TOLONG = 'Перевищена кільксть символів';
   constructor(private facultyService: FacultyService){
   }
 

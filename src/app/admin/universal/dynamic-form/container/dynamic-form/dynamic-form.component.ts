@@ -35,6 +35,7 @@ function validateName(c: AbstractControl) {
 }
 
 
+
 declare var $: any;
 
 @Component({
@@ -80,14 +81,14 @@ export class DynamicFormComponent implements OnInit {
       if (control.type === 'email') {
         group.addControl(control.name, this.fb.control('', Validators.compose([validateEmail])));
       }
+      if (control.requiredMax) {
+        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required, Validators.maxLength(10)])));
+      }
       if (control.required) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
       }
       if (control.requiresAsync) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
-      }
-      if (control.requiredMax) {
-        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.maxLength(10)])));
       }
       else {
         group.addControl(control.name, this.fb.control(''));
