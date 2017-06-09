@@ -181,11 +181,7 @@ export class ResultsComponent implements OnInit {
       <html>
         <head>
           <title>Результати тестування</title>
-          <style>
-          @media print {  
-            .hidden-print   { display: none !important; }
-          }
-          </style>
+          <link rel="stylesheet" type="text/css" href="/assets/bootstrap.min.css" media="print">           
         </head>
     <body onload="window.print();window.close()">${printContents}</body>
       </html>`
