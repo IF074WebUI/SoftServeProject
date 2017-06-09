@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StatisticsService } from './statistics.service';
 import { Statistic } from './statistic';
+import {SpinnerService} from '../universal/spinner/spinner.service';
 @Component({
   selector: 'app-statistics',
   templateUrl: './statistics.component.html',
@@ -8,8 +9,11 @@ import { Statistic } from './statistic';
 })
 export class StatisticsComponent implements OnInit {
   entity: Statistic[];
+  activeTab: number = 0;
 
-  constructor(private statistics: StatisticsService) {
+  constructor(private statistics: StatisticsService,
+              private spinner: SpinnerService)
+  {
     this.entity = [
       {name: 'speciality', descriptiion: 'Спеціальність', count: ''},
       {name: 'group', descriptiion: 'Групи', count: ''},
@@ -21,12 +25,15 @@ export class StatisticsComponent implements OnInit {
   ngOnInit() {
     let i: number = 0;
     for (let entity of this.entity) {
+      this.spinner.showSpinner()
       this.statistics.getCountRecords(entity['name']).subscribe((data) => {
-        console.log(entity['name'], data.numberOfRecords);
         this.entity[i].count = data.numberOfRecords;
         i ++;
+        this.spinner.hideSpinner();
       });
     }
-    console.log(this.entity);
+  }
+  setActiveTab (i: number) {
+    this.activeTab = i;
   }
 }

@@ -1,9 +1,11 @@
 
 
 <h2>Статистика системи</h2>
-<ul class="nav nav-tabs" >
-  <li class="nav-item" *ngFor="let entityItem of entity">
-    <div class="nav-link active">{{entityItem.descriptiion}}
+<ul class="nav nav-tabs text-center" >
+  <li class="nav-item" *ngFor="let entityItem of entity; let i=index">
+    <div class="nav-link"
+         (click)="setActiveTab(i)"
+         [class.active]="i === activeTab">{{entityItem.descriptiion}}
       <br><p class="text-center">{{entityItem.count}}</p></div>
   </li>
 </ul>

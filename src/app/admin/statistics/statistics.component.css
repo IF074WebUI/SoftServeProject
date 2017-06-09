@@ -1,3 +1,10 @@
 h2{
   text-align: center;
 }
+
+li:hover {
+  background-color: transparent;
+}
+p {
+  font-weight: bold;
+}
