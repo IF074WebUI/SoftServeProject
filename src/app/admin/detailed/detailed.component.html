@@ -24,7 +24,7 @@
           <li>час початку: {{result.start_time}}; час закінчення: {{result.end_time}}</li>
           <li>тривалість проходження: {{calcutateTimeInterval(result.start_time, result.end_time)}}</li>
           <li>кількість запитань: {{result.questions.length}}</li>
-          <li>результат: {{result.result}}</li>
+          <li>результат: {{result.result}} ({{percents[i]}}%)</li>
         </ul>
         <p>
           <button class="btn btn-primary hidden-print" type="button" data-toggle="collapse"
