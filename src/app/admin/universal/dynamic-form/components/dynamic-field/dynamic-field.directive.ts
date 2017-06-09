@@ -4,15 +4,23 @@ import { FormGroup } from '@angular/forms';
 import { FormButtonComponent } from '../form-button/form-button.component';
 import { FormInputComponent } from '../form-input/form-input.component';
 import { FormSelectComponent } from '../form-select/form-select.component';
-import { FormAddnameComponent } from '../form-addname/form-addname.component';
 import {FormIdComponent} from '../form-id/form-id.component';
+import {FormSelectSpecialityComponent} from '../form-select-speciality/form-select-speciality.component';
+import {FormTextareaComponent} from '../form-textarea/form-textarea.component';
+import {FormEmailComponent} from '../form-email/form-email.component';
+import {FormSelectWithOptionsComponent} from '../form-select-with-options/form-select-with-options.component';
+import {FormSelectTestDetailByIdComponent} from '../form-select-test-detail-by-id/form-select-test-detail-by-id.component';
 
 const components = {
   button: FormButtonComponent,
   input: FormInputComponent,
   select: FormSelectComponent,
-  addname: FormAddnameComponent,
-  id: FormIdComponent
+  select_speciality: FormSelectSpecialityComponent,
+  id: FormIdComponent,
+  textarea: FormTextareaComponent,
+  email: FormEmailComponent,
+  select_with_options: FormSelectWithOptionsComponent,
+  sect_test_detail_by_id: FormSelectTestDetailByIdComponent
 };
 
 
@@ -21,17 +29,19 @@ const components = {
   selector: '[dynamicField]'
 })
 export class DynamicFieldDirective implements OnInit {
-  @Input()
-  config;
+  component;
 
   @Input()
+  config;
+  @Input()
   group: FormGroup;
+
   constructor(
     private resolver: ComponentFactoryResolver,
     private container: ViewContainerRef
   ) {}
 
-  component;
+
 
   ngOnInit() {
     const component = components[this.config.type];

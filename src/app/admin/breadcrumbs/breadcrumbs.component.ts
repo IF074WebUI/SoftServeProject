@@ -8,11 +8,11 @@ import {BreadcrumbsService} from '../services/breadcrumbs.service';
 })
 export class BreadcrumbsComponent implements OnInit {
 
-  links: {path: string, queryP: {}}[];
+  links: {path: string, name: string}[] = [];
 
   constructor(private breadcrumbsService: BreadcrumbsService) { }
 
   ngOnInit() {
-    this.links = this.breadcrumbsService.links;
+    this.breadcrumbsService.linksS.subscribe(l => this.links = l);
   }
 }

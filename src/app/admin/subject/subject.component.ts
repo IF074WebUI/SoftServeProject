@@ -1,78 +1,127 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import { Subject } from './subject';
+import { StatisticsService } from '../statistics/statistics.service';
+import { GetRecordsRangeService } from '../services/get-records-range.service';
+import { GetRecordsBySearchService } from '../services/get-records-by-search.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import { SUBJECTS_CONFIG } from '../universal/dynamic-form/config';
 import { SubjectService } from './subject.service';
+import { DeleteRecordByIdService } from '../services/delete-record-by-id.service';
 
-
-export class Subject {
-  subject_id: number;
-  subject_name: string;
-  subject_description: string;
-}
+declare var $: any;
 
 @Component({
   selector: 'app-subject',
   templateUrl: './subject.component.html',
-  styleUrls: ['./subject.component.css'],
-  providers: [SubjectService]
+  styleUrls: ['./subject.component.css']
 })
 export class SubjectComponent implements OnInit {
-  subject: any;
-  subjects: Subject[];
-  selectedSubject: Subject;
+  subjects: Subject[] = [];
+  headers: string[];
+  displayPropertiesOrder: string[];
+  numberOfRecords: number;
+  recordsPerPage: number;
   page: number;
-  pageCount: number;
-  limit = 5;
+  btnClass: string = 'fa fa-calendar';
 
-  constructor(private subjectService: SubjectService) { }
-  getSubjects(): void {
-    this.subjectService.getPagenationSubjects(this.page, this.limit).subscribe(data => {
-      this.subjects = data;
-    });
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
+  configs = SUBJECTS_CONFIG;
+  constructor(private statisticsService: StatisticsService,
+              private getRecordsRangeService: GetRecordsRangeService,
+              private getRecordsBySearchService: GetRecordsBySearchService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute,
+              private subjectService: SubjectService,
+              private deleteRecordByIdService: DeleteRecordByIdService) { }
+
+  ngOnInit() {
+    this.page = 1;
+    this.recordsPerPage = 5;
+    this.getCountRecords();
+    this.getSubjectsRange();
+    this.headers = ['№', 'Назва предмету', 'Опис' ];
+    this.displayPropertiesOrder = ['subject_name', 'subject_description'];
   }
-  getNumberOfPages(): void {
-    let recordsCount: number;
-    this.subjectService.getNumberOfRecords().subscribe(data => {
-      recordsCount = data['numberOfRecords'];
-      this.pageCount = Math.ceil(recordsCount / this.limit);
-    });
-  }
-  addSubject(subject_name: string, subject_description: string) {
-    this.subjectService.createSubject(subject_name, subject_description)
-      .subscribe();
-    this.getSubjects();
-  }
-  deleteSubject(subject: Subject): void {
-    this.subjectService
-      .delete(subject.subject_id)
-      .then(() => {
-        this.subjects = this.subjects.filter(h => h !== subject);
-        if (this.selectedSubject === subject) {
-          this.selectedSubject = null;
-        }
+  getSubjectsRange() {
+    if (this.numberOfRecords <= (this.page - 1) * this.recordsPerPage) {
+      --this.page;
+    }
+    this.getRecordsRangeService.getRecordsRange('subject', this.recordsPerPage, (this.page - 1) * this.recordsPerPage)
+      .subscribe((data) => {
+        this.subjects = data;
       });
   }
-  ngOnInit(): void {
-    this.page = 1;
-    this.getSubjects();
-    this.getNumberOfPages();
+  getCountRecords() {
+    this.statisticsService.getCountRecords('subject').subscribe((data) => {
+      this.numberOfRecords = data.numberOfRecords;
+    });
   }
-  onSelect(subject: Subject): void {
-    this.selectedSubject = subject;
+  changePage(page: number) {
+    this.page = page;
+    this.getSubjectsRange();
   }
-  onUpdate(subject: Subject): void {
-    this.subjectService.update(subject);
+  changeNumberOfRecordsPerPage(newNumberOfRecordsPerPage: number) {
+    this.recordsPerPage = newNumberOfRecordsPerPage;
+    this.getSubjectsRange();
   }
-  increasePage(): void {
-    if (this.page < this.pageCount) {
-      this.page += 1;
-      this.getSubjects();
+  startSearch(criteria: string) {
+    if (criteria === '') {
+      this.getSubjectsRange();
+      this.getCountRecords();
+    } else {
+      this.getRecordsBySearchService.getRecordsBySearch('subject', criteria).subscribe(resp => {
+          if (resp['response'] === 'no records') {
+            this.subjects = [];
+            this.numberOfRecords = this.subjects.length;
+          } else {
+            this.numberOfRecords = 0;
+            this.page = 2;
+            this.subjects = resp;
+          }
+        },
+        err => this.router.navigate(['/bad_request']));
     }
   }
-  decreasePage(): void {
-    if (this.page > 1) {
-      this.page -= 1;
-      this.getSubjects();
+  onTimeTableNavigate(subject: Subject) {
+    this.router.navigate(['./timetable'], {queryParams: {'subject_id': subject.subject_id}, relativeTo: this.activatedRoute.parent});
+  }
+  onTestsNavigate(subject: Subject) {
+    this.router.navigate(['subject/tests'], {queryParams: {'subject_id': subject.subject_id}, relativeTo: this.activatedRoute.parent});
+  }
+
+  // Method for opening editing and deleting common modal window
+
+  add() {
+    this.popup.sendItem(new Subject(), 'subject');
+    this.popup.showModal();
+  }
+  edit(subject: Subject) {
+    this.popup.sendItem(subject);
+    this.popup.showModal();
+  }
+  del(subject: Subject) {
+    this.popup.deleteEntity(subject);
+  }
+  formSubmitted(inputedSubject) {
+    if (!inputedSubject.subject_id) {
+      this.subjectService.createSubject(inputedSubject).subscribe(() => {
+        this.numberOfRecords++;
+        this.getSubjectsRange();
+        $('#add_edit_deletePopup').modal('hide');
+      });
+    } else {
+      this.subjectService.updateSubject(inputedSubject).subscribe(() => {
+        this.getSubjectsRange();
+        $('#add_edit_deletePopup').modal('hide');
+      });
     }
+  }
+  deleteSubject(deletedSubject) {
+    this.deleteRecordByIdService.deleteRecordsById('subject', deletedSubject.subject_id)
+      .subscribe(() => {
+        this.numberOfRecords--;
+        this.getSubjectsRange();
+      });
   }
 }
-
-

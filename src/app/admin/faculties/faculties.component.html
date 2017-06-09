@@ -1,140 +1,33 @@
 
-<!--serarch component -->
+<!--search component -->
+
 <div class="input-group">
   <span class="input-group-addon" id="basic-addon1"> <i class="fa fa-search-plus" aria-hidden="true"></i>
 </span>
   <dtester-search (searchCriteria)="search($event)"></dtester-search>
 </div>
+
 <!--Common component to display entities-->
-<dtester-entities-table [entities]="faculties" [headers]="headers"  [ignoreProperties]="ignoreProperties" (deleteEntity)="del($event)"
+
+<dtester-entities-table [entities]="faculties" [headers]="headers"  [ignoreProperties]="ignoreProperties" (deleteEntity)="delete($event)"
                 [page]="page" [itemsPerPage]="countPerPage"
                 (editEntity)="edit($event)"
                 (clickEntity)="getGroupsByFaculties($event)"></dtester-entities-table>
+
 <!--Pagination component-->
+
 <div class="text-center">
   <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
                       (pageChanged)="changePage($event)"></dtester-pagination>
 </div>
 
+<!-- Universal popup for add/edit/delete -->
+
 <div class="app">
-  <dynamic-form [config]="configs" (submitted)="formSubmitted($event)" (submitDelete)="submitDelete($event)"></dynamic-form>
+  <dynamic-form [config]="configs" (submitted)="formSubmitted($event)" (youCanDelete)="submitDelete($event)"></dynamic-form>
 </div>
 
 <button class="btn btn-lg btn-outline-primary" (click)="add()"> Створити новий факультет</button>
 
 <button routerLink="/sidekicks">Go to sidekicks</button>
-
-
-
-
-
-
-
-
-<!--my old table and pagination
-<div class="table-responsive table-bordered table-hover">
-  <table class="table">
-    <thead>
-    <td>Номер</td>
-    <td>Назва факультету</td>
-    <td>Опис факультету</td>
-    <td>Редагувати назву</td>
-    <td>Видалити</td>
-    </thead>
-    <tr *ngFor="let item of faculties">
-      <td>{{faculties.indexOf(item)+ 10 * page - 9}}</td>
-      <td>{{item['faculty_name']}}</td>
-      <td>{{item['faculty_description']}}</td>
-      <td><button  (click)="selectedItem(item); editFaculty(editContent)" type="button" class="btn btn-sm btn-success btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
-      <td><button  (click)="selectedItem(item); deleteFaculty(delContent)" type="button" class="btn btn-sm btn-danger btn-delete"><i class="fa fa-trash"></i></button></td>
-    </tr>
-  </table>
-</div>
-
-<ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="changePage($event)" size="lg"></ngb-pagination>
--->
-
-
-
-<!-- Modal popup for adding -->
-
-
-<!--
- <ng-template #addContent let-c="close" let-d="dismiss">
-
-
-  <div class="modal-header">
-    <h4 class="modal-title">{{modalHeader}}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form method="post" [formGroup]="facultyAddForm">
-      <input formControlName="name" type="text" name="name" required class="form-control"/>
-      <span
-        *ngIf="facultyAddForm.controls['name'].hasError('required') && facultyAddForm.controls['name'].touched"
-        class="validate_message">Вкажіть назву факультету</span>
-      <span
-        *ngIf="facultyAddForm.controls['name'].hasError('exists') && facultyAddForm.controls['name'].pristine"
-        class="validate_message">Факультет з такою назвою вже існує</span>
-      <textarea formControlName='description' type="text" name='description' required
-                class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
-       </textarea>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" [disabled]="!facultyAddForm.valid" (click)="c('Close click')">
-      Створити
-    </button>
-  </div>
-</ng-template>
--->
-
-
-<!-- Modal popup for deleting -->
-<!--
-<ng-template #delContent let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h4 class="modal-title">Видалення факультету</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <p>Ви підтверджуєте видалення даного факультету?</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Підтвердити</button>
-  </div>
-</ng-template>
--->
-
-<!-- Modal popup for editing -->
-<!--
-<ng-template #editContent let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h4 class="modal-title">{{modalHeader}}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form method="post" [formGroup]="facultyEditForm">
-      <input formControlName="name" type="text" name="name" required class="form-control"/>
-      <span
-        *ngIf="facultyEditForm.controls['name'].hasError('required') && facultyEditForm.controls['name'].touched"
-        class="validate_message">Вкажіть назву факультету</span>
-      <textarea formControlName="description" type="text" name="description" required
-                class="form-control" placeholder="Введіть опис факультету" class="form-control" rows="5">
-       </textarea>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" [disabled]="facultyEditForm.invalid" (click)="c('Close click')">
-      Створити
-    </button>
-  </div>
-</ng-template>
--->
 

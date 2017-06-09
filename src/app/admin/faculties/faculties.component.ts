@@ -6,6 +6,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import 'rxjs/add/operator/switchMap';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import {TEST_DETAIL_CONFIG} from '../universal/dynamic-form/config';
+import {SpinnerService} from '../universal/spinner/spinner.service';
 
 @Component({
   selector: 'dtester-faculties',
@@ -26,47 +28,15 @@ export class FacultiesComponent<T> implements OnInit {
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
-
-  configs = [
-    {
-      type: 'id',
-      text: null,
-      label: 'ID факультету',
-      name: 'faculty_id',
-      placeholder: '',
-      required: false
-    },
-    {
-      type: 'addname',
-      text: '',
-      label: 'Введіть назву факультету',
-      name: 'faculty_name',
-      placeholder: 'Введіть назву факультету',
-      required: true
-    },
-    {
-      type: 'input',
-      text: '',
-      label: 'Введіть опис факультету',
-      name: 'faculty_description',
-      placeholder: 'Введіть опис факультету',
-      required: false
-    },
-    {
-      label: 'Підтвердити',
-      name: 'submit',
-      type: 'button'
-    }
-  ];
-
+  configs = TEST_DETAIL_CONFIG;
 
   constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
-              private router: Router) {
-
+              private router: Router, private spinner: SpinnerService) {
   }
 
   ngOnInit() {
     this.ignoreProperties = this.IGNORE_PROPERTIES;
+    this.spinner.showSpinner()
 
     this.http.countAllRecords().subscribe((resp) => {
         this.count = resp['numberOfRecords'];
@@ -76,6 +46,7 @@ export class FacultiesComponent<T> implements OnInit {
 
     this.http.getPaginatedPage(this.countPerPage, 0).subscribe((resp) => {
         this.faculties = <Faculty[]> resp;
+        this.spinner.hideSpinner();
       },
       error => this.router.navigate(['/bad_request'])
     );
@@ -90,49 +61,53 @@ export class FacultiesComponent<T> implements OnInit {
   }
 
   changePage(d: number) {
+    this.spinner.showSpinner();
     this.page = d;
     this.http.getPaginatedPage(this.countPerPage, (this.page - 1) * this.countPerPage).subscribe((resp) => {
         this.faculties = <Faculty[]> resp;
+        this.spinner.hideSpinner();
       },
       error => this.router.navigate(['/bad_request'])
     );
   }
 
   uploadAllPages(page: number) {
+    this.spinner.showSpinner();
     this.getCount();
     this.http.getPaginatedPage(this.countPerPage, (page - 1) * this.countPerPage).subscribe((resp) => {
         this.faculties = <Faculty[]> resp;
+        this.spinner.hideSpinner();
       },
       error => this.router.navigate(['/bad_request'])
     );
   }
 
-
   search(text: string) {
+    this.spinner.showSpinner();
     this.http.searchFaculty(text).subscribe(resp => {
       if (resp['response'] === 'no records') {
         this.faculties = [];
+        this.spinner.hideSpinner();
       }
       else {
         this.faculties = <Faculty[]> resp;
         this.count = this.faculties.length;
+        this.spinner.hideSpinner();
       }
     });
   }
 
   getGroupsByFaculties(faculty: Faculty) {
     this.id = faculty['faculty_id'];
-    this.router.navigate(['/admin/group'], {queryParams: {'Id': this.id}});
+    this.router.navigate(['/admin/group'], {queryParams: {'facultyId': this.id}});
   }
-
 
   // Dynamic Module
 
-
-// Method for opening editing and deleting commo modal window
+// Methods for opening editing and deleting common modal window
 
   add() {
-    this.popup.sendItem(new Faculty('', '', ''));
+    this.popup.sendItem(new Faculty('', '', ''), 'Faculty');
     this.popup.showModal();
   }
 
@@ -141,9 +116,11 @@ export class FacultiesComponent<T> implements OnInit {
     this.popup.showModal();
   }
 
-  del(faculty: Faculty) {
-    this.popup.Delete(faculty);
+  delete(faculty: Faculty) {
+    this.popup.deleteEntity(faculty);
   }
+
+  // Method for  add/edit, delete form submiting
 
   formSubmitted(value) {
     console.log(value);
@@ -166,15 +143,14 @@ export class FacultiesComponent<T> implements OnInit {
     }
   }
 
-
   submitDelete(faculty: Faculty) {
     this.http.deleteItem(faculty['faculty_id']).subscribe(response => {
+        this.getCount();
+        (this.count % this.countPerPage === 1) ? this.page = this.page - 1 : this.page;
         this.uploadAllPages(this.page);
-        this.popup.cancel();
       },
       error => this.router.navigate(['/bad_request'])
     );
-    this.popup.cancel();
   }
 
 }
