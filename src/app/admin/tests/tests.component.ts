@@ -21,12 +21,15 @@ export class TestsComponent implements OnInit {
   displayPropertiesOrder: string[];
   action: string;
   subjectQueryParam: string;
+  btnClass: string;
   constructor(private getAllRecordsService: GetAllRecordsService,
               private getRecordsByIdService: GetRecordsByIdService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
               private getTestsBySubjectService: GetTestsBySubjectService
-  ) {}
+  ) {
+    this.btnClass = 'fa fa-venus-double';
+  }
   ngOnInit() {
     this.getQueryParams()
     this.getSubjects();
@@ -102,4 +105,5 @@ export class TestsComponent implements OnInit {
   getTestDetailsByTest (test: Test) {
     this.router.navigate(['./testDetails'], {queryParams: {'test_id': test.test_id, 'test_name': test.test_name}, relativeTo: this.activatedRoute.parent});
   }
+
 }

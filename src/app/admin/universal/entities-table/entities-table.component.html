@@ -6,13 +6,12 @@
         <i class="fa fa-sort" aria-hidden="true" *ngIf="!order[headerIndex] || order[headerIndex] === '' " (click)="sortEntities(headerIndex - 1, 'desc')"></i>
         <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="order[headerIndex] === 'desc'" (click)="sortEntities(headerIndex - 1, 'asc')"></i>
         <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="order[headerIndex] === 'asc'" (click)="sortEntities(headerIndex - 1, '')"></i>
-
       </ng-container>
     </th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let entity of entities; let i = index" [ngClass]="{'deprecated': entity.deprecated}">
+  <tr *ngFor="let entity of entities; let i = index" [ngClass]="{'table-warning': entity.deprecated}">
     <td>{{i + itemsPerPage * (page - 1) + 1}}</td>
     <ng-container *ngFor="let name of getProperties(entity)">
       <td *ngIf="!ignoreProperties?.includes(name)" (click)="clickEntityCallback(entity)">{{entity[name]}}</td>

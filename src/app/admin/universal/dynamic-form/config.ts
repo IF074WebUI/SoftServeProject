@@ -208,7 +208,7 @@ export const TEST_DETAIL_CONFIG = [
     type: 'id',
     text: null,
     label: 'ID деталей тесту',
-    name: 'id',
+    name: 'id_detail_id',
     placeholder: '',
     required: false
   },
@@ -221,15 +221,15 @@ export const TEST_DETAIL_CONFIG = [
     required: false
   },
   {
-    type: 'select_with_options',
+    type: 'sect_test_detail_by_id',
+    test_id: null,
     label: 'Номер рівня завдань',
     name: 'level',
-    text: '',
-    options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+    options: [],
     placeholder: 'Select an option'
   },
   {
-    type: 'select',
+    type: 'select_with_options',
     label: 'Кількіст завдань',
     name: 'tasks',
     options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],

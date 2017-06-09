@@ -6,10 +6,14 @@
 
 
 
-  <dtester-entities-table class="table" [entities]="groupsOnPage" [headers]="headers" [ignoreProperties]="ignoreProperties"
-                            (deleteEntity)=del($event) [canAction]="true"
-                            [page]="pageNumber" [itemsPerPage]="offset"
-                            (editEntity)="edit($event)" (clickEntity)="getStudentsByGroup($event)" (actionEntity)="onTimeTableNavigate($event)" [btnClass]="btnClass">
+  <dtester-entities-table class="table" [entities]="groupsOnPage"
+                          [headers]="headers" [ignoreProperties]="ignoreProperties"
+                          (deleteEntity)=del($event) [canAction]="true"
+                          [page]="pageNumber" [itemsPerPage]="offset"
+                          (editEntity)="edit($event)"
+                          (clickEntity)="getStudentsByGroup($event)"
+                          (actionEntity)="onTimeTableNavigate($event)"
+                          [btnClass]="btnClass">
   </dtester-entities-table>
 
 

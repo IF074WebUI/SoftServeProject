@@ -6,7 +6,8 @@
                         (deleteEntity)="getDeletedTest($event)"
                         [displayPropertiesOrder]="displayPropertiesOrder"
                         [canAction]="true"
-                        (actionEntity)="getTestDetailsByTest($event)">
+                        (actionEntity)="getTestDetailsByTest($event)"
+                        [btnClass]="btnClass">
 </dtester-entities-table>
 
 <button type="button" class="btn btn-primary"(click)="openModalAddTest()">Додати тест</button>

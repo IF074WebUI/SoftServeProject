@@ -12,6 +12,7 @@ import { FormTextareaComponent } from './components/form-textarea/form-textarea.
 import { FormEmailComponent } from './components/form-email/form-email.component';
 import { FormSelectWithOptionsComponent } from './components/form-select-with-options/form-select-with-options.component';
 import {FacultyService} from '../../faculties/faculty.service';
+import { FormSelectTestDetailByIdComponent } from './components/form-select-test-detail-by-id/form-select-test-detail-by-id.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import {FacultyService} from '../../faculties/faculty.service';
     FormTextareaComponent,
     FormEmailComponent,
     FormSelectWithOptionsComponent,
-    FormSelectWithOptionsComponent
+    FormSelectWithOptionsComponent,
+    FormSelectTestDetailByIdComponent
   ],
   exports: [DynamicFormComponent],
   entryComponents: [
@@ -40,7 +42,8 @@ import {FacultyService} from '../../faculties/faculty.service';
     FormSelectSpecialityComponent,
     FormTextareaComponent,
     FormEmailComponent,
-    FormSelectWithOptionsComponent
+    FormSelectWithOptionsComponent,
+    FormSelectTestDetailByIdComponent
   ],
   providers: [FacultyService]
 

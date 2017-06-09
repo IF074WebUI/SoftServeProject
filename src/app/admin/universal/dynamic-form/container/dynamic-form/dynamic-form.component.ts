@@ -47,8 +47,10 @@ declare var $: any;
 export class DynamicFormComponent implements OnInit {
   @Input()
   config: any[] = [];
-  @Input()
-  entity: any;
+  // @Input()
+   entity: any;
+ // @Input()
+  test_id: string;
   entityForDelete: any;
   Properties: Array<string>;
 
@@ -64,7 +66,8 @@ export class DynamicFormComponent implements OnInit {
   MODAL_ADD_TITLE = 'Редагування';
   MODAL_DELETE_TITLE = 'Видалення';
   TITLE: string;
-  CONFIRM_ANSWER = 'Ви підтверджуєте видалення ';
+  CONFIRM_ANSWER_TEXT = 'Ви підтверджуєте видалення ';
+  CONFIRM_ANSWER: string;
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';
 
@@ -108,17 +111,19 @@ export class DynamicFormComponent implements OnInit {
   }
 
 
-  sendItem(entity: any, entity_name?: string) {
+  sendItem(entity: any, entity_name?: string, test_id?: string) {
+    console.log(entity);
+    this.test_id = test_id;
     this.action = 'add_edit';
     this.entity = entity;
     this.entity_name = entity_name;
-    console.log(this.entity_name);
     let InputEntityNames = Object.getOwnPropertyNames(entity);
     let FormNames = Object.getOwnPropertyNames(this.form.controls);
     for (let i = 0; i < InputEntityNames.length; i++) {
       this.form.controls[FormNames[+[i]]].setValue(this.entity[InputEntityNames[+[i]]]);
     }
     this.TITLE = this.MODAL_ADD_TITLE;
+
 
   }
 
@@ -127,15 +132,16 @@ export class DynamicFormComponent implements OnInit {
     this.entityForDelete = entity;
     this.Properties = Object.getOwnPropertyNames(this.entityForDelete);
     this.TITLE = this.MODAL_DELETE_TITLE;
-    this.CONFIRM_ANSWER = this.CONFIRM_ANSWER + '' + this.entityForDelete[this.Properties[1]] + '?';
+    this.CONFIRM_ANSWER = this.CONFIRM_ANSWER_TEXT + '' + this.entityForDelete[this.Properties[1]] + '?';
     $('#add_edit_deletePopup').modal('show');
   }
 
   // Method for closing modal
 
   cancel() {
-    $('#add_edit_deletePopup').modal('hide');
     this.form.reset();
+    this.CONFIRM_ANSWER = '';
+    $('#add_edit_deletePopup').modal('hide');
   }
 
 }

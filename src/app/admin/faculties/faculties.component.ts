@@ -6,7 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import 'rxjs/add/operator/switchMap';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
-import {FACULTY_CONFIG} from '../universal/dynamic-form/config';
+import {TEST_DETAIL_CONFIG} from '../universal/dynamic-form/config';
 import {SpinnerService} from '../universal/spinner/spinner.service';
 
 @Component({
@@ -27,8 +27,7 @@ export class FacultiesComponent<T> implements OnInit {
   text: string;
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
-
-  configs = FACULTY_CONFIG;
+  configs = TEST_DETAIL_CONFIG;
 
   constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
               private router: Router, private spinner: SpinnerService) {
