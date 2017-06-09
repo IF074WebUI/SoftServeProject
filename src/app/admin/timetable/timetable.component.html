@@ -2,9 +2,13 @@
   <span *ngIf="groupQueryParam">групи: {{timeTables[0]?.group_name}}</span>
   <span *ngIf="subjectQueryParam">з: {{timeTables[0]?.subject_name}}</span>
 </h2>
-<dtester-items-per-page [numberOfRecords]="numberOfRecords"
-                        (recordsPerPageChanged)="changeNumberOfRecordsPerPage($event)"
-                        *ngIf="!groupQueryParam && !subjectQueryParam"></dtester-items-per-page>
+<div class="alert alert-info" role="alert">
+  <button type="button" class="btn btn-primary" (click)="openModalAddTimetable()">Запланувати тестування</button>
+  <dtester-items-per-page [numberOfRecords]="numberOfRecords"
+                          (recordsPerPageChanged)="changeNumberOfRecordsPerPage($event)"
+                          *ngIf="!groupQueryParam && !subjectQueryParam"></dtester-items-per-page>
+</div>
+
 <dtester-entities-table [entities]="timeTables"
                         [headers]="headers"
                         [page]="page"
@@ -18,7 +22,6 @@
                     [recordsPerPage]="recordsPerPage"
                     [currentPage]="page"
                     (pageChanged)="changePage($event)"></dtester-pagination>
-<button type="button" class="btn btn-primary" (click)="openModalAddTimetable()">Запланувати тестування</button>
 <app-delete-timetable [deletedTimetable]="deletedTimetable"
                       (getTimetableRecords)="checkQueryParams()"
                       (changeNumberOfRecords)="changeNumberOfRecords($event)"></app-delete-timetable>
