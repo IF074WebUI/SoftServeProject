@@ -4,8 +4,6 @@
   <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
   <dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
 
-
-
   <dtester-entities-table class="table" [entities]="groupsOnPage"
                           [headers]="headers" [ignoreProperties]="ignoreProperties"
                           (deleteEntity)=del($event) [canAction]="true"
@@ -13,7 +11,9 @@
                           (editEntity)="edit($event)"
                           (clickEntity)="getStudentsByGroup($event)"
                           (actionEntity)="onTimeTableNavigate($event)"
-                          [btnClass]="btnClass">
+                          [btnClass]="btnClass"
+                          [sortProperties]="sortProperties"
+                          [displayPropertiesOrder]="displayPropertiesOrder">>
   </dtester-entities-table>
 
 
