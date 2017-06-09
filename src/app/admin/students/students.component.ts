@@ -63,7 +63,7 @@ export class StudentsComponent implements OnInit {
   studentEditForm: FormGroup;
 
   static generateStudentData() {
-    const password = '' + Math.random();
+    const password = Math.random().toString(36).substr(2, 8);
     const username = 's' + Math.random().toFixed(3) + ' q' + Math.random().toFixed(3);
     const photo = '';
     return {
