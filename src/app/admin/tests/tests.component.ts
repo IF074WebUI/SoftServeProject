@@ -4,6 +4,7 @@ import { Test } from './test';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GetTestsBySubjectService } from '../services/get-tests-by-subject.service';
+import {GetRecordsBySearchService} from "../services/get-records-by-search.service";
 
 declare var $: any;
 
@@ -26,8 +27,7 @@ export class TestsComponent implements OnInit {
               private getRecordsByIdService: GetRecordsByIdService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private getTestsBySubjectService: GetTestsBySubjectService
-  ) {
+              private getTestsBySubjectService: GetTestsBySubjectService) {
     this.btnClass = 'fa fa-venus-double';
   }
   ngOnInit() {
@@ -105,5 +105,4 @@ export class TestsComponent implements OnInit {
   getTestDetailsByTest (test: Test) {
     this.router.navigate(['./testDetails'], {queryParams: {'test_id': test.test_id, 'test_name': test.test_name}, relativeTo: this.activatedRoute.parent});
   }
-
 }

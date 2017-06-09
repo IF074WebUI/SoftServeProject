@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { Subject } from './subject';
 import { StatisticsService } from '../statistics/statistics.service';
 import { GetRecordsRangeService } from '../services/get-records-range.service';
 import { GetRecordsBySearchService } from '../services/get-records-by-search.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import { GROUP_CONFIG } from '../universal/dynamic-form/config';
 
 @Component({
   selector: 'app-subject',
@@ -18,6 +20,9 @@ export class SubjectComponent implements OnInit {
   recordsPerPage: number;
   page: number;
   btnClass: string = 'fa fa-calendar';
+
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
+  configs = GROUP_CONFIG;
   constructor(private statisticsService: StatisticsService,
               private getRecordsRangeService: GetRecordsRangeService,
               private getRecordsBySearchService: GetRecordsBySearchService,
@@ -77,5 +82,21 @@ export class SubjectComponent implements OnInit {
   }
   onTestsNavigate(subject: Subject) {
     this.router.navigate(['./tests'], {queryParams: {'subject_id': subject.subject_id}, relativeTo: this.activatedRoute.parent});
+  }
+
+  // Method for opening editing and deleting common modal window
+
+  add() {
+    this.popup.sendItem(new Subject());
+    this.popup.showModal();
+  }
+
+  edit(subject: Subject) {
+    this.popup.sendItem(subject);
+    this.popup.showModal();
+  }
+
+  del(subject: Subject) {
+    this.popup.deleteEntity(subject);
   }
 }

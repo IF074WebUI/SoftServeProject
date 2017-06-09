@@ -1,7 +1,10 @@
-<h2>Розклад проведення тестування
+<h2 *ngIf="timeTables.length">Розклад проведення тестування
   <span *ngIf="groupQueryParam">групи: {{timeTables[0]?.group_name}}</span>
-  <span *ngIf="subjectQueryParam">з : {{timeTables[0]?.group_name}}</span>
+  <span *ngIf="subjectQueryParam">з: {{timeTables[0]?.subject_name}}</span>
 </h2>
+<dtester-items-per-page [numberOfRecords]="numberOfRecords"
+                        (recordsPerPageChanged)="changeNumberOfRecordsPerPage($event)"
+                        *ngIf="!groupQueryParam && !subjectQueryParam"></dtester-items-per-page>
 <dtester-entities-table [entities]="timeTables"
                         [headers]="headers"
                         [page]="page"
