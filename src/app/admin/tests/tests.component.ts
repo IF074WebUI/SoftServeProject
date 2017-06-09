@@ -28,7 +28,7 @@ export class TestsComponent implements OnInit {
               private router: Router,
               private getTestsBySubjectService: GetTestsBySubjectService
   ) {
-    this.btnClass = 'fa fa-venus-double';
+    this.btnClass = 'fa fa-align-justify';
   }
   ngOnInit() {
     this.getQueryParams()
