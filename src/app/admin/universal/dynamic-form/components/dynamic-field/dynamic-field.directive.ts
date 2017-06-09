@@ -8,6 +8,8 @@ import {FormIdComponent} from '../form-id/form-id.component';
 import {FormSelectSpecialityComponent} from '../form-select-speciality/form-select-speciality.component';
 import {FormTextareaComponent} from '../form-textarea/form-textarea.component';
 import {FormEmailComponent} from '../form-email/form-email.component';
+import {FormSelectWithOptionsComponent} from '../form-select-with-options/form-select-with-options.component';
+import {FormSelectTestDetailByIdComponent} from '../form-select-test-detail-by-id/form-select-test-detail-by-id.component';
 
 const components = {
   button: FormButtonComponent,
@@ -16,7 +18,9 @@ const components = {
   select_speciality: FormSelectSpecialityComponent,
   id: FormIdComponent,
   textarea: FormTextareaComponent,
-  email: FormEmailComponent
+  email: FormEmailComponent,
+  select_with_options: FormSelectWithOptionsComponent,
+  sect_test_detail_by_id: FormSelectTestDetailByIdComponent
 };
 
 

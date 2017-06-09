@@ -17,6 +17,7 @@ export const adminRoutes: Route[] = [
   {
     path: '', component: AdminComponent,
     children: [
+      {path: '', redirectTo: 'statistics', pathMatch: 'full'},
       {path: 'group', component: GroupComponent},
       {path: 'statistics', component: StatisticsComponent},
       {path: 'faculties', component: FacultiesComponent},

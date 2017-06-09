@@ -8,6 +8,7 @@ import { GetRecordsRangeService } from '../services/get-records-range.service';
 import { StatisticsService } from '../statistics/statistics.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { arrFromSrtToNum } from './time-validator';
+import { Subject } from '../subject/subject';
 
 declare var $: any;
 
@@ -19,7 +20,7 @@ declare var $: any;
 export class TimetableComponent implements OnInit {
   timeTables: Timetable[] = [];
   groups: Group[] = [];
-  subjects = [];
+  subjects: Subject[] = [];
   deletedTimetable: Timetable;
   updatedTimetable: Timetable;
   headers: string[];
@@ -28,6 +29,7 @@ export class TimetableComponent implements OnInit {
   page: number;
   numberOfRecords: number;
   groupQueryParam: string;
+  subjectQueryParam: string;
   action: string;
   constructor(private timetableService: TimetableService,
               private getRecordsByIdService: GetRecordsByIdService,
@@ -47,19 +49,25 @@ export class TimetableComponent implements OnInit {
   getQueryParams() {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.groupQueryParam = params['group_id'];
+      this.subjectQueryParam = params['subject_id'];
       console.log(this.groupQueryParam);
+      console.log(this.subjectQueryParam);
       this.checkQueryParams();
     });
   }
   checkQueryParams() {
-    if (!this.groupQueryParam) {
-      this.getTimetablesRange();
-      this.headers = ['№', 'Навчальна група', 'Предмет', 'Час початку тестування', 'Час закінчення тестування'];
-      this.displayPropertiesOrder = ['group_name', 'subject_name', 'start_timeInterval', 'end_timeInterval'];
-    } else {
+    if (this.groupQueryParam) {
       this.getTimetableForOneGroup();
       this.headers = ['№', 'Предмет', 'Час початку тестування', 'Час закінчення тестування'];
       this.displayPropertiesOrder = ['subject_name', 'start_timeInterval', 'end_timeInterval'];
+    } else if (this.subjectQueryParam) {
+      this.getTimetableForOneSubject();
+      this.headers = ['№', 'Навчальна група', 'Час початку тестування', 'Час закінчення тестування'];
+      this.displayPropertiesOrder = ['group_name', 'start_timeInterval', 'end_timeInterval'];
+    } else {
+      this.getTimetablesRange();
+      this.headers = ['№', 'Навчальна група', 'Предмет', 'Час початку тестування', 'Час закінчення тестування'];
+      this.displayPropertiesOrder = ['group_name', 'subject_name', 'start_timeInterval', 'end_timeInterval'];
     }
   }
   getTimetablesRange(): void {
@@ -73,6 +81,11 @@ export class TimetableComponent implements OnInit {
   }
   getTimetableForOneGroup() {
     this.timetableService.getTimeTablesForGroup(this.groupQueryParam).subscribe((data) => {
+      this.getTimetables(data);
+    });
+  }
+  getTimetableForOneSubject() {
+    this.timetableService.getTimeTablesForSubject(this.subjectQueryParam).subscribe((data) => {
       this.getTimetables(data);
     });
   }
@@ -93,7 +106,6 @@ export class TimetableComponent implements OnInit {
       timetable.start_timeInterval = `${timetable.start_time}, ${timetable.start_date}`;
       timetable.end_timeInterval = `${timetable.end_time}, ${timetable.end_date}`;
       timetable.deprecated = this.checkTime(timetable.end_date, timetable.end_time );
-      console.log(timetable);
     }
   }
   openModalAddTimetable() {

@@ -6,11 +6,11 @@ import { SpecialitiesService } from '../services/specialities.service';
 import { FacultyService } from '../faculties/faculty.service';
 import { Faculty } from '../faculties/Faculty';
 import { ActivatedRoute, Router } from '@angular/router';
-import {GROUPS_HEADERS, IGNORE_PROPERTIES} from './groupConstants';
+import { GROUPS_HEADERS, IGNORE_PROPERTIES } from './groupConstants';
 
-import {SpinnerService} from '../universal/spinner/spinner.service';
-import {DynamicFormComponent} from "../universal/dynamic-form/container/dynamic-form/dynamic-form.component";
-import {GROUP_CONFIG} from "../universal/dynamic-form/config";
+import { SpinnerService } from '../universal/spinner/spinner.service';
+import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import { GROUP_CONFIG } from '../universal/dynamic-form/config';
 
 @Component({
   selector: 'dtester-group',
@@ -22,25 +22,18 @@ export class GroupComponent implements OnInit {
 
   isLoading: boolean;
   groupsOnPage: Group[];
-  facultiesOnPage: Faculty[] = [];
-  specialitiesOnPage: Speciality[] = [];
-  groupforEdit: Group;
-  groupforDelete: Group;
-  selectetGroup: Group;
   pageNumber: number = 1;
   offset = 5;   /*number of the records for the stating page*/
   countRecords: number;
-  selectedFacultyValue: number;
-  selectedSpesailutyValue: number;
   headers: string[];            /* array of headers */
   ignoreProperties: string[];
+  btnClass: string = 'fa fa-calendar';
+  CREATING_NEW_GROUP = 'Додати нову групу';
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = GROUP_CONFIG;
 
   constructor(private getGroupsService: GroupService,
-              private spesialityService: SpecialitiesService,
-              private facultyService: FacultyService,
               private route: ActivatedRoute,
               private router: Router,
               private spinner: SpinnerService
@@ -66,86 +59,31 @@ export class GroupComponent implements OnInit {
     if (specialityId) {
       this.getGroupsService.getGroupsBySpeciality(specialityId).subscribe(resp => {
         if (resp['response'] === 'no records') {
-          this.groupsOnPage = [];
-        } else
-          this.groupsOnPage = resp;
+          this.groupsOnPage = [], error => this.router.navigate(['/bad_request']);
+        } else {
+          this.groupsOnPage = resp, error => this.router.navigate(['/bad_request']);
+        }
       });
     }
-
-  }
-
-  createCroup(groupName: string) {
-    this.getGroupsService.createCroup(groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
-      .subscribe(() => {this.getGroups();
-      });
-  }
-  // get Specialities and Faculties
-  getSpecialities() {
-    this.spesialityService.getAll()
-      .subscribe((data) => this.specialitiesOnPage = <Speciality[]>data);
-  }
-  getFaculties() {
-    this.facultyService.getAllFaculties()
-      .subscribe( (data) => this.facultiesOnPage = <Faculty[]>data );
   }
 
   getGroups(): void {
     this.spinner.showSpinner();
-    this.isLoading = true;
     this.getCountRecords()
     /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.countRecords <= (this.pageNumber - 1) * this.offset) {
       --this.pageNumber;
     }
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset).delay(301)
-      .subscribe(resp => {this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']);
+      .subscribe(resp => { this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']);
       this.spinner.hideSpinner();
       });
   }
-// select for editing
-  selectedGroup(group: Group) {
-    this.groupforDelete = group;
-    this.groupforEdit = group;
-  }
-// deleting groups
-  deleteGroup() {
 
-  }
-// editing groups
-  editGroup(groupName: string) {
-    this.getGroupsService.editGroup(this.groupforEdit['group_id'], groupName, this.selectedSpesailutyValue, this.selectedFacultyValue)
-      .subscribe(() => {
-        this.getGroups();
-    });
-  }
-  // pagination
     getCountRecords() {
       this.getGroupsService.getCountGroups()
         .subscribe(resp => this.countRecords = resp );
     }
-  previousPage() {
-    this.getCountRecords();
-    let numberOfLastPage: number;
-    numberOfLastPage = Math.ceil(+this.countRecords / this.offset);
-    if (this.pageNumber > 1 ) {
-      this.pageNumber--;
-    } else {
-      this.pageNumber = numberOfLastPage;
-    }
-    this.getGroups();
-    }
-
-  nextPage() {
-    this.getCountRecords();
-    let numberOfLastPage: number;
-    numberOfLastPage = Math.ceil(+this.countRecords / this.offset);
-    if (this.pageNumber < numberOfLastPage) {
-      this.pageNumber++;
-    } else {
-      this.pageNumber = 1;
-    }
-    this.getGroups();
-  }
 
   changePage(page: number) {              /* callback method for change page pagination output event */
     this.pageNumber = page;
@@ -164,17 +102,19 @@ export class GroupComponent implements OnInit {
     // search group
   startSearch(criteria: string) {   /* callback method for output in search component */
     this.spinner.showSpinner();
-    if (criteria === '') {
+    if (criteria === '' || +criteria <= 0 ) {
       this.getGroups();
     } else {
-      this.isLoading = true;
-      this.getGroupsService.searchByName(criteria).subscribe(resp => {
+      this.getGroupsService.searchByName(criteria)
+        .subscribe(resp => {
           if (resp['response'] === 'no records') {    /* check condition: if no records presented for search criteria */
             this.groupsOnPage = [];
             this.countRecords = this.groupsOnPage.length;
             this.spinner.hideSpinner();
           } else {
-            this.groupsOnPage = <Group[]>resp;
+            this.countRecords = 0;
+            this.pageNumber = 2;
+            this.groupsOnPage = resp;
             this.spinner.hideSpinner();
           }
         },
@@ -186,7 +126,7 @@ export class GroupComponent implements OnInit {
   }
 
 
-// Methods for opening editing and deleting commo modal window
+// Method for opening editing and deleting commo modal window
 
   add() {
     this.popup.sendItem(new Group('', '', '', ''));
@@ -198,42 +138,38 @@ export class GroupComponent implements OnInit {
     this.popup.showModal();
   }
 
-  del(faculty: Faculty) {
-    this.popup.deleteEntity(faculty);
+  del(group: Group) {
+    this.popup.deleteEntity(group);
   }
   // Method for  add/edit, delete form submiting
 
   formSubmitted(value) {
     console.log(value);
-    // if (value['faculty_id']) {
-    //   this.http.editItem(value['faculty_id'], value['faculty_name'], value['faculty_description']).subscribe(response => {
-    //       this.uploadAllPages(this.page);
-    //       this.popup.cancel();
-    //     },
-    //     error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
-    //   );
-    // } else {
-    //   this.http.addItem(value['faculty_name'], value['faculty_description']).subscribe(response => {
-    //       this.getCount();
-    //       (this.count % this.countPerPage === 0) ? this.page = this.page + 1 : this.page;
-    //       this.uploadAllPages(this.page);
-    //       this.popup.cancel();
-    //     },
-    //     error => this.router.navigate(['bad_uniqname/'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
-    //   );
-    // }
+    if (value['group_id']) {
+      this.getGroupsService.editGroup(+value['group_id'], value['group_name'], value['Faculty'], value['Speciality'])
+        .subscribe(response => {
+          this.getGroups();
+          this.popup.cancel();
+        },
+        error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
+      );
+    } else {
+          this.getGroupsService.createCroup(value['group_name'], value['Speciality'], value['Faculty'])
+            .subscribe(response => {
+              this.getGroups();
+              this.popup.cancel();
+        },
+        error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
+      );
+    }
   }
 
-  //
-  // submitDelete(faculty: Faculty) {
-  //   this.http.deleteItem(faculty['faculty_id']).subscribe(response => {
-  //       this.uploadAllPages(this.page);
-  //       this.popup.cancel();
-  //     },
-  //     error => this.router.navigate(['/bad_request'])
-  //   );
-  //   this.popup.cancel();
-  // }
+
+  submitDelete(group: Group) {
+    this.getGroupsService.deleteGroup(group['group_id']).subscribe(response => this.getGroups(),
+      error => this.router.navigate(['/bad_request'])
+    );
+  }
 
 }
 

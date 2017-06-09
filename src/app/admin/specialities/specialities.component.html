@@ -12,7 +12,8 @@
 ></dtester-popup>
 <!--Common component to display entnties-->
 <dtester-entities-table [entities]="specialities" [headers]="headers" [ignoreProperties]="ignoreProperties"
-                (deleteEntity)="del($event)" [page]="page" [itemsPerPage]="countPerPage"
+                        [displayPropertiesOrder]="displayPropertiesOrder"
+                (deleteEntity)="del($event)" [page]="page" [itemsPerPage]="countPerPage" [sortProperties]="sortProperties"
                 (editEntity)="edit($event)" (clickEntity)="getGroupsBySpeciality($event)">
 </dtester-entities-table>
 <button class="btn btn-sm btn-primary" [title]="SPECIALITIES_ADD_TITLE" (click)="add()" data-target="#myModal">

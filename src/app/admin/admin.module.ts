@@ -11,9 +11,6 @@ import {TimetableService} from './timetable/timetable.service';
 import {FacultiesComponent} from './faculties/faculties.component';
 import {CommonModule} from '@angular/common';
 import {GetRecordsByIdService} from './services/get-records-by-id.service';
-import {SubjectComponent} from './subject/subject.component';
-import {SubjectDetailComponent} from './subject/subject-detail/subject-detail.component';
-import {SubjectService} from './subject/subject.service';
 import {GroupService} from './group/group.service';
 import {SpecialitiesComponent} from './specialities/specialities.component';
 import {SpecialitiesService} from './services/specialities.service';
@@ -48,10 +45,13 @@ import { LoadingModule } from 'ngx-loading';
 import { StudentProfileComponent } from './student-profile/student-profile.component';
 
 import { TestDetailComponent } from './test-detail/test-detail.component';
-import {DynamicFormModule} from './universal/dynamic-form/dynamic-form.module';
+import { DynamicFormModule } from './universal/dynamic-form/dynamic-form.module';
 import { QuestionsService } from './services/questions.service';
 import { AnswersService } from './services/answers.service';
-import {TestDetailService} from "./test-detail/test-detail.service";
+import { TestDetailService } from './test-detail/test-detail.service';
+import { SubjectComponent } from './subject/subject.component';
+import { GetRecordsBySearchService } from './services/get-records-by-search.service';
+import { GetTestsBySubjectService } from './services/get-tests-by-subject.service';
 
 @NgModule({
   declarations: [
@@ -60,8 +60,6 @@ import {TestDetailService} from "./test-detail/test-detail.service";
     StatisticsComponent,
     GroupComponent,
     FacultiesComponent,
-    SubjectComponent,
-    SubjectDetailComponent,
     TimetableComponent,
     SpecialitiesComponent,
     PaginationComponent,
@@ -80,7 +78,8 @@ import {TestDetailService} from "./test-detail/test-detail.service";
     AddUpdateTimetableComponent,
     DetailedComponent,
     TestDetailComponent,
-    StudentProfileComponent
+    StudentProfileComponent,
+    SubjectComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -103,7 +102,6 @@ import {TestDetailService} from "./test-detail/test-detail.service";
     GroupService,
     GetAllRecordsService,
     DeleteRecordByIdService,
-    SubjectService,
     StudentsService,
     ExitAboutGuard,
     GetRecordsRangeService,
@@ -111,7 +109,9 @@ import {TestDetailService} from "./test-detail/test-detail.service";
     SpinnerService,
     QuestionsService,
     AnswersService,
-    TestDetailService
+    TestDetailService,
+    GetRecordsBySearchService,
+    GetTestsBySubjectService
   ],
 })
 export class AdminModule {

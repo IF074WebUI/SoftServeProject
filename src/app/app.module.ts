@@ -15,8 +15,8 @@ import { BadRequestComponent } from './error_pages/bad-request/bad-request.compo
 import { NotFoundComponent } from './error_pages/not-found/not-found.component';
 import { LoginGuard } from './guards/login.guard';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {ToastModule} from "ng2-toastr";
-import {LoadingModule} from "ngx-loading";
+import { ToastModule } from 'ng2-toastr';
+import { LoadingModule } from 'ngx-loading';
 
 
 

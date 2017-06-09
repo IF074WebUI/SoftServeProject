@@ -1,4 +1,4 @@
-<h2>Тести</h2>
+<h2>Тести <span *ngIf="subjectQueryParam">з : {{tests[0]?.subject_name}}</span></h2>
 
 <dtester-entities-table [entities]="tests"
                         [headers]="headers"
@@ -6,7 +6,8 @@
                         (deleteEntity)="getDeletedTest($event)"
                         [displayPropertiesOrder]="displayPropertiesOrder"
                         [canAction]="true"
-                        (actionEntity)="getTestDetailsByTest($event)">
+                        (actionEntity)="getTestDetailsByTest($event)"
+                        [btnClass]="btnClass">
 </dtester-entities-table>
 
 <button type="button" class="btn btn-primary"(click)="openModalAddTest()">Додати тест</button>
