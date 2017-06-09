@@ -1,19 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {ResultsService} from '../services/results.service';
-import {Result} from './result';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ToastsManager} from 'ng2-toastr';
-import {StudentsService} from '../students/students.service';
-import {Student} from '../students/student';
-import {TestsService} from '../services/tests.service';
-import {Group} from '../group/group';
-import {GroupService} from '../group/group.service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {QueryParamsHandling} from "@angular/router/src/config";
-import {SpinnerService} from "../universal/spinner/spinner.service";
-import {TestDetailService} from "../test-detail/test-detail.service";
-import {TestDetail} from "../test-detail/testDetail";
-import {Test} from "../tests/test";
+import { Component, OnInit } from '@angular/core';
+import { ResultsService } from '../services/results.service';
+import { Result } from './result';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr';
+import { StudentsService } from '../students/students.service';
+import { Student } from '../students/student';
+import { TestsService } from '../services/tests.service';
+import { Group } from '../group/group';
+import { GroupService } from '../group/group.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { SpinnerService } from '../universal/spinner/spinner.service';
+import { TestDetailService } from '../test-detail/test-detail.service';
+import { TestDetail } from '../test-detail/testDetail';
+import { Test } from '../tests/test';
 
 @Component({
   selector: 'dtester-results',
@@ -32,8 +31,8 @@ export class ResultsComponent implements OnInit {
   sortProperties: string[];
   tests: Test[];
   count: number;
-  countPerPage: number = 10;
-  page: number = 1;
+  countPerPage = 10;
+  page = 1;
 
   searchByGroupTestForm: FormGroup;
   groupControl: FormControl;
@@ -58,10 +57,10 @@ export class ResultsComponent implements OnInit {
     this.spinnerService.showSpinner();
     this.sortProperties = this.SORT_PROPERTIES;
     this.activatedRoute.queryParams.subscribe(params => {
-        let studentId = params['student'];
-        let testId = params['test'];
-        let groupId = params['group'];
-        let date = params['date'];
+        const studentId = params['student'];
+        const testId = params['test'];
+        const groupId = params['group'];
+        const date = params['date'];
         if (studentId) {
           this.resultsService.getAllByStudent(studentId).subscribe((resp: Result[]) => {
             this.results = resp;
@@ -84,34 +83,34 @@ export class ResultsComponent implements OnInit {
     this.testsService.getAll().subscribe((resp: Test[]) => this.tests = resp);
   }
 
-  async transformResults() {
+  transformResults() {
     if (!Array.isArray(this.results)) {
       this.results = [];
       this.count = 0;
       this.spinnerService.hideSpinner();
       return;
     }
-    await this.results.map((result: Result, i: number) => {
-      this.studentsService.getStudentById(result.student_id)
+    this.results.map((result: Result, i: number) => {
+         this.studentsService.getStudentById(result.student_id)
         .subscribe((resp: Student) => {
           result['student_name'] = resp[0]['student_surname'] + ' ' + resp[0]['student_name'];
           this.groupsService.getGroupById(resp[0].group_id).subscribe((group: Group) => {
             result['group_name'] = group[0]['group_name'];
-            if (i === this.results.length - 1)
-              this.spinnerService.hideSpinner();
           });
+          this.testsService.getTestById(result.test_id)
+            .subscribe((r: Test[]) => {
+              result['test_name'] = r[0]['test_name'];
+            });
           this.testDetailsService.getTestDetails(result.test_id).subscribe((tDetails: TestDetail[]) => {
-            let sum: number = 0;
-            for (let tDetail of tDetails) {
+            let sum = 0;
+            for (const tDetail of tDetails) {
               sum += +tDetail.rate * tDetail.tasks;
             }
             result['percentage'] = (result.result * 100 / sum).toFixed(2);
-
+            if (i === this.results.length - 1) {
+              this.spinnerService.hideSpinner();
+            }
           });
-        });
-      this.testsService.getTestById(result.test_id)
-        .subscribe((resp: any) => {
-          result['test_name'] = resp[0]['test_name'];
         });
     });
   }
@@ -135,7 +134,7 @@ export class ResultsComponent implements OnInit {
   }
 
   findByGroupTest(): void {
-    let qp = this.dateControl.value !== '' ?
+    const qp = this.dateControl.value !== '' ?
     {test: this.testControl.value, group: this.groupControl.value, date: this.dateControl.value} :
     {test: this.testControl.value, group: this.groupControl.value};
     this.router.navigate(['./results'], {queryParams: qp, relativeTo: this.activatedRoute.parent});

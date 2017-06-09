@@ -92,13 +92,14 @@ export class TestDetailComponent implements OnInit {
 // Method for opening editing and deleting commo modal window
 
 add(testDetail: TestDetail) {
+  this.configs[2]['test_id'] = this.curenntTestId;
   this.popup.sendItem(new TestDetail('', '', '', '', ''));
   this.popup.showModal();
 }
 
 edit(testDetail: TestDetail) {
-    console.log(testDetail);
-  this.popup.sendItem(testDetail, '', testDetail['test_id']);
+  this.configs[2]['test_id'] = this.curenntTestId;
+  this.popup.sendItem(testDetail, '', this.curenntTestId);
   this.popup.showModal();
 }
 

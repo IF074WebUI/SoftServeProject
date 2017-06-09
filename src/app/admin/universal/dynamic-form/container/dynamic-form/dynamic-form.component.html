@@ -2,7 +2,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+        <button type="button" class="close" aria-label="Close" (click)="cancel()"><span
           aria-hidden="true">&times;</span></button>
         <h4 class="modal-title"><span *ngIf="action === 'add_edit'">{{TITLE}}</span></h4>
         <h4 class="modal-title"><span *ngIf="action === 'delete'">{{TITLE}}</span></h4>
@@ -28,7 +28,7 @@
         <div *ngIf="action == 'delete'" class="modal-footer">
           <button type="submit" class="btn btn-danger" data-dismiss="modal" (click)="submitDelete()" > {{CONFIRM_DELETE}}</button>
         </div>
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{CLOSE}}</button>
+        <button type="button" class="btn btn-default"  (click)="cancel()" >{{CLOSE}}</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

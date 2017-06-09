@@ -1,7 +1,10 @@
-import { FormGroup } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {
+  AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, DoCheck, OnChanges,
+  OnInit
+} from '@angular/core';
 import {Pipe, PipeTransform} from '@angular/core';
-import {TestDetailService} from "../../../../test-detail/test-detail.service";
+import {TestDetailService} from '../../../../test-detail/test-detail.service';
 
 @Pipe({
   name: 'testDetail'
@@ -11,10 +14,13 @@ export class TestDetailPipe implements PipeTransform {
 
   transform(array: any, inputarray?: any): any {
     let result = array;
-    for (let j in inputarray){
-      for(let i in array){
-      if (array[i] == inputarray[j]){result.splice(i, 1)}
-    }}
+    for (let j in inputarray) {
+      for (let i in array) {
+        if (array[i] == inputarray[j]) {
+          result.splice(i, 1)
+        }
+      }
+    }
     return result;
   }
 
@@ -25,32 +31,47 @@ export class TestDetailPipe implements PipeTransform {
   templateUrl: './form-select-test-detail-by-id.component.html',
   styleUrls: ['./form-select-test-detail-by-id.component.css']
 })
-export class FormSelectTestDetailByIdComponent implements OnInit {
+export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentInit, AfterContentChecked {
   config;
   group: FormGroup;
-  test_id = 13;
-  array: Array<number>=[];
-  entities = [1,2,3,4,5,6,7,8,9,10];
+  array: Array<number> = [];
+  entitiesForAdd;
+  entitiesForEdit;
+  entities;
+
+  constructor(private testDetailService: TestDetailService) {
+  }
+
+  ngOnInit() {
+  }
+
+ngAfterContentInit(){
+  this.entitiesForEdit = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  this.entitiesForAdd = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  this.testDetailService.getTestDetails(+[this.config.test_id]).subscribe(resp => {
+    resp.forEach(test => this.array.push(test['level']));
+    this.entitiesForAdd = this.transform( this.entitiesForAdd, this.array);
+  });
 
 
+  console.log(this.entitiesForEdit);
+
+}
+  ngAfterContentChecked(){
+    if (this.group.controls['test_id'].value === '') {this.entities =  this.entitiesForAdd} else {this.entities = this.entitiesForEdit}
+}
 
   transform(array: any, inputarray?: any): any {
     let result = array;
-    for (let j in inputarray){
-      for(let i in array){
-        if (array[i] == inputarray[j]){result.splice(i, 1)}
-      }}
+    for (let j in inputarray) {
+      for (let i in array) {
+        if (array[i] == inputarray[j]) {
+          result.splice(i, 1)
+        }
+        ;
+      }
+    }
     return result;
-  }
-
-  constructor(private testDetailService: TestDetailService) { }
-
-  ngOnInit() {
-    this.testDetailService.getTestDetails(this.test_id).subscribe(resp => { resp.forEach(test => this.array.push(test['level']));
-      this.array = this.transform(this.entities, this.array);
-    });
-
-
   }
 
 

@@ -113,7 +113,8 @@ export const GROUP_CONFIG =
       label: 'Назва групи',
       name: 'group_name',
       placeholder: 'Введіть назву групи',
-      requiredMax: true
+      required: true,
+      requiredMax: 10
     },
     {
       type: 'select_speciality',
@@ -121,7 +122,7 @@ export const GROUP_CONFIG =
       label: 'Спеціальність',
       name: 'Speciality',
       placeholder: 'Виберіть спеціальність',
-      required: true
+      required: false
     },
     {
       type: 'select',
@@ -129,7 +130,7 @@ export const GROUP_CONFIG =
       label: 'Факультет',
       name: 'Faculty',
       placeholder: 'Виберіть факультет',
-      required: true
+      required: false
     },
     {
       label: 'Підтвердити',
@@ -194,7 +195,7 @@ export const STUDENT_CONFIG =
       label: `Електронна пошта студента`,
       name: 'email',
       placeholder: `Введіть адрес електроної пошти студента`,
-      required: false
+      emailPattern: true
     },
     {
       label: 'Підтвердити',
@@ -221,9 +222,12 @@ export const TEST_DETAIL_CONFIG = [
   },
   {
     type: 'sect_test_detail_by_id',
+    test_id: null,
     label: 'Номер рівня завдань',
     name: 'level',
-    placeholder: 'Select an option'
+    options: [],
+    placeholder: 'Select an option',
+    validateTestDetail: true
   },
   {
     type: 'select_with_options',
@@ -245,5 +249,51 @@ export const TEST_DETAIL_CONFIG = [
     type: 'button'
   }
 ];
+export const QUESTION_CONFIG = [
+  {
+    type: 'id',
+    text: null,
+    label: 'ID питання',
+    name: 'question_id',
+    placeholder: '',
+    required: false
+  },
+  {
+    type: 'id',
+    text: null,
+    label: 'ID тесту',
+    name: 'test_id',
+    placeholder: '',
+    required: false
+  },
+  {
+    type: 'textarea',
+    label: 'Номер рівня завдань',
+    name: 'question_text',
+    options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+    placeholder: 'Select an option'
+  },
+  {
+    type: 'select',
+    label: 'Кількіст завдань',
+    name: 'level',
+    options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+    placeholder: 'Select an option'
+  },
+  {
+    type: 'select_with_options',
+    label: 'Кількіст балів',
+    name: 'type',
+    options: ['1', '2'],
+    placeholder: 'Select an option'
+  },
+  {
+    label: 'Зберегти',
+    name: 'submit',
+    type: 'button'
+  }
+];
+
+
 
 

@@ -131,6 +131,7 @@ export class SpecialitiesComponent implements OnInit {
       if (resp['response'] === this.NO_RECORDS) {    /* check condition: if no records presented for search criteria */
         this.specialities = [];
         this.count = this.specialities.length;
+        this.page = 2;
       } else {
         this.count = 0;
         this.page = 2;
