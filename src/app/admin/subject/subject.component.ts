@@ -32,8 +32,7 @@ export class SubjectComponent implements OnInit {
               private getRecordsBySearchService: GetRecordsBySearchService,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private subjectService: SubjectService,
-              private deleteRecordByIdService: DeleteRecordByIdService) { }
+              private subjectService: SubjectService) { }
 
   ngOnInit() {
     this.page = 1;
@@ -118,10 +117,8 @@ export class SubjectComponent implements OnInit {
     }
   }
   deleteSubject(deletedSubject) {
-    this.deleteRecordByIdService.deleteRecordsById('subject', deletedSubject.subject_id)
-      .subscribe(() => {
-        this.numberOfRecords--;
-        this.getSubjectsRange();
-      });
+    this.subjectService.deleteSubject(deletedSubject);
+    $('#add_edit_deletePopup').modal('hide');
+    this.getSubjectsRange();
   }
 }
