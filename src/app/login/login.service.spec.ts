@@ -75,4 +75,41 @@ describe('LoginService', () => {
         });
       }));
   });
+
+  fdescribe('login(name: string, password: string)', () => {
+    fit('should return JSON with roles if login success',
+      inject([LoginService, XHRBackend], (loginService, mockBackend) => {
+
+        const mockResponse = {response: 'ok', roles: ['login', 'admin'], username: 'admin'};
+
+        mockBackend.connections.subscribe((connection) => {
+          connection.mockRespond(new Response(new ResponseOptions({
+            body: JSON.stringify(mockResponse)
+          })));
+        });
+
+        loginService.login('admin', 'dtapi_admin').subscribe((resp) => {
+          expect(resp.response).toEqual('ok');
+          expect(resp.roles[1]).toEqual('admin');
+          expect(resp.username).toEqual('admin');
+        });
+
+      }));
+    fit('should return "response: Invalid login or password" if authentication fails',
+      inject([LoginService, XHRBackend], (loginService, mockBackend) => {
+
+        const mockResponse = {response: 'Invalid login or password'};
+
+        mockBackend.connections.subscribe((connection) => {
+          connection.mockRespond(new Response(new ResponseOptions({
+            body: JSON.stringify(mockResponse)
+          })));
+        });
+
+        loginService.login('admin', 'admin').subscribe((resp) => {
+          expect(resp.response).toEqual('Invalid login or password');
+        });
+      }))
+  });
+
 });
