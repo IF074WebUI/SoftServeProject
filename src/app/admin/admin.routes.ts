@@ -27,7 +27,7 @@ export const adminRoutes: Route[] = [
       {path: 'students', component: StudentsComponent},
       {path: 'results/:studentId', component: DetailedComponent},
       {path: 'results', component: ResultsComponent},
-      {path: 'tests', component: TestsComponent},
+      {path: 'subject/tests', component: TestsComponent},
       {path: 'testDetails', component: TestDetailComponent},
     ]
   }];

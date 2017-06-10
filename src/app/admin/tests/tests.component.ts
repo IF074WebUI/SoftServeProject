@@ -4,6 +4,7 @@ import { Test } from './test';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GetTestsBySubjectService } from '../services/get-tests-by-subject.service';
+import {GetRecordsBySearchService} from "../services/get-records-by-search.service";
 
 declare var $: any;
 
@@ -26,39 +27,20 @@ export class TestsComponent implements OnInit {
               private getRecordsByIdService: GetRecordsByIdService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private getTestsBySubjectService: GetTestsBySubjectService
-  ) {
+              private getTestsBySubjectService: GetTestsBySubjectService) {
     this.btnClass = 'fa fa-venus-double';
   }
   ngOnInit() {
     this.getQueryParams()
     this.getSubjects();
+    this.headers = ['№', 'Назва тесту', 'Завдання', 'Тривалість тесту', 'Спроби', 'Статус'];
+    this.displayPropertiesOrder = ['test_name', 'tasks', 'time_for_test', 'attempts', 'enabled_description' ];
   }
   getQueryParams() {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.subjectQueryParam = params['subject_id'];
       console.log(this.subjectQueryParam);
-      this.checkQueryParams();
-    });
-  }
-  checkQueryParams() {
-    if (this.subjectQueryParam) {
       this.getTestsForOneSubject();
-      this.headers = ['№', 'Назва тесту', 'Завдання', 'Тривалість тесту', 'Спроби', 'Статус'];
-      this.displayPropertiesOrder = ['test_name', 'tasks', 'time_for_test', 'attempts', 'enabled_description' ];
-    } else {
-      this.getAllTests();
-      this.headers = ['№', 'Назва тесту', 'Предмет', 'Завдання', 'Тривалість тесту', 'Спроби', 'Статус'];
-      this.displayPropertiesOrder = ['test_name', 'subject_name', 'tasks', 'time_for_test', 'attempts', 'enabled_description' ];
-    }
-  }
-  getAllTests() {
-    this.getAllRecordsService.getAllRecords('test').subscribe((data) => {
-      this.tests = data;
-      for (const test of this.tests) {
-        this.setNameOfSubject(test);
-        this.setEnabledDescription(test);
-      }
     });
   }
   getTestsForOneSubject() {
@@ -105,5 +87,4 @@ export class TestsComponent implements OnInit {
   getTestDetailsByTest (test: Test) {
     this.router.navigate(['./testDetails'], {queryParams: {'test_id': test.test_id, 'test_name': test.test_name}, relativeTo: this.activatedRoute.parent});
   }
-
 }

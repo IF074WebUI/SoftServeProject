@@ -1,9 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { Subject } from './subject';
 import { StatisticsService } from '../statistics/statistics.service';
 import { GetRecordsRangeService } from '../services/get-records-range.service';
 import { GetRecordsBySearchService } from '../services/get-records-by-search.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import { SUBJECTS_CONFIG } from '../universal/dynamic-form/config';
+import { SubjectService } from './subject.service';
+import { DeleteRecordByIdService } from '../services/delete-record-by-id.service';
+
+declare var $: any;
 
 @Component({
   selector: 'app-subject',
@@ -18,11 +24,16 @@ export class SubjectComponent implements OnInit {
   recordsPerPage: number;
   page: number;
   btnClass: string = 'fa fa-calendar';
+
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
+  configs = SUBJECTS_CONFIG;
   constructor(private statisticsService: StatisticsService,
               private getRecordsRangeService: GetRecordsRangeService,
               private getRecordsBySearchService: GetRecordsBySearchService,
               private router: Router,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              private subjectService: SubjectService,
+              private deleteRecordByIdService: DeleteRecordByIdService) { }
 
   ngOnInit() {
     this.page = 1;
@@ -76,6 +87,41 @@ export class SubjectComponent implements OnInit {
     this.router.navigate(['./timetable'], {queryParams: {'subject_id': subject.subject_id}, relativeTo: this.activatedRoute.parent});
   }
   onTestsNavigate(subject: Subject) {
-    this.router.navigate(['./tests'], {queryParams: {'subject_id': subject.subject_id}, relativeTo: this.activatedRoute.parent});
+    this.router.navigate(['subject/tests'], {queryParams: {'subject_id': subject.subject_id}, relativeTo: this.activatedRoute.parent});
+  }
+
+  // Method for opening editing and deleting common modal window
+
+  add() {
+    this.popup.sendItem(new Subject(), 'subject');
+    this.popup.showModal();
+  }
+  edit(subject: Subject) {
+    this.popup.sendItem(subject);
+    this.popup.showModal();
+  }
+  del(subject: Subject) {
+    this.popup.deleteEntity(subject);
+  }
+  formSubmitted(inputedSubject) {
+    if (!inputedSubject.subject_id) {
+      this.subjectService.createSubject(inputedSubject).subscribe(() => {
+        this.numberOfRecords++;
+        this.getSubjectsRange();
+        $('#add_edit_deletePopup').modal('hide');
+      });
+    } else {
+      this.subjectService.updateSubject(inputedSubject).subscribe(() => {
+        this.getSubjectsRange();
+        $('#add_edit_deletePopup').modal('hide');
+      });
+    }
+  }
+  deleteSubject(deletedSubject) {
+    this.deleteRecordByIdService.deleteRecordsById('subject', deletedSubject.subject_id)
+      .subscribe(() => {
+        this.numberOfRecords--;
+        this.getSubjectsRange();
+      });
   }
 }
