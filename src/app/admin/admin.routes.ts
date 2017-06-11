@@ -11,6 +11,7 @@ import { ResultsComponent } from './results/results.component';
 import { TestsComponent } from './tests/tests.component';
 import { DetailedComponent } from './detailed/detailed.component';
 import { TestDetailComponent } from './test-detail/test-detail.component';
+import {QuestionsComponent} from "./questions/questions.component";
 
 export const adminRoutes: Route[] = [
   {
@@ -29,5 +30,6 @@ export const adminRoutes: Route[] = [
       {path: 'results', component: ResultsComponent},
       {path: 'subject/tests', component: TestsComponent},
       {path: 'testDetails', component: TestDetailComponent},
+      {path: 'subject/tests/questions', component: QuestionsComponent}
     ]
   }];

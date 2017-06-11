@@ -51,6 +51,8 @@ import { SubjectComponent } from './subject/subject.component';
 import { GetRecordsBySearchService } from './services/get-records-by-search.service';
 import { GetTestsBySubjectService } from './services/get-tests-by-subject.service';
 import { SubjectService } from './subject/subject.service';
+import { QuestionsComponent } from './questions/questions.component';
+import { AnswersComponent } from './answers/answers.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +79,9 @@ import { SubjectService } from './subject/subject.service';
     AddUpdateTimetableComponent,
     DetailedComponent,
     TestDetailComponent,
-    SubjectComponent
+    SubjectComponent,
+    QuestionsComponent,
+    AnswersComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
