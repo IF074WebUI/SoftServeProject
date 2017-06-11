@@ -37,23 +37,6 @@ function validateName(c: AbstractControl) {
   );
 }
 
-function validateTestDetail(c: AbstractControl){
-  // console.log('test id' + this.test_id);
-  // console.log(c.value);
-  return this.testDetailService.getTestDetails(this.test_id).map((resp) => {
-    console.log('response' + resp);
-      for (let key of resp) {
-        console.log(key['level']);
-        if (key['level'] === c.value) {
-          return {exists: true};
-        }
-      }
-      return null;
-    }
-  );
-}
-
-
 declare var $: any;
 
 @Component({
@@ -89,7 +72,7 @@ export class DynamicFormComponent implements OnInit {
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';
 
-  constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService, private route: ActivatedRoute, private router: Router, private testDetailService: TestDetailService) {
+  constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService, private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit() {
@@ -103,16 +86,13 @@ export class DynamicFormComponent implements OnInit {
         group.addControl(control.name, this.fb.control('', Validators.compose([validateEmail])));
       }
       if (control.requiredMax) {
-        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.maxLength(control.requiredMax)])));
+        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required, Validators.maxLength(control.requiredMax)])));
       }
       if (control.required) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
       }
       if (control.requiresAsync) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
-      }
-      if (control.validateTestDetail) {
-        group.addControl(control.name, this.fb.control('', Validators.composeAsync([validateTestDetail.bind(this)])));
       }
       else {
         group.addControl(control.name, this.fb.control(''));

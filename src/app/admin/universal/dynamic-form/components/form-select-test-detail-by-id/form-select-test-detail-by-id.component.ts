@@ -2,12 +2,12 @@ import {FormGroup} from '@angular/forms';
 import {AfterContentChecked, AfterContentInit, Component, OnInit} from '@angular/core';
 import {TestDetailService} from '../../../../test-detail/test-detail.service';
 
-
 @Component({
   selector: 'app-form-select-test-detail-by-id',
   templateUrl: './form-select-test-detail-by-id.component.html',
   styleUrls: ['./form-select-test-detail-by-id.component.css']
 })
+
 export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentInit, AfterContentChecked {
   config;
   group: FormGroup;
@@ -15,6 +15,8 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
   entitiesForAdd;
   entitiesForEdit;
   entities;
+  ERROR_MSG;
+  error: boolean;
 
   constructor(private testDetailService: TestDetailService) {
   }
@@ -32,6 +34,7 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
   }
 
   ngAfterContentChecked() {
+    //this.error = false;
     if (this.group.controls['test_id'].value === '') {
       this.entities = this.entitiesForAdd
     } else {
@@ -46,11 +49,20 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
         if (array[i] == inputarray[j]) {
           result.splice(i, 1)
         }
-        ;
       }
     }
     return result;
   }
 
+  onValueChanged(event) {
+    var value: number = event.target.value;
+    if (this.array.indexOf(value) !== -1) {
+      this.group.controls[this.config.name].setErrors({'wrongValue': true});
+      this.error = true;
+      this.ERROR_MSG = 'Рівень' + ' ' + value + ' ' + 'даного тесту вже існує ';
+    } else {
+      this.error = false;
+    }
+  }
 
 }

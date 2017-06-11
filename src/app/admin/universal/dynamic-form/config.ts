@@ -211,8 +211,7 @@ export const TEST_DETAIL_CONFIG = [
     label: 'Номер рівня завдань',
     name: 'level',
     options: [],
-    placeholder: 'Select an option',
-    validateTestDetail: true
+    placeholder: 'Select an option'
   },
   {
     type: 'select_with_options',
