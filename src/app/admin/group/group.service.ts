@@ -10,13 +10,16 @@ import { GROUP_ENITY } from './groupConstants';
 
 @Injectable()
 export class GroupService {
-  private entity = '/Group';
   groups: Group[] = [];
   constructor(private http: Http) { }
 
   getGroups() {
     return this.http.get('http://' + HOST + GROUP_ENITY + '/getRecords')
       .map((resp: Response) => resp.json());
+  }
+
+  getGroupById(id: number): Observable<Group> {
+    return this.http.get('http://' + HOST + GROUP_ENITY + '/getRecords/' + id).map((resp: Response) => resp.json());
   }
 
   getPaginatedPage(pageNumber: number, offset: number) {

@@ -1,0 +1,22 @@
+<dynamic-form [config]="configs" (submitted)="formSubmitted($event)" (youCanDelete)="submitDelete($event)"></dynamic-form>
+<h3 class="text-center">{{MAIN_HEADER}}"{{testName}}"</h3>
+<dtester-entities-table class="table"
+                        [entities]="testDetails"
+                        [headers]="headers"
+                        [ignoreProperties]="ignoreProperties"
+                        (deleteEntity)=del($event)
+                        (editEntity)="edit($event)" >
+</dtester-entities-table>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8">
+      <p>{{COUNT_OF_RATE}}<span>{{countOfRate}}</span></p>
+      <p>{{COUNT_OF_TASKS}}<span>{{countOfTasks}}</span></p>
+    </div>
+    <div class="col-lg-4">
+      <button (click)="add()" type="button" class="btn btn-primary btn-sm" data-dismiss="modal">{{CREATE_NEW_DETAIL}}</button>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,62 @@
+<div class="modal fade" id="add-update-timetable" tabindex="-1" role="dialog" aria-labelledby="modalAddTimetable" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalAddTimetable">{{action === 'update' ? 'Редагувати' : 'Запланувати'}} тестування</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="timetableForm" (ngSubmit)="actionTimetable()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-control-label" for="groupId">Група:</label>
+            <select formControlName="group_id" id="groupId" class="form-control">
+              <option *ngFor="let group of groups" [ngValue]="group.group_id">{{group.group_name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-control-label" for="subjectId">Предмет:</label>
+            <select formControlName="subject_id" id="subjectId" class="form-control">
+              <option *ngFor="let subject of subjects" [ngValue]="subject.subject_id">{{subject.subject_name}}</option>
+            </select>
+          </div>
+
+          <div formGroupName="time_limits">
+            <div class="form-group">
+              <label class="form-control-label">Початкова дата:</label>
+              <input type="date" formControlName="start_date" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-control-label">Початковий час:</label>
+              <input type="time" formControlName="start_time" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-control-label">Кінцева дата:</label>
+              <input type="date" formControlName="end_date" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-control-label">Кінцевий час:</label>
+              <input type="time" formControlName="end_time" class="form-control">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <span class="error"
+                *ngIf="!timetableForm.controls['time_limits'].valid
+                && timetableForm.get(['time_limits', 'start_date']).touched
+                && timetableForm.get(['time_limits', 'end_date']).touched
+                && timetableForm.get(['time_limits', 'end_time']).touched
+                && timetableForm.get(['time_limits', 'start_time']).touched;">
+           Не коректні часові межі
+          </span>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Відмінити</button>
+          <button  type="submit" class="btn btn-primary" [disabled]="!timetableForm.valid">{{action === 'update' ? 'Редагувати' : 'Запланувати'}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--<button  type="submit" class="btn btn-success" [disabled]="!updateTimetableForm.valid || updateTimetableForm.untouched">Редагувати</button>-->

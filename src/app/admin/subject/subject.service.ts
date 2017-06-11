@@ -1,56 +1,29 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
-import {HOST} from '../../constants';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise';
-import {Subject} from './subject.component';
+import { Http, Response } from '@angular/http';
+import { HOST } from '../../constants';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class SubjectService {
-  private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) {
   }
-  getSubjects() {
-    return this.http.get('http://' + HOST + '/Subject/getRecords')
-      .map((response: Response) => response.json());
-  }
-  createSubject(subject_name: string, subject_description: string): Observable <Response> {
-    const bodyForSendingNewSubject = JSON.stringify({
-      subject_name: subject_name,
-      subject_description: subject_description
+
+  createSubject(newSubject): Observable<Response> {
+    const bodyForSendingNewTimeTable = JSON.stringify({
+      subject_description: newSubject.subject_description,
+      subject_name: newSubject.subject_name
     });
-    return this.http.post('http://' + HOST + '/Subject/insertData', bodyForSendingNewSubject)
+    return this.http.post('http://' + HOST + '/subject/insertData', bodyForSendingNewTimeTable)
       .map((resp: Response) => resp.json());
   }
-  update(subject: Subject): Promise<Subject> {
-    return this.http
-      .post('http://' + HOST + '/Subject/update/' + subject.subject_id,
-        JSON.stringify({subject_name: subject.subject_name, subject_description: subject.subject_description}),
-        {headers: this.headers})
-      .toPromise()
-      .then(() => subject);
-  }
-  delete(subject_id: number): Promise<void> {
-    return this.http
-      .delete('http://' + HOST + '/Subject/del/' + subject_id, {headers: this.headers})
-      .toPromise()
-      .then(() => null);
-  }
-  getPagenationSubjects(page: number, limit: number) {
-    let offset: number;
-    offset = (page - 1) * limit;
-    return this.http.get('http://' + HOST + '/Subject/getRecordsRange/' + limit + '/' + offset)
-      .map((response: Response) => response.json());
-  }
-  getNumberOfRecords() {
-    return this.http.get('http://' + HOST + '/Subject/countRecords/')
-      .map((response: Response) => response.json());
+  updateSubject(updatedSubject): Observable<Response> {
+    const bodyForSendingNewTimeTable = JSON.stringify({
+      subject_description: updatedSubject.subject_description,
+      subject_name: updatedSubject.subject_name
+    });
+    return this.http.post('http://' + HOST + '/timeTable/update/' + updatedSubject.subject_id, bodyForSendingNewTimeTable)
+      .map((resp: Response) => resp.json());
   }
 }
-
-
-
-
-

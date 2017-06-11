@@ -2,12 +2,12 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Faculty} from './Faculty';
 import {FacultyService} from './faculty.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {NEWFACULTY, EDITRESULT, EDITFACULTY, DELETERESULT} from '../../constants';
-import {AddeditComponent } from '../addedit/addedit.component';
 
 import 'rxjs/add/operator/switchMap';
+import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import {FACULTY_CONFIG} from '../universal/dynamic-form/config';
+import {SpinnerService} from '../universal/spinner/spinner.service';
 
 @Component({
   selector: 'dtester-faculties',
@@ -21,42 +21,21 @@ export class FacultiesComponent<T> implements OnInit {
   IGNORE_PROPERTIES: string[] = ['faculty_id'];
   page: number = 1; // current number of page
   count: number; // count all faculties
-  facultyEditForm: FormGroup;
-  facultyEditName: FormControl;
-  facultyEditDescription: FormControl;
-  facultyEditId: FormControl;
-  facultyAddForm: FormGroup;
-  facultyAddName: FormControl;
-  facultyAddDescription: FormControl;
-  modalHeader: string;
   countPerPage: number = 10;
   id: number;
   ignoreProperties: string[];
-  @ViewChild(AddeditComponent) popup: AddeditComponent<T>;
+  text: string;
 
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
+  configs = FACULTY_CONFIG;
 
   constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router, private spinner: SpinnerService) {
   }
 
   ngOnInit() {
     this.ignoreProperties = this.IGNORE_PROPERTIES;
-    this.facultyEditName = new FormControl('', Validators.required);
-    this.facultyEditDescription = new FormControl('');
-    this.facultyEditId = new FormControl('');
-    this.facultyEditForm = new FormGroup({
-      'id': this.facultyEditId,
-      'name': this.facultyEditName,
-      'description': this.facultyEditDescription
-    });
-
-    this.facultyAddName = new FormControl('', Validators.required, this.ValidatorUniqName.bind(this));
-    this.facultyAddDescription = new FormControl('');
-    this.facultyAddForm = new FormGroup({
-      'name': this.facultyAddName,
-      'description': this.facultyAddDescription
-    });
-
+    this.spinner.showSpinner()
 
     this.http.countAllRecords().subscribe((resp) => {
         this.count = resp['numberOfRecords'];
@@ -66,6 +45,7 @@ export class FacultiesComponent<T> implements OnInit {
 
     this.http.getPaginatedPage(this.countPerPage, 0).subscribe((resp) => {
         this.faculties = <Faculty[]> resp;
+        this.spinner.hideSpinner();
       },
       error => this.router.navigate(['/bad_request'])
     );
@@ -80,105 +60,98 @@ export class FacultiesComponent<T> implements OnInit {
   }
 
   changePage(d: number) {
+    this.spinner.showSpinner();
     this.page = d;
     this.http.getPaginatedPage(this.countPerPage, (this.page - 1) * this.countPerPage).subscribe((resp) => {
         this.faculties = <Faculty[]> resp;
+        this.spinner.hideSpinner();
       },
       error => this.router.navigate(['/bad_request'])
     );
   }
 
   uploadAllPages(page: number) {
+    this.spinner.showSpinner();
     this.getCount();
     this.http.getPaginatedPage(this.countPerPage, (page - 1) * this.countPerPage).subscribe((resp) => {
         this.faculties = <Faculty[]> resp;
+        this.spinner.hideSpinner();
       },
       error => this.router.navigate(['/bad_request'])
-    );
-  }
-
-  deleteFaculty(faculty: Faculty, content) {
-    this.modalService.open(content).result.then((result) => {
-      this.confirmDelete(faculty);
-      alert(DELETERESULT);
-    }, (reason) => {
-    });
-  }
-
-
-
-// Confirm methods for add, edit, delete faculty
-
-  confirmAdd(entity: Faculty) {
-    console.log(entity);
-    this.http.addItem(entity['faculty_name'], entity['faculty_description']).subscribe(response => {
-        this.getCount();
-        (this.count % 10 === 0) ? this.page = this.page + 1 : this.page;
-        this.uploadAllPages(this.page);
-        this.popup.cancel();
-      },
-      error => this.router.navigate(['/bad_request'])
-    );
-  }
-  confirmEdit(entity: Faculty) {
-    console.log(entity);
-    this.http.editItem(entity['faculty_id'], entity['faculty_name'], entity['faculty_description'] ).subscribe(response => {
-       this.uploadAllPages(this.page);
-        this.popup.cancel();
-      },
-      error => this.router.navigate(['/bad_request'])
-    );
-  }
-  confirmDelete(faculty: Faculty) {
-    this.http.deleteItem(faculty['faculty_id']).subscribe((resp) => {
-        this.getCount();
-        (this.count % this.countPerPage === 1) ? this.page = this.page - 1 : this.page; // number of items per page is 10
-        this.uploadAllPages(this.page);
-        this.popup.cancel();
-      },
-      error => this.router.navigate(['/bad_request'])
-    );
-  };
-
-// Method for opening editing and deleting commo modal window
-  add() {
-    this.popup.showModal('add', 'faculty', new Faculty(null, '', '') );
-  }
-  edit(faculty: Faculty) {
-    this.popup.showModal('edit', 'faculty', faculty );
-  }
-  del(faculty: Faculty){
-    this.popup.showModal('delete', 'faculty', faculty);
-  }
-  // Validation
-  ValidatorUniqName(control: AbstractControl) {
-    return this.http.searchByName(control.value).map((resp: Faculty[]) => {
-        for (let key of resp) {
-          if (key['faculty_name'] === control.value.trim()) {
-            return {exists: true};
-          }
-        }
-        return null;
-      }
     );
   }
 
   search(text: string) {
+    this.spinner.showSpinner();
     this.http.searchFaculty(text).subscribe(resp => {
       if (resp['response'] === 'no records') {
         this.faculties = [];
+        this.spinner.hideSpinner();
       }
       else {
         this.faculties = <Faculty[]> resp;
         this.count = this.faculties.length;
+        this.spinner.hideSpinner();
       }
     });
   }
 
   getGroupsByFaculties(faculty: Faculty) {
     this.id = faculty['faculty_id'];
-    this.router.navigate(['/admin/group'], {queryParams: {'Id': this.id}});
+    this.router.navigate(['/admin/group'], {queryParams: {'facultyId': this.id}});
   }
+
+  // Dynamic Module
+
+// Methods for opening editing and deleting common modal window
+
+  add() {
+    this.popup.sendItem(new Faculty('', '', ''), 'Faculty');
+    this.popup.showModal();
+  }
+
+  edit(faculty: Faculty) {
+    this.popup.sendItem(faculty);
+    this.popup.showModal();
+  }
+
+  delete(faculty: Faculty) {
+    this.popup.deleteEntity(faculty);
+  }
+
+  // Method for  add/edit, delete form submiting
+
+  formSubmitted(value) {
+    console.log(value);
+    if (value['faculty_id']) {
+      this.http.editItem(value['faculty_id'], value['faculty_name'], value['faculty_description']).subscribe(response => {
+          this.uploadAllPages(this.page);
+          this.popup.cancel();
+        },
+        error => this.router.navigate(['/bad_request'])
+      );
+    } else {
+      this.http.addItem(value['faculty_name'], value['faculty_description']).subscribe(response => {
+          this.getCount();
+          (this.count % this.countPerPage === 0) ? this.page = this.page + 1 : this.page;
+          this.uploadAllPages(this.page);
+          this.popup.cancel();
+        },
+        error => this.router.navigate(['/bad_request'])
+      );
+    }
+  }
+
+  submitDelete(faculty: Faculty) {
+    this.http.deleteItem(faculty['faculty_id']).subscribe(response => {
+        this.getCount();
+        (this.count % this.countPerPage === 1) ? this.page = this.page - 1 : this.page;
+        this.uploadAllPages(this.page);
+      },
+      error => this.router.navigate(['/bad_request'])
+    );
+  }
+
 }
 
 

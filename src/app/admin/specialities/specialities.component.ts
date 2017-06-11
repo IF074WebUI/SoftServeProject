@@ -4,6 +4,7 @@ import { Speciality } from './speciality';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PopupComponent } from '../popup/popup.component';
 import {ToastsManager} from "ng2-toastr";
+import {SpinnerService} from "../universal/spinner/spinner.service";
 
 @Component({
   selector: 'dtester-specialities',
@@ -13,8 +14,10 @@ import {ToastsManager} from "ng2-toastr";
 
 export class SpecialitiesComponent implements OnInit {
 
-  SPECIALITIES_HEADERS: string[] = ['№', 'код спеціальності', 'назва спеціальності'];
+  SPECIALITIES_HEADERS: string[] = ['№', 'назва спеціальності', 'код спеціальності'];
   IGNORE_PROPERTIES: string[] = ['speciality_id'];
+  DISPLAY_PROPERTIES_ORDER: string[] = ['speciality_name', 'speciality_code'];
+  SORT_PROPERTIES: string[] = ['speciality_name'];
   NO_RECORDS: string = 'no records';
   SPECIALITIES_HEADER: string = 'Спеціальності';
   SPECIALITIES_ADD_TITLE: string = 'Додати спеціальність';
@@ -28,27 +31,33 @@ export class SpecialitiesComponent implements OnInit {
   count: number;                /* count of all specialities */
   countPerPage = 5;             /* count of specialities per page */
   headers: string[];            /* array of headers */
+  sortProperties: string[];
   ignoreProperties: string[];
+  displayPropertiesOrder: string[];
   editName: string = '';
   @ViewChild(PopupComponent) popup: PopupComponent;
 
   constructor(private specialitiesService: SpecialitiesService, private router: Router,
-   private activatedRoute: ActivatedRoute, private toastr: ToastsManager) {}
+   private activatedRoute: ActivatedRoute, private toastr: ToastsManager, private spinnerService: SpinnerService) {}
 
   ngOnInit() {
     this.headers = this.SPECIALITIES_HEADERS;
     this.ignoreProperties = this.IGNORE_PROPERTIES;
+    this.sortProperties = this.SORT_PROPERTIES;
+    this.displayPropertiesOrder = this.DISPLAY_PROPERTIES_ORDER
     this.getSpecialities();       /* get specialities for start page and count of specialities for pagination */
     this.getCount();
   }
 
   getSpecialities(): void {
+    this.spinnerService.showSpinner();
     /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.count <= (this.page - 1) * this.countPerPage) {
       --this.page;
     }
     this.specialitiesService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
-      .subscribe(resp => this.specialities = resp, err => this.router.navigate(['/bad_request']));
+      .subscribe(resp => {this.specialities = resp;
+      this.spinnerService.hideSpinner(); }, err => this.router.navigate(['/bad_request']));
   }
 
   getCount(): void {
@@ -113,19 +122,22 @@ export class SpecialitiesComponent implements OnInit {
   }
 
   startSearch(criteria: string) {         /* callback method for output in search component */
-  if (criteria === '') {
+    if (criteria === '') {
     this.getSpecialities();
     this.getCount();
   } else {
+      this.spinnerService.showSpinner();
     this.specialitiesService.searchByName(criteria).subscribe(resp => {
       if (resp['response'] === this.NO_RECORDS) {    /* check condition: if no records presented for search criteria */
         this.specialities = [];
         this.count = this.specialities.length;
+        this.page = 2;
       } else {
         this.count = 0;
         this.page = 2;
         this.specialities = resp;         /* present all specialities */
       }
+      this.spinnerService.hideSpinner();
     },
       err => this.router.navigate(['/bad_request']));
   }

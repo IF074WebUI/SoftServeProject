@@ -1,3 +1,5 @@
+import { Question } from '../detailed/question';
+import { Answer } from '../detailed/answer';
 export interface Result {
   session_id: number;
   student_id: number;
@@ -6,9 +8,9 @@ export interface Result {
   start_time: Date;
   end_time: Date;
   result: number;
-  questions: string;
+  questions: Question[];
   true_answers: string;
-  answers: string;
+  answers: Answer[];
   student_name?: string;
   test_name?: string;
 }

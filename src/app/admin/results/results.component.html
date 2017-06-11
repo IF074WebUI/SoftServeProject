@@ -1,37 +1,41 @@
 <hr/>
-
-  <form class="form-inline" [formGroup]="searchByGroupTestForm" (submit)="findByGroupTest()">
-    <div class="form-group">
-      <select class="selectpicker form-control form-control-sm" formControlName="group" data-style="btn-primary">
-        <option disabled [ngValue]="''">Група</option>
-        <option *ngFor="let group of groups" [value]="group['group_id']">
-          {{group.group_name}}
-        </option>
-      </select>
-    </div>
-    <div class="form-group mx-sm-3">
-      <select class="selectpicker form-control form-control-sm" formControlName="test" data-style="btn-primary">
-        <option disabled [ngValue]="''">Тест</option>
-        <option *ngFor="let test of tests" [value]="test['test_id']">
-          {{test.test_name}}
-        </option>
-      </select>
-    </div>
-    <div class="form-group mx-sm-3">
-      <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" formControlName="date" placeholder="Дата" class="form-control form-control-sm">
-    </div>
-    <button type="submit" [disabled]="!searchByGroupTestForm.valid" class="btn btn-sm btn-primary"><i class="fa fa-list" aria-hidden="true"></i></button>
-    <button type="button" class="btn btn-sm btn-primary" (click)="print()"><i class="fa fa-print" aria-hidden="true"></i></button>
-  </form>
-  <dtester-items-per-page [numberOfRecords]="count" (recordsPerPageChanged)="changeCountPerPage($event)">
-  </dtester-items-per-page>
-  <dtester-entities-table id="print-section" [entities]="results" [ignoreProperties]="IGNORE_PROPERTIES" [headers]="RESULTS_HEADERS"
-                          [page]="1" [displayPropertiesOrder]="DISPLAY_ORDER" [itemsPerPage]="50" [canAction]="true"
-                          [btnClass]="'fa fa-address-card'" [canEdit]="false" (deleteEntity)="del($event)"
-                          (clickEntity)="findByStudent($event)" (actionEntity)="detailedByStudent($event)">
-
-  </dtester-entities-table>
-  <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
-                      (pageChanged)="changePage($event)"></dtester-pagination>
+<form class="form-inline" [formGroup]="searchByGroupTestForm" (submit)="findByGroupTest()">
+  <div class="form-group">
+    <select class="selectpicker form-control form-control-sm" formControlName="group" data-style="btn-primary">
+      <option disabled [ngValue]="''">Група</option>
+      <option *ngFor="let group of groups" [value]="group['group_id']">
+        {{group.group_name}}
+      </option>
+    </select>
+  </div>
+  <div class="form-group mx-sm-3">
+    <select class="selectpicker form-control form-control-sm" formControlName="test" data-style="btn-primary">
+      <option disabled [ngValue]="''">Тест</option>
+      <option *ngFor="let test of tests" [value]="test['test_id']">
+        {{test.test_name}}
+      </option>
+    </select>
+  </div>
+  <div class="form-group mx-sm-3">
+    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" formControlName="date"
+           placeholder="Дата" class="form-control form-control-sm">
+  </div>
+  <button type="submit" [disabled]="!searchByGroupTestForm.valid" class="btn btn-sm btn-primary"><i class="fa fa-list"
+                                                                                                    aria-hidden="true"></i>
+  </button>
+  <button type="button" class="btn btn-sm btn-primary" (click)="print()"><i class="fa fa-print" aria-hidden="true"></i>
+  </button>
+</form>
+<dtester-items-per-page [numberOfRecords]="count" (recordsPerPageChanged)="changeCountPerPage($event)">
+</dtester-items-per-page>
+<dtester-entities-table id="print-section" [entities]="results" [ignoreProperties]="IGNORE_PROPERTIES"
+                        [headers]="RESULTS_HEADERS" [sortProperties]="sortProperties"
+                        [page]="page" [displayPropertiesOrder]="DISPLAY_ORDER" [itemsPerPage]="countPerPage"
+                        [canAction]="true"
+                        [btnClass]="'fa fa-address-card'" [canEdit]="false" (deleteEntity)="del($event)"
+                        (clickEntity)="findByStudent($event)" (actionEntity)="detailedByStudent($event)">
+</dtester-entities-table>
+<dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
+                    (pageChanged)="changePage($event)"></dtester-pagination>
 
 
