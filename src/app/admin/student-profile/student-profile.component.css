@@ -1,1 +1,14 @@
+.header {
+  margin-bottom: 10px;
+}
+
+.profile-data {
+  width: 350px;
+  float: left;
+}
+
+.photo {
+  max-height: 200px;
+  max-width: 200px;
+}
 

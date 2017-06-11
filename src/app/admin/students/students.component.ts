@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { StudentsService} from './students.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -7,18 +7,26 @@ import { ActivatedRoute } from '@angular/router';
 import { Group } from '../group/group';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { GetAllRecordsService } from '../services/get-all-records.service';
+import{ STUDENT_CONFIG } from '../universal/dynamic-form/config';
+import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import {FacultyService} from "../faculties/faculty.service";
 
 @Component({
   selector: 'dtester-students',
   templateUrl: './students.component.html',
   styleUrls: ['./students.component.css'],
-  providers: [StudentsService]
+  providers: [StudentsService, FacultyService]
 })
 export class StudentsComponent implements OnInit {
 
   headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові', 'Група'];
   ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
   displayProperties = ['student_surname', 'student_name', 'student_fname', 'group_name'];
+  sortProperties = ['student_surname', 'student_name', 'student_fname', 'group_name'];
+
+  configs = STUDENT_CONFIG;
+
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
   MAIN_HEADER = 'Студенти';
   MODAL_ADD = 'Додати студента';
@@ -39,7 +47,7 @@ export class StudentsComponent implements OnInit {
   // MODAL_GROUP_NAME = 'Група:';
   MODAL_REQUIRED = 'Поле обов\'язкове до заповнення';
 
-  studentForEdit: Student;
+
   studentForDel: Student;
   students: Student[];
   groups: Group[];
@@ -47,13 +55,21 @@ export class StudentsComponent implements OnInit {
   count: number;
   countPerPage = 10;
 
-  studentForm: FormGroup;
-  // studentEditData = {};
-  // studentEditForm: FormGroup;
+  studentForEdit;
 
-  static generateStudentPassword() {
-    const password = '' + Math.random();
+  studentForm: FormGroup;
+  // password = '' + Math.random();
+
+  // studentEditData = {};
+  studentEditForm: FormGroup;
+
+  static generateStudentData() {
+    const password = Math.random().toString(36).substr(2, 8);
+    const username = 's' + Math.random().toFixed(3) + ' q' + Math.random().toFixed(3);
+    const photo = '';
     return {
+      'photo': photo,
+      'username': username,
       'password': password,
       'password_confirm': password,
       'plain_password': password
@@ -71,17 +87,17 @@ export class StudentsComponent implements OnInit {
     this.getGroups();
     this.getStudentsForGroup();
 
-    this.studentForm = new FormGroup({
-      'group_id': new FormControl(''),
-      'student_name': new FormControl('', Validators.required),
-      'student_surname': new FormControl('', Validators.required),
-      'student_fname': new FormControl('', Validators.required),
-      'username': new FormControl('', Validators.required),
-      'email': new FormControl('', Validators.required),
-      'gradebook_id': new FormControl('', Validators.required),
-      'photo': new FormControl('')
-    });
-
+    // this.studentForm = new FormGroup({
+    //   'group_id': new FormControl(''),
+    //   'student_name': new FormControl('', Validators.required),
+    //   'student_surname': new FormControl('', Validators.required),
+    //   'student_fname': new FormControl('', Validators.required),
+    //   'username': new FormControl('', Validators.required),
+    //   'email': new FormControl('', Validators.required),
+    //   'gradebook_id': new FormControl('', Validators.required),
+    //   'photo': new FormControl('')
+    // });
+    //
     // this.studentEditForm = new FormGroup({
     //   'group_id': new FormControl(''),
     //   'student_surname': new FormControl(''),
@@ -119,11 +135,9 @@ export class StudentsComponent implements OnInit {
     }
     this.getCount();
     this.studentsService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
-      .subscribe(resp => {
-        console.log(resp);
-        this.getStudentsWithGroupName(resp),
+      .subscribe(resp => this.getStudentsWithGroupName(resp),
         err => this.router.navigate(['/bad_request'])
-        });
+        );
   }
 
   getCount(): void {
@@ -161,12 +175,12 @@ export class StudentsComponent implements OnInit {
      });
   }
 
-  addStudent() {
-    this.studentsService.insert(this.studentForm.value, StudentsComponent.generateStudentPassword()).subscribe(resp => {
-      this.getStudents();
-    });
-    this.studentForm.reset();
-  }
+  // addStudent() {
+  //   this.studentsService.insert(this.studentForm.value, StudentsComponent.generateStudentData()).subscribe(resp => {
+  //     this.getStudents();
+  //   });
+  //   this.studentForm.reset();
+  // }
 
   // editStudent() {
   //   this.studentsService.update(this.studentEditForm.value, this.studentEditData, this.studentForEdit['user_id']).subscribe(resp => {
@@ -206,5 +220,46 @@ export class StudentsComponent implements OnInit {
 
   goToStudentProfile(student: Student) {
     this.router.navigate(['students', student.user_id], {relativeTo: this.activatedRoute.parent});
+  }
+
+  add() {
+    this.popup.sendItem(new Student());
+    this.popup.showModal();
+  }
+
+  edit(student: Student) {
+    this.studentForEdit = student;
+    this.getRecordsByIdService.getRecordsById('AdminUser', this.studentForEdit.user_id).subscribe(data => {
+      this.studentForEdit.email = data[0].email;
+    });
+    console.log(this.studentForEdit.group_id);
+    if (this.studentForEdit.email) {
+      this.popup.sendItem(
+        {
+          student_name: this.studentForEdit.student_name,
+          student_surname: this.studentForEdit.student_surname,
+          student_fname: this.studentForEdit.student_fname,
+          gradebook_id: this.studentForEdit.gradebook_id,
+          email: this.studentForEdit.email,
+          group_id: this.studentForEdit.group_id
+        }
+      );
+      this.popup.showModal();
+    }
+  }
+
+  formSubmitted(value) {
+    console.log(value);
+    if (value['user_id']) {
+      this.studentsService.update(value, StudentsComponent.generateStudentData(), value['user_id']).subscribe(resp => {
+        this.getStudents();
+        this.popup.cancel();
+      }, error2 => this.router.navigate(['/bad_request']));
+    } else {
+      this.studentsService.insert(value, StudentsComponent.generateStudentData()).subscribe(resp => {
+        this.getStudents();
+        this.popup.cancel();
+      }, error2 => this.router.navigate(['/bad_request']));
+    }
   }
 }

@@ -133,20 +133,6 @@ export const GROUP_CONFIG =
 export const STUDENT_CONFIG =
   [
     {
-      type: 'id',
- //     text: null,
-      label: 'ID студента',
-      name: 'group_id',
-      placeholder: '',
-    },
-    {
-      type: 'select',
-   //   text: '',
-      label: 'Група',
-      name: 'Group',
-      placeholder: 'Виберіть групу',
-    },
-    {
       type: 'input',
    //   text: '',
       label: `Ім'я студента`,
@@ -157,16 +143,16 @@ export const STUDENT_CONFIG =
     {
       type: 'input',
    //   text: '',
-      label: `По-батькові студента`,
-      name: 'student_second_name',
-      placeholder: `Введіть по-батькові студента`,
+      label: `Прізвище студента`,
+      name: 'student_surname',
+      placeholder: `Введіть прізвище студента`,
     },
     {
       type: 'input',
   //    text: '',
-      label: `Прізвище студента`,
+      label: `По-батькові студента`,
       name: 'student_fname',
-      placeholder: `Введіть прізвище студента`,
+      placeholder: `Введіть по-батькові студента`,
       required: true
     },
     {
@@ -181,9 +167,62 @@ export const STUDENT_CONFIG =
   //    text: '',
       label: `Електронна пошта студента`,
       name: 'email',
-      placeholder: `Введіть адрес електроної пошти студента`,
-      emailPattern: true
+      placeholder: `Введіть адрес електроної пошти студента`
     },
+    {
+      type: 'id',
+      //     text: null,
+      label: 'ID студента',
+      name: 'group_id',
+      placeholder: '',
+    },
+    {
+      type: 'select',
+      //   text: '',
+      label: 'Група',
+      name: 'group',
+      placeholder: 'Виберіть групу',
+    },
+    // {
+    //   type: 'id',
+    //   text: null,
+    //   label: 'ID group',
+    //   name: 'group_id',
+    //   placeholder: '',
+    //   required: false
+    // },
+    // {
+    //   type: 'id',
+    //   text: null,
+    //   label: 'username',
+    //   name: 'username',
+    //   placeholder: '',
+    //   required: false
+    // },
+    // {
+    //   type: 'id',
+    //   text: null,
+    //   label: 'Пароль',
+    //   name: 'password',
+    //   placeholder: '',
+    //   required: false
+    // },
+    // {
+    //   type: 'id',
+    //   text: null,
+    //   label: 'Підтвердіть пароль',
+    //   name: 'password_сonfirm',
+    //   placeholder: '',
+    //   required: false
+    // },
+    // {
+    //   type: 'id',
+    //   text: null,
+    //   label: 'Простий пароль',
+    //   name: 'plain_password',
+    //   placeholder: '',
+    //   required: false
+    // },
     {
       label: 'Підтвердити',
       name: 'submit',

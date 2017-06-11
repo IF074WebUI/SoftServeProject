@@ -42,6 +42,7 @@ import { TestsService } from './services/tests.service';
 import { DetailedComponent } from './detailed/detailed.component';
 import { SpinnerService } from './universal/spinner/spinner.service';
 import { LoadingModule } from 'ngx-loading';
+import { StudentProfileComponent } from './student-profile/student-profile.component';
 import { TestDetailComponent } from './test-detail/test-detail.component';
 import { DynamicFormModule } from './universal/dynamic-form/dynamic-form.module';
 import { QuestionsService } from './services/questions.service';
@@ -51,8 +52,6 @@ import { SubjectComponent } from './subject/subject.component';
 import { GetRecordsBySearchService } from './services/get-records-by-search.service';
 import { GetTestsBySubjectService } from './services/get-tests-by-subject.service';
 import { SubjectService } from './subject/subject.service';
-import { StudentProfileComponent } from './student-profile/student-profile.component';
-
 
 @NgModule({
   declarations: [
@@ -91,7 +90,6 @@ import { StudentProfileComponent } from './student-profile/student-profile.compo
     MdDialogModule,
     MdButtonModule,
     DynamicFormModule,
-    MdButtonModule,
     LoadingModule
   ],
   providers: [

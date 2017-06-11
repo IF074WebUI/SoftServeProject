@@ -1,17 +1,24 @@
-<h2 class="text-center">Профіль студента</h2>
+<h2 class="text-center header">Профіль студента</h2>
 
-<div class="row">
-  <div class="col-3">
-    <img src="../../../assets/default-avatar.png" width="200" height="200">
-    <button>button</button>
-  </div>
-  <div class="col-3">
-    <label for="student_name">Імя</label>
-    <input type="text" id="student_name">
-    <label for="student_surname">Прізвище</label>
-    <input type="text" id="student_surname">
-  </div>
-  <div class="col-3">col</div>
-  <div class="col-3">col</div>
+<div class="profile-data">
+  <h5>Ім'я: {{student?.student_name}}</h5>
+  <h5>Прізвище: {{student?.student_surname}}</h5>
+  <h5>По-батькові: {{student?.student_fname}}</h5>
+  <h5>№ заліковки: {{student?.gradebook_id}}</h5>
+  <h5>E-mail: {{AdminUser?.email}}</h5>
+  <h5>Логін: {{AdminUser?.username}}</h5>
+  <h5>Пароль: {{student?.plain_password}}</h5>
+  <button class="btn btn-info" (click)="goToStudentResult()">Результати</button>
 </div>
+
+<img class="img-thumbnail photo" *ngIf="!student?.photo" src="../../../assets/default-avatar.png">
+<img class="img-thumbnail photo" *ngIf="student?.photo" [src]="student?.photo">
+
+
+
+<!--<button (click)="edit($event)">Редагувати</button>-->
+
+<!--<div class="app">-->
+  <!--<dynamic-form [config]="configs" (submitted)="formSubmitted($event)" (youCanDelete)="submitDelete($event)"></dynamic-form>-->
+<!--</div>-->
 
