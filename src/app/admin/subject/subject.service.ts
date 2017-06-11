@@ -6,7 +6,6 @@ import 'rxjs/add/operator/map';
 import { GetAllRecordsService } from '../services/get-all-records.service';
 import { Timetable } from '../timetable/timetable';
 import { DeleteRecordByIdService } from '../services/delete-record-by-id.service';
-import {Subject} from "./subject";
 
 @Injectable()
 export class SubjectService {
@@ -32,14 +31,16 @@ export class SubjectService {
       .map((resp: Response) => resp.json());
   }
   deleteSubject(deletedSubject) {
-    return this.getAllRecordsService.getAllRecords('timeTable').subscribe((data) => {
-     const timetables: Timetable[] = data;
+    this.getAllRecordsService.getAllRecords('timeTable').subscribe((timetablesResp) => {
+     const timetables: Timetable[] = timetablesResp;
      for (const timetable of timetables ){
        if (timetable.subject_id === deletedSubject.subject_id) {
-         this.deleteRecordByIdService.deleteRecordsById('timeTable', timetable.timetable_id);
+         this.deleteRecordByIdService.deleteRecordsById('timeTable', timetable.timetable_id)
+           .subscribe((deleteTimetableResp) => console.log(deleteTimetableResp));
        }
      }
-     this.deleteRecordByIdService.deleteRecordsById('subject', deletedSubject.subject_id);
+     this.deleteRecordByIdService.deleteRecordsById('subject', deletedSubject.subject_id)
+       .subscribe((deleteSubjectResp) => {console.log(deleteSubjectResp));
     });
   }
 }
