@@ -2,22 +2,23 @@ export const FACULTY_CONFIG =
   [
     {
       type: 'id',
-  //    text: null,
+      //    text: null,
       label: 'ID факультету',
       name: 'faculty_id',
       placeholder: '',
     },
     {
       type: 'input',
-   //   text: '',
+      //   text: '',
       label: 'Назву факультету',
       name: 'faculty_name',
       placeholder: 'Введіть назву факультету',
-      requiresAsync: true
+      requiresAsync: true,
+      required: true
     },
     {
       type: 'textarea',
-    //  text: '',
+      //  text: '',
       label: 'Введіть опис факультету',
       name: 'faculty_description',
       placeholder: 'Введіть опис факультету',
@@ -33,21 +34,21 @@ export const SPECIALITY_CONFIG =
   [
     {
       type: 'id',
-   //   text: null,
+      //   text: null,
       label: 'ID спеціальності',
       name: 'speciality_id',
       placeholder: '',
     },
     {
       type: 'input',
-    //  text: '',
+      //  text: '',
       label: 'Код спеціальності',
       name: 'speciality_code',
       placeholder: 'Введіть код спеціальності',
     },
     {
       type: 'input',
-   //   text: '',
+      //   text: '',
       label: 'Назва спеціальності',
       name: 'speciality_name',
       placeholder: 'Введіть назву спеціальності',
@@ -65,14 +66,14 @@ export const SUBJECTS_CONFIG =
   [
     {
       type: 'id',
-    //  text: null,
+      //  text: null,
       label: 'ID предмету',
       name: 'subject_id',
       placeholder: '',
     },
     {
       type: 'input',
-  //    text: '',
+      //    text: '',
       label: 'Назва предмету',
       name: 'subject_name',
       placeholder: 'Введіть назву предмету',
@@ -80,7 +81,7 @@ export const SUBJECTS_CONFIG =
     },
     {
       type: 'textarea',
- //     text: '',
+      //     text: '',
       label: 'Опис предмету',
       name: 'subject_description',
       placeholder: 'Введіть опис предмету',
@@ -95,14 +96,14 @@ export const GROUP_CONFIG =
   [
     {
       type: 'id',
-    //  text: null,
+      //  text: null,
       label: 'ID групи',
       name: 'group_id',
       placeholder: '',
     },
     {
       type: 'input',
-    //  text: '',
+      //  text: '',
       label: 'Назва групи',
       name: 'group_name',
       placeholder: 'Введіть назву групи',
@@ -111,14 +112,14 @@ export const GROUP_CONFIG =
     },
     {
       type: 'select',
- //     text: '',
+      //     text: '',
       label: 'Спеціальність',
       name: 'Speciality',
       placeholder: 'Виберіть спеціальність',
     },
     {
       type: 'select',
-   //   text: '',
+      //   text: '',
       label: 'Факультет',
       name: 'Faculty',
       placeholder: 'Виберіть факультет',
@@ -134,21 +135,21 @@ export const STUDENT_CONFIG =
   [
     {
       type: 'id',
- //     text: null,
+      //     text: null,
       label: 'ID студента',
       name: 'group_id',
       placeholder: '',
     },
     {
       type: 'select',
-   //   text: '',
+      //   text: '',
       label: 'Група',
       name: 'Group',
       placeholder: 'Виберіть групу',
     },
     {
       type: 'input',
-   //   text: '',
+      //   text: '',
       label: `Ім'я студента`,
       name: 'student_name',
       placeholder: `Введіть ім'я студента`,
@@ -156,14 +157,14 @@ export const STUDENT_CONFIG =
     },
     {
       type: 'input',
-   //   text: '',
+      //   text: '',
       label: `По-батькові студента`,
       name: 'student_second_name',
       placeholder: `Введіть по-батькові студента`,
     },
     {
       type: 'input',
-  //    text: '',
+      //    text: '',
       label: `Прізвище студента`,
       name: 'student_fname',
       placeholder: `Введіть прізвище студента`,
@@ -171,14 +172,14 @@ export const STUDENT_CONFIG =
     },
     {
       type: 'input',
-  //    text: '',
+      //    text: '',
       label: `Номер залікової книжки студента`,
       name: 'gradebook',
       placeholder: `Введіть номер залікової книжки студента`,
     },
     {
       type: 'email',
-  //    text: '',
+      //    text: '',
       label: `Електронна пошта студента`,
       name: 'email',
       placeholder: `Введіть адрес електроної пошти студента`,
@@ -193,14 +194,14 @@ export const STUDENT_CONFIG =
 export const TEST_DETAIL_CONFIG = [
   {
     type: 'id',
-  //  text: null,
+    //  text: null,
     label: 'ID деталей тесту',
     name: 'id_detail_id',
     placeholder: '',
   },
   {
     type: 'id',
- //   text: null,
+    //   text: null,
     label: 'ID тесту',
     name: 'test_id',
     placeholder: '',
@@ -236,14 +237,14 @@ export const TEST_DETAIL_CONFIG = [
 export const QUESTION_CONFIG = [
   {
     type: 'id',
-  //  text: null,
+    //  text: null,
     label: 'ID питання',
     name: 'question_id',
     placeholder: '',
   },
   {
     type: 'id',
- //   text: null,
+    //   text: null,
     label: 'ID тесту',
     name: 'test_id',
     placeholder: '',
@@ -275,7 +276,22 @@ export const QUESTION_CONFIG = [
     type: 'button'
   }
 ];
-
+// export const TESTS_CONFIG = [
+//   {
+//     type: 'id',
+//     //  text: null,
+//     label: 'ID питання',
+//     name: 'question_id',
+//     placeholder: '',
+//   },
+//   {
+//     type: 'input',
+//     //    text: '',
+//     label: `Номер залікової книжки студента`,
+//     name: 'gradebook',
+//     placeholder: `Введіть номер залікової книжки студента`,
+//   },
+// ]
 
 
 

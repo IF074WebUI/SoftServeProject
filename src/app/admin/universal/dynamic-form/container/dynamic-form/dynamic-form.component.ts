@@ -1,4 +1,7 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {
+  Component, Input, OnInit, Output, EventEmitter, AfterViewInit, AfterViewChecked,
+  AfterContentChecked
+} from '@angular/core';
 
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -6,6 +9,7 @@ import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl} from '
 import {FacultyService} from '../../../../faculties/faculty.service';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
 import {TestDetailService} from "../../../../test-detail/test-detail.service";
+import {promise} from "selenium-webdriver";
 
 
 interface Validator<T extends FormControl> {
@@ -23,18 +27,27 @@ function validateEmail(c: FormControl) {
 }
 
 
-function validateName(c: AbstractControl) {
-  return this.get_records_by_search.getRecordsBySearch(this.entity_name, c.value).map((resp) => {
-    for (let key of resp) {
-      let Properties = Object.getOwnPropertyNames(key);
-      let unique_field =  this.entity_name === 'Speciality' ? Properties[+[2]] : Properties[+[1]];
-      if (key[unique_field] === c.value.trim()) {
-          return {exists: true};
+function validateName(c: FormControl) {
+  if (this.entity_name == '') {
+    console.log('workds');
+    return this.get_records_by_search.getRecordsBySearch(this.entity_name, c.value).map((resp) => {
+        for (let key of resp) {
+          let Properties = Object.getOwnPropertyNames(key);
+          let unique_field = this.entity_name === 'Speciality' ? Properties[+[2]] : Properties[+[1]];
+          if (key[unique_field] === c.value.trim()) {
+            return {exists: true};
+          }
         }
+        return null;
       }
+    );
+  } else {
+    console.log('edit works');
+    return Promise.resolve().then(() => {
       return null;
-    }
-  );
+    });
+  }
+  ;
 }
 
 declare var $: any;
@@ -49,9 +62,9 @@ export class DynamicFormComponent implements OnInit {
   @Input()
   config: any[] = [];
   // @Input()
-   entity: any;
- // @Input()
- public test_id: number;
+  entity: any;
+  // @Input()
+  public test_id: number;
   entityForDelete: any;
   Properties: Array<string>;
 
@@ -64,7 +77,8 @@ export class DynamicFormComponent implements OnInit {
   entity_name: string;
 
 
-  MODAL_ADD_TITLE = 'Редагування';
+  MODAL_ADD_TITLE = 'Створити новий';
+  MODAL_EDIT_TITLE = 'Редагувати';
   MODAL_DELETE_TITLE = 'Видалення';
   TITLE: string;
   CONFIRM_ANSWER_TEXT = 'Ви підтверджуєте видалення ';
@@ -88,11 +102,11 @@ export class DynamicFormComponent implements OnInit {
       if (control.requiredMax) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required, Validators.maxLength(control.requiredMax)])));
       }
-      if (control.required) {
-        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
-      }
       if (control.requiresAsync) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
+      }
+      if (control.required) {
+        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
       }
       else {
         group.addControl(control.name, this.fb.control(''));
@@ -111,6 +125,7 @@ export class DynamicFormComponent implements OnInit {
     this.youCanDelete.emit(this.entityForDelete);
   }
 
+  uniq_name: string;
 
   sendItem(entity: any, entity_name?: string, test_id?: number) {
     this.test_id = test_id;
@@ -118,21 +133,23 @@ export class DynamicFormComponent implements OnInit {
     this.entity = entity;
     this.entity_name = entity_name;
     let InputEntityNames = Object.getOwnPropertyNames(entity);
-    console.log(this.test_id);
     let FormNames = Object.getOwnPropertyNames(this.form.controls);
     for (let i = 0; i < InputEntityNames.length; i++) {
       this.form.controls[FormNames[+[i]]].setValue(this.entity[InputEntityNames[+[i]]]);
     }
-    this.TITLE = this.MODAL_ADD_TITLE;
-
-
+    this.uniq_name = this.entity[InputEntityNames[0]];
+    if (this.uniq_name !== '') {
+      this.TITLE = this.MODAL_EDIT_TITLE
+    } else {
+      this.TITLE = this.MODAL_ADD_TITLE
+    }
   }
 
-  deleteEntity(entity: any) {
+  deleteEntity(entity: any, entity_name?: string) {
     this.action = 'delete';
     this.entityForDelete = entity;
     this.Properties = Object.getOwnPropertyNames(this.entityForDelete);
-    this.TITLE = this.MODAL_DELETE_TITLE;
+    this.TITLE = this.MODAL_DELETE_TITLE + ' ' + entity_name;
     this.CONFIRM_ANSWER = this.CONFIRM_ANSWER_TEXT + '' + this.entityForDelete[this.Properties[1]] + '?';
     $('#add_edit_deletePopup').modal('show');
   }

@@ -116,7 +116,7 @@ export class FacultiesComponent<T> implements OnInit {
   }
 
   delete(faculty: Faculty) {
-    this.popup.deleteEntity(faculty);
+    this.popup.deleteEntity(faculty, 'факультету');
   }
 
   // Method for  add/edit, delete form submiting
