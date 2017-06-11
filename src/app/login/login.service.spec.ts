@@ -23,7 +23,7 @@ describe('LoginService', () => {
   });
 
   fdescribe('checkLogged()', () => {
-    fit('should return JSON with roles if logged',
+    fit('Якщо користувач залогінений, у відповідь повинен прийти JSON з ролями',
       inject([LoginService, XHRBackend], (loginService, mockBackend) => {
 
         const mockResponse = {response: 'logged', roles: ['login', 'admin'], username: 'admin'};
@@ -41,7 +41,7 @@ describe('LoginService', () => {
         });
 
       }));
-    fit('should return JSON with "non logged" if not authenticated',
+    fit('Якщо користувач не залогінений, у відповідь повинен прийти JSON "non logged"',
       inject([LoginService, XHRBackend], (loginService, mockBackend) => {
 
         const mockResponse = {response: 'non logged'};
@@ -59,7 +59,7 @@ describe('LoginService', () => {
   });
 
   fdescribe('logout()', () => {
-    fit('should return object "response: "user has been logout"',
+    fit('При вилогіненні, має прийти відповідь response: "user has been logout"',
       inject([LoginService, XHRBackend], (loginService, mockBackend) => {
 
         const mockResponse = {response: 'user has been logout'};
@@ -77,7 +77,7 @@ describe('LoginService', () => {
   });
 
   fdescribe('login(name: string, password: string)', () => {
-    fit('should return JSON with roles if login success',
+    fit('Якщо користувач залогінився успішно, у відповідь повинен прийти JSON з ролями',
       inject([LoginService, XHRBackend], (loginService, mockBackend) => {
 
         const mockResponse = {response: 'ok', roles: ['login', 'admin'], username: 'admin'};
@@ -95,7 +95,7 @@ describe('LoginService', () => {
         });
 
       }));
-    fit('should return "response: Invalid login or password" if authentication fails',
+    fit('Якщо користувачу не вдалося залогінитись, відповідь повинна виглядати response: "Invalid login or password"',
       inject([LoginService, XHRBackend], (loginService, mockBackend) => {
 
         const mockResponse = {response: 'Invalid login or password'};
