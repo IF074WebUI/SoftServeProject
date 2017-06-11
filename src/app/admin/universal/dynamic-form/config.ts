@@ -117,7 +117,7 @@ export const GROUP_CONFIG =
       requiredMax: 10
     },
     {
-      type: 'select_speciality',
+      type: 'select',
       text: '',
       label: 'Спеціальність',
       name: 'Speciality',
