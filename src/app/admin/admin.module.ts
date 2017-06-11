@@ -50,6 +50,7 @@ import { TestDetailService } from './test-detail/test-detail.service';
 import { SubjectComponent } from './subject/subject.component';
 import { GetRecordsBySearchService } from './services/get-records-by-search.service';
 import { GetTestsBySubjectService } from './services/get-tests-by-subject.service';
+import { SubjectService } from './subject/subject.service';
 
 @NgModule({
   declarations: [
@@ -109,7 +110,8 @@ import { GetTestsBySubjectService } from './services/get-tests-by-subject.servic
     AnswersService,
     TestDetailService,
     GetRecordsBySearchService,
-    GetTestsBySubjectService
+    GetTestsBySubjectService,
+    SubjectService
   ],
 })
 export class AdminModule {
