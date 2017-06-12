@@ -93,7 +93,7 @@ export class TestDetailComponent implements OnInit {
 
 add(testDetail: TestDetail) {
   this.configs[2]['test_id'] = this.curenntTestId;
-  this.popup.sendItem(new TestDetail('', '', '', '', ''));
+  this.popup.sendItem(new TestDetail('', '', '', '', ''), '', this.curenntTestId);
   this.popup.showModal();
 }
 
