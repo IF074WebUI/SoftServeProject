@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TimetableService } from './timetable.service';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { GetAllRecordsService } from '../services/get-all-records.service';
@@ -50,8 +50,6 @@ export class TimetableComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.groupQueryParam = params['group_id'];
       this.subjectQueryParam = params['subject_id'];
-      console.log(this.groupQueryParam);
-      console.log(this.subjectQueryParam);
       this.checkQueryParams();
     });
   }
@@ -146,6 +144,10 @@ export class TimetableComponent implements OnInit {
       this.numberOfRecords++;
     }
     this.checkQueryParams();
+  }
+  changeNumberOfRecordsPerPage(newNumberOfRecordsPerPage: number) {
+    this.recordsPerPage = newNumberOfRecordsPerPage;
+    this.getTimetablesRange();
   }
   checkTime(end_date, end_time) {
     const endDateArr: string[] = end_date.split('-');

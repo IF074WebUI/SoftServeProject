@@ -2,10 +2,15 @@
   class="dynamic-field form-select"
   [formGroup]="group">
   <label>{{ config.label }}</label>
-  <select [formControlName]="config.name" class="form-control">
+  <select [formControlName]="config.name" class="form-control"
+          (change)="onValueChanged($event)">
     <option value="">{{ config.placeholder }}</option>
-    <option [value]="item" *ngFor="let item of array">
+    <option [value]="item" *ngFor="let item of entities">
       {{ item }}
     </option>
   </select>
+  <label *ngIf="error" class="error">
+    {{ERROR_MSG}}
+  </label>
+
 </div>

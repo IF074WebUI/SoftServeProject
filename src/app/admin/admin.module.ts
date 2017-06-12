@@ -52,6 +52,7 @@ import { GetRecordsBySearchService } from './services/get-records-by-search.serv
 import { GetTestsBySubjectService } from './services/get-tests-by-subject.service';
 import { StatisticGraphsComponent } from './statistics/statistic-graphs/statistic-graphs.component';
 import {ChartModule} from 'primeng/primeng';
+import { SubjectService } from './subject/subject.service';
 
 @NgModule({
   declarations: [
@@ -113,7 +114,8 @@ import {ChartModule} from 'primeng/primeng';
     AnswersService,
     TestDetailService,
     GetRecordsBySearchService,
-    GetTestsBySubjectService
+    GetTestsBySubjectService,
+    SubjectService
   ],
 })
 export class AdminModule {

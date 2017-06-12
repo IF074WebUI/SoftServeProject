@@ -12,5 +12,8 @@
   <label
     *ngIf="group.controls[config.name].hasError('exists') && group.controls[config.name].dirty"
     class="control-label">{{MODAL_VALIDATION_NAME_EXISTS}}</label>
+  <label
+    *ngIf="group.controls[config.name].hasError('maxLength') && group.controls[config.name].dirty"
+    class="control-label">{{MODAL_VALIDATION_NAME_TOLONG}}</label>
   </div>
 

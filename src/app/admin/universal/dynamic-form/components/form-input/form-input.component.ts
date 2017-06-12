@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {FacultyService} from "../../../../faculties/faculty.service";
 
 @Component({
   selector: 'app-form-input',
@@ -12,8 +11,8 @@ export class FormInputComponent {
   group: FormGroup;
   MODAL_VALIDATION_NAME_REQUIRED = 'Введіть назву';
   MODAL_VALIDATION_NAME_EXISTS = 'Введена назва вже існує';
-
-  constructor(private facultyService: FacultyService){
+  MODAL_VALIDATION_NAME_TOLONG = 'Перевищена кільксть символів';
+  constructor(){
   }
 
 }

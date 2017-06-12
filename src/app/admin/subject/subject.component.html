@@ -1,7 +1,16 @@
 <h2>Предмети</h2>
+<div class="alert alert-info" role="alert">
+  <button (click)="add()"
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal">Створити предмет</button>
+  <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
+  <dtester-items-per-page [numberOfRecords]="numberOfRecords"
+                          (recordsPerPageChanged)="changeNumberOfRecordsPerPage($event)">
+  </dtester-items-per-page>
+</div>
 
-<dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
-<dtester-items-per-page [numberOfRecords]="numberOfRecords" (recordsPerPageChanged)="changeNumberOfRecordsPerPage($event)"></dtester-items-per-page>
+
 <dtester-entities-table [entities]="subjects"
                         [headers]="headers"
                         [page]="page"
@@ -10,10 +19,16 @@
                         [canAction]="true"
                         [btnClass]="btnClass"
                         (actionEntity)="onTimeTableNavigate($event)"
-                        (clickEntity)="onTestsNavigate($event)">
+                        (clickEntity)="onTestsNavigate($event)"
+                        (deleteEntity)="del($event)"
+                        (editEntity)="edit($event)">
 </dtester-entities-table>
 
 <dtester-pagination [countRecords]="numberOfRecords"
                     [recordsPerPage]="recordsPerPage"
                     [currentPage]="page"
                     (pageChanged)="changePage($event)"></dtester-pagination>
+
+<dynamic-form [config]="configs"
+              (submitted)="formSubmitted($event)"
+              (youCanDelete)="deleteSubject($event)"></dynamic-form>

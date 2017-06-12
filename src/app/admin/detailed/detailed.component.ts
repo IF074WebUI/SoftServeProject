@@ -1,17 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {StudentsService} from "../students/students.service";
-import {Student} from "../students/student";
-import {Result} from "../results/result";
-import {ResultsService} from "../services/results.service";
-import {Group} from "../group/group";
-import {GroupService} from "../group/group.service";
-import {Question} from "./question";
-import {QuestionsService} from "../services/questions.service";
-import {AnswersService} from "../services/answers.service";
-import {Answer} from "./answer";
-import {TestsService} from "../services/tests.service";
-import {Test} from "../tests/test";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { StudentsService } from '../students/students.service';
+import { Student } from '../students/student';
+import { Result } from '../results/result';
+import { ResultsService } from '../services/results.service';
+import { Group } from '../group/group';
+import { GroupService } from '../group/group.service';
+import { Question } from './question';
+import { QuestionsService } from '../services/questions.service';
+import { AnswersService } from '../services/answers.service';
+import { Answer } from './answer';
+import { TestsService } from '../services/tests.service';
+import { Test } from '../tests/test';
+import { TestDetailService } from '../test-detail/test-detail.service';
+import { TestDetail } from '../test-detail/testDetail';
 
 @Component({
   selector: 'dtester-detailed',
@@ -20,19 +22,20 @@ import {Test} from "../tests/test";
 })
 export class DetailedComponent implements OnInit {
 
-  NO_RECORDS: string = 'no records';
+  NO_RECORDS = 'no records';
 
   studentId: number;
   student: Student;
   results: Result[];
   group: Group;
   tests: Test[] = [];
-  active_id: number = 0;
+  active_id = 0;
+  percents: string[] = [];
 
   constructor(private activatedRoute: ActivatedRoute, private studentService: StudentsService,
               private resultService: ResultsService, private groupService: GroupService,
               private questionsService: QuestionsService, private answersService: AnswersService,
-              private testsService: TestsService) {
+              private testsService: TestsService, private testDetailsService: TestDetailService) {
   }
 
   ngOnInit() {
@@ -40,7 +43,6 @@ export class DetailedComponent implements OnInit {
       this.studentId = params['studentId'];
       this.getResultsByStudentId(this.studentId);
     });
-
   }
 
   getStudentById(id: number) {
@@ -59,14 +61,13 @@ export class DetailedComponent implements OnInit {
     this.resultService.getAllByStudent(id).subscribe((resp: Result[]) => {
       if (resp['response'] === this.NO_RECORDS) {    /* check condition: if no records presented for search criteria */
         this.results = [];
-      }
-        else {
+      } else {
         resp.forEach((res: Result) => {
-          let strQ = JSON.parse((res.questions).toString().replace(new RegExp('&quot;', 'g'), '\"'));
-          let quest: Question[] = [];
+          const strQ = JSON.parse((res.questions).toString().replace(new RegExp('&quot;', 'g'), '\"'));
+          const quest: Question[] = [];
           for (let i = 0; i < strQ.length; i++) {
             let question: Question;
-            let answers: Answer[] = [];
+            const answers: Answer[] = [];
 
             for (let j = 0; j < strQ[i].answers.length; j++) {
               this.answersService.getAnswersById(strQ[i].answers[j]).subscribe((a: Answer) => answers.push(a[0]));
@@ -80,8 +81,15 @@ export class DetailedComponent implements OnInit {
           res['questions'] = quest;
         });
         this.results = resp;
-        for (let result of resp) {
+        for (const result of resp) {
           this.testsService.getTestById(result.test_id).subscribe((response: Test) => this.tests.push(response[0]));
+          this.testDetailsService.getTestDetails(result.test_id).subscribe((tDetails: TestDetail[]) => {
+            let sum = 0;
+            for (const tDetail of tDetails) {
+              sum += +tDetail.rate * tDetail.tasks;
+            }
+            this.percents.push((result.result * 100 / sum).toFixed(2));
+          });
         }
       }
     });
@@ -97,22 +105,22 @@ export class DetailedComponent implements OnInit {
 
   calcutateTimeInterval(start: string, end: string): string {
     function parseStringIntoDate(s: string): Date {
-      let splitS = s.split(':');
-      let d: Date = new Date();
+      const splitS = s.split(':');
+      const d: Date = new Date();
       d.setHours(+splitS[0]);
       d.setMinutes(+splitS[1]);
       d.setSeconds(+splitS[2]);
       return d;
     }
 
-    let s: Date = parseStringIntoDate(start);
-    let e: Date = parseStringIntoDate(end);
+    const s: Date = parseStringIntoDate(start);
+    const e: Date = parseStringIntoDate(end);
     let interval: number = (e.getTime() - s.getTime()) / 1000;
-    let seconds = Math.floor(interval % 60) ? `${Math.floor(interval % 60)} сек` : '';
+    const seconds = Math.floor(interval % 60) ? `${Math.floor(interval % 60)} сек` : '';
     interval /= 60;
-    let minutes = Math.floor(interval % 60) ? `${Math.floor(interval % 60)} хв` : '';
+    const minutes = Math.floor(interval % 60) ? `${Math.floor(interval % 60)} хв` : '';
     interval /= 60;
-    let hours = Math.floor(interval / 24) ? `${Math.floor(interval / 24)} год` : '';
+    const hours = Math.floor(interval / 24) ? `${Math.floor(interval / 24)} год` : '';
     return `${hours} ${minutes} ${seconds}`;
   }
 
@@ -121,7 +129,6 @@ export class DetailedComponent implements OnInit {
     printContents = document.getElementById('print-section').innerHTML;
     popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
     popupWin.document.open();
-
     popupWin.document.write(`
       <html>
         <head>
@@ -130,7 +137,7 @@ export class DetailedComponent implements OnInit {
           @media print {  
             .hidden-print   { display: none !important; }
           }
-          </style>
+          </style>          
         </head>
     <body onload="window.print();window.close()">
       <h3>Студент ${this.student['student_surname'] + ' ' + this.student['student_name'] + ' ' + this.student['student_fname']}</h3>
@@ -140,5 +147,4 @@ export class DetailedComponent implements OnInit {
     );
     popupWin.document.close();
   }
-
 }
