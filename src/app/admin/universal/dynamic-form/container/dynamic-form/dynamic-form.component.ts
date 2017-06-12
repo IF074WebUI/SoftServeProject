@@ -8,8 +8,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl} from '@angular/forms';
 import {FacultyService} from '../../../../faculties/faculty.service';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
-import {TestDetailService} from "../../../../test-detail/test-detail.service";
-import {promise} from "selenium-webdriver";
 
 
 interface Validator<T extends FormControl> {
@@ -28,8 +26,7 @@ function validateEmail(c: FormControl) {
 
 
 function validateName(c: FormControl) {
-  if (this.entity_name == '') {
-    console.log('workds');
+    console.log('add works');
     return this.get_records_by_search.getRecordsBySearch(this.entity_name, c.value).map((resp) => {
         for (let key of resp) {
           let Properties = Object.getOwnPropertyNames(key);
@@ -41,14 +38,14 @@ function validateName(c: FormControl) {
         return null;
       }
     );
-  } else {
-    console.log('edit works');
-    return Promise.resolve().then(() => {
-      return null;
-    });
-  }
-  ;
-}
+//   }  {
+//     console.log('edit works');
+//     return Promise.resolve().then(() => {
+//       return null;
+//     });
+//   }
+//   ;
+ }
 
 declare var $: any;
 
@@ -58,7 +55,7 @@ declare var $: any;
   templateUrl: './dynamic-form.component.html',
   providers: [FacultyService]
 })
-export class DynamicFormComponent implements OnInit {
+export class DynamicFormComponent implements OnInit, AfterViewInit {
   @Input()
   config: any[] = [];
   // @Input()
@@ -89,6 +86,9 @@ export class DynamicFormComponent implements OnInit {
   constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService, private route: ActivatedRoute, private router: Router) {
   }
 
+ngAfterViewInit(){
+  //  this.entity_name;
+}
   ngOnInit() {
     this.form = this.createGroup();
   }
@@ -102,9 +102,9 @@ export class DynamicFormComponent implements OnInit {
       if (control.requiredMax) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required, Validators.maxLength(control.requiredMax)])));
       }
-      if (control.requiresAsync) {
-        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
-      }
+      // if (control.requiresAsync) {
+      //   group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
+      // }
       if (control.required) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
       }
