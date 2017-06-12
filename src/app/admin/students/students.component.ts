@@ -60,21 +60,8 @@ export class StudentsComponent implements OnInit {
   studentForm: FormGroup;
   // password = '' + Math.random();
 
-  // studentEditData = {};
+  studentEditData = {};
   studentEditForm: FormGroup;
-
-  static generateStudentData() {
-    const password = Math.random().toString(36).substr(2, 8);
-    const username = 's' + Math.random().toFixed(3) + ' q' + Math.random().toFixed(3);
-    const photo = '';
-    return {
-      'photo': photo,
-      'username': username,
-      'password': password,
-      'password_confirm': password,
-      'plain_password': password
-    };
-  }
 
   constructor(private studentsService: StudentsService,
               private router: Router,
@@ -222,16 +209,33 @@ export class StudentsComponent implements OnInit {
     this.router.navigate(['students', student.user_id], {relativeTo: this.activatedRoute.parent});
   }
 
+  setEmailforEdit(data) {
+    this.studentForEdit = data;
+    this.getRecordsByIdService.getRecordsById('AdminUser', this.studentForEdit.user_id).subscribe(resp => {
+      this.studentForEdit.email = resp[0].email;
+    });
+  }
+
+  generateStudentData() {
+    const password = Math.random().toString(36).substr(2, 8);
+    const username = 's' + Math.random().toFixed(3) + ' q' + Math.random().toFixed(3);
+    const photo = '';
+    return this.studentEditData = {
+      'photo': photo,
+      'username': username,
+      'password': password,
+      'password_confirm': password,
+      'plain_password': password
+    };
+  }
+
   add() {
     this.popup.sendItem(new Student());
     this.popup.showModal();
   }
 
   edit(student: Student) {
-    this.studentForEdit = student;
-    this.getRecordsByIdService.getRecordsById('AdminUser', this.studentForEdit.user_id).subscribe(data => {
-      this.studentForEdit.email = data[0].email;
-    });
+    this.setEmailforEdit(student);
     if (this.studentForEdit.email) {
       this.popup.sendItem(
         {
@@ -256,12 +260,12 @@ export class StudentsComponent implements OnInit {
   formSubmitted(value) {
     this.studentForEdit = value;
     if (value['user_id']) {
-      this.studentsService.update(value, StudentsComponent.generateStudentData()).subscribe(resp => {
+      this.studentsService.update(value, this.studentEditData).subscribe(resp => {
         this.getStudents();
         this.popup.cancel();
       }, error2 => this.router.navigate(['/bad_request']));
     } else {
-      this.studentsService.insert(value, StudentsComponent.generateStudentData()).subscribe(resp => {
+      this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
         this.getStudents();
         this.popup.cancel();
       }, error2 => this.router.navigate(['/bad_request']));
