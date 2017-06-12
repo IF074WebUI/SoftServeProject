@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 import { SUBJECTS_CONFIG } from '../universal/dynamic-form/config';
 import { SubjectService } from './subject.service';
+import {DeleteRecordByIdService} from "../services/delete-record-by-id.service";
 
 declare const $: any;
 
@@ -25,12 +26,14 @@ export class SubjectComponent implements OnInit {
   btnClass: string = 'fa fa-calendar';
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = SUBJECTS_CONFIG;
+  getRecordsSubscription: any;
   constructor(private statisticsService: StatisticsService,
               private getRecordsRangeService: GetRecordsRangeService,
               private getRecordsBySearchService: GetRecordsBySearchService,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private subjectService: SubjectService) {}
+              private subjectService: SubjectService,
+              private deleteRecordByIdService: DeleteRecordByIdService) {}
 
   ngOnInit() {
     this.page = 1;
@@ -39,6 +42,8 @@ export class SubjectComponent implements OnInit {
     this.getSubjectsRange();
     this.headers = ['№', 'Назва предмету', 'Опис' ];
     this.displayPropertiesOrder = ['subject_name', 'subject_description'];
+    this.getRecordsSubscription = this.subjectService.getRecordsEmitter()
+      .subscribe(() => this.getSubjectsRange());
   }
   getSubjectsRange() {
     if (this.numberOfRecords <= (this.page - 1) * this.recordsPerPage) {

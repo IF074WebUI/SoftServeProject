@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable, Output} from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { HOST } from '../../constants';
 import { Observable } from 'rxjs/Observable';
@@ -9,6 +9,7 @@ import { DeleteRecordByIdService } from '../services/delete-record-by-id.service
 
 @Injectable()
 export class SubjectService {
+  @Output() emitGetRecordsEvent = new EventEmitter;
   constructor(private http: Http,
               private getAllRecordsService: GetAllRecordsService,
               private deleteRecordByIdService: DeleteRecordByIdService) {
@@ -40,7 +41,13 @@ export class SubjectService {
        }
      }
      this.deleteRecordByIdService.deleteRecordsById('subject', deletedSubject.subject_id)
-       .subscribe((deleteSubjectResp) => {console.log(deleteSubjectResp));
+       .subscribe((deleteSubjectResp) => {
+         console.log(deleteSubjectResp);
+         this.emitGetRecordsEvent.emit();
+       });
     });
+  }
+  getRecordsEmitter() {
+    return this.emitGetRecordsEvent;
   }
 }
