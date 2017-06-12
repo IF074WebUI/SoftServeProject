@@ -183,14 +183,13 @@ export const STUDENT_CONFIG =
       name: 'group',
       placeholder: 'Виберіть групу',
     },
-    // {
-    //   type: 'id',
-    //   text: null,
-    //   label: 'ID group',
-    //   name: 'group_id',
-    //   placeholder: '',
-    //   required: false
-    // },
+    {
+      type: 'id',
+      // text: null,
+      label: 'ID',
+      name: 'user_id',
+      placeholder: ''
+    },
     // {
     //   type: 'id',
     //   text: null,
@@ -307,6 +306,48 @@ export const QUESTION_CONFIG = [
     name: 'type',
     options: ['1', '2'],
     placeholder: 'Select an option'
+  },
+  {
+    label: 'Зберегти',
+    name: 'submit',
+    type: 'button'
+  }
+];
+
+export const ADMINUSER_CONFIG = [
+  {
+    type: 'email',
+    //  text: '',
+    label: 'E-mail:',
+    name: 'email',
+    placeholder: 'Введіть e-mail',
+    required: true
+  },
+  {
+    type: 'id',
+    //  text: null,
+    label: 'ID',
+    name: 'id',
+    placeholder: '',
+  },
+  {
+    type: 'input',
+    label: 'Пароль',
+    name: 'password',
+    placeholder: 'Введіть пароль:'
+  },
+  {
+    type: 'input',
+    label: 'Повторіть пароль:',
+    name: 'password_confirm',
+    placeholder: 'Повторіть пароль'
+  },
+  {
+    type: 'input',
+    //     text: '',
+    label: 'Логін:',
+    name: 'username',
+    placeholder: 'Введіть логін',
   },
   {
     label: 'Зберегти',

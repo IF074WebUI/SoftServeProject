@@ -12,6 +12,7 @@ import { TestsComponent } from './tests/tests.component';
 import { DetailedComponent } from './detailed/detailed.component';
 import { StudentProfileComponent } from './student-profile/student-profile.component';
 import { TestDetailComponent } from './test-detail/test-detail.component';
+import { AdminUserComponent } from './admin-user/admin-user.component';
 
 export const adminRoutes: Route[] = [
   {
@@ -31,5 +32,6 @@ export const adminRoutes: Route[] = [
       {path: 'students/:user_id', component: StudentProfileComponent},
       {path: 'subject/tests', component: TestsComponent},
       {path: 'testDetails', component: TestDetailComponent},
+      {path: 'admin-user', component: AdminUserComponent}
     ]
   }];

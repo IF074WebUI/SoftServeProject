@@ -52,6 +52,8 @@ import { SubjectComponent } from './subject/subject.component';
 import { GetRecordsBySearchService } from './services/get-records-by-search.service';
 import { GetTestsBySubjectService } from './services/get-tests-by-subject.service';
 import { SubjectService } from './subject/subject.service';
+import { AdminUserComponent } from './admin-user/admin-user.component';
+import { AdminUserService } from './admin-user/admin-user.service';
 
 @NgModule({
   declarations: [
@@ -79,7 +81,8 @@ import { SubjectService } from './subject/subject.service';
     DetailedComponent,
     TestDetailComponent,
     SubjectComponent,
-    StudentProfileComponent
+    StudentProfileComponent,
+    AdminUserComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -112,7 +115,8 @@ import { SubjectService } from './subject/subject.service';
     TestDetailService,
     GetRecordsBySearchService,
     GetTestsBySubjectService,
-    SubjectService
+    SubjectService,
+    AdminUserService
   ],
 })
 export class AdminModule {

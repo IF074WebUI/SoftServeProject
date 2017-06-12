@@ -46,10 +46,10 @@ export class StudentsService {
         'password_confirm': studentData.password_confirm,
         'email': studentForm.email,
         'gradebook_id': studentForm.gradebook,
-        'student_surname': studentForm.student_second_name,
+        'student_surname': studentForm.student_surname,
         'student_name': studentForm.student_name,
         'student_fname': studentForm.student_fname,
-        'group_id': studentForm.Group,
+        'group_id': studentForm.group,
         'plain_password': studentData.plain_password,
         'photo': studentData.photo
       }
@@ -57,23 +57,24 @@ export class StudentsService {
     return this.http.post('http://' + HOST + '/Student/insertData', body).map(resp => resp.json());
   }
 
-  update(studentEditForm, studentEditData, user_id): Observable<Student> {
+  update(studentEditForm, studentEditData): Observable<Student> {
     let body = JSON.stringify(
       {
+        'user_id': studentEditForm.user_id,
         'username': studentEditData.username,
         'password': studentEditData.password,
         'password_confirm': studentEditData.password_confirm,
         'email': studentEditData.email,
-        'gradebook_id': studentEditData.gradebook_id,
+        'gradebook_id': studentEditData.gradebook,
         'student_surname': studentEditForm.student_surname,
         'student_name': studentEditForm.student_name,
         'student_fname': studentEditForm.student_fname,
-        'group_id': studentEditForm.group_id,
+        'group_id': studentEditForm.group,
         'plain_password': studentEditData.plain_password,
         'photo': studentEditData.photo,
       }
     );
-    return this.http.post('http://' + HOST + '/Student/update/' + user_id, body).map(resp => resp.json());
+    return this.http.post('http://' + HOST + '/Student/update/' + studentEditForm.user_id, body).map(resp => resp.json());
   }
 
   delete(user_id: number): Observable<Student> {

@@ -9,12 +9,13 @@
                         [page]="page"
                         [itemsPerPage]="countPerPage"
                         (actionEntity)="goToStudentProfile($event)"
-                        (deleteEntity)="selectedStudentForDel($event)"
+                        (deleteEntity)="del($event)"
                         [ignoreProperties]="ignoreProperties"
                         [displayPropertiesOrder]="displayProperties"
                         [canAction]="true"
                         (editEntity)="edit($event)"
                         [canEdit]="true"
+                        [canDelete]="true"
                         [sortProperties]="sortProperties">
 </dtester-entities-table>
 

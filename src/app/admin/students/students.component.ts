@@ -232,26 +232,31 @@ export class StudentsComponent implements OnInit {
     this.getRecordsByIdService.getRecordsById('AdminUser', this.studentForEdit.user_id).subscribe(data => {
       this.studentForEdit.email = data[0].email;
     });
-    console.log(this.studentForEdit.group_id);
     if (this.studentForEdit.email) {
       this.popup.sendItem(
         {
           student_name: this.studentForEdit.student_name,
           student_surname: this.studentForEdit.student_surname,
           student_fname: this.studentForEdit.student_fname,
-          gradebook_id: this.studentForEdit.gradebook_id,
+          gradebook: this.studentForEdit.gradebook_id,
           email: this.studentForEdit.email,
-          group_id: this.studentForEdit.group_id
+          group: this.studentForEdit.group_name,
+          group_id: this.studentForEdit.group_id,
+          user_id: this.studentForEdit.user_id
         }
       );
       this.popup.showModal();
     }
   }
 
+  del(student: Student) {
+    this.popup.deleteEntity(student);
+  }
+
   formSubmitted(value) {
-    console.log(value);
+    this.studentForEdit = value;
     if (value['user_id']) {
-      this.studentsService.update(value, StudentsComponent.generateStudentData(), value['user_id']).subscribe(resp => {
+      this.studentsService.update(value, StudentsComponent.generateStudentData()).subscribe(resp => {
         this.getStudents();
         this.popup.cancel();
       }, error2 => this.router.navigate(['/bad_request']));
@@ -261,5 +266,11 @@ export class StudentsComponent implements OnInit {
         this.popup.cancel();
       }, error2 => this.router.navigate(['/bad_request']));
     }
+  }
+
+  submitDelete(student: Student) {
+    this.studentsService.delete(student['user_id']).subscribe(response => this.getStudents(),
+      error => this.router.navigate(['/bad_request'])
+    );
   }
 }
