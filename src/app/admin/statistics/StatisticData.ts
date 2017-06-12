@@ -18,3 +18,21 @@
 //     }
 //   ]
 // };
+export class BarChartDemo {
+
+  data: any;
+
+  constructor() {
+    this.data = {
+      labels: [],
+      datasets: [
+        {
+          label: '',
+          backgroundColor: '#42A5F5',
+          borderColor: '#1E88E5',
+          data: []
+        }
+      ]
+    }
+  }
+}

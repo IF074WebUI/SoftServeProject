@@ -20,7 +20,6 @@ import { GROUP_CONFIG } from '../universal/dynamic-form/config';
 })
 export class GroupComponent implements OnInit {
 
-  isLoading: boolean;
   groupsOnPage: Group[];
   pageNumber: number = 1;
   offset = 5;   /*number of the records for the stating page*/

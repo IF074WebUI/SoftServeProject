@@ -5,6 +5,7 @@ import {SpinnerService} from '../universal/spinner/spinner.service';
 import { GroupService } from '../group/group.service';
 import { SpecialitiesService } from '../services/specialities.service';
 import { StudentsService } from '../students/students.service';
+
 @Component({
   selector: 'dtester-statistics',
   templateUrl: './statistics.component.html',
@@ -30,24 +31,26 @@ export class StatisticsComponent implements OnInit {
     this.specialitiesId = [];
     this.groupsId = [];
     this.entity = [
-      {name: 'speciality', descriptiion: 'Спеціальність', count: ''},
+      {name: 'speciality', descriptiion: 'Спеціальності', count: ''},
       {name: 'group', descriptiion: 'Групи', count: ''},
       {name: 'subject', descriptiion: 'Предмети', count: ''},
       {name: 'test', descriptiion: 'Тести', count: ''},
       {name: 'student', descriptiion: 'Студенти', count: ''},
-      {name: 'question', descriptiion: 'Питання', count: ''}];
+      {name: 'question', descriptiion: 'Питання', count: ''}
+      ];
     this.data = {
-      labels: [],
+      labels: ['one'],
       datasets: [
         {
-          label: '',
+          label: 'system statistic',
           backgroundColor: '#42A5F5',
           borderColor: '#1E88E5',
-          data: []
-        }
+          data: [2]
+        },
       ]
     };
-  }
+
+}
 
   ngOnInit() {
     let i: number = 0;
@@ -55,6 +58,8 @@ export class StatisticsComponent implements OnInit {
       this.spinner.showSpinner()
       this.statistics.getCountRecords(entity['name']).subscribe((data) => {
         this.entity[i].count = data.numberOfRecords;
+        this.data.labels.push(this.entity[i].descriptiion);
+        this.data.datasets[0].data.push(+data.numberOfRecords);
         i++;
         this.spinner.hideSpinner();
       });
@@ -64,51 +69,51 @@ export class StatisticsComponent implements OnInit {
   setActiveTab(i: number) {
     this.activeTab = i;
   }
-
-  showGraph(entityName: string, descriptionEntity: string) {
-    console.log(entityName);
-    switch (entityName) {
-      case 'speciality':
-        this.writeSpecialityGraph(descriptionEntity);
-    }
-  }
-
-  writeSpecialityGraph(descriptionEntity: string) {
-    this.data.datasets.label = descriptionEntity;
-    this.getSpecialities();
-    for (let i of this.specialitiesId){
-      this.getGroupsbySpeciality(i);
-    }
-  }
-  getStudentsByGroupId(groupId: number) {
-    this.studentsService.getStudentsByGroupId(groupId).subscribe(
-      resp => {
-        if (resp['response'] === 'no records') {
-        } else {
-          this.countStudentsByGroup = resp.length;
-        }
-      });
-  }
-  getGroupsbySpeciality(specialityId) {
-    this.groupService.getGroupsBySpeciality(specialityId).subscribe(
-        resp => {
-          for (let i of resp) {
-            if (i['response'] === 'no records') {
-            } else {
-              this.groupsId.push(i.group_id);
-            }
-          }
-        });
-  }
-  getSpecialities() {
-    this.spesialityService.getAll().subscribe(
-      resp => {
-        for (let i of resp){
-          this.data.labels.push(i.speciality_name);
-          this.specialitiesId.push(i.speciality_id);
-        }
-      }
-    );
-  }
+  //
+  // showGraph(entityName: string, descriptionEntity: string) {
+  //   console.log(entityName);
+  //   switch (entityName) {
+  //     case 'speciality':
+  //       this.writeSpecialityGraph(descriptionEntity);
+  //   }
+  // }
+  //
+  // writeSpecialityGraph(descriptionEntity: string) {
+  //   this.data.datasets.label = descriptionEntity;
+  //   this.getSpecialities();
+  //   for (let i of this.specialitiesId){
+  //     this.getGroupsbySpeciality(i);
+  //   }
+  // }
+  // getStudentsByGroupId(groupId: number) {
+  //   this.studentsService.getStudentsByGroupId(groupId).subscribe(
+  //     resp => {
+  //       if (resp['response'] === 'no records') {
+  //       } else {
+  //         this.countStudentsByGroup = resp.length;
+  //       }
+  //     });
+  // }
+  // getGroupsbySpeciality(specialityId) {
+  //   this.groupService.getGroupsBySpeciality(specialityId).subscribe(
+  //       resp => {
+  //         for (let i of resp) {
+  //           if (i['response'] === 'no records') {
+  //           } else {
+  //             this.groupsId.push(i.group_id);
+  //           }
+  //         }
+  //       });
+  // }
+  // getSpecialities() {
+  //   this.spesialityService.getAll().subscribe(
+  //     resp => {
+  //       for (let i of resp){
+  //         this.data.labels.push(i.speciality_name);
+  //         this.specialitiesId.push(i.speciality_id);
+  //       }
+  //     }
+  //   );
+  // }
 
 }

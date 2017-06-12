@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-statistic-graphs',
+  selector: 'dtester-statistic-graphs',
   templateUrl: './statistic-graphs.component.html',
   styleUrls: ['./statistic-graphs.component.css']
 })

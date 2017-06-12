@@ -4,13 +4,14 @@
 <ul class="nav nav-tabs text-center" >
   <li class="nav-item" *ngFor="let entityItem of entity; let i=index">
     <div class="nav-link"
-         (click)="setActiveTab(i); showGraph(entityItem.name, entityItem.descriptiion)"
+         (click)="setActiveTab(i)"
          [class.active]="i === activeTab">{{entityItem.descriptiion}}
       <br><p class="text-center">{{entityItem.count}}</p></div>
   </li>
 </ul>
-
 <p-chart type="bar" [data]="data"></p-chart>
+
+
 <!--<ul class="list-group">-->
   <!--<li class="list-group-item justify-content-between">-->
     <!--Зараєстрованих спеціальностей:-->
