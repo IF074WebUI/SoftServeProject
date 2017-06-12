@@ -25,16 +25,18 @@ fdescribe('AlertComponent', () => {
       let $event;
       tableComponent.componentInstance.deleteEntity.subscribe(val => $event = val);
       delEle.triggerEventHandler('click', null);
-      expect($event.name).toEqual('Vasya');
-      expect($event.code).toEqual('11111');
+      expect($event.name).toEqual('Вася');
+      expect($event.code).toEqual('12345');
     });
-
 
 });
 
 @Component({ selector: 'host-for-test', template: '' })
 class HostComponent {
-  ent = [{name: 'Vasya', code: '11111'}];
+  ent = [
+    {name: 'Вася', code: '12345'},
+    {name: 'Микола', code: '54321'}
+  ];
 }
 function createHostComponent( template : string ) : ComponentFixture<HostComponent> {
   TestBed.overrideComponent(HostComponent, { set: { template: template } });
