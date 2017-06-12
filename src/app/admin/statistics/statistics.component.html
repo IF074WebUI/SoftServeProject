@@ -4,7 +4,7 @@
 <ul class="nav nav-tabs text-center" >
   <li class="nav-item" *ngFor="let entityItem of entity; let i=index">
     <div class="nav-link"
-         (click)="setActiveTab(i)"
+         (click)="setActiveTab(i); showGraph(entityItem.name, entityItem.descriptiion)"
          [class.active]="i === activeTab">{{entityItem.descriptiion}}
       <br><p class="text-center">{{entityItem.count}}</p></div>
   </li>
