@@ -51,6 +51,7 @@ import { SubjectComponent } from './subject/subject.component';
 import { GetRecordsBySearchService } from './services/get-records-by-search.service';
 import { GetTestsBySubjectService } from './services/get-tests-by-subject.service';
 import { StatisticGraphsComponent } from './statistics/statistic-graphs/statistic-graphs.component';
+import {ChartModule} from 'primeng/primeng';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { StatisticGraphsComponent } from './statistics/statistic-graphs/statisti
     MdButtonModule,
     DynamicFormModule,
     MdButtonModule,
-    LoadingModule
+    LoadingModule,
+    ChartModule
   ],
   providers: [
     StatisticsService,
