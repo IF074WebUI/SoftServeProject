@@ -9,12 +9,11 @@ export const FACULTY_CONFIG =
     },
     {
       type: 'input',
-      //   text: '',
       label: 'Назву факультету',
       name: 'faculty_name',
       placeholder: 'Введіть назву факультету',
-      requiresAsync: true,
-      required: true
+      requiredAsync: true,
+      entity_name: 'Faculty'
     },
     {
       type: 'textarea',

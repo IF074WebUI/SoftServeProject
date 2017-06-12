@@ -48,7 +48,7 @@ import { FormNumberComponent } from './components/form-number/form-number.compon
     FormInputFileComponent,
     FormNumberComponent
   ],
-  providers: [FacultyService]
+  providers: [FacultyService,]
 
 })
 export class DynamicFormModule {}

@@ -1,51 +1,13 @@
 import {
-  Component, Input, OnInit, Output, EventEmitter, AfterViewInit, AfterViewChecked,
-  AfterContentChecked
+  Component, Input, OnInit, Output, EventEmitter, AfterViewInit, AfterViewChecked
 } from '@angular/core';
 
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl} from '@angular/forms';
 import {FacultyService} from '../../../../faculties/faculty.service';
-import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
+import {GetRecordsBySearchService} from "../../../../services/get-records-by-search.service";
 
-
-interface Validator<T extends FormControl> {
-  (c: T): { [error: string]: any };
-}
-
-function validateEmail(c: FormControl) {
-  let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
-
-  return EMAIL_REGEXP.test(c.value) ? null : {
-    validateEmail: {
-      valid: false
-    }
-  };
-}
-
-
-function validateName(c: FormControl) {
-    console.log('add works');
-    return this.get_records_by_search.getRecordsBySearch(this.entity_name, c.value).map((resp) => {
-        for (let key of resp) {
-          let Properties = Object.getOwnPropertyNames(key);
-          let unique_field = this.entity_name === 'Speciality' ? Properties[+[2]] : Properties[+[1]];
-          if (key[unique_field] === c.value.trim()) {
-            return {exists: true};
-          }
-        }
-        return null;
-      }
-    );
-//   }  {
-//     console.log('edit works');
-//     return Promise.resolve().then(() => {
-//       return null;
-//     });
-//   }
-//   ;
- }
 
 declare var $: any;
 
@@ -55,7 +17,7 @@ declare var $: any;
   templateUrl: './dynamic-form.component.html',
   providers: [FacultyService]
 })
-export class DynamicFormComponent implements OnInit, AfterViewInit {
+export class DynamicFormComponent implements OnInit {
   @Input()
   config: any[] = [];
   // @Input()
@@ -83,12 +45,9 @@ export class DynamicFormComponent implements OnInit, AfterViewInit {
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';
 
-  constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService, private route: ActivatedRoute, private router: Router) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private get_records_by_search: GetRecordsBySearchService) {
   }
 
-ngAfterViewInit(){
-  //  this.entity_name;
-}
   ngOnInit() {
     this.form = this.createGroup();
   }
@@ -102,11 +61,12 @@ ngAfterViewInit(){
       if (control.requiredMax) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required, Validators.maxLength(control.requiredMax)])));
       }
-      // if (control.requiresAsync) {
-      //   group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
-      // }
+
       if (control.required) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
+      }
+      if (control.requiredAsync) {
+        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
       }
       else {
         group.addControl(control.name, this.fb.control(''));
@@ -165,4 +125,42 @@ ngAfterViewInit(){
 }
 
 
+interface Validator<T extends FormControl> {
+  (c: T): { [error: string]: any };
+}
+
+function validateEmail(c: FormControl) {
+  let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+
+  return EMAIL_REGEXP.test(c.value) ? null : {
+    validateEmail: {
+      valid: false
+    }
+  };
+}
+
+function validateName(c: FormControl) {
+  let name = c.value;
+  console.log(name);
+  console.log(this.entity_name);
+  if (this.entity_name){
+  console.log('add works');
+  return this.get_records_by_search.getRecordsBySearch(this.entity_name, name).map((resp) => {
+      for (let key of resp) {
+        let Properties = Object.getOwnPropertyNames(key);
+        let unique_field = this.entity_name === 'Speciality' ? Properties[+[2]] : Properties[+[1]];
+        if (key[unique_field] === name.trim()) {
+          return {exists: true};
+        }
+      }
+      return null;
+    }
+  );}
+  else {
+    console.log('edit works');
+    return Promise.resolve().then(() => {
+      return null;
+    });
+  }
+}
 
