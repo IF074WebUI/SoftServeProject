@@ -12,6 +12,8 @@ import { FormEmailComponent } from './components/form-email/form-email.component
 import { FormSelectWithOptionsComponent } from './components/form-select-with-options/form-select-with-options.component';
 import {FacultyService} from '../../faculties/faculty.service';
 import { FormSelectTestDetailByIdComponent } from './components/form-select-test-detail-by-id/form-select-test-detail-by-id.component';
+import { FormInputFileComponent } from './components/form-input-file/form-input-file.component';
+import { FormNumberComponent } from './components/form-number/form-number.component';
 
 @NgModule({
   imports: [
@@ -29,7 +31,9 @@ import { FormSelectTestDetailByIdComponent } from './components/form-select-test
     FormEmailComponent,
     FormSelectWithOptionsComponent,
     FormSelectWithOptionsComponent,
-    FormSelectTestDetailByIdComponent
+    FormSelectTestDetailByIdComponent,
+    FormInputFileComponent,
+    FormNumberComponent
   ],
   exports: [DynamicFormComponent],
   entryComponents: [
@@ -40,7 +44,9 @@ import { FormSelectTestDetailByIdComponent } from './components/form-select-test
     FormTextareaComponent,
     FormEmailComponent,
     FormSelectWithOptionsComponent,
-    FormSelectTestDetailByIdComponent
+    FormSelectTestDetailByIdComponent,
+    FormInputFileComponent,
+    FormNumberComponent
   ],
   providers: [FacultyService]
 
