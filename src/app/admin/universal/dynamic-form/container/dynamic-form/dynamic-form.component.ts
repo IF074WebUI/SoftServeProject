@@ -1,6 +1,5 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
-import {FacultyService} from '../../../../faculties/faculty.service';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
 
 declare var $: any;
@@ -8,8 +7,7 @@ declare var $: any;
 @Component({
   selector: 'dynamic-form',
   styleUrls: ['dynamic-form.component.scss'],
-  templateUrl: './dynamic-form.component.html',
-  providers: [FacultyService]
+  templateUrl: './dynamic-form.component.html'
 })
 export class DynamicFormComponent implements OnInit {
   @Input()
@@ -136,10 +134,7 @@ function validateEmail(c: FormControl) {
 
 function validateName(c: FormControl) {
   let name = c.value;
-  console.log(name);
-  console.log(this.entity_name);
   if (this.entity_name) {
-    console.log('add works');
     return this.get_records_by_search.getRecordsBySearch(this.entity_name, name).map((resp) => {
         for (let key of resp) {
           let Properties = Object.getOwnPropertyNames(key);
@@ -152,7 +147,6 @@ function validateName(c: FormControl) {
       }
     );
   } else {
-    console.log('edit works');
     return Promise.resolve().then(() => {
       return null;
     });
