@@ -18,6 +18,7 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
   ERROR_MSG;
   error: boolean;
 
+
   constructor(private testDetailService: TestDetailService) {
   }
 
@@ -34,11 +35,10 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
   }
 
   ngAfterContentChecked() {
-    //this.error = false;
     if (this.group.controls['test_id'].value === '') {
-      this.entities = this.entitiesForAdd
+      this.entities = this.entitiesForAdd;
     } else {
-      this.entities = this.entitiesForEdit
+      this.entities = this.entitiesForEdit;
     }
   }
 

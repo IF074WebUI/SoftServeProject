@@ -3,11 +3,7 @@
   [formGroup]="group">
   <label>{{ config.label }}</label>
   <input class="form-control"
-         type="email"
+         type="number"
          [attr.placeholder]="config.placeholder"
          [formControlName]="config.name" />
-  <label *ngIf="group.controls[config.name].hasError('validateEmail') && group.controls[config.name].dirty"  class="error">
-    {{ERROR_MSG}}.
-  </label>
-
 </div>
