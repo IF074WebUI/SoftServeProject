@@ -18,6 +18,7 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
   ERROR_MSG;
   error: boolean;
 
+
   constructor(private testDetailService: TestDetailService) {
   }
 

@@ -22,11 +22,11 @@ export const FACULTY_CONFIG =
       name: 'faculty_description',
       placeholder: 'Введіть опис факультету',
     },
-    {
-      label: 'Підтвердити',
-      name: 'submit',
-      type: 'button'
-    }
+    // {
+    //   label: 'Підтвердити',
+    //   name: 'submit',
+    //   type: 'button'
+    // }
   ];
 
 export const SPECIALITY_CONFIG =
@@ -54,11 +54,11 @@ export const SPECIALITY_CONFIG =
       placeholder: 'Введіть назву спеціальності',
       requiredAsync: true
     },
-    {
-      label: 'Підтвердити',
-      name: 'submit',
-      type: 'button'
-    }
+    // {
+    //   label: 'Підтвердити',
+    //   name: 'submit',
+    //   type: 'button'
+    // }
   ];
 
 
@@ -86,11 +86,11 @@ export const SUBJECTS_CONFIG =
       name: 'subject_description',
       placeholder: 'Введіть опис предмету',
     },
-    {
-      label: 'Підтвердити',
-      name: 'submit',
-      type: 'button'
-    }
+    // {
+    //   label: 'Підтвердити',
+    //   name: 'submit',
+    //   type: 'button'
+    // }
   ];
 export const GROUP_CONFIG =
   [
@@ -124,11 +124,11 @@ export const GROUP_CONFIG =
       name: 'Faculty',
       placeholder: 'Виберіть факультет',
     },
-    {
-      label: 'Підтвердити',
-      name: 'submit',
-      type: 'button'
-    }
+    // {
+    //   label: 'Підтвердити',
+    //   name: 'submit',
+    //   type: 'button'
+    // }
   ];
 
 export const STUDENT_CONFIG =
@@ -192,11 +192,11 @@ export const STUDENT_CONFIG =
       name: 'imageURL',
       placeholder: ``,
     },
-    {
-      label: 'Підтвердити',
-      name: 'submit',
-      type: 'button'
-    }
+    // {
+    //   label: 'Підтвердити',
+    //   name: 'submit',
+    //   type: 'button'
+    // }
   ];
 export const TEST_DETAIL_CONFIG = [
   {
@@ -235,11 +235,11 @@ export const TEST_DETAIL_CONFIG = [
     options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
     placeholder: 'Select an option'
   },
-  {
-    label: 'Зберегти',
-    name: 'submit',
-    type: 'button'
-  }
+  // {
+  //   label: 'Зберегти',
+  //   name: 'submit',
+  //   type: 'button'
+  // }
 ];
 export const QUESTION_CONFIG = [
   {
@@ -277,11 +277,11 @@ export const QUESTION_CONFIG = [
     options: ['1', '2'],
     placeholder: 'Select an option'
   },
-  {
-    label: 'Зберегти',
-    name: 'submit',
-    type: 'button'
-  }
+  // {
+  //   label: 'Зберегти',
+  //   name: 'submit',
+  //   type: 'button'
+  // }
 ];
 export const TESTS_CONFIG = [
   {
@@ -334,11 +334,11 @@ export const TESTS_CONFIG = [
     name: 'Subject',
     placeholder: 'Виберіть предмет',
   },
-  {
-    label: 'Зберегти',
-    name: 'submit',
-    type: 'button'
-  }
+  // {
+  //   label: 'Зберегти',
+  //   name: 'submit',
+  //   type: 'button'
+  // }
 ];
 
 
