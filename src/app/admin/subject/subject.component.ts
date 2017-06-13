@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 import { SUBJECTS_CONFIG } from '../universal/dynamic-form/config';
 import { SubjectService } from './subject.service';
-import {DeleteRecordByIdService} from "../services/delete-record-by-id.service";
+import {DeleteRecordByIdService} from '../services/delete-record-by-id.service';
 
 declare const $: any;
 
@@ -43,7 +43,11 @@ export class SubjectComponent implements OnInit {
     this.headers = ['№', 'Назва предмету', 'Опис' ];
     this.displayPropertiesOrder = ['subject_name', 'subject_description'];
     this.getRecordsSubscription = this.subjectService.getRecordsEmitter()
-      .subscribe(() => this.getSubjectsRange());
+      .subscribe(() => {
+      this.getSubjectsRange();
+        $('#add_edit_deletePopup').modal('hide');
+        this.numberOfRecords--;
+    });
   }
   getSubjectsRange() {
     if (this.numberOfRecords <= (this.page - 1) * this.recordsPerPage) {
@@ -119,6 +123,5 @@ export class SubjectComponent implements OnInit {
   }
   deleteSubject(deletedSubject) {
     this.subjectService.deleteSubject(deletedSubject);
-    $('#add_edit_deletePopup').modal('hide');
   }
 }
