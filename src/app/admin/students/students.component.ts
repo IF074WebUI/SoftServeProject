@@ -86,7 +86,6 @@ export class StudentsComponent implements OnInit {
     this.getStudents();
     this.getGroups();
     this.getStudentsForGroup();
-    this.studentEditData = StudentsComponent.generateStudentData();
 
     // this.studentForm = new FormGroup({
     //   'group_id': new FormControl(''),
@@ -223,6 +222,19 @@ export class StudentsComponent implements OnInit {
     this.router.navigate(['students', student.user_id], {relativeTo: this.activatedRoute.parent});
   }
 
+  generateStudentData() {
+    const password = Math.random().toString(36).substr(2, 8);
+    const username = 's' + Math.random().toFixed(3) + ' q' + Math.random().toFixed(3);
+    const photo = '';
+    return {
+      'username': username,
+      'password': password,
+      'password_confirm': password,
+      'plain_password': password,
+      'photo': photo
+    };
+  }
+
   setEmailforEdit(data) {
     this.studentForEdit = data;
     this.getRecordsByIdService.getRecordsById('AdminUser', this.studentForEdit.user_id).subscribe(resp => {
@@ -259,9 +271,8 @@ export class StudentsComponent implements OnInit {
   }
 
   formSubmitted(value) {
-    this.studentForEdit = value;
     if (value['user_id']) {
-      this.studentsService.update(value, StudentsComponent.generateStudentData()).subscribe(resp => {
+      this.studentsService.update(value, this.generateStudentData(), value['user_id']).subscribe(resp => {
         this.getStudents();
         this.popup.cancel();
       }, error2 => this.router.navigate(['/bad_request']));

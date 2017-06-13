@@ -57,10 +57,9 @@ export class StudentsService {
     return this.http.post('http://' + HOST + '/Student/insertData', body).map(resp => resp.json());
   }
 
-  update(studentEditForm, studentEditData): Observable<Student> {
+  update(studentEditForm, studentEditData, user_id): Observable<Student> {
     let body = JSON.stringify(
       {
-        'user_id': studentEditForm.user_id,
         'username': studentEditData.username,
         'password': studentEditData.password,
         'password_confirm': studentEditData.password_confirm,
