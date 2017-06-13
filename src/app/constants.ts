@@ -13,6 +13,7 @@ export const LOGIN_URI = `http://${HOST}/${LOGIN}/`;
 export const LOGGED = 'logged';
 export const ROLE_ADMIN = 'admin';
 export const ROLE_STUDENT = 'student';
+export const INVALID_CREDENTIALS = 'Invalid login or password';
 export const DEBOUNCE_TIME = 700;
 export const NO_RECORDS = 'no records';
 export const SECONDS_MINUTES = 60;

@@ -11,7 +11,7 @@ export class PaginationComponent implements OnInit, OnChanges {
   @Input() recordsPerPage: number;
   @Input() currentPage: number;
   @Output() pageChanged: EventEmitter<number> = new EventEmitter();
-  countPagesArray: number[] = [];
+            countPagesArray: number[] = [];
 
   constructor() {
   }

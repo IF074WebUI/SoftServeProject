@@ -22,10 +22,11 @@ import { DynamicFormComponent } from '../universal/dynamic-form/container/dynami
 })
 export class ResultsComponent implements OnInit {
 
-  RESULTS_HEADERS: string[] = ['№', 'студент', 'тест', 'група', 'дата', '%', 'результат'];
-  IGNORE_PROPERTIES: string[] = ['session_id', 'true_answers', 'start_time', 'end_time', 'answers', 'questions', 'student_id'];
-  SORT_PROPERTIES: string[] = ['student_name', 'percentage'];
-  DISPLAY_ORDER: string[] = ['student_name', 'test_name', 'group_name', 'session_date', 'percentage', 'result'];
+  readonly RESULTS_HEADERS: string[] = ['№', 'студент', 'тест', 'група', 'дата', '%', 'результат'];
+  readonly IGNORE_PROPERTIES: string[] = ['session_id', 'true_answers', 'start_time', 'end_time', 'answers', 'questions', 'student_id'];
+  readonly SORT_PROPERTIES: string[] = ['student_name', 'percentage'];
+  readonly DISPLAY_ORDER: string[] = ['student_name', 'test_name', 'group_name', 'session_date', 'percentage', 'result'];
+
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
   results: Result[];
@@ -42,9 +43,9 @@ export class ResultsComponent implements OnInit {
   dateControl: FormControl;
 
   constructor(private resultsService: ResultsService, private router: Router, private activatedRoute: ActivatedRoute,
-              private toastr: ToastsManager, private studentsService: StudentsService, private groupsService: GroupService,
-              private testsService: TestsService, private spinnerService: SpinnerService,
-              private testDetailsService: TestDetailService) {
+              private toastr: ToastsManager, private studentsService: StudentsService,
+              private groupsService: GroupService, private testsService: TestsService,
+              private spinnerService: SpinnerService, private testDetailsService: TestDetailService) {
     this.groupControl = new FormControl('', Validators.required);
     this.testControl = new FormControl('', Validators.required);
     this.dateControl = new FormControl('');

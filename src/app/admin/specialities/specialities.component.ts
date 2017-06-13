@@ -6,6 +6,7 @@ import { ToastsManager } from 'ng2-toastr';
 import { SpinnerService } from '../universal/spinner/spinner.service';
 import { SPECIALITY_CONFIG } from '../universal/dynamic-form/config';
 import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import { NO_RECORDS } from '../../constants';
 
 @Component({
   selector: 'dtester-specialities',
@@ -15,11 +16,10 @@ import { DynamicFormComponent } from '../universal/dynamic-form/container/dynami
 
 export class SpecialitiesComponent implements OnInit {
 
-  SPECIALITIES_HEADERS: string[] = ['№', 'назва спеціальності', 'код спеціальності'];
-  IGNORE_PROPERTIES: string[] = ['speciality_id'];
-  DISPLAY_PROPERTIES_ORDER: string[] = ['speciality_name', 'speciality_code'];
-  SORT_PROPERTIES: string[] = ['speciality_name'];
-  NO_RECORDS = 'no records';
+  readonly SPECIALITIES_HEADERS: string[] = ['№', 'назва спеціальності', 'код спеціальності'];
+  readonly IGNORE_PROPERTIES: string[] = ['speciality_id'];
+  readonly DISPLAY_PROPERTIES_ORDER: string[] = ['speciality_name', 'speciality_code'];
+  readonly SORT_PROPERTIES: string[] = ['speciality_name'];
 
   specialities: Speciality[];
   page = 1;
@@ -61,23 +61,23 @@ export class SpecialitiesComponent implements OnInit {
       err => this.router.navigate(['/bad_request']));
   }
 
-  add() {
+  add():void {
     this.popup.sendItem(new Speciality('', ''), 'Speciality');
     this.popup.showModal();
   }
 
-  edit(speciality: Speciality) {
+  edit(speciality: Speciality):void {
     this.popup.sendItem(speciality);
     this.popup.showModal();
   }
 
-  delete(speciality: Speciality) {
+  delete(speciality: Speciality):void {
     this.popup.deleteEntity(speciality);
   }
 
   formSubmitted(speciality: Speciality): void {
-    console.log(speciality);
-    if (speciality['specility_id']) {
+    if (speciality['speciality_id']) {
+      console.log(speciality);
       this.specialitiesService.edit(speciality).subscribe(resp => {
           this.popup.cancel();
           this.getSpecialities();
@@ -85,6 +85,7 @@ export class SpecialitiesComponent implements OnInit {
         },
         err => this.router.navigate(['/bad_request']));
     } else {
+      delete speciality.speciality_id;
       this.specialitiesService.save(speciality).subscribe(resp => {
           this.popup.cancel();
           this.getSpecialities();
@@ -95,15 +96,13 @@ export class SpecialitiesComponent implements OnInit {
     }
   }
 
-  getGroupsBySpeciality(speciality: Speciality) {
+  getGroupsBySpeciality(speciality: Speciality):void {
     this.router.navigate(['./group'], {queryParams: {'specialityId': speciality.speciality_id}, relativeTo: this.activatedRoute.parent});
   }
 
-  submitDelete(speciality: Speciality) {
-    console.log(speciality);
+  submitDelete(speciality: Speciality): void {
       this.specialitiesService.delete(speciality['speciality_id'])
         .subscribe(resp => {
-            this.popup.cancel();
           --this.count;
           this.getSpecialities();
             this.toastr.success(`Спеціальність ${speciality.speciality_name} успішно видалена`);
@@ -111,24 +110,24 @@ export class SpecialitiesComponent implements OnInit {
         err => this.router.navigate(['/bad_request']));
   }
 
-  changePage(page: number) {
+  changePage(page: number): void {
     this.page = page;
     this.getSpecialities();
   }
 
-  changeCountPerPage(itemsPerPage: number) {
+  changeCountPerPage(itemsPerPage: number): void {
     this.countPerPage = itemsPerPage;
     this.getSpecialities();
   }
 
-  startSearch(criteria: string) {
+  startSearch(criteria: string):void {
     if (criteria === '') {
     this.getSpecialities();
     this.getCount();
   } else {
       this.spinnerService.showSpinner();
     this.specialitiesService.searchByName(criteria).subscribe(resp => {
-      if (resp['response'] === this.NO_RECORDS) {
+      if (resp['response'] === NO_RECORDS) {
         this.specialities = [];
         this.count = this.specialities.length;
         this.page = 2;

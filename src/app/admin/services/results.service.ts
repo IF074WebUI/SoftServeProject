@@ -55,13 +55,4 @@ export class ResultsService {
     return this.http.delete(`${RESULT_URI}del/${id}`).map((resp: Response) => resp.json());
   }
 
-  edit(speciality: Result): Observable<Result> {
-    return this.http.post(`${RESULT_URI}update/${speciality['speciality_id']}`, JSON.stringify(speciality), this.options)
-      .map((resp: Response) => resp.json());
-  }
-
-  save(speciality: Result): Observable<Result> {
-    return this.http.post(`${RESULT_URI}/insertData`, JSON.stringify(speciality), this.options)
-      .map((resp: Response) => resp.json());
-  }
 }
