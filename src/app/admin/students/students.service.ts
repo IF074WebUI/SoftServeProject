@@ -60,8 +60,8 @@ export class StudentsService {
   update(studentEditForm, studentEditData, user_id): Observable<Student> {
     let body = JSON.stringify(
       {
-        'username': studentEditData.username,
-        'password': studentEditData.password,
+        'username': studentEditForm.username,
+        'password': studentEditForm.password,
         'password_confirm': studentEditData.password_confirm,
         'email': studentEditForm.email,
         'gradebook_id': studentEditForm.gradebook,
@@ -73,7 +73,7 @@ export class StudentsService {
         'photo': studentEditData.photo,
       }
     );
-    return this.http.post('http://' + HOST + '/Student/update/' + studentEditForm.user_id, body).map(resp => resp.json());
+    return this.http.post('http://' + HOST + '/Student/update/' + user_id, body).map(resp => resp.json());
   }
 
   delete(user_id: number): Observable<Student> {

@@ -11,4 +11,7 @@
   max-height: 200px;
   max-width: 200px;
 }
-
+.form-group{
+  width: 45%;
+  margin-left: 10px;
+}
