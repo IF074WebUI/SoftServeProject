@@ -11,13 +11,6 @@ import 'rxjs/add/operator/mergeMap';
 })
 export class LoginComponent implements OnInit {
 
-  VALIDATION_NAME: string = 'Вкажіть ім\'я';
-  VALIDATION_CODE: string = 'Вкажіть пароль';
-  PLACEHOLDER_NAME: string = 'Введіть ім\'я';
-  PLACEHOLDER_CODE: string = 'Введіть пароль';
-  WRONG_CREDENTIALS: string = 'Неправильний логін або пароль';
-  BUTTON_LOGIN: string = 'Логін';
-
   invalidCredentials: boolean = false;
 
   constructor(private loginService: LoginService, private router: Router) {

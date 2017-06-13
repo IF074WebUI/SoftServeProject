@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {Http, RequestOptions, Response, Headers } from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import {Result} from '../results/result';
-import {RESULT_URI} from '../../constants';
+import { Injectable } from '@angular/core';
+import { Http, RequestOptions, Response, Headers } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { Result } from '../results/result';
+import { RESULT_URI } from '../../constants';
 
 @Injectable()
 export class ResultsService {

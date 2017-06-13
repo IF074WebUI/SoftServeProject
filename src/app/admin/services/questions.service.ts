@@ -1,7 +1,7 @@
-import {Injectable} from "@angular/core";
-import {Http} from "@angular/http";
-import {HOST} from "../../constants";
-import {Observable} from "rxjs";
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import { HOST } from '../../constants';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class QuestionsService {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { ResultsService } from '../services/results.service';
 import { Result } from './result';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,6 +13,7 @@ import { SpinnerService } from '../universal/spinner/spinner.service';
 import { TestDetailService } from '../test-detail/test-detail.service';
 import { TestDetail } from '../test-detail/testDetail';
 import { Test } from '../tests/test';
+import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 
 @Component({
   selector: 'dtester-results',
@@ -25,6 +26,7 @@ export class ResultsComponent implements OnInit {
   IGNORE_PROPERTIES: string[] = ['session_id', 'true_answers', 'start_time', 'end_time', 'answers', 'questions', 'student_id'];
   SORT_PROPERTIES: string[] = ['student_name', 'percentage'];
   DISPLAY_ORDER: string[] = ['student_name', 'test_name', 'group_name', 'session_date', 'percentage', 'result'];
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
   results: Result[];
   groups: Group[];
@@ -117,7 +119,6 @@ export class ResultsComponent implements OnInit {
 
   getResults(): void {
     this.spinnerService.showSpinner();
-    /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.count <= (this.page - 1) * this.countPerPage) {
       --this.page;
     }
@@ -156,12 +157,16 @@ export class ResultsComponent implements OnInit {
     this.getResults();
   }
 
-  changeCountPerPage(itemsPerPage: number) {    /* callback method to set count entities per page when dropdown item had been selected */
+  changeCountPerPage(itemsPerPage: number) {
     this.countPerPage = itemsPerPage;
     this.getResults();
   }
 
   del(result: Result) {
+    this.popup.deleteEntity(result);
+  }
+
+  submitDelete(result: Result) {
     this.spinnerService.showSpinner();
     this.resultsService.delete(result.session_id).subscribe(resp => {
         --this.count;

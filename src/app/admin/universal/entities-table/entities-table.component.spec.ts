@@ -1,10 +1,10 @@
-import {ComponentFixture, TestBed} from "@angular/core/testing";
-import {Component, DebugElement} from "@angular/core";
-import {EntitiesTableComponent} from "./entities-table.component";
-import {By} from "@angular/platform-browser";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { EntitiesTableComponent } from './entities-table.component';
+import { By } from '@angular/platform-browser';
 
 fdescribe('AlertComponent', () => {
-  let fixture : ComponentFixture<HostComponent>;
+  let fixture: ComponentFixture<HostComponent>;
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [HostComponent, EntitiesTableComponent],

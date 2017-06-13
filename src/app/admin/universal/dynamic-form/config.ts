@@ -43,6 +43,7 @@ export const SPECIALITY_CONFIG =
       //  text: '',
       label: 'Код спеціальності',
       name: 'speciality_code',
+      required: true,
       placeholder: 'Введіть код спеціальності',
     },
     {
@@ -51,7 +52,7 @@ export const SPECIALITY_CONFIG =
       label: 'Назва спеціальності',
       name: 'speciality_name',
       placeholder: 'Введіть назву спеціальності',
-      requiresAsync: true
+      requiredAsync: true
     },
     // {
     //   label: 'Підтвердити',
