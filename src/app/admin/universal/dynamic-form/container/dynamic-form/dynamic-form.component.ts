@@ -106,7 +106,7 @@ export class DynamicFormComponent implements OnInit {
     this.TITLE = this.MODAL_DELETE_TITLE;
     let Properties = Object.getOwnPropertyNames(entity);
     //  if (entity[Properties[0]] == 'speciality_id'){console.log}
-    this.CONFIRM_QUESTION = this.CONFIRM_QUESTION_TEXT + '' + this.entityForDelete[this.Properties[1]] + '?';
+    this.CONFIRM_QUESTION = this.CONFIRM_QUESTION_TEXT + ' ' + this.entityForDelete[this.Properties[1]] + '?';
     $('#add_edit_deletePopup').modal('show');
   }
 
