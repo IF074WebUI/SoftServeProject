@@ -1,4 +1,4 @@
-import {Answer} from './answer';
+import { Answer } from './answer';
 export interface Question {
   question_id: number;
   test_id: number;

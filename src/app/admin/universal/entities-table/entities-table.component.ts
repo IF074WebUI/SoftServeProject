@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import {ORDER_ASC, ORDER_DESC} from '../../../constants';
+import { ORDER_ASC, ORDER_DESC } from '../../../constants';
 
 @Component({
   selector: 'dtester-entities-table',

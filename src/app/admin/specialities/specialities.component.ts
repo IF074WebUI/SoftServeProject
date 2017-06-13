@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { SpecialitiesService } from '../services/specialities.service';
 import { Speciality } from './speciality';
 import { ActivatedRoute, Router } from '@angular/router';

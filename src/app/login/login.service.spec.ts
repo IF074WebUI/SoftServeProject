@@ -1,14 +1,9 @@
-import {TestBed, inject} from '@angular/core/testing';
-import {
-  HttpModule,
-  Response,
-  ResponseOptions,
-  XHRBackend
-} from '@angular/http';
-import {MockBackend} from '@angular/http/testing';
-import {LoginService} from './login.service';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import { TestBed, inject } from '@angular/core/testing';
+import { HttpModule, Response, ResponseOptions, XHRBackend } from '@angular/http';
+import { MockBackend } from '@angular/http/testing';
+import { LoginService } from './login.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 describe('LoginService', () => {
   beforeEach(() => {

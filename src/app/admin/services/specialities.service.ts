@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs';
 import { Speciality } from '../specialities/speciality';
-import {SPECIALITY_URI} from '../../constants';
+import { SPECIALITY_URI } from '../../constants';
 
 @Injectable()
 export class SpecialitiesService {
