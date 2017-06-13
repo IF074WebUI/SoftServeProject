@@ -106,11 +106,13 @@ export class FacultiesComponent<T> implements OnInit {
 // Methods for opening editing and deleting common modal window
 
   add() {
+    this.configs[1]['action'] = 'add';
     this.popup.sendItem(new Faculty('', '', ''), 'Faculty');
     this.popup.showModal();
   }
 
   edit(faculty: Faculty) {
+    this.configs[1]['action'] = 'edit';
     this.popup.sendItem(faculty);
     this.popup.showModal();
   }

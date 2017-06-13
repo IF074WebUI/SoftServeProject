@@ -8,7 +8,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl} from '@angular/forms';
 import {FacultyService} from '../../../../faculties/faculty.service';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
-import {TestDetailService} from "../../../../test-detail/test-detail.service";
 import {promise} from "selenium-webdriver";
 
 
@@ -26,29 +25,22 @@ function validateEmail(c: FormControl) {
   };
 }
 
+//
+// function validateName(c: FormControl) {
+//     return this.get_records_by_search.getRecordsBySearch(this.entity_name, c.value).map((resp) => {
+//         for (let key of resp) {
+//           let Properties = Object.getOwnPropertyNames(key);
+//           let unique_field = this.entity_name === 'Speciality' ? Properties[+[2]] : Properties[+[1]];
+//           if (key[unique_field] === c.value.trim()) {
+//             return {exists: true};
+//           }
+//         }
+//         return null;
+//       }
+//     );
+//   }
 
-function validateName(c: FormControl) {
-  if (this.entity_name == '') {
-    console.log('workds');
-    return this.get_records_by_search.getRecordsBySearch(this.entity_name, c.value).map((resp) => {
-        for (let key of resp) {
-          let Properties = Object.getOwnPropertyNames(key);
-          let unique_field = this.entity_name === 'Speciality' ? Properties[+[2]] : Properties[+[1]];
-          if (key[unique_field] === c.value.trim()) {
-            return {exists: true};
-          }
-        }
-        return null;
-      }
-    );
-  } else {
-    console.log('edit works');
-    return Promise.resolve().then(() => {
-      return null;
-    });
-  }
-  ;
-}
+// }
 
 declare var $: any;
 
@@ -103,7 +95,7 @@ export class DynamicFormComponent implements OnInit {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required, Validators.maxLength(control.requiredMax)])));
       }
       if (control.requiresAsync) {
-        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
+        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]))); // Validators.composeAsync([validateName.bind(this)]
       }
       if (control.required) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));

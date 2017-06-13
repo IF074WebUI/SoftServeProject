@@ -14,7 +14,9 @@ export const FACULTY_CONFIG =
       name: 'faculty_name',
       placeholder: 'Введіть назву факультету',
       requiresAsync: true,
-      required: true
+      required: true,
+      action: '',
+      entity_name: 'Faculty'
     },
     {
       type: 'textarea',
