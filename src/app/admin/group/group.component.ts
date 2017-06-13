@@ -41,21 +41,8 @@ export class GroupComponent implements OnInit {
   ngOnInit() {
     this.headers = GROUPS_HEADERS;
     this.ignoreProperties = IGNORE_PROPERTIES;
-
-    this.getGroups();
-
-    // let facultyId = this.route.snapshot.queryParams['facultyId'];
-    // console.log(facultyId);
-    // if (facultyId) {
-    //   this.getGroupsService.getGroupsByFaculty(facultyId).subscribe(resp => {
-    //     if (resp['response'] === 'no records') {
-    //       this.groupsOnPage = [];
-    //     } else {
-    //       this.groupsOnPage = resp;
-    //     });
-    // }
-
     let specialityId = this.route.snapshot.queryParams['specialityId'];
+    let facultyId = this.route.snapshot.queryParams['facultyId'];
     if (specialityId) {
       this.getGroupsService.getGroupsBySpeciality(specialityId).subscribe(resp => {
         if (resp['response'] === 'no records') {
@@ -64,6 +51,17 @@ export class GroupComponent implements OnInit {
           this.groupsOnPage = resp, error => this.router.navigate(['/bad_request']);
         }
       });
+    } else
+    if (facultyId) {
+      this.getGroupsService.getGroupsByFaculty(facultyId).subscribe(resp => {
+        if (resp['response'] === 'no records') {
+          this.groupsOnPage = [];
+        } else {
+          this.groupsOnPage = resp;
+        }
+      });
+    } else {
+      this.getGroups();
     }
   }
 

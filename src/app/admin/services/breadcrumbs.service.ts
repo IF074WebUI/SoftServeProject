@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {Router, Event, NavigationEnd} from '@angular/router';
-import {Subject} from "rxjs/Subject";
+import { Router, Event, NavigationEnd } from '@angular/router';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class BreadcrumbsService {
@@ -12,12 +12,11 @@ export class BreadcrumbsService {
     router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         let urls: string[] = this.parseURL(event.url);
-
           this.links = [];
           for (let url of urls) {
             this.links.push({path: this.generatePath(url, event.url), name: url});
           }
-          this.linksS.next(this.links);
+        this.linksS.next(this.links);
       }
     });
   }
