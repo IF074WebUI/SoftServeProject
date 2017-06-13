@@ -1,7 +1,6 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Faculty} from './Faculty';
 import {FacultyService} from './faculty.service';
-// import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import 'rxjs/add/operator/switchMap';
@@ -36,7 +35,7 @@ export class FacultiesComponent<T> implements OnInit {
 
   ngOnInit() {
     this.ignoreProperties = this.IGNORE_PROPERTIES;
-    this.spinner.showSpinner()
+    this.spinner.showSpinner();
 
     this.http.countAllRecords().subscribe((resp) => {
         this.count = resp['numberOfRecords'];
@@ -119,7 +118,7 @@ export class FacultiesComponent<T> implements OnInit {
   }
 
   delete(faculty: Faculty) {
-    this.popup.deleteEntity(faculty, 'факультету');
+    this.popup.deleteEntity(faculty);
   }
 
   // Method for  add/edit, delete form submiting

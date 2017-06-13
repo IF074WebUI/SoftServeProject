@@ -35,9 +35,11 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
   }
 
   ngAfterContentChecked() {
-    if (this.group.controls['test_id'].value === '') {
+    if (this.group.controls['test_id'].value == '') {
+      console.log('add');
       this.entities = this.entitiesForAdd;
     } else {
+      console.log('edit');
       this.entities = this.entitiesForEdit;
     }
   }
@@ -46,7 +48,7 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
     let result = array;
     for (let j in inputarray) {
       for (let i in array) {
-        if (array[i] === inputarray[j]) {
+        if (array[i] == inputarray[j]) {
           result.splice(i, 1);
         }
       }

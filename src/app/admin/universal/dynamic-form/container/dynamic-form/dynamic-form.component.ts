@@ -35,13 +35,13 @@ export class DynamicFormComponent implements OnInit {
   MODAL_EDIT_TITLE = 'Редагувати';
   MODAL_DELETE_TITLE = 'Видалення';
   TITLE: string;
-  CONFIRM_ANSWER_TEXT = 'Ви підтверджуєте видалення ';
-  CONFIRM_ANSWER: string;
+  CONFIRM_QUESTION_TEXT = 'Ви підтверджуєте видалення';
+  CONFIRM_QUESTION: string;
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';
   SUBMIT_ADD_EDIT = 'Зберегти';
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private get_records_by_search: GetRecordsBySearchService) {
+  constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService) {
   }
 
   ngOnInit() {
@@ -99,14 +99,14 @@ export class DynamicFormComponent implements OnInit {
     }
   }
 
-  deleteEntity(entity: any, entity_name?: string) {
+  deleteEntity(entity: any) {
     this.action = 'delete';
     this.entityForDelete = entity;
     this.Properties = Object.getOwnPropertyNames(this.entityForDelete);
-    this.TITLE = this.MODAL_DELETE_TITLE + ' ' + entity_name;
+    this.TITLE = this.MODAL_DELETE_TITLE;
     let Properties = Object.getOwnPropertyNames(entity);
     //  if (entity[Properties[0]] == 'speciality_id'){console.log}
-    this.CONFIRM_ANSWER = this.CONFIRM_ANSWER_TEXT + '' + this.entityForDelete[this.Properties[1]] + '?';
+    this.CONFIRM_QUESTION = this.CONFIRM_QUESTION_TEXT + '' + this.entityForDelete[this.Properties[1]] + '?';
     $('#add_edit_deletePopup').modal('show');
   }
 
@@ -114,7 +114,7 @@ export class DynamicFormComponent implements OnInit {
 
   cancel() {
     this.form.reset();
-    this.CONFIRM_ANSWER = '';
+    this.CONFIRM_QUESTION = '';
     $('#add_edit_deletePopup').modal('hide');
   }
 }
