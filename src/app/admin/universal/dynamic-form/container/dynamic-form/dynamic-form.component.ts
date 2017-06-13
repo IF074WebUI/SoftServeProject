@@ -1,54 +1,8 @@
-import {
-  Component, Input, OnInit, Output, EventEmitter, AfterViewInit, AfterViewChecked,
-  AfterContentChecked
-} from '@angular/core';
-
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-
-import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import {FacultyService} from '../../../../faculties/faculty.service';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
-import {TestDetailService} from "../../../../test-detail/test-detail.service";
-import {promise} from "selenium-webdriver";
-
-
-interface Validator<T extends FormControl> {
-  (c: T): { [error: string]: any };
-}
-
-function validateEmail(c: FormControl) {
-  let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
-
-  return EMAIL_REGEXP.test(c.value) ? null : {
-    validateEmail: {
-      valid: false
-    }
-  };
-}
-
-
-function validateName(c: FormControl) {
-  if (this.entity_name == '') {
-    console.log('workds');
-    return this.get_records_by_search.getRecordsBySearch(this.entity_name, c.value).map((resp) => {
-        for (let key of resp) {
-          let Properties = Object.getOwnPropertyNames(key);
-          let unique_field = this.entity_name === 'Speciality' ? Properties[+[2]] : Properties[+[1]];
-          if (key[unique_field] === c.value.trim()) {
-            return {exists: true};
-          }
-        }
-        return null;
-      }
-    );
-  } else {
-    console.log('edit works');
-    return Promise.resolve().then(() => {
-      return null;
-    });
-  }
-  ;
-}
 
 declare var $: any;
 
@@ -61,9 +15,8 @@ declare var $: any;
 export class DynamicFormComponent implements OnInit {
   @Input()
   config: any[] = [];
-  // @Input()
+
   entity: any;
-  // @Input()
   public test_id: number;
   entityForDelete: any;
   Properties: Array<string>;
@@ -75,6 +28,7 @@ export class DynamicFormComponent implements OnInit {
   form: FormGroup;
   action: string;
   entity_name: string;
+  uniq_name: string;
 
 
   MODAL_ADD_TITLE = 'Створити новий';
@@ -85,8 +39,9 @@ export class DynamicFormComponent implements OnInit {
   CONFIRM_ANSWER: string;
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';
+  SUBMIT_ADD_EDIT = 'Зберегти';
 
-  constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService, private route: ActivatedRoute, private router: Router) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private get_records_by_search: GetRecordsBySearchService) {
   }
 
   ngOnInit() {
@@ -102,13 +57,12 @@ export class DynamicFormComponent implements OnInit {
       if (control.requiredMax) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required, Validators.maxLength(control.requiredMax)])));
       }
-      if (control.requiresAsync) {
-        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
-      }
       if (control.required) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
       }
-      else {
+      if (control.requiredAsync) {
+        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
+      } else {
         group.addControl(control.name, this.fb.control(''));
       }
     });
@@ -123,9 +77,9 @@ export class DynamicFormComponent implements OnInit {
 
   submitDelete(entity) {
     this.youCanDelete.emit(this.entityForDelete);
+    $('#add_edit_deletePopup').modal('hide');
   }
 
-  uniq_name: string;
 
   sendItem(entity: any, entity_name?: string, test_id?: number) {
     this.test_id = test_id;
@@ -139,9 +93,9 @@ export class DynamicFormComponent implements OnInit {
     }
     this.uniq_name = this.entity[InputEntityNames[0]];
     if (this.uniq_name !== '') {
-      this.TITLE = this.MODAL_EDIT_TITLE
+      this.TITLE = this.MODAL_EDIT_TITLE;
     } else {
-      this.TITLE = this.MODAL_ADD_TITLE
+      this.TITLE = this.MODAL_ADD_TITLE;
     }
   }
 
@@ -150,6 +104,8 @@ export class DynamicFormComponent implements OnInit {
     this.entityForDelete = entity;
     this.Properties = Object.getOwnPropertyNames(this.entityForDelete);
     this.TITLE = this.MODAL_DELETE_TITLE + ' ' + entity_name;
+    let Properties = Object.getOwnPropertyNames(entity);
+    //  if (entity[Properties[0]] == 'speciality_id'){console.log}
     this.CONFIRM_ANSWER = this.CONFIRM_ANSWER_TEXT + '' + this.entityForDelete[this.Properties[1]] + '?';
     $('#add_edit_deletePopup').modal('show');
   }
@@ -161,8 +117,46 @@ export class DynamicFormComponent implements OnInit {
     this.CONFIRM_ANSWER = '';
     $('#add_edit_deletePopup').modal('hide');
   }
-
 }
 
+// Email and Async validators
 
+interface Validator<T extends FormControl> {
+  (c: T): { [error: string]: any };
+}
+
+function validateEmail(c: FormControl) {
+  let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+
+  return EMAIL_REGEXP.test(c.value) ? null : {
+    validateEmail: {
+      valid: false
+    }
+  };
+}
+
+function validateName(c: FormControl) {
+  let name = c.value;
+  console.log(name);
+  console.log(this.entity_name);
+  if (this.entity_name) {
+    console.log('add works');
+    return this.get_records_by_search.getRecordsBySearch(this.entity_name, name).map((resp) => {
+        for (let key of resp) {
+          let Properties = Object.getOwnPropertyNames(key);
+          let unique_field = this.entity_name === 'Speciality' ? Properties[+[2]] : Properties[+[1]];
+          if (key[unique_field] === name.trim()) {
+            return {exists: true};
+          }
+        }
+        return null;
+      }
+    );
+  } else {
+    console.log('edit works');
+    return Promise.resolve().then(() => {
+      return null;
+    });
+  }
+}
 
