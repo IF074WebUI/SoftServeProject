@@ -43,6 +43,7 @@ export class QuestionsService {
     return this.http.delete('http://' + HOST + '/question/del/' + id)
       .map((resp: Response) => resp.json());
   }
+
   // METHOD FOR THE FUTURE
   // deleteGroupsBySpeciality(specialityId: number): Observable<any> {
   //   return this.http.get('http://' + HOST + GROUP_ENITY + '/getGroupsBySpeciality/' + specialityId)
@@ -63,8 +64,8 @@ export class QuestionsService {
     return this.http.get( 'http://' + HOST + '/question/countRecords')
       .map((resp: Response) => resp.json()['numberOfRecords']);
   }
-  getQuestionsByTest(testId: number) {
-    return this.http.get('http://' + HOST + + '/question/getRecordsRangeByTest/' + testId)
+  getQuestionsByTest(test_id: number) {
+    return this.http.get('http://' + HOST + + '/question/getRecordsRangeByTest/' + test_id)
       .map((resp: Response) => resp.json());
   }
 

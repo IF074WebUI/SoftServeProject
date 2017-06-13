@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Question} from "./question";
-import {DynamicFormComponent} from "../universal/dynamic-form/container/dynamic-form/dynamic-form.component";
-import {QUESTION_CONFIG} from "../universal/dynamic-form/config";
-import {QuestionsService} from "../services/questions.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {SpinnerService} from "../universal/spinner/spinner.service";
+import {Question} from './question';
+import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import {QUESTION_CONFIG} from '../universal/dynamic-form/config';
+import {QuestionsService} from '../services/questions.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {SpinnerService} from '../universal/spinner/spinner.service';
 
 @Component({
   selector: 'app-questions',
@@ -13,12 +13,13 @@ import {SpinnerService} from "../universal/spinner/spinner.service";
 })
 export class QuestionsComponent implements OnInit {
   questionsOnPage: Question[];
-  pageNumber: number = 1;
+  pageNumber = 1;
   recordsPerPage = 10;
   countRecords: number;
   headers: string[];
   ignoreProperties: string[];
-  btnClass: string = 'fa fa-question';
+  btnClass = 'fa fa-question';
+  imgAttach = 'question.attachment';
   CREATING_NEW_QUESTION = 'Додати нове питання';
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
@@ -32,7 +33,7 @@ export class QuestionsComponent implements OnInit {
 
   ngOnInit() {
     this.headers = ['№', 'Питання', 'Рівень', 'Тип', 'Вкладення'];
-    this.ignoreProperties = ['test_id', 'question_id', 'attachment'];
+    this.ignoreProperties = ['test_id', 'question_id'];
 
     this.getQuestions();
 
@@ -47,7 +48,7 @@ export class QuestionsComponent implements OnInit {
     //     });
     // }
 
-    let testId = this.route.snapshot.queryParams['testId'];
+    const testId = this.route.snapshot.queryParams['testId'];
     if (testId) {
       this.questionsService.getQuestionsByTest(testId).subscribe(resp => {
         if (resp['response'] === 'no records') {
@@ -61,7 +62,7 @@ export class QuestionsComponent implements OnInit {
 
   getQuestions(): void {
     this.spinner.showSpinner();
-    this.getCountRecords()
+    this.getCountRecords();
     /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.countRecords <= (this.pageNumber - 1) * this.recordsPerPage) {
       --this.pageNumber;
@@ -88,7 +89,7 @@ export class QuestionsComponent implements OnInit {
   }
   // get students by group
   getAnswersByQuestion(question: Question) {
-    this.router.navigate(['./answers'], {queryParams: {'question_id': question.question_id}, relativeTo: this.route.parent});
+    this.router.navigate(['questions/answers'], {queryParams: {'question_id': question.question_id}, relativeTo: this.route.parent});
     console.log(question);
   }
   // search group
@@ -116,7 +117,6 @@ export class QuestionsComponent implements OnInit {
   // onTimeTableNavigate(question: Question) {
   //   this.router.navigate(['./timetable'], {queryParams: {'group_id': group.group_id}, relativeTo: this.route.parent});
   // }
-
 
 // Method for opening editing and deleting commo modal window
 

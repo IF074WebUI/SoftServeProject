@@ -9,17 +9,17 @@
                         [ignoreProperties]="ignoreProperties"
                         [btnClass]="btnClass"
                         [canAction]="true"
+                        [canAct]="true"
+                        [imgAttach]="imgAttach"
                         [page]="pageNumber"
                         [itemsPerPage]="recordsPerPage"
                         (deleteEntity)="del($event)"
                         (editEntity)="edit($event)"
                         (clickEntity)="getAnswersByQuestion($event)">
 </dtester-entities-table>
-
-
 <dtester-pagination class="text-center"
                     [countRecords]="countRecords"
-                    [recordsPerPage]="offset"
+                    [recordsPerPage]="recordsPerPage"
                     [currentPage]="pageNumber"
                     (pageChanged)="changePage($event)"></dtester-pagination>
 
@@ -27,6 +27,10 @@
         type="button"
         class="btn btn-primary"
         data-dismiss="modal">{{CREATING_NEW_QUESTION}}</button>
+<div *ngFor="let question of questionsOnPage; let i = index">
+  <img [src]="question.attachment"  width="200px">
+</div>
 <dynamic-form [config]="configs"
               (submitted)="formSubmitted($event)"
-              (youCanDelete)="deleteQuestion($event)"></dynamic-form>
+              (youCanDelete)="deleteQuestion($event)">
+</dynamic-form>
