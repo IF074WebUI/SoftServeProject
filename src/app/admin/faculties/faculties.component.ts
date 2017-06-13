@@ -1,7 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Faculty} from './Faculty';
 import {FacultyService} from './faculty.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+// import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import 'rxjs/add/operator/switchMap';
@@ -29,9 +29,10 @@ export class FacultiesComponent<T> implements OnInit {
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = FACULTY_CONFIG;
 
-  constructor(private http: FacultyService, private modalService: NgbModal, private route: ActivatedRoute,
+  constructor(private http: FacultyService,  private route: ActivatedRoute,
               private router: Router, private spinner: SpinnerService) {
   }
+
 
   ngOnInit() {
     this.ignoreProperties = this.IGNORE_PROPERTIES;

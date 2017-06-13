@@ -10,14 +10,18 @@
       <div class="modal-body">
         <form *ngIf="action == 'add_edit'" class="form-group"
               class="dynamic-form"
-              [formGroup]="form"
-              (ngSubmit)="submitted.emit(form.value)">
+              [formGroup]="form" (ngSubmit)="submitted.emit(form.value)"
+             >
           <ng-container
             *ngFor="let field of config;"
             dynamicField
             [config]="field"
             [group]="form">
           </ng-container>
+          <div
+            class="dynamic-field form-button">
+            <button  [disabled]="!form.valid" type="submit" class="btn btn-primary btn-lg"  > {{ SUBMIT_ADD_EDIT }}</button>
+          </div>
         </form>
 
       <div  *ngIf="action == 'delete'">
@@ -26,7 +30,7 @@
       </div>
       <div class="modal-footer">
         <div *ngIf="action == 'delete'" class="modal-footer">
-          <button type="submit" class="btn btn-danger" data-dismiss="modal" (click)="submitDelete()" > {{CONFIRM_DELETE}}</button>
+          <button type="submit" class="btn btn-danger"  (click)="submitDelete()" > {{CONFIRM_DELETE}}</button>
         </div>
         <button type="button" class="btn btn-default"  (click)="cancel()" >{{CLOSE}}</button>
       </div>

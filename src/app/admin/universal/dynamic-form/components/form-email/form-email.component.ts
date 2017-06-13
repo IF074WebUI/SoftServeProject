@@ -10,6 +10,8 @@ export class FormEmailComponent {
   config;
   group: FormGroup;
 
+  ERROR_MSG = 'Email повинен відповідати формату john@doe.com';
+
   constructor() { }
 
 }
