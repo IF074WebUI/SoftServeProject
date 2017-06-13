@@ -1,5 +1,5 @@
-export const HOST = 'dtapi.local';
-// export const HOST = 'api1.lena.limit.com.ua';
+// export const HOST = 'dtapi.local';
+export const HOST = 'api1.lena.limit.com.ua';
 export const NEWFACULTY = 'Створення нового факультету';
 export const DELETERESULT = 'Факультет було успішно видалено';
 export const EDITFACULTY = 'Редагування факультету';

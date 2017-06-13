@@ -9,6 +9,7 @@
   <h5>Логін: {{AdminUser?.username}}</h5>
   <h5>Пароль: {{student?.plain_password}}</h5>
   <button class="btn btn-info" (click)="goToStudentResult()">Результати</button>
+  <button class="btn btn-info" (click)="edit($event)">Редагувати</button>
 </div>
 
 <img class="img-thumbnail photo" *ngIf="!student?.photo" src="../../../assets/default-avatar.png">
