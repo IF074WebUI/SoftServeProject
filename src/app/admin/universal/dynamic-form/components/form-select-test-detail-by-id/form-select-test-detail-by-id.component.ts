@@ -1,6 +1,7 @@
 import {FormGroup} from '@angular/forms';
 import {AfterContentChecked, AfterContentInit, Component, OnInit} from '@angular/core';
 import {TestDetailService} from '../../../../test-detail/test-detail.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-form-select-test-detail-by-id',
@@ -19,13 +20,16 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
   error: boolean;
 
 
-  constructor(private testDetailService: TestDetailService) {
+  constructor(private testDetailService: TestDetailService,  private router: Router) {
   }
 
   ngOnInit() {
   }
 
   ngAfterContentInit() {
+    // if (this.group.controls['test_id'].value) {
+    //   this.router.navigate(['admin/subject']);
+    // } else {
     this.entitiesForEdit = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     this.entitiesForAdd = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     this.testDetailService.getTestDetails(+[this.config.test_id]).subscribe(resp => {
@@ -35,6 +39,7 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
   }
 
   ngAfterContentChecked() {
+    console.log(this.group.controls['test_id'].value);
     if (this.group.controls['test_id'].value == '') {
       this.entities = this.entitiesForAdd;
     } else {

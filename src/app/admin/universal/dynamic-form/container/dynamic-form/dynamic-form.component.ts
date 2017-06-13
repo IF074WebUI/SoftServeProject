@@ -1,5 +1,4 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import {FacultyService} from '../../../../faculties/faculty.service';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
@@ -17,7 +16,7 @@ export class DynamicFormComponent implements OnInit {
   config: any[] = [];
 
   entity: any;
-  public test_id: number;
+  test_id: number;
   entityForDelete: any;
   Properties: Array<string>;
 
