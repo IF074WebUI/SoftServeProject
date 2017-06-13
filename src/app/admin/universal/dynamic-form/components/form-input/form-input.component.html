@@ -7,13 +7,13 @@
     [attr.placeholder]="config.placeholder"
     [formControlName]="config.name"  />
   <label
-    *ngIf="group.controls[config.name].hasError('required') && group.controls[config.name].submitted"
-    class="control-label">{{MODAL_VALIDATION_NAME_REQUIRED}}</label>
+    *ngIf="group.controls[config.name].hasError('required') && group.controls[config.name].touched"
+    class="control-label error">{{MODAL_VALIDATION_NAME_REQUIRED}}</label>
   <label
     *ngIf="group.controls[config.name].hasError('exists') && group.controls[config.name].dirty"
-    class="control-label">{{MODAL_VALIDATION_NAME_EXISTS}}</label>
+    class="control-label error">{{MODAL_VALIDATION_NAME_EXISTS}}</label>
   <label
     *ngIf="group.controls[config.name].hasError('maxLength') && group.controls[config.name].dirty"
-    class="control-label">{{MODAL_VALIDATION_NAME_TOLONG}}</label>
+    class="control-label error">{{MODAL_VALIDATION_NAME_TOLONG}}</label>
   </div>
 

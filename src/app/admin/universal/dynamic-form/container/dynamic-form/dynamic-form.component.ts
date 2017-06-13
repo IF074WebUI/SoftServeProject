@@ -92,7 +92,7 @@ export class DynamicFormComponent implements OnInit {
       this.form.controls[FormNames[+[i]]].setValue(this.entity[InputEntityNames[+[i]]]);
     }
     this.uniq_name = this.entity[InputEntityNames[0]];
-    if (this.uniq_name !== '') {
+    if (this.uniq_name) {
       this.TITLE = this.MODAL_EDIT_TITLE;
     } else {
       this.TITLE = this.MODAL_ADD_TITLE;

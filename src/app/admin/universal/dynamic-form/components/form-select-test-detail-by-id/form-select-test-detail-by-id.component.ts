@@ -46,8 +46,8 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
     let result = array;
     for (let j in inputarray) {
       for (let i in array) {
-        if (array[i] == inputarray[j]) {
-          result.splice(i, 1)
+        if (array[i] === inputarray[j]) {
+          result.splice(i, 1);
         }
       }
     }
