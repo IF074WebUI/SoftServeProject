@@ -5,7 +5,7 @@
   <select [formControlName]="config.name" class="form-control">
     <option value="">{{ config.placeholder }}</option>
     <option [value]="item[Properties[[0]]]" *ngFor="let item of entities">
-      {{ item[Properties[[1]]] }}
+      {{ item[item_name] }}
     </option>
   </select>
 </div>
