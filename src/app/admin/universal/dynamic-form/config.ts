@@ -158,38 +158,6 @@ export const STUDENT_CONFIG =
       name: 'user_id',
       placeholder: ''
     }
-    // {
-    //   type: 'id',
-    //   text: null,
-    //   label: 'username',
-    //   name: 'username',
-    //   placeholder: '',
-    //   required: false
-    // },
-    // {
-    //   type: 'id',
-    //   text: null,
-    //   label: 'Пароль',
-    //   name: 'password',
-    //   placeholder: '',
-    //   required: false
-    // },
-    // {
-    //   type: 'id',
-    //   text: null,
-    //   label: 'Підтвердіть пароль',
-    //   name: 'password_сonfirm',
-    //   placeholder: '',
-    //   required: false
-    // },
-    // {
-    //   type: 'id',
-    //   text: null,
-    //   label: 'Простий пароль',
-    //   name: 'plain_password',
-    //   placeholder: '',
-    //   required: false
-    // },
   ];
 export const TEST_DETAIL_CONFIG = [
   {
