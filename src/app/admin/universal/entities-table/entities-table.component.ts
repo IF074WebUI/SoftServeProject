@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { ORDER_ASC, ORDER_DESC } from '../../../constants';
+import {Question} from '../../questions/question';
 
 @Component({
   selector: 'dtester-entities-table',
@@ -10,6 +11,10 @@ export class EntitiesTableComponent<T> implements OnInit, OnChanges {
 
   @Input() itemsPerPage = 5;
   @Input() page = 1;
+  NO_ENTITIES = 'Сутності відсутні';
+
+  // @Input() itemsPerPage = 5;
+  // @Input() page = 1;
   @Input() entities: T[] = [];
   @Input() displayPropertiesOrder: string[] = [];
   @Input() ignoreProperties: string[] = [];
@@ -19,6 +24,8 @@ export class EntitiesTableComponent<T> implements OnInit, OnChanges {
   @Input() canDelete = true;
   @Input() canAction = false;
   @Input() btnClass = 'fa fa-compass';
+  @Input() canAct = false;
+  @Input() imgAttach = 'question.attachment';
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
   @Output() editEntity: EventEmitter<T> = new EventEmitter();
   @Output() clickEntity: EventEmitter<T> = new EventEmitter();

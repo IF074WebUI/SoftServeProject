@@ -10,6 +10,7 @@ export const LOGIN = 'login';
 export const SPECIALITY_URI = `http://${HOST}/${SPECIALITY}/`;
 export const RESULT_URI = `http://${HOST}/${RESULT}/`;
 export const LOGIN_URI = `http://${HOST}/${LOGIN}/`;
+export const ANSWER_URI = `http://${HOST}/answer/`;
 export const LOGGED = 'logged';
 export const ROLE_ADMIN = 'admin';
 export const ROLE_STUDENT = 'student';
