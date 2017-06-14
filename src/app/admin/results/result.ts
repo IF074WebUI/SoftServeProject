@@ -1,5 +1,5 @@
-import { Question } from '../detailed/question';
-import { Answer } from '../detailed/answer';
+import { Question } from '../detailed-results/question';
+import { Answer } from '../detailed-results/answer';
 export interface Result {
   session_id: number;
   student_id: number;

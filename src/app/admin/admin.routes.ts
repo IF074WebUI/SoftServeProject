@@ -9,7 +9,7 @@ import { SpecialitiesComponent } from './specialities/specialities.component';
 import { StudentsComponent } from './students/students.component';
 import { ResultsComponent } from './results/results.component';
 import { TestsComponent } from './tests/tests.component';
-import { DetailedComponent } from './detailed/detailed.component';
+import { DetailedResultsComponent} from './detailed-results/detailed-results.component';
 import { TestDetailComponent } from './test-detail/test-detail.component';
 import { QuestionsComponent } from './questions/questions.component';
 import {AnswersComponent} from './answers/answers.component';
@@ -27,7 +27,7 @@ export const adminRoutes: Route[] = [
       {path: 'specialities', component: SpecialitiesComponent},
       {path: 'results', component: ResultsComponent},
       {path: 'students', component: StudentsComponent},
-      {path: 'results/:studentId', component: DetailedComponent},
+      {path: 'results/:studentId', component: DetailedResultsComponent},
       {path: 'results', component: ResultsComponent},
       {path: 'subject/tests', component: TestsComponent},
       {path: 'testDetails', component: TestDetailComponent},

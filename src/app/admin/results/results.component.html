@@ -1,3 +1,4 @@
+<h3 class="text-center">Результати</h3>
 <hr/>
 <form class="form-inline" [formGroup]="searchByGroupTestForm" (submit)="findByGroupTest()">
   <div class="form-group">
@@ -37,5 +38,8 @@
 </dtester-entities-table>
 <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
                     (pageChanged)="changePage($event)"></dtester-pagination>
+<dynamic-form
+  (youCanDelete)="submitDelete($event)">
+</dynamic-form>
 
 

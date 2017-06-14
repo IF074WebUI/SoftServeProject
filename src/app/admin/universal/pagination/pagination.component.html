@@ -6,7 +6,9 @@
         <span class="sr-only">Previous</span>
       </a>
     </li>
-    <li class="page-item" [ngClass]="{active: page === currentPage}" *ngFor="let page of countPagesArray"><a class="page-link" (click)="pageChange(page)">{{page}}</a></li>
+    <li class="page-item" [ngClass]="{active: page === currentPage}" *ngFor="let page of countPagesArray">
+      <a class="page-link" (click)="pageChange(page)">{{page}}</a>
+    </li>
     <li class="page-item" [ngClass]="{disabled: countPagesArray.length === currentPage || countPagesArray.length === 0}">
       <a class="page-link" (click)="pageChange(currentPage + 1)" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>

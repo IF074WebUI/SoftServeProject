@@ -1,4 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { ORDER_ASC, ORDER_DESC } from '../../../constants';
 import {Question} from '../../questions/question';
 
 @Component({
@@ -8,10 +9,12 @@ import {Question} from '../../questions/question';
 })
 export class EntitiesTableComponent<T> implements OnInit, OnChanges {
 
-  NO_ENTITIES = 'Сутності відсутні';
-
   @Input() itemsPerPage = 5;
   @Input() page = 1;
+  NO_ENTITIES = 'Сутності відсутні';
+
+  // @Input() itemsPerPage = 5;
+  // @Input() page = 1;
   @Input() entities: T[] = [];
   @Input() displayPropertiesOrder: string[] = [];
   @Input() ignoreProperties: string[] = [];
@@ -20,8 +23,8 @@ export class EntitiesTableComponent<T> implements OnInit, OnChanges {
   @Input() canEdit = true;
   @Input() canDelete = true;
   @Input() canAction = false;
-  @Input() canAct = false;
   @Input() btnClass = 'fa fa-compass';
+  @Input() canAct = false;
   @Input() imgAttach = 'question.attachment';
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
   @Output() editEntity: EventEmitter<T> = new EventEmitter();
@@ -81,11 +84,11 @@ export class EntitiesTableComponent<T> implements OnInit, OnChanges {
       this.order[i] = '';
     }
 
-    if (order === 'asc') {
-      this.order[index + 1] = 'asc';
+    if (order === ORDER_ASC) {
+      this.order[index + 1] = ORDER_ASC;
       this.entities.sort((e1: T, e2: T) => e1[propName].localeCompare(e2[propName]));
     } else {
-      this.order[index + 1] = 'desc';
+      this.order[index + 1] = ORDER_DESC;
       this.entities.sort((e1: T, e2: T) => e2[propName].localeCompare(e1[propName]));
     }
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { ResultsService } from '../services/results.service';
 import { Result } from './result';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,6 +13,7 @@ import { SpinnerService } from '../universal/spinner/spinner.service';
 import { TestDetailService } from '../test-detail/test-detail.service';
 import { TestDetail } from '../test-detail/testDetail';
 import { Test } from '../tests/test';
+import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 
 @Component({
   selector: 'dtester-results',
@@ -21,10 +22,12 @@ import { Test } from '../tests/test';
 })
 export class ResultsComponent implements OnInit {
 
-  RESULTS_HEADERS: string[] = ['№', 'студент', 'тест', 'група', 'дата', '%', 'результат'];
-  IGNORE_PROPERTIES: string[] = ['session_id', 'true_answers', 'start_time', 'end_time', 'answers', 'questions', 'student_id'];
-  SORT_PROPERTIES: string[] = ['student_name', 'percentage'];
-  DISPLAY_ORDER: string[] = ['student_name', 'test_name', 'group_name', 'session_date', 'percentage', 'result'];
+  readonly RESULTS_HEADERS: string[] = ['№', 'студент', 'тест', 'група', 'дата', '%', 'результат'];
+  readonly IGNORE_PROPERTIES: string[] = ['session_id', 'true_answers', 'start_time', 'end_time', 'answers', 'questions', 'student_id'];
+  readonly SORT_PROPERTIES: string[] = ['student_name', 'percentage'];
+  readonly DISPLAY_ORDER: string[] = ['student_name', 'test_name', 'group_name', 'session_date', 'percentage', 'result'];
+
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
   results: Result[];
   groups: Group[];
@@ -40,9 +43,9 @@ export class ResultsComponent implements OnInit {
   dateControl: FormControl;
 
   constructor(private resultsService: ResultsService, private router: Router, private activatedRoute: ActivatedRoute,
-              private toastr: ToastsManager, private studentsService: StudentsService, private groupsService: GroupService,
-              private testsService: TestsService, private spinnerService: SpinnerService,
-              private testDetailsService: TestDetailService) {
+              private toastr: ToastsManager, private studentsService: StudentsService,
+              private groupsService: GroupService, private testsService: TestsService,
+              private spinnerService: SpinnerService, private testDetailsService: TestDetailService) {
     this.groupControl = new FormControl('', Validators.required);
     this.testControl = new FormControl('', Validators.required);
     this.dateControl = new FormControl('');
@@ -117,7 +120,6 @@ export class ResultsComponent implements OnInit {
 
   getResults(): void {
     this.spinnerService.showSpinner();
-    /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.count <= (this.page - 1) * this.countPerPage) {
       --this.page;
     }
@@ -156,12 +158,16 @@ export class ResultsComponent implements OnInit {
     this.getResults();
   }
 
-  changeCountPerPage(itemsPerPage: number) {    /* callback method to set count entities per page when dropdown item had been selected */
+  changeCountPerPage(itemsPerPage: number) {
     this.countPerPage = itemsPerPage;
     this.getResults();
   }
 
   del(result: Result) {
+    this.popup.deleteEntity(result);
+  }
+
+  submitDelete(result: Result) {
     this.spinnerService.showSpinner();
     this.resultsService.delete(result.session_id).subscribe(resp => {
         --this.count;
@@ -181,11 +187,7 @@ export class ResultsComponent implements OnInit {
       <html>
         <head>
           <title>Результати тестування</title>
-          <style>
-          @media print {  
-            .hidden-print   { display: none !important; }
-          }
-          </style>
+          <link rel="stylesheet" type="text/css" href="/assets/bootstrap.min.css" media="print">           
         </head>
     <body onload="window.print();window.close()">${printContents}</body>
       </html>`
