@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {}
 
-  login(form: FormGroup) {
+  login(form: FormGroup): void {
     this.loginService.login(form.controls['name'].value, form.controls['password'].value)
       .mergeMap(res => this.checkIfLogged()).subscribe(response => {
       }, err => {
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  hideMessage() {
+  hideMessage(): void {
     this.invalidCredentials = false;
   }
 }

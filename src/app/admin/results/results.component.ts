@@ -69,13 +69,13 @@ export class ResultsComponent implements OnInit {
             this.results = resp;
             this.count = this.results.length;
             this.transformResults();
-          }, err => this.router.navigate(['/bad_request']));
+          });
         } else if (testId && groupId) {
           this.resultsService.getAllByTestGroupDate(testId, groupId, date).subscribe((resp: Result[]) => {
             this.results = resp;
             this.count = this.results.length;
             this.transformResults();
-          }, err => this.router.navigate(['/bad_request']));
+          });
         } else {
           this.getResults();
           this.getCount();
@@ -127,12 +127,11 @@ export class ResultsComponent implements OnInit {
       .subscribe((resp: Result[]) => {
         this.results = resp;
         this.transformResults();
-      }, err => this.router.navigate(['/bad_request']));
+      });
   }
 
   getCount(): void {
-    this.resultsService.getCount().subscribe(resp => this.count = resp,
-      err => this.router.navigate(['/bad_request']));
+    this.resultsService.getCount().subscribe(resp => this.count = resp);
   }
 
   findByGroupTest(): void {
@@ -174,8 +173,7 @@ export class ResultsComponent implements OnInit {
         this.getResults();
         this.spinnerService.hideSpinner();
         this.toastr.success(`Результат успішно видалений`);
-      },
-      err => this.router.navigate(['/bad_request']));
+      });
   }
 
   print(): void {
