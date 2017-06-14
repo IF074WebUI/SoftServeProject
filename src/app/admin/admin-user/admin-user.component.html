@@ -1,28 +1,19 @@
-<h1>{{MAIN_HEADER}}</h1>
+<h1>Адміністратори</h1>
 
-<dtester-search (searchCriteria)="searchStudent($event)"></dtester-search>
-
-<dtester-items-per-page [numberOfRecords]="count" (recordsPerPageChanged)="changeCountPerPage($event)"></dtester-items-per-page>
-
-<dtester-entities-table [entities]="students"
+<dtester-entities-table [entities]="AdminUsers"
                         [headers]="headers"
                         [page]="page"
                         [itemsPerPage]="countPerPage"
-                        (actionEntity)="goToStudentProfile($event)"
                         (deleteEntity)="del($event)"
                         [ignoreProperties]="ignoreProperties"
                         [displayPropertiesOrder]="displayProperties"
-                        [canEdit]="false"
-                        [canAction]="true"
+                        (editEntity)="edit($event)"
+                        [canEdit]="true"
                         [canDelete]="true"
                         [sortProperties]="sortProperties">
 </dtester-entities-table>
 
-<div class="app">
-  <dynamic-form [config]="configs" (submitted)="formSubmitted($event)" (youCanDelete)="submitDelete($event)"></dynamic-form>
-</div>
-
-<button class="btn btn-lg btn-outline-primary" (click)="add()">{{MODAL_ADD}}</button>
+<button class="btn btn-lg btn-outline-primary" (click)="add()">Додати Адміністратора</button>
 
 <div class="text-center">
   <dtester-pagination [countRecords]="count"
@@ -30,4 +21,8 @@
                       [currentPage]="page"
                       (pageChanged)="changePage($event)">
   </dtester-pagination>
+</div>
+
+<div class="app">
+  <dynamic-form [config]="configs" (submitted)="formSubmitted($event)" (youCanDelete)="submitDelete($event)"></dynamic-form>
 </div>

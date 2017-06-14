@@ -15,9 +15,9 @@ fieldset legend, .edit-legend, .del-legend {
   padding-right: 7px;
 }
 
-input {
+input, select {
   width: 70%;
-  margin: auto;
+  margin: -5px auto;
 }
 
 fieldset .edit-legend {
@@ -30,4 +30,12 @@ fieldset .del-legend {
 
 .my-button {
   margin: 10px 0;
+}
+
+.invalid {
+  color: red;
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
 }
