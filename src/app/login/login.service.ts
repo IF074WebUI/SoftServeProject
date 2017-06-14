@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers, Response } from '@angular/http';
-import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { LOGIN_URI } from '../constants';
-
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class LoginService {

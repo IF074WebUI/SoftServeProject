@@ -50,6 +50,10 @@ import { SubjectComponent } from './subject/subject.component';
 import { GetRecordsBySearchService } from './services/get-records-by-search.service';
 import { GetTestsBySubjectService } from './services/get-tests-by-subject.service';
 import { SubjectService } from './subject/subject.service';
+import { QuestionsComponent } from './questions/questions.component';
+import { AnswersComponent } from './answers/answers.component';
+import { ModalImgComponent } from './modal-img/modal-img.component';
+import { FacultyService } from "./services/faculty.service";
 
 @NgModule({
   declarations: [
@@ -75,7 +79,10 @@ import { SubjectService } from './subject/subject.service';
     AddUpdateTimetableComponent,
     DetailedResultsComponent,
     TestDetailComponent,
-    SubjectComponent
+    SubjectComponent,
+    QuestionsComponent,
+    AnswersComponent,
+    ModalImgComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -109,7 +116,8 @@ import { SubjectService } from './subject/subject.service';
     TestDetailService,
     GetRecordsBySearchService,
     GetTestsBySubjectService,
-    SubjectService
+    SubjectService,
+    FacultyService
   ],
 })
 export class AdminModule {

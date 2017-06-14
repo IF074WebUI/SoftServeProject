@@ -13,7 +13,7 @@
               [formGroup]="form" (ngSubmit)="submitted.emit(form.value)"
              >
           <ng-container
-            *ngFor="let field of config;"
+            *ngFor="let field of config"
             dynamicField
             [config]="field"
             [group]="form">

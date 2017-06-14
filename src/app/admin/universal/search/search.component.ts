@@ -12,7 +12,7 @@ import 'rxjs/add/operator/debounceTime';
 export class SearchComponent implements OnInit {
 
   @Output() searchCriteria: EventEmitter<string> = new EventEmitter();
-  search: FormControl = new FormControl();
+            search: FormControl = new FormControl();
 
   constructor(private router: Router) { }
 

@@ -204,10 +204,10 @@ export const QUESTION_CONFIG = [
     placeholder: '',
   },
   {
-    type: 'select_with_options',
-    label: 'Номер рівня завдань',
+    type: 'textarea',
+    text: '',
+    label: 'Питання',
     name: 'question_text',
-    options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
     placeholder: 'Select an option'
   },
   {
@@ -219,8 +219,51 @@ export const QUESTION_CONFIG = [
   },
   {
     type: 'select_with_options',
-    label: 'Кількіст балів',
+    label: 'Тип питання',
     name: 'type',
+    options: ['1', '2'],
+    placeholder: 'Select an option'
+  },
+  {
+    type: 'input_file',
+    label: 'Вкладення',
+    name: 'attachment'
+  }
+];
+export const ANSWER_CONFIG = [
+  {
+    type: 'id',
+    text: null,
+    label: 'ID питання',
+    name: 'answer_id',
+    placeholder: '',
+    required: false
+  },
+  {
+    type: 'id',
+    text: null,
+    label: 'ID тесту',
+    name: 'question_id',
+    placeholder: '',
+    required: false
+  },
+  {
+    type: 'select',
+    label: 'Правильність відповіді',
+    name: 'true_answer',
+    options: ['Правильно', 'Неправильноо']
+  },
+  {
+    type: 'textarea',
+    label: 'Текст відповіді',
+    name: 'answer_text',
+    options: '',
+    placeholder: ''
+  },
+  {
+    type: 'file',
+    label: 'Вкладення',
+    name: 'attachment',
     options: ['1', '2'],
     placeholder: 'Select an option'
   }

@@ -15,13 +15,14 @@
   (editEntity)="edit($event)" (clickEntity)="getGroupsBySpeciality($event)">
 </dtester-entities-table>
 
-<button class="btn btn-sm btn-primary" (click)="add()" data-target="#myModal">
+<button class="btn btn-primary" (click)="add()">
   Додати спеціальність
 </button>
 
 <div class="text-center">
   <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
-                      (pageChanged)="changePage($event)"></dtester-pagination>
+                      (pageChanged)="changePage($event)">
+  </dtester-pagination>
 </div>
 
 <div class="app">

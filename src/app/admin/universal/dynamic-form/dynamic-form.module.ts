@@ -9,7 +9,7 @@ import { FormIdComponent } from './components/form-id/form-id.component';
 import { FormTextareaComponent } from './components/form-textarea/form-textarea.component';
 import { FormEmailComponent } from './components/form-email/form-email.component';
 import { FormSelectWithOptionsComponent } from './components/form-select-with-options/form-select-with-options.component';
-import {FacultyService} from '../../faculties/faculty.service';
+import {FacultyService} from '../../services/faculty.service';
 import { FormSelectTestDetailByIdComponent } from './components/form-select-test-detail-by-id/form-select-test-detail-by-id.component';
 import { FormInputFileComponent } from './components/form-input-file/form-input-file.component';
 import { FormNumberComponent } from './components/form-number/form-number.component';

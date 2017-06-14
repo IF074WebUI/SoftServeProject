@@ -7,6 +7,7 @@ export class GetRecordsByIdService {
 
   constructor(private http: Http) {}
 
+
   getRecordsById(entity, id) {
     return this.http.get('http://' + HOST + '/' + entity + '/getRecords/' + id).map(resp => resp.json());
   }

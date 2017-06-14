@@ -28,7 +28,7 @@ export class DynamicFormComponent implements OnInit {
   uniq_name: string;
 
 
-  MODAL_ADD_TITLE = 'Створити новий';
+  MODAL_ADD_TITLE = 'Створити';
   MODAL_EDIT_TITLE = 'Редагувати';
   MODAL_DELETE_TITLE = 'Видалення';
   TITLE: string;
@@ -59,6 +59,7 @@ export class DynamicFormComponent implements OnInit {
       }
       if (control.requiredAsync) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
+       // group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
       } else {
         group.addControl(control.name, this.fb.control(''));
       }
@@ -102,8 +103,8 @@ export class DynamicFormComponent implements OnInit {
     this.Properties = Object.getOwnPropertyNames(this.entityForDelete);
     this.TITLE = this.MODAL_DELETE_TITLE;
     let Properties = Object.getOwnPropertyNames(entity);
-    //  if (entity[Properties[0]] == 'speciality_id'){console.log}
-    this.CONFIRM_QUESTION = this.CONFIRM_QUESTION_TEXT + ' ' + this.entityForDelete[this.Properties[1]] + '?';
+      if (Properties[0] == 'speciality_id') {this.uniq_name = Properties[2]; } else {this.uniq_name = Properties[1];}
+    this.CONFIRM_QUESTION = this.CONFIRM_QUESTION_TEXT + ' ' + this.entityForDelete[this.uniq_name] + '?';
     $('#add_edit_deletePopup').modal('show');
   }
 

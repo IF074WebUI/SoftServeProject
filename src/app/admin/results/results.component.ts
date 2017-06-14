@@ -22,10 +22,11 @@ import { DynamicFormComponent } from '../universal/dynamic-form/container/dynami
 })
 export class ResultsComponent implements OnInit {
 
-  RESULTS_HEADERS: string[] = ['№', 'студент', 'тест', 'група', 'дата', '%', 'результат'];
-  IGNORE_PROPERTIES: string[] = ['session_id', 'true_answers', 'start_time', 'end_time', 'answers', 'questions', 'student_id'];
-  SORT_PROPERTIES: string[] = ['student_name', 'percentage'];
-  DISPLAY_ORDER: string[] = ['student_name', 'test_name', 'group_name', 'session_date', 'percentage', 'result'];
+  readonly RESULTS_HEADERS: string[] = ['№', 'студент', 'тест', 'група', 'дата', '%', 'результат'];
+  readonly IGNORE_PROPERTIES: string[] = ['session_id', 'true_answers', 'start_time', 'end_time', 'answers', 'questions', 'student_id'];
+  readonly SORT_PROPERTIES: string[] = ['student_name', 'percentage'];
+  readonly DISPLAY_ORDER: string[] = ['student_name', 'test_name', 'group_name', 'session_date', 'percentage', 'result'];
+
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
   results: Result[];
@@ -42,9 +43,9 @@ export class ResultsComponent implements OnInit {
   dateControl: FormControl;
 
   constructor(private resultsService: ResultsService, private router: Router, private activatedRoute: ActivatedRoute,
-              private toastr: ToastsManager, private studentsService: StudentsService, private groupsService: GroupService,
-              private testsService: TestsService, private spinnerService: SpinnerService,
-              private testDetailsService: TestDetailService) {
+              private toastr: ToastsManager, private studentsService: StudentsService,
+              private groupsService: GroupService, private testsService: TestsService,
+              private spinnerService: SpinnerService, private testDetailsService: TestDetailService) {
     this.groupControl = new FormControl('', Validators.required);
     this.testControl = new FormControl('', Validators.required);
     this.dateControl = new FormControl('');
@@ -68,13 +69,13 @@ export class ResultsComponent implements OnInit {
             this.results = resp;
             this.count = this.results.length;
             this.transformResults();
-          }, err => this.router.navigate(['/bad_request']));
+          });
         } else if (testId && groupId) {
           this.resultsService.getAllByTestGroupDate(testId, groupId, date).subscribe((resp: Result[]) => {
             this.results = resp;
             this.count = this.results.length;
             this.transformResults();
-          }, err => this.router.navigate(['/bad_request']));
+          });
         } else {
           this.getResults();
           this.getCount();
@@ -126,12 +127,11 @@ export class ResultsComponent implements OnInit {
       .subscribe((resp: Result[]) => {
         this.results = resp;
         this.transformResults();
-      }, err => this.router.navigate(['/bad_request']));
+      });
   }
 
   getCount(): void {
-    this.resultsService.getCount().subscribe(resp => this.count = resp,
-      err => this.router.navigate(['/bad_request']));
+    this.resultsService.getCount().subscribe(resp => this.count = resp);
   }
 
   findByGroupTest(): void {
@@ -173,8 +173,7 @@ export class ResultsComponent implements OnInit {
         this.getResults();
         this.spinnerService.hideSpinner();
         this.toastr.success(`Результат успішно видалений`);
-      },
-      err => this.router.navigate(['/bad_request']));
+      });
   }
 
   print(): void {
