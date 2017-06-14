@@ -6,15 +6,15 @@ import { Result } from '../results/result';
 import { ResultsService } from '../services/results.service';
 import { Group } from '../group/group';
 import { GroupService } from '../group/group.service';
-import { Question } from './question';
 import { QuestionsService } from '../services/questions.service';
 import { AnswersService } from '../services/answers.service';
-import { Answer } from './answer';
 import { TestsService } from '../services/tests.service';
 import { Test } from '../tests/test';
 import { TestDetailService } from '../test-detail/test-detail.service';
 import { TestDetail } from '../test-detail/testDetail';
 import { HOURS, NO_RECORDS, SECONDS_MINUTES } from '../../constants';
+import { Question } from '../questions/question';
+import { Answer } from '../answers/answer';
 
 @Component({
   templateUrl: './detailed-results.component.html',
