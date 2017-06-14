@@ -6,9 +6,8 @@
          type="email"
          [attr.placeholder]="config.placeholder"
          [formControlName]="config.name" />
-  <small [hidden]="group.controls[config.name].hasError('null')">
-    Email is required and format should be <i>john@doe.com</i>.
-  </small>
+  <label *ngIf="group.controls[config.name].hasError('validateEmail') && group.controls[config.name].dirty"  class="control-label error">
+    {{ERROR_MSG}}.
+  </label>
 
 </div>
-<!--  [hidden]="!group.controls[config.name].hasError('pattern')" required pattern="^[a-zA-Z0–9_.+-]+@[a-zA-Z0–9-]+.[a-zA-Z0–9-.]+$" -->

@@ -1,6 +1,7 @@
 import {FormGroup} from '@angular/forms';
 import {AfterContentChecked, AfterContentInit, Component, OnInit} from '@angular/core';
 import {TestDetailService} from '../../../../test-detail/test-detail.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-form-select-test-detail-by-id',
@@ -18,7 +19,8 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
   ERROR_MSG;
   error: boolean;
 
-  constructor(private testDetailService: TestDetailService) {
+
+  constructor(private testDetailService: TestDetailService,  private router: Router) {
   }
 
   ngOnInit() {
@@ -34,11 +36,11 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
   }
 
   ngAfterContentChecked() {
-    //this.error = false;
-    if (this.group.controls['test_id'].value === '') {
-      this.entities = this.entitiesForAdd
+//    console.log(this.group.controls['test_id'].value);
+    if (this.group.controls['test_id'].value == '') {
+      this.entities = this.entitiesForAdd;
     } else {
-      this.entities = this.entitiesForEdit
+      this.entities = this.entitiesForEdit;
     }
   }
 
@@ -47,7 +49,7 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
     for (let j in inputarray) {
       for (let i in array) {
         if (array[i] == inputarray[j]) {
-          result.splice(i, 1)
+          result.splice(i, 1);
         }
       }
     }
@@ -55,7 +57,7 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
   }
 
   onValueChanged(event) {
-    var value: number = event.target.value;
+    let value: number = event.target.value;
     if (this.array.indexOf(value) !== -1) {
       this.group.controls[this.config.name].setErrors({'wrongValue': true});
       this.error = true;

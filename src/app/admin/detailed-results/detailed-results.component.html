@@ -1,21 +1,21 @@
 <h3 class="text-center">Результати тестування</h3>
-<div *ngIf="results?.length; else empty">
+<div id="print-section" *ngIf="results?.length; else empty">
   <div class="student-headers">
-    <h5>Студент: {{student?.student_surname}} {{student?.student_name}} {{student?.student_fname}}</h5>
-    <h5>Група: {{group?.group_name}}</h5>
+    <h3>Студент: {{student?.student_surname}} {{student?.student_name}} {{student?.student_fname}}</h3>
+    <h3>Група: {{group?.group_name}}</h3>
   </div>
-
-  <img class="student-photo" *ngIf="student?.photo" [src]="student?.photo">
-  <button class="btn btn-primary print" (click)="print()"><i class="fa fa-print" aria-hidden="true"></i></button>
+  <div class="hidden-print">
+    <img class="student-photo" *ngIf="student?.photo" [src]="student?.photo">
+    <button class="btn btn-primary print" (click)="print()"><i class="fa fa-print" aria-hidden="true"></i></button>
+  </div>
   <div>
-    <ul class="nav nav-tabs" role="tablist">
+    <ul class="nav nav-tabs hidden-print" role="tablist">
       <li class="nav-item" *ngFor="let result of results; let i=index">
         <a class="nav-link" (click)="setActive(i)" [class.active]="i === active_id" data-toggle="tab"
            [href]="'#' + result.session_id" role="tab">{{tests[i]?.test_name}}</a>
       </li>
     </ul>
-    <!-- Tab panes -->
-    <div class="tab-content" id="print-section">
+    <div class="tab-content">
       <div *ngFor="let result of results; let i=index" class="tab-pane"
            [ngClass]="{'active': i === active_id, 'hidden-print': i !== active_id}"
            [id]="'#' + result.session_id" role="tabpanel">
@@ -26,8 +26,8 @@
           <li>кількість запитань: {{result.questions.length}}</li>
           <li>результат: {{result.result}} ({{percents[i]}}%)</li>
         </ul>
-        <p>
-          <button class="btn btn-primary hidden-print" type="button" data-toggle="collapse"
+        <p class="hidden-print">
+          <button class="btn btn-primary" type="button" data-toggle="collapse"
                   [attr.data-target]="'#' + result.session_id" aria-expanded="false" aria-controls="collapseExample">
             Деталі тесту
           </button>
@@ -45,11 +45,13 @@
                     <li *ngIf="answer.answer_text">
                       {{answer.answer_text}} (
                       <span [ngStyle]="{color: 'green'}" *ngIf="answer.true_answer == 1; else wrong">
-                  <i class="fa fa-check" aria-hidden="true"></i>
-                </span>
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                        <span class="visible-print-inline">правильно</span>
+                      </span>
                       <ng-template #wrong>
                   <span [ngStyle]="{color: 'red'}">
                     <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                    <span class="visible-print-inline">неправильно</span>
                   </span>
                       </ng-template>
                       )

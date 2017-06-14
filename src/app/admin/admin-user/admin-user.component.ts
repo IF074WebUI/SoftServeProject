@@ -74,7 +74,6 @@ export class AdminUserComponent implements OnInit {
   }
 
   formSubmitted(value) {
-    console.log(value);
     if (value['id']) {
       this.AdminUserService.update(value['id'], value['username'], value['email']).subscribe(resp => {
         this.getAdmins();
