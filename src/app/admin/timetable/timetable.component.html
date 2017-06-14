@@ -1,6 +1,6 @@
-<h2 *ngIf="timeTables.length">Розклад проведення тестування
+<h2>Розклад проведення тестування
   <span *ngIf="groupQueryParam">групи: {{timeTables[0]?.group_name}}</span>
-  <span *ngIf="subjectQueryParam">з: {{timeTables[0]?.subject_name}}</span>
+  <span *ngIf="subjectIdQueryParam">з: {{subjectNameQueryParam}}</span>
 </h2>
 <div class="alert alert-info" role="alert">
   <button type="button" class="btn btn-primary" (click)="openModalAddTimetable()">Запланувати тестування</button>

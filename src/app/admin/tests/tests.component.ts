@@ -21,7 +21,8 @@ export class TestsComponent implements OnInit {
   headers: string[];
   displayPropertiesOrder: string[];
   action: string;
-  subjectQueryParam: string;
+  subjectIdQueryParam: string;
+  subjectNameQueryParam: string;
   btnClass: string;
   constructor(private getAllRecordsService: GetAllRecordsService,
               private getRecordsByIdService: GetRecordsByIdService,
@@ -38,14 +39,13 @@ export class TestsComponent implements OnInit {
   }
   getQueryParams() {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
-      this.subjectQueryParam = params['subject_id'];
-      console.log(this.subjectQueryParam);
+      this.subjectIdQueryParam = params['subject_id'];
+      this.subjectNameQueryParam = params['subject_name'];
       this.getTestsForOneSubject();
     });
   }
   getTestsForOneSubject() {
-    this.getTestsBySubjectService.getTestsBySubject(this.subjectQueryParam).subscribe((data) => {
-      console.log(data);
+    this.getTestsBySubjectService.getTestsBySubject(this.subjectIdQueryParam).subscribe((data) => {
       this.tests = data;
       for (const test of this.tests) {
         this.setNameOfSubject(test);
@@ -85,6 +85,12 @@ export class TestsComponent implements OnInit {
   }
 
   getTestDetailsByTest (test: Test) {
-    this.router.navigate(['./testDetails'], {queryParams: {'test_id': test.test_id, 'test_name': test.test_name}, relativeTo: this.activatedRoute.parent});
+    this.router.navigate(['subject/tests/testDetails'], {
+      queryParams: {
+        'test_id': test.test_id,
+        'test_name': test.test_name
+      },
+      relativeTo: this.activatedRoute.parent
+    });
   }
 }

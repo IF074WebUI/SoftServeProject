@@ -30,7 +30,7 @@ export const adminRoutes: Route[] = [
       {path: 'results/:studentId', component: DetailedResultsComponent},
       {path: 'results', component: ResultsComponent},
       {path: 'subject/tests', component: TestsComponent},
-      {path: 'testDetails', component: TestDetailComponent},
+      {path: 'subject/tests/testDetails', component: TestDetailComponent},
       {path: 'questions', component: QuestionsComponent},
       {path: 'questions/answers', component: AnswersComponent}
     ]
