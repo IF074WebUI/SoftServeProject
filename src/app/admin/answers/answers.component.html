@@ -1,34 +1,36 @@
 <h2>Відповіді</h2>
-<div class="alert alert-info" role="alert">
-  <button class=""(click)="add()"
-          type="button"
-          class="btn btn-primary"
-          data-dismiss="modal">Створити відповідь</button>
-  <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
-  <dtester-items-per-page [numberOfRecords]="countRecords"
-                          (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)">
-  </dtester-items-per-page>
-</div>
+<dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
+<dtester-items-per-page [numberOfRecords]="countRecords"
+                        (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
 
-
-<dtester-entities-table [entities]="answers"
+<dtester-entities-table class="table"
+                        [entities]="answersOnPage"
                         [headers]="headers"
-                        [page]="page"
-                        [itemsPerPage]="countPerPage"
                         [ignoreProperties]="ignoreProperties"
-                        [canAction]="false"
                         [btnClass]="btnClass"
+                        [canAction]="true"
                         [canAct]="true"
                         [imgAttach]="imgAttach"
+                        [page]="pageNumber"
+                        [itemsPerPage]="recordsPerPage"
                         (deleteEntity)="del($event)"
-                        (editEntity)="edit($event)">
+                        (editEntity)="edit($event)"
+                        (clickEntity)="getAnswersByQuestion($event)">
 </dtester-entities-table>
-
-<dtester-pagination [countRecords]="count"
-                    [recordsPerPage]="countPerPage"
-                    [currentPage]="page"
+<dtester-pagination class="text-center"
+                    [countRecords]="countRecords"
+                    [recordsPerPage]="recordsPerPage"
+                    [currentPage]="pageNumber"
                     (pageChanged)="changePage($event)"></dtester-pagination>
 
+<button (click)="add()"
+        type="button"
+        class="btn btn-primary"
+        data-dismiss="modal">{{CREATING_NEW_ANSWER}}</button>
+<div *ngFor="let answer of answersOnPage; let i = index">
+  <img [src]="answer.attachment"  width="200px">
+</div>
 <dynamic-form [config]="configs"
               (submitted)="formSubmitted($event)"
-              (youCanDelete)="submitDelete($event)"></dynamic-form>
+              (youCanDelete)="deleteAnswer($event)">
+</dynamic-form>

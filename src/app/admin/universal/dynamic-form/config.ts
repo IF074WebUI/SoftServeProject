@@ -261,7 +261,7 @@ export const ANSWER_CONFIG = [
     placeholder: ''
   },
   {
-    type: 'file',
+    type: 'input_file',
     label: 'Вкладення',
     name: 'attachment',
     options: ['1', '2'],

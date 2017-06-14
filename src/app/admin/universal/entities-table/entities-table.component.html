@@ -20,10 +20,10 @@
   <tbody class="entities-body">
   <tr *ngFor="let entity of entities; let i = index" [ngClass]="{'table-warning': entity.deprecated}">
     <td>{{i + itemsPerPage * (page - 1) + 1}}</td>
-    <img *ngIf="canAct" [src]="imgAttach"  width="200px">
     <ng-container *ngFor="let name of getProperties(entity)">
       <td *ngIf="!ignoreProperties?.includes(name)" (click)="clickEntityCallback(entity)">{{entity[name]}}</td>
     </ng-container>
+    <td><img *ngIf="canAct" [src]="imgAttach"  width="200px"></td>
     <td class="hidden-print">
       <div class="btn-group" role="group" aria-label="Basic example">
         <button *ngIf="canAction" type="button" class="btn btn-warning btn-sm" (click)="actionEntityCallback(entity)">

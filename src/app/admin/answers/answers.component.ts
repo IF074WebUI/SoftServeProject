@@ -5,8 +5,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AnswersService} from '../services/answers.service';
 import {ANSWER_CONFIG} from '../universal/dynamic-form/config';
 import {SpinnerService} from '../universal/spinner/spinner.service';
-import {ToastsManager} from 'ng2-toastr';
-
 
 @Component({
   selector: 'dtester-answers',
@@ -14,155 +12,156 @@ import {ToastsManager} from 'ng2-toastr';
   styleUrls: ['./answers.component.css']
 })
 export class AnswersComponent implements OnInit {
-  readonly ANSWERS_HEADERS: string[] = ['№', 'Текст відповіді', 'Правильність відповіді'];
-  readonly IGNORE_PROPERTIES: string[] = ['question_id', 'answer_id', 'attachment'];
-  readonly DISPLAY_PROPERTIES_ORDER: string[] = ['answer_text', 'answer_true'];
-  readonly SORT_PROPERTIES: string[] = ['answer_text'];
-
-  answers: Answer[];
-  page = 1;
-  countPerPage = 5;   /*number of the records for the stating page*/
-  count: number;
-  headers: string[];            /* array of headers */
+  answersOnPage: Answer[];
+  pageNumber = 1;
+  recordsPerPage = 10;
+  countRecords: number;
+  headers: string[];
   ignoreProperties: string[];
-  sortProperties: string[];
-  displayPropertiesOrder: string[];
-  editName = '';
-
-  public question_id: number;
-  public noRecords: boolean = false;
-
+  btnClass = 'fa fa-question';
+  imgAttach = 'answer.attachment';
+  CREATING_NEW_ANSWER = 'Додати нову відповідь';
+  question_id: number;
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = ANSWER_CONFIG;
 
   constructor(private answersService: AnswersService,
+              private route: ActivatedRoute,
               private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private toastr: ToastsManager,
-              private spinnerService: SpinnerService) {}
+              private spinner: SpinnerService
+  ) {}
 
   ngOnInit() {
-    this.headers = this.ANSWERS_HEADERS;
-    this.ignoreProperties = this.IGNORE_PROPERTIES;
-    this.sortProperties = this.SORT_PROPERTIES;
-    this.displayPropertiesOrder = this.DISPLAY_PROPERTIES_ORDER;
+    this.headers = ['№', 'Відповідь', 'Правильність', 'Вкладення'];
+    this.ignoreProperties = ['question_id', 'answer_id', 'attachment'];
     this.getAnswers();
-    this.getCount();
-  }
+    this.question_id = this.route.snapshot.queryParams['question_id'];
+    console.log(this.question_id);
 
 
-
-
-  getAnswers(): void {
-    this.spinnerService.showSpinner();
-    if (this.count <= (this.page - 1) * this.countPerPage) {
-      --this.page;
+    if (this.question_id) {
+      this.answersService.getAnswersByQuestion(this.question_id).subscribe(resp => {
+        if (resp['response'] === 'no records') {
+          this.answersOnPage = [], error => this.router.navigate(['/bad_request']);
+        } else {
+          this.answersOnPage = resp, error => this.router.navigate(['/bad_request']);
+        }
+      });
     }
-    this.answersService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
-      .subscribe(resp => {this.answers = resp;
-        this.spinnerService.hideSpinner(); }, err => this.router.navigate(['/bad_request']));
+    // else
+    // if (level) {
+    //   this.questionsService.getQuestionsByLevelRand(this.test_id, level, number).subscribe(resp => {
+    //     if (resp['response'] === 'no records') {
+    //       this.questionsOnPage = [];
+    //     } else {
+    //       this.questionsOnPage = resp;
+    //     }
+    //   });
+    // } else {
+    //   this.getQuestions();
+    // }}
+  }
+  getAnswers(): void {
+    this.spinner.showSpinner();
+    this.getCountRecords();
+    /* if count of records less or equal than can contain current number of pages, than decrease page */
+    if (this.countRecords <= (this.pageNumber - 1) * this.recordsPerPage) {
+      --this.pageNumber;
+    }
+    this.answersService.getPaginatedPage(this.pageNumber, this.recordsPerPage).delay(301)
+      .subscribe(resp => { this.answersOnPage = <Answer[]>resp, err => this.router.navigate(['/bad_request']);
+        this.spinner.hideSpinner();
+      });
   }
 
-  getCount(): void {
-    this.answersService.getCount().subscribe(resp => this.count = resp,
-      err => this.router.navigate(['/bad_request']));
-  }
-  getAnswerByQuestion() {
-    this.answersService.getAnswerByQuestion(this.question_id)
-      .subscribe(
-        data => {
-          if (data.response === 'no records') {
-            this.noRecords = true;
-          }
-          if (data.length) {
-            this.answers = data;
-            this.noRecords = false;
-          }
-        },
-        error => console.log('error: ', error)
-      );
+  getCountRecords() {
+    this.answersService.getCountAnswers()
+      .subscribe(resp => this.countRecords = resp );
   }
 
-  add():void {
-    this.popup.sendItem(new Answer(), 'Answer');
+  changePage(page: number) {              /* callback method for change page pagination output event */
+    this.pageNumber = page;
+    this.getAnswers();               /* request new groups for new page */
+  }
+  changeNumberOfRecordsOnPage(numberOfRecords: number) {
+    this.recordsPerPage = numberOfRecords;
+    this.pageNumber = 1;
+    this.getAnswers();
+  }
+
+  // getRecordsRangeByTest(test: Test){
+  //   this.router.navigate(['./question'], {queryParams: {'testId': test.test_id}, relativeTo: this.activatedRoute.parent});
+  // }
+  // search group
+  startSearch(criteria: string) {   /* callback method for output in search component */
+    this.spinner.showSpinner();
+    if (criteria === '' || +criteria <= 0 ) {
+      this.getAnswers();
+    } else {
+      this.answersService.searchByName(criteria)
+        .subscribe(resp => {
+            if (resp['response'] === 'no records') {    /* check condition: if no records presented for search criteria */
+              this.answersOnPage = [];
+              this.countRecords = this.answersOnPage.length;
+              this.spinner.hideSpinner();
+            } else {
+              this.countRecords = 0;
+              this.pageNumber = 2;
+              this.answersOnPage = resp;
+              this.spinner.hideSpinner();
+            }
+          },
+          err => this.router.navigate(['/bad_request']));
+    }
+  }
+
+// Method for opening editing and deleting commo modal window
+
+  add() {
+    this.popup.sendItem(new Answer());
     this.popup.showModal();
   }
 
-  edit(answer: Answer):void {
+  edit(answer: Answer) {
     this.popup.sendItem(answer);
     this.popup.showModal();
   }
 
-  delete(answer: Answer):void {
+  del(answer: Answer) {
     this.popup.deleteEntity(answer);
   }
+  // Method for  add/edit, delete form submiting
 
-  formSubmitted(answer: Answer): void {
-    if (answer['answer_id']) {
-      console.log(answer);
-      this.answersService.edit(answer).subscribe(resp => {
-          this.popup.cancel();
-          this.getAnswers();
-          this.toastr.success(`Відповідь ${answer.answer_text} успішно відредагована`);
-        },
-        err => this.router.navigate(['/bad_request']));
+  formSubmitted(value) {
+    value['question_id'] = this.question_id;
+    console.log(value);
+    if (value['answer_id']) {
+      this.answersService.editAnswer(value['question_id'], value['answer_text'],
+        value['answer_id'], value['true_answer'], value['attachment'])
+        .subscribe(response => {
+            this.getAnswers();
+            this.popup.cancel();
+          },
+          error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': +value['question_text']},
+            relativeTo: this.route.parent})
+        );
     } else {
-      delete answer.answer_id;
-      this.answersService.save(answer).subscribe(resp => {
-          this.popup.cancel();
-          this.getAnswers();
-          this.count++;
-          this.toastr.success(`Відповідь ${answer.answer_text} успішно збережена`);
-        },
-        err => this.router.navigate(['/bad_request']));
+      this.answersService.createAnswer(value['answer_text'],
+        value['answer_id'], value['true_answer'], value['attachment'])
+        .subscribe(response => {
+            this.getAnswers();
+            this.popup.cancel();
+          },
+          error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': value['question_text']},
+            relativeTo: this.route.parent})
+        );
     }
   }
 
-  // getGroupsBySpeciality(speciality: Speciality):void {
-  //   this.router.navigate(['./group'], {queryParams: {'specialityId': speciality.speciality_id}, relativeTo: this.activatedRoute.parent});
-  // }
-
-  submitDelete(answer: Answer): void {
-    this.answersService.delete(answer['answer_id'])
-      .subscribe(resp => {
-          --this.count;
-          this.getAnswers();
-          this.toastr.success(`Відповідь ${answer.answer_text} успішно видалена`);
-        },
-        err => this.router.navigate(['/bad_request']));
+  deleteAnswer(answer: Answer) {
+    this.answersService.deleteAnswer(answer['answer_id']).subscribe(response => this.getAnswers(),
+      error => this.router.navigate(['/bad_request'])
+    );
   }
-
-  changePage(page: number): void {
-    this.page = page;
-    this.getAnswers();
-  }
-
-  changeCountPerPage(itemsPerPage: number): void {
-    this.countPerPage = itemsPerPage;
-    this.getAnswers();
-  }
-
-  startSearch(criteria: string):void {
-    if (criteria === '') {
-      this.getAnswers();
-      this.getCount();
-    } else {
-      this.spinnerService.showSpinner();
-      this.answersService.searchByName(criteria).subscribe(resp => {
-          if (resp['response'] === 'no records') {
-            this.answers = [];
-            this.count = this.answers.length;
-            this.page = 2;
-          } else {
-            this.count = 0;
-            this.page = 2;
-            this.answers = resp;
-          }
-          this.spinnerService.hideSpinner();
-        },
-        err => this.router.navigate(['/bad_request']));
-    }
-  }
-
 }

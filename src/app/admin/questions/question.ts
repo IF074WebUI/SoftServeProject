@@ -4,7 +4,7 @@ export class Question {
   question_text: string;
   level: number;
   type: number;
-  attachment?: any;
+  attachment: any;
 
   // constructor(text: string) {
   //   this.question_text = text;

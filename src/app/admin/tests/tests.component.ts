@@ -31,7 +31,7 @@ export class TestsComponent implements OnInit {
     this.btnClass = 'fa fa-venus-double';
   }
   ngOnInit() {
-    this.getQueryParams()
+    this.getQueryParams();
     this.getSubjects();
     this.headers = ['№', 'Назва тесту', 'Завдання', 'Тривалість тесту', 'Спроби', 'Статус'];
     this.displayPropertiesOrder = ['test_name', 'tasks', 'time_for_test', 'attempts', 'enabled_description' ];
@@ -86,5 +86,9 @@ export class TestsComponent implements OnInit {
 
   getTestDetailsByTest (test: Test) {
     this.router.navigate(['./testDetails'], {queryParams: {'test_id': test.test_id, 'test_name': test.test_name}, relativeTo: this.activatedRoute.parent});
+  }
+
+  goToQuestions(test: Test) {
+    this.router.navigate(['./questions'], {queryParams: {'test_id': test.test_id}, relativeTo: this.activatedRoute.parent});
   }
 }
