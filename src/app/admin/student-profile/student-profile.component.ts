@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Student } from '../students/student';
 import { StudentsService } from '../students/students.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,7 +28,8 @@ export class StudentProfileComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private router: Router,
               private getRecordsByIdService: GetRecordsByIdService,
-              private getAllRecordsService: GetAllRecordsService) { }
+              private getAllRecordsService: GetAllRecordsService,
+              private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(resp => this.user_id = resp['user_id']);
@@ -46,6 +47,20 @@ export class StudentProfileComponent implements OnInit {
       'password': new FormControl('', Validators.required),
       'email': new FormControl('', Validators.required)
     });
+  }
+
+  changeListener($event): void {
+    this.readThis($event.target);
+  }
+
+  readThis(inputValue: any): void {
+    const file: File = inputValue.files[0];
+    const myReader: FileReader = new FileReader();
+
+    myReader.onloadend = (e) => {
+      this.studentForEdit.photo = myReader.result;
+    };
+    myReader.readAsDataURL(file);
   }
 
   getStudent() {
@@ -96,12 +111,12 @@ export class StudentProfileComponent implements OnInit {
   editStudent() {
     this.studentEditData = {
       'password_confirm' : this.studentForEdit_password,
-      'plain_password': this.studentForEdit_password,
-      'photo': ''
+      'plain_password': this.studentForEdit_password
     };
-    this.studentsService.update(this.studentEditForm.value, this.studentEditData, this.user_id).subscribe(resp => {
-      this.getStudent();
-      this.getAdminUser();
+    this.studentsService.update(this.studentEditForm.value, this.studentForEdit.photo, this.studentEditData, this.user_id)
+      .subscribe(resp => {
+        this.getStudent();
+        this.getAdminUser();
     });
   }
 }

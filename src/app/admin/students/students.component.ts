@@ -8,13 +8,12 @@ import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { GetAllRecordsService } from '../services/get-all-records.service';
 import { STUDENT_CONFIG } from '../universal/dynamic-form/config';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
-import {FacultyService} from '../faculties/faculty.service';
 
 @Component({
   selector: 'dtester-students',
   templateUrl: './students.component.html',
   styleUrls: ['./students.component.css'],
-  providers: [StudentsService, FacultyService]
+  providers: [StudentsService]
 })
 export class StudentsComponent implements OnInit {
 
@@ -142,17 +141,10 @@ export class StudentsComponent implements OnInit {
   }
 
   formSubmitted(value) {
-    if (value['user_id']) {
-      this.studentsService.update(value, this.generateStudentData(), value['user_id']).subscribe(resp => {
-        this.getStudents();
-        this.popup.cancel();
-      }, error2 => this.router.navigate(['/bad_request']));
-    } else {
       this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
         this.getStudents();
         this.popup.cancel();
       }, error2 => this.router.navigate(['/bad_request']));
-    }
   }
 
   submitDelete(student: Student) {
