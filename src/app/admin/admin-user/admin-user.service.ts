@@ -18,7 +18,7 @@ export class AdminUserService {
     return this.http.get('http://' + HOST + '/AdminUser/getRecordsRange/' + limit + '/' + offset).map((resp: Response) => resp.json());
   }
 
-  delete(user_id: number): Observable<AdminUser> {
+  del(user_id: number): Observable<AdminUser> {
     return this.http.delete('http://' + HOST + '/AdminUser/del/' + user_id).map(resp => resp.json());
   }
 

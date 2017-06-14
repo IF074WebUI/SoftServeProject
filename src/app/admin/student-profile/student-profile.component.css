@@ -11,7 +11,11 @@
   max-height: 200px;
   max-width: 200px;
 }
-.form-group{
-  width: 45%;
-  margin-left: 10px;
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+.invalid {
+  color: red;
 }

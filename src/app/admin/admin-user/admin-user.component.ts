@@ -54,7 +54,6 @@ export class AdminUserComponent implements OnInit {
   }
 
   edit(AdminUser: AdminUser) {
-    console.log(AdminUser);
     this.popup.sendItem(
       {
         email: AdminUser.email,
@@ -86,12 +85,11 @@ export class AdminUserComponent implements OnInit {
         this.getAdmins();
         this.popup.cancel();
       }, error2 => this.router.navigate(['/bad_request']));
-      // }
     }
   }
 
   submitDelete(AdminUser: AdminUser) {
-    this.AdminUserService.delete(AdminUser['id']).subscribe(response => this.getAdmins(),
+    this.AdminUserService.del(AdminUser['id']).subscribe(response => this.getAdmins(),
       error => this.router.navigate(['/bad_request'])
     );
   }

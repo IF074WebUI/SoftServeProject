@@ -68,7 +68,7 @@ export class StudentsService {
         'student_surname': studentEditForm.student_surname,
         'student_name': studentEditForm.student_name,
         'student_fname': studentEditForm.student_fname,
-        'group_id': studentEditForm.group,
+        'group_id': studentEditForm.group_id,
         'plain_password': studentEditData.plain_password,
         'photo': studentEditData.photo,
       }
@@ -76,7 +76,7 @@ export class StudentsService {
     return this.http.post('http://' + HOST + '/Student/update/' + user_id, body).map(resp => resp.json());
   }
 
-  delete(user_id: number): Observable<Student> {
+  del(user_id: number): Observable<Student> {
     return this.http.delete('http://' + HOST + '/Student/del/' + user_id).map(resp => resp.json());
   }
 }

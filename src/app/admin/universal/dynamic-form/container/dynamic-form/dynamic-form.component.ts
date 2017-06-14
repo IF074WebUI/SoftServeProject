@@ -135,8 +135,10 @@ export class DynamicFormComponent implements OnInit {
     this.TITLE = this.MODAL_DELETE_TITLE;
     if (this.entityForDelete[this.Properties[1]] === this.entityForDelete['gradebook_id']) {
       this.CONFIRM_ANSWER = this.CONFIRM_ANSWER_TEXT + '' + this.entityForDelete[this.Properties[3]] + ' ' + this.entityForDelete[this.Properties[2]] + ' ' + this.entityForDelete[this.Properties[4]];
+    } else if (this.entityForDelete[this.Properties[1]] === this.entityForDelete['email']) {
+      this.CONFIRM_ANSWER = this.CONFIRM_ANSWER_TEXT + '' + this.entityForDelete[this.Properties[2]];
     } else {
-    this.CONFIRM_ANSWER = this.CONFIRM_ANSWER_TEXT + '' + this.entityForDelete[this.Properties[1]] + '?';
+      this.CONFIRM_ANSWER = this.CONFIRM_ANSWER_TEXT + '' + this.entityForDelete[this.Properties[1]] + '?';
     }
     $('#add_edit_deletePopup').modal('show');
   }
