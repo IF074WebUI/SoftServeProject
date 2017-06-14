@@ -128,7 +128,7 @@ export class AnswersComponent implements OnInit {
       .subscribe(resp => {
           --this.count;
           this.getAnswers();
-          this.toastr.success(`Спеціальність ${answer.answer_text} успішно видалена`);
+          this.toastr.success(`Відповідь ${answer.answer_text} успішно видалена`);
         },
         err => this.router.navigate(['/bad_request']));
   }
