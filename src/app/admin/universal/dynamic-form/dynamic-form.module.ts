@@ -28,7 +28,6 @@ import { FormNumberComponent } from './components/form-number/form-number.compon
     FormTextareaComponent,
     FormEmailComponent,
     FormSelectWithOptionsComponent,
-    FormSelectWithOptionsComponent,
     FormSelectTestDetailByIdComponent,
     FormInputFileComponent,
     FormNumberComponent
@@ -45,7 +44,7 @@ import { FormNumberComponent } from './components/form-number/form-number.compon
     FormInputFileComponent,
     FormNumberComponent
   ],
-  providers: [FacultyService,]
+  providers: []
 
 })
 export class DynamicFormModule {}
