@@ -3,7 +3,7 @@ import { GroupService } from './group.service';
 import { Group } from './group';
 import { Speciality } from '../specialities/speciality';
 import { SpecialitiesService } from '../services/specialities.service';
-import { FacultyService } from '../faculties/faculty.service';
+import { FacultyService } from '../services/faculty.service';
 import { Faculty } from '../faculties/Faculty';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GROUPS_HEADERS, IGNORE_PROPERTIES } from './groupConstants';
@@ -67,7 +67,7 @@ export class GroupComponent implements OnInit {
 
   getGroups(): void {
     this.spinner.showSpinner();
-    this.getCountRecords()
+    this.getCountRecords();
     /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.countRecords <= (this.pageNumber - 1) * this.offset) {
       --this.pageNumber;

@@ -53,6 +53,7 @@ import { SubjectService } from './subject/subject.service';
 import { QuestionsComponent } from './questions/questions.component';
 import { AnswersComponent } from './answers/answers.component';
 import { ModalImgComponent } from './modal-img/modal-img.component';
+import { FacultyService } from "./services/faculty.service";
 
 @NgModule({
   declarations: [
@@ -115,7 +116,8 @@ import { ModalImgComponent } from './modal-img/modal-img.component';
     TestDetailService,
     GetRecordsBySearchService,
     GetTestsBySubjectService,
-    SubjectService
+    SubjectService,
+    FacultyService
   ],
 })
 export class AdminModule {

@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Faculty} from './Faculty';
-import {FacultyService} from './faculty.service';
+import {FacultyService} from '../services/faculty.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 import {FACULTY_CONFIG} from '../universal/dynamic-form/config';
@@ -66,7 +66,7 @@ export class FacultiesComponent implements OnInit {
     this.http.countAllRecords().subscribe((resp) => {
         this.count = resp['numberOfRecords'];
       },
-      error => this.router.navigate(['/bad_request'])
+      error => {this.toastr.error(error);}
     );
   }
 
@@ -77,7 +77,7 @@ export class FacultiesComponent implements OnInit {
         this.faculties = <Faculty[]> resp;
         this.spinner.hideSpinner();
       },
-      error => this.router.navigate(['/bad_request'])
+      error => {this.toastr.error(error);}
     );
   }
 
@@ -88,7 +88,7 @@ export class FacultiesComponent implements OnInit {
         this.faculties = <Faculty[]> resp;
         this.spinner.hideSpinner();
       },
-      error => this.router.navigate(['/bad_request'])
+      error => {this.toastr.error(error);}
     );
   }
 
@@ -126,13 +126,13 @@ export class FacultiesComponent implements OnInit {
 // Methods for opening editing and deleting common modal window
 
   add() {
-    this.configs[1]['action'] = 'add';
+   // this.configs[1]['action'] = 'add';
     this.popup.sendItem(new Faculty('', '', ''), 'Faculty');
     this.popup.showModal();
   }
 
   edit(faculty: Faculty) {
-    this.configs[1]['action'] = 'edit';
+   // this.configs[1]['action'] = 'edit';
     this.popup.sendItem(faculty);
     this.popup.showModal();
   }
@@ -151,7 +151,7 @@ export class FacultiesComponent implements OnInit {
           this.uploadAllPages(this.page);
           this.toastr.success(`Факультет ${value['faculty_name']} успішно відредагований`);
         },
-        error => this.router.navigate(['/bad_request'])
+        error => {this.toastr.error(error);}
       );
     } else {
       this.http.addItem(value['faculty_name'], value['faculty_description']).subscribe(response => {
@@ -161,7 +161,7 @@ export class FacultiesComponent implements OnInit {
           this.uploadAllPages(this.page);
           this.toastr.success(`Факультет ${value['faculty_name']} успішно збережений`);
         },
-        error => this.router.navigate(['/bad_request'])
+         error => {this.toastr.error(error);}
       );
     }
   }
@@ -173,10 +173,9 @@ export class FacultiesComponent implements OnInit {
         this.uploadAllPages(this.page);
         this.toastr.success(`Факультет ${faculty['faculty_name']} успішно видалений`);
       },
-      error => this.router.navigate(['/bad_request'])
+      error => {this.toastr.error(error);}
     );
   }
-
 }
 
 
