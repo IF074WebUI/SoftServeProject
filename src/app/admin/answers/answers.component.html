@@ -1,12 +1,12 @@
 <h2>Відповіді</h2>
 <div class="alert alert-info" role="alert">
-  <button (click)="add()"
+  <button class=""(click)="add()"
           type="button"
           class="btn btn-primary"
           data-dismiss="modal">Створити відповідь</button>
   <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
-  <dtester-items-per-page [numberOfRecords]="numberOfRecords"
-                          (recordsPerPageChanged)="changeNumberOfRecordsPerPage($event)">
+  <dtester-items-per-page [numberOfRecords]="countRecords"
+                          (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)">
   </dtester-items-per-page>
 </div>
 
@@ -14,23 +14,21 @@
 <dtester-entities-table [entities]="answers"
                         [headers]="headers"
                         [page]="page"
-                        [itemsPerPage]="recordsPerPage"
-                        [displayPropertiesOrder]="displayPropertiesOrder"
-                        [canAction]="true"
+                        [itemsPerPage]="countPerPage"
+                        [ignoreProperties]="ignoreProperties"
+                        [canAction]="false"
                         [btnClass]="btnClass"
                         [canAct]="true"
                         [imgAttach]="imgAttach"
-                        (actionEntity)="onTimeTableNavigate($event)"
-                        (clickEntity)="onTestsNavigate($event)"
                         (deleteEntity)="del($event)"
                         (editEntity)="edit($event)">
 </dtester-entities-table>
 
-<dtester-pagination [countRecords]="numberOfRecords"
-                    [recordsPerPage]="recordsPerPage"
+<dtester-pagination [countRecords]="count"
+                    [recordsPerPage]="countPerPage"
                     [currentPage]="page"
                     (pageChanged)="changePage($event)"></dtester-pagination>
 
 <dynamic-form [config]="configs"
               (submitted)="formSubmitted($event)"
-              (youCanDelete)="deletequestion($event)"></dynamic-form>
+              (youCanDelete)="submitDelete($event)"></dynamic-form>

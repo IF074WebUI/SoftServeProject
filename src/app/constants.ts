@@ -5,6 +5,7 @@ export const DELETERESULT = 'Факультет було успішно вида
 export const EDITFACULTY = 'Редагування факультету';
 export const EDITRESULT = 'Факультет було успішно відредаговано';
 export const SPECIALITY_URI = `http://${HOST}/speciality/`;
+export const ANSWER_URI = `http://${HOST}/answer/`;
 export const RESULT_URI = `http://${HOST}/result/`;
 export const LOGIN_URI = `http://${HOST}/login/`;
 export const LOGGED = 'logged';

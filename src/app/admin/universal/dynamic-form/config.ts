@@ -289,6 +289,11 @@ export const QUESTION_CONFIG = [
     placeholder: 'Select an option'
   },
   {
+    type: 'file',
+    label: 'Вкладення',
+    name: 'attachment'
+  },
+  {
     label: 'Зберегти',
     name: 'submit',
     type: 'button'
@@ -312,23 +317,22 @@ export const ANSWER_CONFIG = [
     required: false
   },
   {
-    type: 'textarea',
-    label: 'Номер рівня завдань',
-    name: 'answer_text',
-    options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-    placeholder: 'Select an option'
-  },
-  {
     type: 'select',
-    label: 'Кількість завдань',
-    name: 'level',
-    options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-    placeholder: 'Select an option'
+    label: 'Правильність відповіді',
+    name: 'true_answer',
+    options: ['Правильно', 'Неправильноо']
   },
   {
-    type: 'select_with_options',
-    label: 'Кількіст балів',
-    name: 'answer_type',
+    type: 'textarea',
+    label: 'Текст відповіді',
+    name: 'answer_text',
+    options: '',
+    placeholder: ''
+  },
+  {
+    type: 'file',
+    label: 'Вкладення',
+    name: 'attachment',
     options: ['1', '2'],
     placeholder: 'Select an option'
   },

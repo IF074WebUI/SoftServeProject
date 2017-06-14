@@ -53,6 +53,7 @@ import { GetTestsBySubjectService } from './services/get-tests-by-subject.servic
 import { SubjectService } from './subject/subject.service';
 import { QuestionsComponent } from './questions/questions.component';
 import { AnswersComponent } from './answers/answers.component';
+import { ModalImgComponent } from './modal-img/modal-img.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { AnswersComponent } from './answers/answers.component';
     TestDetailComponent,
     SubjectComponent,
     QuestionsComponent,
-    AnswersComponent
+    AnswersComponent,
+    ModalImgComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

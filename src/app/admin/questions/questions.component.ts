@@ -5,6 +5,7 @@ import {QUESTION_CONFIG} from '../universal/dynamic-form/config';
 import {QuestionsService} from '../services/questions.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SpinnerService} from '../universal/spinner/spinner.service';
+import {Test} from "../tests/test";
 
 @Component({
   selector: 'app-questions',
@@ -33,7 +34,7 @@ export class QuestionsComponent implements OnInit {
 
   ngOnInit() {
     this.headers = ['№', 'Питання', 'Рівень', 'Тип', 'Вкладення'];
-    this.ignoreProperties = ['test_id', 'question_id'];
+    this.ignoreProperties = ['test_id', 'question_id', 'attachment'];
 
     this.getQuestions();
 
@@ -48,9 +49,11 @@ export class QuestionsComponent implements OnInit {
     //     });
     // }
 
-    const testId = this.route.snapshot.queryParams['testId'];
-    if (testId) {
-      this.questionsService.getQuestionsByTest(testId).subscribe(resp => {
+    const test_id = this.route.snapshot.queryParams['test_id'];
+    const level = this.route.snapshot.queryParams['level'];
+    const number = this.route.snapshot.queryParams['number'];
+    if (test_id) {
+      this.questionsService.getQuestionsByLevelRand(test_id, level, number).subscribe(resp => {
         if (resp['response'] === 'no records') {
           this.questionsOnPage = [], error => this.router.navigate(['/bad_request']);
         } else {
@@ -92,6 +95,9 @@ export class QuestionsComponent implements OnInit {
     this.router.navigate(['questions/answers'], {queryParams: {'question_id': question.question_id}, relativeTo: this.route.parent});
     console.log(question);
   }
+  // getRecordsRangeByTest(test: Test){
+  //   this.router.navigate(['./question'], {queryParams: {'testId': test.test_id}, relativeTo: this.activatedRoute.parent});
+  // }
   // search group
   startSearch(criteria: string) {   /* callback method for output in search component */
     this.spinner.showSpinner();
@@ -117,7 +123,9 @@ export class QuestionsComponent implements OnInit {
   // onTimeTableNavigate(question: Question) {
   //   this.router.navigate(['./timetable'], {queryParams: {'group_id': group.group_id}, relativeTo: this.route.parent});
   // }
-
+  getGroupsByQuestion(question: Question) {
+    this.router.navigate(['./answer'], {queryParams: {'questionId': question.question_id}, relativeTo: this.route.parent});
+  }
 // Method for opening editing and deleting commo modal window
 
   add() {
@@ -138,15 +146,17 @@ export class QuestionsComponent implements OnInit {
   formSubmitted(value) {
     console.log(value);
     if (value['question_id']) {
-      this.questionsService.editQuestion(+value['question_id'], value['question_text'], value['Test'])
+      this.questionsService.editQuestion(+value['question_id'], value['test_id'],
+        value['question_text'], value['level'], value['type'], value['attachment'])
         .subscribe(response => {
             this.getQuestions();
             this.popup.cancel();
           },
-          error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': value['test_name']}, relativeTo: this.route.parent})
+          error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': +value['test_name']}, relativeTo: this.route.parent})
         );
     } else {
-      this.questionsService.createQuestion(value['question_text'], value['Test'])
+      this.questionsService.createQuestion(+value['question_id'], value['test_id'],
+        value['question_text'], value['level'], value['type'], value['attachment'])
         .subscribe(response => {
             this.getQuestions();
             this.popup.cancel();
