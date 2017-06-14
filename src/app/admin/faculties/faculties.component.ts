@@ -2,11 +2,10 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Faculty} from './Faculty';
 import {FacultyService} from './faculty.service';
 import {ActivatedRoute, Router} from '@angular/router';
-//import 'rxjs/add/operator/switchMap';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 import {FACULTY_CONFIG} from '../universal/dynamic-form/config';
 import {SpinnerService} from '../universal/spinner/spinner.service';
-import {ToastsManager} from "ng2-toastr";
+import {ToastsManager} from 'ng2-toastr';
 
 @Component({
   selector: 'dtester-faculties',
@@ -14,9 +13,8 @@ import {ToastsManager} from "ng2-toastr";
   styleUrls: ['./faculties.component.css'],
   providers: [FacultyService]
 })
-export class FacultiesComponent<T> implements OnInit {
+export class FacultiesComponent implements OnInit {
   faculties: Faculty[] = [];
-//  faculty: Faculty;
   page: number = 1; // current number of page
   count: number; // count all faculties
   countPerPage: number = 10;
@@ -109,8 +107,7 @@ export class FacultiesComponent<T> implements OnInit {
         if (resp['response'] === 'no records') {
           this.faculties = [];
           this.spinner.hideSpinner();
-        }
-        else {
+        } else {
           this.faculties = <Faculty[]> resp;
           this.count = this.faculties.length;
           this.spinner.hideSpinner();
