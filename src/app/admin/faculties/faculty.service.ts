@@ -24,18 +24,18 @@ export class FacultyService {
   }
 
   deleteItem(id: number) {
-    return this.http.delete('http://' + HOST + '/Faculty/del/' + id).map((resp: Response) => resp.json());
+    return this.http.delete('http://' + HOST + '/Faculty/del/' + id).map((resp: Response) => resp.json()).catch(this.handleError);
 
   }
 
   editItem(id: number, name: string, description: string): Observable<Response> {
     let body = JSON.stringify({'faculty_name': name, 'faculty_description': description});
-    return this.http.post('http://' + HOST + '/Faculty/update/' + id, body).map((resp: Response) => resp.json());
+    return this.http.post('http://' + HOST + '/Faculty/update/' + id, body).map((resp: Response) => resp.json()).catch(this.handleError);
   }
 
   addItem(name: string, description: string): Observable<Response> {
     let body = JSON.stringify({'faculty_name': name, 'faculty_description': description});
-    return this.http.post('http://' + HOST + '/Faculty/insertData', body).map((resp: Response) => resp.json());
+    return this.http.post('http://' + HOST + '/Faculty/insertData', body).map((resp: Response) => resp.json()).catch(this.handleError);
   }
 
   searchByName(name: string) {
@@ -48,6 +48,19 @@ export class FacultyService {
 
   searchFaculty(text: string) {
     return this.http.get('http://' + HOST + '/Faculty/getRecordsBySearch/' + text).map((resp: Response) => resp.json());
+  }
+  private handleError (error: Response | any) {
+    // In a real world app, you might use a remote logging infrastructure
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
   }
 }
 
