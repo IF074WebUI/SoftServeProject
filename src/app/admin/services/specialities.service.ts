@@ -55,7 +55,7 @@ export class SpecialitiesService {
     if (error.status === 400) {
       this.router.navigate(['/bad_request']);
     } else if (error.status === 403) {
-      this.router.navigate(['/access_denied']);
+      this.router.navigate(['/denied']);
     } else if (error.status === 404) {
       this.router.navigate(['/not_found']);
     }
