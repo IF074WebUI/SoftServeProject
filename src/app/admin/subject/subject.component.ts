@@ -9,6 +9,7 @@ import { SUBJECTS_CONFIG } from '../universal/dynamic-form/config';
 import { SubjectService } from './subject.service';
 import { DeleteRecordByIdService } from '../services/delete-record-by-id.service';
 import { ToastsManager } from 'ng2-toastr';
+import {SpinnerService} from "../universal/spinner/spinner.service";
 
 declare const $: any;
 
@@ -35,7 +36,8 @@ export class SubjectComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private subjectService: SubjectService,
               private deleteRecordByIdService: DeleteRecordByIdService,
-              private toastsManager: ToastsManager) {
+              private toastsManager: ToastsManager,
+              private spinnerService: SpinnerService) {
   }
 
   ngOnInit() {
@@ -48,12 +50,14 @@ export class SubjectComponent implements OnInit {
   }
 
   getSubjectsRange() {
+    this.spinnerService.showSpinner();
     if (this.numberOfRecords <= (this.page - 1) * this.recordsPerPage) {
       --this.page;
     }
     this.getRecordsRangeService.getRecordsRange('subject', this.recordsPerPage, (this.page - 1) * this.recordsPerPage)
       .subscribe((data) => {
         this.subjects = data;
+        this.spinnerService.hideSpinner();
       });
   }
 

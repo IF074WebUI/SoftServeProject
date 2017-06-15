@@ -9,6 +9,7 @@ import { StatisticsService } from '../statistics/statistics.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { arrFromSrtToNum } from './time-validator';
 import { Subject } from '../subject/subject';
+import {SpinnerService} from "../universal/spinner/spinner.service";
 
 declare var $: any;
 
@@ -37,7 +38,8 @@ export class TimetableComponent implements OnInit {
               private getAllRecordsService: GetAllRecordsService,
               private getRecordsRangeService: GetRecordsRangeService,
               private statisticsService: StatisticsService,
-              private activatedRoute: ActivatedRoute) {}
+              private activatedRoute: ActivatedRoute,
+              private spinnerService: SpinnerService) {}
 
   ngOnInit() {
     this.page = 1;
@@ -48,6 +50,7 @@ export class TimetableComponent implements OnInit {
     this.getQueryParams();
   }
   getQueryParams() {
+    this.spinnerService.showSpinner();
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.groupQueryParam = params['group_id'];
       this.subjectIdQueryParam = params['subject_id'];
@@ -106,6 +109,7 @@ export class TimetableComponent implements OnInit {
       timetable.start_timeInterval = `${timetable.start_time}, ${timetable.start_date}`;
       timetable.end_timeInterval = `${timetable.end_time}, ${timetable.end_date}`;
       timetable.deprecated = this.checkTime(timetable.end_date, timetable.end_time );
+      this.spinnerService.hideSpinner();
     }
   }
   openModalAddTimetable() {

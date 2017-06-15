@@ -4,6 +4,7 @@ import { Test } from './test';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GetTestsBySubjectService } from '../services/get-tests-by-subject.service';
+import { SpinnerService } from '../universal/spinner/spinner.service';
 
 declare let $: any;
 
@@ -22,13 +23,13 @@ export class TestsComponent implements OnInit {
   action: string;
   subjectIdQueryParam: string;
   subjectNameQueryParam: string;
-  btnClass: string;zz
+  btnClass: string;
   constructor(private getAllRecordsService: GetAllRecordsService,
               private getRecordsByIdService: GetRecordsByIdService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private getTestsBySubjectService: GetTestsBySubjectService
-  ) {
+              private getTestsBySubjectService: GetTestsBySubjectService,
+              private spinnerService: SpinnerService) {
     this.btnClass = 'fa fa-align-justify';
   }
   ngOnInit() {
@@ -38,6 +39,7 @@ export class TestsComponent implements OnInit {
     this.displayPropertiesOrder = ['test_name', 'tasks', 'time_for_test', 'attempts', 'enabled_description' ];
   }
   getQueryParams() {
+    this.spinnerService.showSpinner();
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.subjectIdQueryParam = params['subject_id'];
       this.subjectNameQueryParam = params['subject_name'];
@@ -51,6 +53,7 @@ export class TestsComponent implements OnInit {
         this.setNameOfSubject(test);
         this.setEnabledDescription(test);
       }
+      this.spinnerService.hideSpinner();
     });
   }
   getSubjects() {
