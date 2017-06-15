@@ -39,18 +39,19 @@ export class StatisticsComponent implements OnInit {
       ]
     };
   }
-
   ngOnInit() {
     this.getData();
-  }
+  };
 
   getData() {
     this.data.labels = this.entityHeaders;
+    this.spinner.showSpinner()
       for (let entity of this.entityNames) {
         this.statistics.getCountRecords(entity).subscribe(
           (res) => { this.entityCountValue.push(+res.numberOfRecords);
           this.data.datasets[0].data = this.entityCountValue,
           err => this.router.navigate(['/bad_request']); });
         }
+    this.spinner.hideSpinner();
   }
 }
