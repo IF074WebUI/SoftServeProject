@@ -32,7 +32,7 @@ export class StatisticsComponent implements OnInit {
       {name: 'student', descriptiion: 'Студенти', count: 0},
       {name: 'question', descriptiion: 'Питання', count: 0}
       ];
-
+    this.count = [];
     this.data = {
       labels: [],
       datasets: [
@@ -50,28 +50,26 @@ export class StatisticsComponent implements OnInit {
     console.log('check');
     this.getData();
     this.setData();
-    console.log('this count2' + this.entity[2].count);
   }
-
-
 
   getData() {
-    for (let i = 0; i <= this.entity.length - 1; i++) {
-      this.statistics.getCountRecords(this.entity[i]['name']).subscribe((data) => {
-        this.count[i] = data.numberOfRecords, console.log('this count ' + this.entity[i].count),
-          err => this.router.navigate(['/bad_request']);
-      });
-      console.log('this count2' + this.entity[i].count);
-    }
+    // for (let i = 0; i <= this.entity.length - 1; i++) {
+    //   this.statistics.getCountRecords(this.entity[i]['name']).subscribe((data) => {
+    //       this.count.push(data.numberOfRecords),
+    //     err => this.router.navigate(['/bad_request']);
+    // });
+    // }
+    console.log('hi');
   }
+  new() {};
   setData() {
     this.refreshData();
       for (let i = 0; i <= this.entity.length - 1; i++) {
         this.data.labels.push(this.entity[i].descriptiion);
-        console.log('this count' + this.entity[i].count)
         this.data.datasets[0].data[i] = +this.count[i];
       }
   }
+
   refreshData() {
     this.data.labels.length = 0;
     this.data['datasets'][0].data.length = 0;

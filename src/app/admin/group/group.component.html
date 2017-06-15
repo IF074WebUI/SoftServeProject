@@ -1,24 +1,25 @@
-  <dynamic-form [config]="configs" (submitted)="formSubmitted($event)" (youCanDelete)="submitDelete($event)"></dynamic-form>
-  <h1 class="text-center">Групи</h1>
-  <p class="col-lg-7">зареєстровано груп: <span>{{countRecords}}</span></p>
-  <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
-  <dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
+  <!--<dynamic-form [config]="configs" (submitted)="formSubmitted($event)" (youCanDelete)="submitDelete($event)"></dynamic-form>-->
+  <!--<h1 class="text-center">Групи</h1>-->
+  <!--<p class="col-lg-7">зареєстровано груп: <span>{{countRecords}}</span></p>-->
+  <!--<dtester-search (searchCriteria)="startSearch($event)"></dtester-search>-->
+  <!--<dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>-->
 
-  <dtester-entities-table class="table" [entities]="groupsOnPage"
-                          [headers]="headers" [ignoreProperties]="ignoreProperties"
-                          (deleteEntity)=del($event) [canAction]="true"
-                          [page]="pageNumber" [itemsPerPage]="offset"
-                          (editEntity)="edit($event)"
-                          (clickEntity)="getStudentsByGroup($event)"
-                          (actionEntity)="onTimeTableNavigate($event)"
-                          [btnClass]="btnClass"
-                          [sortProperties]="sortProperties"
-                          [displayPropertiesOrder]="displayPropertiesOrder">>
-  </dtester-entities-table>
+  <!--<dtester-entities-table class="table" [entities]="groupsOnPage"-->
+                          <!--[headers]="headers" [ignoreProperties]="ignoreProperties"-->
+                          <!--(deleteEntity)=del($event) [canAction]="true"-->
+                          <!--[page]="pageNumber" [itemsPerPage]="offset"-->
+                          <!--(editEntity)="edit($event)"-->
+                          <!--(clickEntity)="getStudentsByGroup($event)"-->
+                          <!--(actionEntity)="onTimeTableNavigate($event)"-->
+                          <!--[btnClass]="btnClass"-->
+                          <!--[sortProperties]="sortProperties"-->
+                          <!--[displayPropertiesOrder]="displayPropertiesOrder">>-->
+  <!--</dtester-entities-table>-->
 
 
-  <dtester-pagination class="text-center" [countRecords]="countRecords" [recordsPerPage]="offset" [currentPage]="pageNumber"
-                          (pageChanged)="changePage($event)"></dtester-pagination>
+  <!--<dtester-pagination class="text-center" [countRecords]="countRecords" [recordsPerPage]="offset" [currentPage]="pageNumber"-->
+                          <!--(pageChanged)="changePage($event)"></dtester-pagination>-->
 
-  <button class=""(click)="add()" type="button" class="btn btn-primary" data-dismiss="modal">{{CREATING_NEW_GROUP}}</button>
+  <!--<button class=""(click)="add()" type="button" class="btn btn-primary" data-dismiss="modal">{{CREATING_NEW_GROUP}}</button>-->
 
+<p>fgnmgjmhjmhj</p>
