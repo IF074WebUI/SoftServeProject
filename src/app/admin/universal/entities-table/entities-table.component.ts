@@ -79,17 +79,24 @@ export class EntitiesTableComponent<T> implements OnInit, OnChanges {
   }
 
   sortEntities(index: number, order: string) {
+    console.log(index);
+
+
     const propName: string = this.getProperties(this.entities[0])[index];
+    console.log(propName);
     for (let i = 0; i < this.order.length; i++) {
       this.order[i] = '';
     }
 
     if (order === ORDER_ASC) {
       this.order[index + 1] = ORDER_ASC;
-      this.entities.sort((e1: T, e2: T) => e1[propName].localeCompare(e2[propName]));
+      this.entities.sort((e1: T, e2: T) => isNaN(Number(e1[propName])) ?
+        e2[propName].localeCompare(e1[propName]) : e1[propName] - e2[propName]);
     } else {
+      console.log(typeof this.entities[0][propName]);
       this.order[index + 1] = ORDER_DESC;
-      this.entities.sort((e1: T, e2: T) => e2[propName].localeCompare(e1[propName]));
+      this.entities.sort((e1: T, e2: T) => isNaN(Number(e1[propName])) ?
+        e1[propName].localeCompare(e2[propName]) : e2[propName] - e1[propName]);
     }
   }
 }
