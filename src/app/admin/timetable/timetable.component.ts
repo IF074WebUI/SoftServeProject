@@ -29,7 +29,8 @@ export class TimetableComponent implements OnInit {
   page: number;
   numberOfRecords: number;
   groupQueryParam: string;
-  subjectQueryParam: string;
+  subjectIdQueryParam: string;
+  subjectNameQueryParam: string;
   action: string;
   constructor(private timetableService: TimetableService,
               private getRecordsByIdService: GetRecordsByIdService,
@@ -49,7 +50,8 @@ export class TimetableComponent implements OnInit {
   getQueryParams() {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.groupQueryParam = params['group_id'];
-      this.subjectQueryParam = params['subject_id'];
+      this.subjectIdQueryParam = params['subject_id'];
+      this.subjectNameQueryParam = params['subject_name'];
       this.checkQueryParams();
     });
   }
@@ -58,7 +60,7 @@ export class TimetableComponent implements OnInit {
       this.getTimetableForOneGroup();
       this.headers = ['№', 'Предмет', 'Час початку тестування', 'Час закінчення тестування'];
       this.displayPropertiesOrder = ['subject_name', 'start_timeInterval', 'end_timeInterval'];
-    } else if (this.subjectQueryParam) {
+    } else if (this.subjectIdQueryParam) {
       this.getTimetableForOneSubject();
       this.headers = ['№', 'Навчальна група', 'Час початку тестування', 'Час закінчення тестування'];
       this.displayPropertiesOrder = ['group_name', 'start_timeInterval', 'end_timeInterval'];
@@ -83,7 +85,7 @@ export class TimetableComponent implements OnInit {
     });
   }
   getTimetableForOneSubject() {
-    this.timetableService.getTimeTablesForSubject(this.subjectQueryParam).subscribe((data) => {
+    this.timetableService.getTimeTablesForSubject(this.subjectIdQueryParam).subscribe((data) => {
       this.getTimetables(data);
     });
   }
@@ -117,6 +119,7 @@ export class TimetableComponent implements OnInit {
   }
   getDeletedTimetable(timeTable) {
     this.deletedTimetable = timeTable;
+    $('#modal-delete-timetabel').modal('show');
   }
   getGroups() {
     this.getAllRecordsService.getAllRecords('group').subscribe((data) => {

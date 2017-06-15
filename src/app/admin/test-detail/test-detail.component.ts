@@ -105,7 +105,7 @@ add(testDetail: TestDetail) {
 
 edit(testDetail: TestDetail) {
   this.configs[2]['test_id'] = this.curenntTestId;
-  this.popup.sendItem(testDetail, '', this.curenntTestId);
+  this.popup.sendItem(testDetail);
   this.popup.showModal();
 }
 

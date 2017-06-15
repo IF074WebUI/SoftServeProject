@@ -6,23 +6,21 @@ import { Result } from '../results/result';
 import { ResultsService } from '../services/results.service';
 import { Group } from '../group/group';
 import { GroupService } from '../group/group.service';
-import { Question } from './question';
 import { QuestionsService } from '../services/questions.service';
 import { AnswersService } from '../services/answers.service';
-import { Answer } from './answer';
 import { TestsService } from '../services/tests.service';
 import { Test } from '../tests/test';
 import { TestDetailService } from '../test-detail/test-detail.service';
 import { TestDetail } from '../test-detail/testDetail';
+import { HOURS, NO_RECORDS, SECONDS_MINUTES } from '../../constants';
+import { Question } from '../questions/question';
+import { Answer } from '../answers/answer';
 
 @Component({
-  selector: 'dtester-detailed',
-  templateUrl: './detailed.component.html',
-  styleUrls: ['./detailed.component.css']
+  templateUrl: './detailed-results.component.html',
+  styleUrls: ['./detailed-results.component.css']
 })
-export class DetailedComponent implements OnInit {
-
-  NO_RECORDS = 'no records';
+export class DetailedResultsComponent implements OnInit {
 
   studentId: number;
   student: Student;
@@ -47,7 +45,7 @@ export class DetailedComponent implements OnInit {
 
   getStudentById(id: number) {
     this.studentService.getStudentById(id).subscribe((resp: Student) => {
-      if (resp['response'] === this.NO_RECORDS) {    /* check condition: if no records presented for search criteria */
+      if (resp['response'] === NO_RECORDS) {
         this.student = null;
       } else {
         this.student = resp[0];
@@ -59,7 +57,7 @@ export class DetailedComponent implements OnInit {
   getResultsByStudentId(id: number) {
     this.getStudentById(id);
     this.resultService.getAllByStudent(id).subscribe((resp: Result[]) => {
-      if (resp['response'] === this.NO_RECORDS) {    /* check condition: if no records presented for search criteria */
+      if (resp['response'] === NO_RECORDS) {
         this.results = [];
       } else {
         resp.forEach((res: Result) => {
@@ -116,11 +114,11 @@ export class DetailedComponent implements OnInit {
     const s: Date = parseStringIntoDate(start);
     const e: Date = parseStringIntoDate(end);
     let interval: number = (e.getTime() - s.getTime()) / 1000;
-    const seconds = Math.floor(interval % 60) ? `${Math.floor(interval % 60)} сек` : '';
-    interval /= 60;
-    const minutes = Math.floor(interval % 60) ? `${Math.floor(interval % 60)} хв` : '';
-    interval /= 60;
-    const hours = Math.floor(interval / 24) ? `${Math.floor(interval / 24)} год` : '';
+    const seconds = Math.floor(interval % SECONDS_MINUTES) ? `${Math.floor(interval % SECONDS_MINUTES)} сек` : '';
+    interval /= SECONDS_MINUTES;
+    const minutes = Math.floor(interval % SECONDS_MINUTES) ? `${Math.floor(interval % SECONDS_MINUTES)} хв` : '';
+    interval /= SECONDS_MINUTES;
+    const hours = Math.floor(interval / HOURS) ? `${Math.floor(interval / HOURS)} год` : '';
     return `${hours} ${minutes} ${seconds}`;
   }
 

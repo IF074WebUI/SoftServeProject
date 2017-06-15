@@ -6,7 +6,6 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class SubjectService {
-
   constructor(private http: Http) {
   }
 
@@ -23,7 +22,7 @@ export class SubjectService {
       subject_description: updatedSubject.subject_description,
       subject_name: updatedSubject.subject_name
     });
-    return this.http.post('http://' + HOST + '/timeTable/update/' + updatedSubject.subject_id, bodyForSendingNewTimeTable)
+    return this.http.post('http://' + HOST + '/subject/update/' + updatedSubject.subject_id, bodyForSendingNewTimeTable)
       .map((resp: Response) => resp.json());
   }
 }

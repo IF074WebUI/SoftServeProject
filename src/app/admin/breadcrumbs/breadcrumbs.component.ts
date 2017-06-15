@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {BreadcrumbsService} from '../services/breadcrumbs.service';
+import { BreadcrumbsService } from '../services/breadcrumbs.service';
 
 @Component({
   selector: 'dtester-breadcrumbs',

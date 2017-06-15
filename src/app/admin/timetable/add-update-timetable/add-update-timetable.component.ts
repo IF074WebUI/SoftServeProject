@@ -70,6 +70,7 @@ export class AddUpdateTimetableComponent implements OnInit, OnChanges {
     this.timetableService.createTimeTable(this.timetableForm.value)
       .subscribe(() => {
         this.changeNumberOfRecords.emit('addingRecord');
+        this.timetableForm.reset();
         $('#add-update-timetable').modal('hide');
       });
   }

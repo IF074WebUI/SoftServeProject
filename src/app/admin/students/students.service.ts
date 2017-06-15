@@ -34,18 +34,22 @@ export class StudentsService {
       return this.http.get('http://' + HOST + '/student/getStudentsByGroup/' +  groupId).map((resp: Response) => resp.json());
     }
 
+  getAdminUser(user_id: number) {
+    return this.http.get('http://' + HOST + '/AdminUser/getRecords/' + user_id).map(resp => resp.json());
+    }
+
   insert(studentForm, studentData): Observable<Student> {
     let body = JSON.stringify(
       {
         'username': studentData.username,
-        'password': studentForm.password,
-        'password_confirm': studentForm.password_confirm,
-        'email': studentData.email,
-        'gradebook_id': studentData.gradebook_id,
+        'password': studentData.password,
+        'password_confirm': studentData.password_confirm,
+        'email': studentForm.email,
+        'gradebook_id': studentForm.gradebook,
         'student_surname': studentForm.student_surname,
         'student_name': studentForm.student_name,
         'student_fname': studentForm.student_fname,
-        'group_id': studentData.group_id,
+        'group_id': studentForm.group,
         'plain_password': studentData.plain_password,
         'photo': studentData.photo
       }
@@ -53,26 +57,26 @@ export class StudentsService {
     return this.http.post('http://' + HOST + '/Student/insertData', body).map(resp => resp.json());
   }
 
-  update(studentEditForm, studentEditData, user_id): Observable<Student> {
+  update(studentEditForm, studentForEditPhoto, studentEditData, user_id): Observable<Student> {
     let body = JSON.stringify(
       {
-        'username': studentEditData.username,
-        'password': studentEditData.password,
+        'username': studentEditForm.username,
+        'password': studentEditForm.password,
         'password_confirm': studentEditData.password_confirm,
-        'email': studentEditData.email,
-        'gradebook_id': studentEditData.gradebook_id,
-        'student_surname': studentEditForm.editSurname,
-        'student_name': studentEditForm.editName,
-        'student_fname': studentEditForm.editF_name,
-        'group_id': studentEditData.group_id,
+        'email': studentEditForm.email,
+        'gradebook_id': studentEditForm.gradebook,
+        'student_surname': studentEditForm.student_surname,
+        'student_name': studentEditForm.student_name,
+        'student_fname': studentEditForm.student_fname,
+        'group_id': studentEditForm.group_id,
         'plain_password': studentEditData.plain_password,
-        'photo': studentEditData.photo,
+        'photo': studentForEditPhoto
       }
     );
     return this.http.post('http://' + HOST + '/Student/update/' + user_id, body).map(resp => resp.json());
   }
 
-  delete(user_id: number): Observable<Student> {
+  del(user_id: number): Observable<Student> {
     return this.http.delete('http://' + HOST + '/Student/del/' + user_id).map(resp => resp.json());
   }
 }

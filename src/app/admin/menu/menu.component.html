@@ -14,15 +14,18 @@
   <li class="nav-item" routerLinkActive="active">
     <a class="nav-link" [routerLink]="['faculties']">Факультети</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link">Результати</a>
+  <li class="nav-item" routerLinkActive="active">
+    <a class="nav-link" [routerLink]="['results']">Результати</a>
   </li>
   <li class="nav-item" routerLinkActive="active">
     <a class="nav-link" [routerLink]="['timetable']">Розклад</a>
   </li>
   <li class="nav-item" routerLinkActive="active">
   <a class="nav-link" [routerLink]="['statistics']">Статистика</a>
-</li>
+  </li>
+  <li class="nav-item" routerLinkActive="active">
+    <a class="nav-link" [routerLink]="['admin-user']">Адміністратори</a>
+  </li>
   <li class="nav-item logout" (click)="logout()">
      <span class="nav-link">Вихід</span>
   </li>

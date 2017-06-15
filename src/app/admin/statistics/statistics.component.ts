@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,  OnInit } from '@angular/core';
 import { StatisticsService } from './statistics.service';
 import { Statistic } from './statistic';
 import {SpinnerService} from '../universal/spinner/spinner.service';
 import { GroupService } from '../group/group.service';
 import { SpecialitiesService } from '../services/specialities.service';
 import { StudentsService } from '../students/students.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'dtester-statistics',
@@ -15,105 +16,64 @@ export class StatisticsComponent implements OnInit {
   entity: Statistic[];
   activeTab: number = 0;
   data: any;
-  countStudentsByGroup: number;
-  countGroupsBySpecialyty: any;
-  specialitiesId: any;
-  groupsId: any;
-  students: any;
-
+  count: number[];
+  dataValue: number[] = [];
   constructor(private statistics: StatisticsService,
               private spinner: SpinnerService,
+              private router: Router,
               private groupService: GroupService,
               private spesialityService: SpecialitiesService,
               private studentsService: StudentsService) {
-    this.students = [];
-    this.countGroupsBySpecialyty = 0;
-    this.specialitiesId = [];
-    this.groupsId = [];
     this.entity = [
-      {name: 'speciality', descriptiion: 'Спеціальності', count: ''},
-      {name: 'group', descriptiion: 'Групи', count: ''},
-      {name: 'subject', descriptiion: 'Предмети', count: ''},
-      {name: 'test', descriptiion: 'Тести', count: ''},
-      {name: 'student', descriptiion: 'Студенти', count: ''},
-      {name: 'question', descriptiion: 'Питання', count: ''}
+      {name: 'speciality', descriptiion: 'Спеціальності', count: 0},
+      {name: 'group', descriptiion: 'Групи', count: 0},
+      {name: 'subject', descriptiion: 'Предмети', count: 0},
+      {name: 'test', descriptiion: 'Тести', count: 0},
+      {name: 'student', descriptiion: 'Студенти', count: 0},
+      {name: 'question', descriptiion: 'Питання', count: 0}
       ];
+
     this.data = {
-      labels: ['one'],
+      labels: [],
       datasets: [
         {
-          label: 'system statistic',
+          label: 'My First dataset',
           backgroundColor: '#42A5F5',
           borderColor: '#1E88E5',
-          data: [2]
-        },
+          data: []
+        }
       ]
     };
-
-}
+  }
 
   ngOnInit() {
-    let i: number = 0;
-    for (let entity of this.entity) {
-      this.spinner.showSpinner()
-      this.statistics.getCountRecords(entity['name']).subscribe((data) => {
-        this.entity[i].count = data.numberOfRecords;
-        this.data.labels.push(this.entity[i].descriptiion);
-        this.data.datasets[0].data.push(+data.numberOfRecords);
-        i++;
-        this.spinner.hideSpinner();
+    console.log('check');
+    this.getData();
+    this.setData();
+    console.log('this count2' + this.entity[2].count);
+  }
+
+
+
+  getData() {
+    for (let i = 0; i <= this.entity.length - 1; i++) {
+      this.statistics.getCountRecords(this.entity[i]['name']).subscribe((data) => {
+        this.count[i] = data.numberOfRecords, console.log('this count ' + this.entity[i].count),
+          err => this.router.navigate(['/bad_request']);
       });
+      console.log('this count2' + this.entity[i].count);
     }
   }
-
-  setActiveTab(i: number) {
-    this.activeTab = i;
+  setData() {
+    this.refreshData();
+      for (let i = 0; i <= this.entity.length - 1; i++) {
+        this.data.labels.push(this.entity[i].descriptiion);
+        console.log('this count' + this.entity[i].count)
+        this.data.datasets[0].data[i] = +this.count[i];
+      }
   }
-  //
-  // showGraph(entityName: string, descriptionEntity: string) {
-  //   console.log(entityName);
-  //   switch (entityName) {
-  //     case 'speciality':
-  //       this.writeSpecialityGraph(descriptionEntity);
-  //   }
-  // }
-  //
-  // writeSpecialityGraph(descriptionEntity: string) {
-  //   this.data.datasets.label = descriptionEntity;
-  //   this.getSpecialities();
-  //   for (let i of this.specialitiesId){
-  //     this.getGroupsbySpeciality(i);
-  //   }
-  // }
-  // getStudentsByGroupId(groupId: number) {
-  //   this.studentsService.getStudentsByGroupId(groupId).subscribe(
-  //     resp => {
-  //       if (resp['response'] === 'no records') {
-  //       } else {
-  //         this.countStudentsByGroup = resp.length;
-  //       }
-  //     });
-  // }
-  // getGroupsbySpeciality(specialityId) {
-  //   this.groupService.getGroupsBySpeciality(specialityId).subscribe(
-  //       resp => {
-  //         for (let i of resp) {
-  //           if (i['response'] === 'no records') {
-  //           } else {
-  //             this.groupsId.push(i.group_id);
-  //           }
-  //         }
-  //       });
-  // }
-  // getSpecialities() {
-  //   this.spesialityService.getAll().subscribe(
-  //     resp => {
-  //       for (let i of resp){
-  //         this.data.labels.push(i.speciality_name);
-  //         this.specialitiesId.push(i.speciality_id);
-  //       }
-  //     }
-  //   );
-  // }
-
+  refreshData() {
+    this.data.labels.length = 0;
+    this.data['datasets'][0].data.length = 0;
+  }
 }

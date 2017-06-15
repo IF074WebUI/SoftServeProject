@@ -1,4 +1,6 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { ORDER_ASC, ORDER_DESC } from '../../../constants';
+import {Question} from '../../questions/question';
 
 @Component({
   selector: 'dtester-entities-table',
@@ -7,19 +9,23 @@ import {Component, OnInit, Input, Output, EventEmitter, OnChanges} from '@angula
 })
 export class EntitiesTableComponent<T> implements OnInit, OnChanges {
 
-  NO_ENTITIES: string = 'Сутності відсутні';
+  @Input() itemsPerPage = 5;
+  @Input() page = 1;
+  NO_ENTITIES = 'Сутності відсутні';
 
-  @Input() itemsPerPage: number = 5;
-  @Input() page: number = 1;
+  // @Input() itemsPerPage = 5;
+  // @Input() page = 1;
   @Input() entities: T[] = [];
   @Input() displayPropertiesOrder: string[] = [];
   @Input() ignoreProperties: string[] = [];
   @Input() sortProperties: string[] = [];
   @Input() headers: string[] = [];
-  @Input() canEdit: boolean = true;
-  @Input() canDelete: boolean = true;
-  @Input() canAction: boolean = false;
-  @Input() btnClass: string = 'fa fa-compass';
+  @Input() canEdit = true;
+  @Input() canDelete = true;
+  @Input() canAction = false;
+  @Input() btnClass = 'fa fa-compass';
+  @Input() canAct = false;
+  @Input() imgAttach = 'question.attachment';
   @Output() deleteEntity: EventEmitter<T> = new EventEmitter();
   @Output() editEntity: EventEmitter<T> = new EventEmitter();
   @Output() clickEntity: EventEmitter<T> = new EventEmitter();
@@ -63,8 +69,8 @@ export class EntitiesTableComponent<T> implements OnInit, OnChanges {
   }
 
   getSortPropertiesIndexes(displayPropertiesOrder: string[], sortProperties: string[]): number[] {
-    let indexes: number[] = [];
-    for (let property of sortProperties) {
+    const indexes: number[] = [];
+    for (const property of sortProperties) {
       if (displayPropertiesOrder.includes(property)) {
         indexes.push(displayPropertiesOrder.indexOf(property));
       }
@@ -73,16 +79,16 @@ export class EntitiesTableComponent<T> implements OnInit, OnChanges {
   }
 
   sortEntities(index: number, order: string) {
-    let propName: string = this.getProperties(this.entities[0])[index];
+    const propName: string = this.getProperties(this.entities[0])[index];
     for (let i = 0; i < this.order.length; i++) {
       this.order[i] = '';
     }
 
-    if (order === 'asc') {
-      this.order[index + 1] = 'asc';
+    if (order === ORDER_ASC) {
+      this.order[index + 1] = ORDER_ASC;
       this.entities.sort((e1: T, e2: T) => e1[propName].localeCompare(e2[propName]));
     } else {
-      this.order[index + 1] = 'desc';
+      this.order[index + 1] = ORDER_DESC;
       this.entities.sort((e1: T, e2: T) => e2[propName].localeCompare(e1[propName]));
     }
   }

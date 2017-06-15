@@ -7,9 +7,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 import { SUBJECTS_CONFIG } from '../universal/dynamic-form/config';
 import { SubjectService } from './subject.service';
-import { DeleteRecordByIdService } from '../services/delete-record-by-id.service';
+import {DeleteRecordByIdService} from '../services/delete-record-by-id.service';
 
-declare var $: any;
+declare const $: any;
 
 @Component({
   selector: 'app-subject',
@@ -24,7 +24,6 @@ export class SubjectComponent implements OnInit {
   recordsPerPage: number;
   page: number;
   btnClass: string = 'fa fa-calendar';
-
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = SUBJECTS_CONFIG;
   constructor(private statisticsService: StatisticsService,
@@ -33,7 +32,7 @@ export class SubjectComponent implements OnInit {
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private subjectService: SubjectService,
-              private deleteRecordByIdService: DeleteRecordByIdService) { }
+              private deleteRecordByIdService: DeleteRecordByIdService) {}
 
   ngOnInit() {
     this.page = 1;
@@ -84,13 +83,23 @@ export class SubjectComponent implements OnInit {
     }
   }
   onTimeTableNavigate(subject: Subject) {
-    this.router.navigate(['./timetable'], {queryParams: {'subject_id': subject.subject_id}, relativeTo: this.activatedRoute.parent});
+    this.router.navigate(['./timetable'], {
+      queryParams: {
+        'subject_id': subject.subject_id,
+        'subject_name': subject.subject_name
+      },
+      relativeTo: this.activatedRoute.parent
+    });
   }
   onTestsNavigate(subject: Subject) {
-    this.router.navigate(['subject/tests'], {queryParams: {'subject_id': subject.subject_id}, relativeTo: this.activatedRoute.parent});
+    this.router.navigate(['subject/tests'], {
+      queryParams: {
+        'subject_id': subject.subject_id,
+        'subject_name': subject.subject_name
+      },
+      relativeTo: this.activatedRoute.parent
+    });
   }
-
-  // Method for opening editing and deleting common modal window
 
   add() {
     this.popup.sendItem(new Subject(), 'subject');
@@ -103,25 +112,24 @@ export class SubjectComponent implements OnInit {
   del(subject: Subject) {
     this.popup.deleteEntity(subject);
   }
-  formSubmitted(inputedSubject) {
-    if (!inputedSubject.subject_id) {
-      this.subjectService.createSubject(inputedSubject).subscribe(() => {
+  formSubmitted(inputSubject) {
+    if (!inputSubject.subject_id) {
+      this.subjectService.createSubject(inputSubject).subscribe(() => {
         this.numberOfRecords++;
         this.getSubjectsRange();
         $('#add_edit_deletePopup').modal('hide');
       });
     } else {
-      this.subjectService.updateSubject(inputedSubject).subscribe(() => {
+      this.subjectService.updateSubject(inputSubject).subscribe(() => {
         this.getSubjectsRange();
         $('#add_edit_deletePopup').modal('hide');
       });
     }
   }
   deleteSubject(deletedSubject) {
-    this.deleteRecordByIdService.deleteRecordsById('subject', deletedSubject.subject_id)
-      .subscribe(() => {
-        this.numberOfRecords--;
-        this.getSubjectsRange();
-      });
+    this.deleteRecordByIdService.deleteRecordsById('subject', deletedSubject.subject_id).subscribe(() => {
+      this.getSubjectsRange();
+      --this.numberOfRecords;
+    });
   }
 }

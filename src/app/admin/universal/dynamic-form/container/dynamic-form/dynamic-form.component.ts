@@ -1,7 +1,5 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
-import {FacultyService} from '../../../../faculties/faculty.service';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
 
 declare var $: any;
@@ -9,15 +7,14 @@ declare var $: any;
 @Component({
   selector: 'dynamic-form',
   styleUrls: ['dynamic-form.component.scss'],
-  templateUrl: './dynamic-form.component.html',
-  providers: [FacultyService]
+  templateUrl: './dynamic-form.component.html'
 })
 export class DynamicFormComponent implements OnInit {
   @Input()
   config: any[] = [];
 
   entity: any;
-  public test_id: number;
+  test_id: number;
   entityForDelete: any;
   Properties: Array<string>;
 
@@ -31,17 +28,17 @@ export class DynamicFormComponent implements OnInit {
   uniq_name: string;
 
 
-  MODAL_ADD_TITLE = 'Створити новий';
+  MODAL_ADD_TITLE = 'Створити';
   MODAL_EDIT_TITLE = 'Редагувати';
   MODAL_DELETE_TITLE = 'Видалення';
   TITLE: string;
-  CONFIRM_ANSWER_TEXT = 'Ви підтверджуєте видалення ';
-  CONFIRM_ANSWER: string;
+  CONFIRM_QUESTION_TEXT = 'Ви підтверджуєте видалення';
+  CONFIRM_QUESTION: string;
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';
   SUBMIT_ADD_EDIT = 'Зберегти';
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private get_records_by_search: GetRecordsBySearchService) {
+  constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService) {
   }
 
   ngOnInit() {
@@ -62,6 +59,7 @@ export class DynamicFormComponent implements OnInit {
       }
       if (control.requiredAsync) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
+       // group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
       } else {
         group.addControl(control.name, this.fb.control(''));
       }
@@ -92,21 +90,21 @@ export class DynamicFormComponent implements OnInit {
       this.form.controls[FormNames[+[i]]].setValue(this.entity[InputEntityNames[+[i]]]);
     }
     this.uniq_name = this.entity[InputEntityNames[0]];
-    if (this.uniq_name !== '') {
+    if (this.uniq_name) {
       this.TITLE = this.MODAL_EDIT_TITLE;
     } else {
       this.TITLE = this.MODAL_ADD_TITLE;
     }
   }
 
-  deleteEntity(entity: any, entity_name?: string) {
+  deleteEntity(entity: any) {
     this.action = 'delete';
     this.entityForDelete = entity;
     this.Properties = Object.getOwnPropertyNames(this.entityForDelete);
-    this.TITLE = this.MODAL_DELETE_TITLE + ' ' + entity_name;
+    this.TITLE = this.MODAL_DELETE_TITLE;
     let Properties = Object.getOwnPropertyNames(entity);
-    //  if (entity[Properties[0]] == 'speciality_id'){console.log}
-    this.CONFIRM_ANSWER = this.CONFIRM_ANSWER_TEXT + '' + this.entityForDelete[this.Properties[1]] + '?';
+      if (Properties[0] == 'speciality_id') {this.uniq_name = Properties[2]; } else {this.uniq_name = Properties[1];}
+    this.CONFIRM_QUESTION = this.CONFIRM_QUESTION_TEXT + ' ' + this.entityForDelete[this.uniq_name] + '?';
     $('#add_edit_deletePopup').modal('show');
   }
 
@@ -114,7 +112,7 @@ export class DynamicFormComponent implements OnInit {
 
   cancel() {
     this.form.reset();
-    this.CONFIRM_ANSWER = '';
+    this.CONFIRM_QUESTION = '';
     $('#add_edit_deletePopup').modal('hide');
   }
 }
@@ -137,10 +135,7 @@ function validateEmail(c: FormControl) {
 
 function validateName(c: FormControl) {
   let name = c.value;
-  console.log(name);
-  console.log(this.entity_name);
   if (this.entity_name) {
-    console.log('add works');
     return this.get_records_by_search.getRecordsBySearch(this.entity_name, name).map((resp) => {
         for (let key of resp) {
           let Properties = Object.getOwnPropertyNames(key);
@@ -153,7 +148,6 @@ function validateName(c: FormControl) {
       }
     );
   } else {
-    console.log('edit works');
     return Promise.resolve().then(() => {
       return null;
     });

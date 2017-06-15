@@ -2,7 +2,6 @@ export const FACULTY_CONFIG =
   [
     {
       type: 'id',
-      //    text: null,
       label: 'ID факультету',
       name: 'faculty_id',
       placeholder: '',
@@ -21,43 +20,31 @@ export const FACULTY_CONFIG =
       label: 'Введіть опис факультету',
       name: 'faculty_description',
       placeholder: 'Введіть опис факультету',
-    },
-    // {
-    //   label: 'Підтвердити',
-    //   name: 'submit',
-    //   type: 'button'
-    // }
+    }
   ];
 
 export const SPECIALITY_CONFIG =
   [
     {
       type: 'id',
-      //   text: null,
       label: 'ID спеціальності',
       name: 'speciality_id',
       placeholder: '',
     },
     {
       type: 'input',
-      //  text: '',
       label: 'Код спеціальності',
       name: 'speciality_code',
+      required: true,
       placeholder: 'Введіть код спеціальності',
     },
     {
       type: 'input',
-      //   text: '',
       label: 'Назва спеціальності',
       name: 'speciality_name',
       placeholder: 'Введіть назву спеціальності',
-      requiresAsync: true
-    },
-    // {
-    //   label: 'Підтвердити',
-    //   name: 'submit',
-    //   type: 'button'
-    // }
+      requiredAsync: true
+    }
   ];
 
 
@@ -65,14 +52,12 @@ export const SUBJECTS_CONFIG =
   [
     {
       type: 'id',
-      //  text: null,
       label: 'ID предмету',
       name: 'subject_id',
       placeholder: '',
     },
     {
       type: 'input',
-      //    text: '',
       label: 'Назва предмету',
       name: 'subject_name',
       placeholder: 'Введіть назву предмету',
@@ -80,29 +65,21 @@ export const SUBJECTS_CONFIG =
     },
     {
       type: 'textarea',
-      //     text: '',
       label: 'Опис предмету',
       name: 'subject_description',
       placeholder: 'Введіть опис предмету',
-    },
-    // {
-    //   label: 'Підтвердити',
-    //   name: 'submit',
-    //   type: 'button'
-    // }
+    }
   ];
 export const GROUP_CONFIG =
   [
     {
       type: 'id',
-      //  text: null,
       label: 'ID групи',
       name: 'group_id',
       placeholder: '',
     },
     {
       type: 'input',
-      //  text: '',
       label: 'Назва групи',
       name: 'group_name',
       placeholder: 'Введіть назву групи',
@@ -111,27 +88,55 @@ export const GROUP_CONFIG =
     },
     {
       type: 'select',
-      //     text: '',
       label: 'Спеціальність',
       name: 'Speciality',
       placeholder: 'Виберіть спеціальність',
     },
     {
       type: 'select',
-      //   text: '',
       label: 'Факультет',
       name: 'Faculty',
       placeholder: 'Виберіть факультет',
-    },
-    // {
-    //   label: 'Підтвердити',
-    //   name: 'submit',
-    //   type: 'button'
-    // }
+    }
   ];
 
 export const STUDENT_CONFIG =
   [
+    {
+      type: 'input',
+   //   text: '',
+      label: `Ім'я студента`,
+      name: 'student_name',
+      placeholder: `Введіть ім'я студента`,
+      required: true
+    },
+    {
+      type: 'input',
+   //   text: '',
+      label: `Прізвище студента`,
+      name: 'student_surname',
+      placeholder: `Введіть прізвище студента`,
+    },
+    {
+      type: 'input',
+  //    text: '',
+      label: `По-батькові студента`,
+      name: 'student_fname',
+      placeholder: `Введіть по-батькові студента`,
+      required: true
+    },
+    {
+      type: 'input',
+      label: `Номер залікової книжки студента`,
+      name: 'gradebook',
+      placeholder: `Введіть номер залікової книжки студента`,
+    },
+    {
+      type: 'email',
+      label: `Електронна пошта студента`,
+      name: 'email',
+      placeholder: `Введіть адрес електроної пошти студента`
+    },
     {
       type: 'id',
       //     text: null,
@@ -143,71 +148,26 @@ export const STUDENT_CONFIG =
       type: 'select',
       //   text: '',
       label: 'Група',
-      name: 'Group',
+      name: 'group',
       placeholder: 'Виберіть групу',
     },
     {
-      type: 'input',
-      //   text: '',
-      label: `Ім'я студента`,
-      name: 'student_name',
-      placeholder: `Введіть ім'я студента`,
-      required: true
-    },
-    {
-      type: 'number',
-      //   text: '',
-      label: `По-батькові студента`,
-      name: 'student_second_name',
-      placeholder: `Введіть по-батькові студента`,
-    },
-    {
-      type: 'input',
-      //    text: '',
-      label: `Прізвище студента`,
-      name: 'student_fname',
-      placeholder: `Введіть прізвище студента`,
-      required: true
-    },
-    {
-      type: 'input',
-      //    text: '',
-      label: `Номер залікової книжки студента`,
-      name: 'gradebook',
-      placeholder: `Введіть номер залікової книжки студента`,
-    },
-    {
-      type: 'email',
-      //    text: '',
-      label: `Електронна пошта студента`,
-      name: 'email',
-      placeholder: `Введіть адрес електроної пошти студента`,
-      emailPattern: true
-    },
-    {
-      type: 'input_file',
-      //    text: '',
-      label: `Фотографія студента`,
-      name: 'imageURL',
-      placeholder: ``,
-    },
-    // {
-    //   label: 'Підтвердити',
-    //   name: 'submit',
-    //   type: 'button'
-    // }
+      type: 'id',
+      // text: null,
+      label: 'ID',
+      name: 'user_id',
+      placeholder: ''
+    }
   ];
 export const TEST_DETAIL_CONFIG = [
   {
     type: 'id',
-    //  text: null,
     label: 'ID деталей тесту',
     name: 'id_detail_id',
     placeholder: '',
   },
   {
     type: 'id',
-    //   text: null,
     label: 'ID тесту',
     name: 'test_id',
     placeholder: '',
@@ -233,33 +193,26 @@ export const TEST_DETAIL_CONFIG = [
     name: 'rate',
     options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
     placeholder: 'Select an option'
-  },
-  // {
-  //   label: 'Зберегти',
-  //   name: 'submit',
-  //   type: 'button'
-  // }
+  }
 ];
 export const QUESTION_CONFIG = [
   {
     type: 'id',
-    //  text: null,
     label: 'ID питання',
     name: 'question_id',
     placeholder: '',
   },
   {
     type: 'id',
-    //   text: null,
     label: 'ID тесту',
     name: 'test_id',
     placeholder: '',
   },
   {
-    type: 'select_with_options',
-    label: 'Номер рівня завдань',
+    type: 'textarea',
+    text: '',
+    label: 'Питання',
     name: 'question_text',
-    options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
     placeholder: 'Select an option'
   },
   {
@@ -271,49 +224,83 @@ export const QUESTION_CONFIG = [
   },
   {
     type: 'select_with_options',
-    label: 'Кількіст балів',
+    label: 'Тип питання',
     name: 'type',
     options: ['1', '2'],
     placeholder: 'Select an option'
   },
-  // {
-  //   label: 'Зберегти',
-  //   name: 'submit',
-  //   type: 'button'
-  // }
+  {
+    type: 'input_file',
+    label: 'Вкладення',
+    name: 'attachment'
+  }
+];
+export const ANSWER_CONFIG = [
+  {
+    type: 'id',
+    text: null,
+    label: 'ID питання',
+    name: 'answer_id',
+    placeholder: '',
+    required: false
+  },
+  {
+    type: 'id',
+    text: null,
+    label: 'ID тесту',
+    name: 'question_id',
+    placeholder: '',
+    required: false
+  },
+  {
+    type: 'select',
+    label: 'Правильність відповіді',
+    name: 'true_answer',
+    options: ['Правильно', 'Неправильноо']
+  },
+  {
+    type: 'textarea',
+    label: 'Текст відповіді',
+    name: 'answer_text',
+    options: '',
+    placeholder: ''
+  },
+  {
+    type: 'file',
+    label: 'Вкладення',
+    name: 'attachment',
+    options: ['1', '2'],
+    placeholder: 'Select an option'
+  }
 ];
 export const TESTS_CONFIG = [
   {
     type: 'id',
-    //  text: null,
     label: 'ID тесту',
     name: 'test_id',
     placeholder: '',
   },
   {
     type: 'input',
-    //    text: '',
     label: `Номер залікової книжки студента`,
     name: 'test_name',
     placeholder: `Введіть номер залікової книжки студента`,
   },
   {
     type: 'number',
-    //    text: '',
     label: `Кількість завдань`,
     name: 'number_of_tasks',
     placeholder: `Введіть номер залікової книжки студента`,
+    test_id: ''
   },
   {
     type: 'number',
-    //    text: '',
     label: `Тривалість тесту`,
     name: 'duration_of_test',
     placeholder: `Введіть номер залікової книжки студента`,
   },
   {
     type: 'select_with_options',
-    //    text: '',
     label: `Статус`,
     name: 'status',
     options: ['доступний', 'недоступний'],
@@ -321,24 +308,55 @@ export const TESTS_CONFIG = [
   },
   {
     type: 'number',
-    //    text: '',
     label: `Кількість спроб`,
     name: 'amount',
     placeholder: `Введіть номер залікової книжки студента`,
   },
   {
     type: 'select',
-    //   text: '',
     label: 'Предмет',
     name: 'Subject',
     placeholder: 'Виберіть предмет',
-  },
-  // {
-  //   label: 'Зберегти',
-  //   name: 'submit',
-  //   type: 'button'
-  // }
+  }
 ];
+
+export const ADMINUSER_CONFIG = [
+  {
+    type: 'email',
+    //  text: '',
+    label: 'E-mail:',
+    name: 'email',
+    placeholder: 'Введіть e-mail',
+    required: true
+  },
+  {
+    type: 'id',
+    //  text: null,
+    label: 'ID',
+    name: 'id',
+    placeholder: '',
+  },
+  {
+    type: 'input',
+    label: 'Пароль',
+    name: 'password',
+    placeholder: 'Введіть пароль:'
+  },
+  {
+    type: 'input',
+    label: 'Повторіть пароль:',
+    name: 'password_confirm',
+    placeholder: 'Повторіть пароль'
+  },
+  {
+    type: 'input',
+    //     text: '',
+    label: 'Логін:',
+    name: 'username',
+    placeholder: 'Введіть логін',
+  }
+];
+
 
 
 
