@@ -26,6 +26,7 @@ export class SubjectComponent implements OnInit {
   recordsPerPage: number;
   page: number;
   btnClass: string = 'fa fa-calendar';
+  sortProperties: string[];
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = SUBJECTS_CONFIG;
 
@@ -47,6 +48,7 @@ export class SubjectComponent implements OnInit {
     this.getSubjectsRange();
     this.headers = ['№', 'Назва предмету', 'Опис'];
     this.displayPropertiesOrder = ['subject_name', 'subject_description'];
+    this.sortProperties = ['subject_name'];
   }
 
   getSubjectsRange() {

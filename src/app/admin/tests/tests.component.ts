@@ -24,6 +24,7 @@ export class TestsComponent implements OnInit {
   subjectIdQueryParam: string;
   subjectNameQueryParam: string;
   btnClass: string;
+  sortProperties: string[];
   constructor(private getAllRecordsService: GetAllRecordsService,
               private getRecordsByIdService: GetRecordsByIdService,
               private activatedRoute: ActivatedRoute,
@@ -37,6 +38,7 @@ export class TestsComponent implements OnInit {
     this.getSubjects();
     this.headers = ['№', 'Назва тесту', 'Завдання', 'Тривалість тесту', 'Спроби', 'Статус'];
     this.displayPropertiesOrder = ['test_name', 'tasks', 'time_for_test', 'attempts', 'enabled_description' ];
+    this.sortProperties = ['test_name'];
   }
   getQueryParams() {
     this.spinnerService.showSpinner();

@@ -15,7 +15,8 @@
                         [itemsPerPage]="recordsPerPage"
                         (editEntity)="getUpdatedTimetable($event)"
                         (deleteEntity)="getDeletedTimetable($event)"
-                        [displayPropertiesOrder]="displayPropertiesOrder">
+                        [displayPropertiesOrder]="displayPropertiesOrder"
+                        [sortProperties]="sortProperties">
 </dtester-entities-table>
 <dtester-pagination *ngIf="!groupQueryParam && !subjectQueryParam"
                     [countRecords]="numberOfRecords"

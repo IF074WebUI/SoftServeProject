@@ -11,7 +11,7 @@ import { arrFromSrtToNum } from './time-validator';
 import { Subject } from '../subject/subject';
 import {SpinnerService} from "../universal/spinner/spinner.service";
 
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: 'app-timetable',
@@ -33,6 +33,7 @@ export class TimetableComponent implements OnInit {
   subjectIdQueryParam: string;
   subjectNameQueryParam: string;
   action: string;
+  sortProperties: string[];
   constructor(private timetableService: TimetableService,
               private getRecordsByIdService: GetRecordsByIdService,
               private getAllRecordsService: GetAllRecordsService,
@@ -48,14 +49,15 @@ export class TimetableComponent implements OnInit {
     this.getSubjects();
     this.getCountRecords();
     this.getQueryParams();
+    this.sortProperties = ['group_name', 'subject_name'];
   }
   getQueryParams() {
     this.spinnerService.showSpinner();
     this.activatedRoute.queryParams.subscribe((params: Params) => {
-      this.groupQueryParam = params['group_id'];
-      this.subjectIdQueryParam = params['subject_id'];
-      this.subjectNameQueryParam = params['subject_name'];
-      this.checkQueryParams();
+    this.groupQueryParam = params['group_id'];
+    this.subjectIdQueryParam = params['subject_id'];
+    this.subjectNameQueryParam = params['subject_name'];
+    this.checkQueryParams();
     });
   }
   checkQueryParams() {
