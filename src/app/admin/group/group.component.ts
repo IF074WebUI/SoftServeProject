@@ -21,12 +21,12 @@ import { ToastsManager } from 'ng2-toastr';
 export class GroupComponent implements OnInit {
 
   groupsOnPage: Group[];
-  pageNumber: number = 1;
+  pageNumber: number;
   offset = 5;   /*number of the records for the stating page*/
   countRecords: number;
   headers: string[];            /* array of headers */
   ignoreProperties: string[];
-  btnClass: string = 'fa fa-calendar';
+  btnClass: string;
   CREATING_NEW_GROUP = 'Додати нову групу';
   DISPLAY_PROPERTIES_ORDER: string[] = ['group_name'];
   SORT_PROPERTIES: string[] = ['group_name'];
@@ -40,7 +40,10 @@ export class GroupComponent implements OnInit {
               private router: Router,
               private spinner: SpinnerService,
               private toastr: ToastsManager,
-  ) {}
+  ) {
+    this.pageNumber = 1;
+    this.btnClass = 'fa fa-calendar';
+  }
   ngOnInit() {
     this.sortProperties = this.SORT_PROPERTIES;
     this.displayPropertiesOrder = this.DISPLAY_PROPERTIES_ORDER;
@@ -78,7 +81,8 @@ export class GroupComponent implements OnInit {
       --this.pageNumber;
     }
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset).delay(301)
-      .subscribe(resp => { this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']);
+      .subscribe(resp => {
+        this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']);
       this.spinner.hideSpinner();
       });
   }

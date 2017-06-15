@@ -19,15 +19,14 @@ export class TestDetailComponent implements OnInit {
   configs = TEST_DETAIL_CONFIG;
   testDetails: TestDetail[];
   headers: string[];
-  /* array of headers */
   ignoreProperties: string[];
   countRecords: number;
   curenntTestId: number;
-  COUNT_OF_TASKS: string = 'Необхідна кількість завданнь: ';
+  COUNT_OF_TASKS: string;
   countOfTasks: number;
-  COUNT_OF_RATE: string = 'Загальна кількість балів за тест: ';
+  COUNT_OF_RATE: string;
   countOfRate: number;
-  MAIN_HEADER: string = 'Деталі тесту ';
+  MAIN_HEADER: string;
   testName: string;
   CREATE_NEW_DETAIL: string;
   DISPLAY_PROPERTIES_ORDER: string[] = ['level', 'tasks', 'rate'];
@@ -40,12 +39,15 @@ export class TestDetailComponent implements OnInit {
               private spinner: SpinnerService,
               private router: Router) {
     this.CREATE_NEW_DETAIL = 'Додати нову деталь';
+    this.MAIN_HEADER = 'Деталі тесту ';
+    this.COUNT_OF_RATE =  'Загальна кількість балів за тест: ';
+    this.COUNT_OF_TASKS = 'Необхідна кількість завданнь: ';
   }
 
   ngOnInit() {
     this.sortProperties = this.SORT_PROPERTIES;
     this.displayPropertiesOrder = this.DISPLAY_PROPERTIES_ORDER;
-    this.spinner.showSpinner()
+    this.spinner.showSpinner();
     this.headers = TEST_DETAIL_HEADERS;
     this.ignoreProperties = IGNORE_PROPERTIES;
 
@@ -84,48 +86,52 @@ export class TestDetailComponent implements OnInit {
       this.countOfRate = this.countOfRate + (+testDetail.tasks * +testDetail.rate);
     }
   }
-
-// Method for opening editing and deleting common modal window
-
-add(testDetail: TestDetail) {
-  this.configs[2]['test_id'] = this.curenntTestId;
-  this.popup.sendItem(new TestDetail('', '', '', '', ''), '', this.curenntTestId);
-  this.popup.showModal();
-}
-
-edit(testDetail: TestDetail) {
-  this.configs[2]['test_id'] = this.curenntTestId;
-  this.popup.sendItem(testDetail);
-  this.popup.showModal();
-}
-
-del(testDetail: TestDetail) {
-  this.popup.deleteEntity(testDetail);
-}
-// Method for  add/edit, delete form submiting
-
-formSubmitted(testDetail: TestDetail) {
-  if (testDetail['id']) {
-    this.testDetailService.editTestDetail(testDetail['id'], this.curenntTestId, testDetail['level'], testDetail['tasks'], testDetail['rate'])
-      .subscribe(response => {
-          this.uploadPage();
-          this.popup.cancel();
-        },
-        error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': testDetail['level']}, relativeTo: this.route.parent})
-      );
-  } else {
-    this.testDetailService.createTestDetail(this.curenntTestId, testDetail['level'], testDetail['tasks'], testDetail['rate'])
-      .subscribe(response => {
-          this.uploadPage();
-          this.popup.cancel();
-        },
-        error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': testDetail['level']}, relativeTo: this.route.parent})
-      );
+  // Method for opening editing and deleting common modal window
+  add(testDetail: TestDetail) {
+    this.configs[2]['test_id'] = this.curenntTestId;
+    this.popup.sendItem(new TestDetail('', '', '', '', ''), '', this.curenntTestId);
+    this.popup.showModal();
   }
-}
-
-submitDelete(testDetail: TestDetail) {
-  this.testDetailService.deleteDetail(testDetail['id']).subscribe(response => this.uploadPage());
- }
+  edit(testDetail: TestDetail) {
+    this.configs[2]['test_id'] = this.curenntTestId;
+    this.popup.sendItem(testDetail);
+    this.popup.showModal();
+  }
+  del(testDetail: TestDetail) {
+    this.popup.deleteEntity(testDetail);
+  }
+  // Method for  add/edit, delete form submiting
+  formSubmitted(testDetail: TestDetail) {
+    if (testDetail['id']) {
+      console.log(testDetail);
+      this.testDetailService.editTestDetail(
+        testDetail['id'],
+        this.curenntTestId,
+        testDetail['level'],
+        testDetail['tasks'],
+        testDetail['rate'])
+        .subscribe(response => {
+            this.uploadPage();
+            this.popup.cancel();
+          },
+          error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': testDetail['level']}, relativeTo: this.route.parent})
+        );
+    } else {
+      this.testDetailService.createTestDetail(
+        this.curenntTestId,
+        testDetail['level'],
+        testDetail['tasks'],
+        testDetail['rate'])
+        .subscribe(response => {
+            this.uploadPage();
+            this.popup.cancel();
+          },
+          error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': testDetail['level']}, relativeTo: this.route.parent})
+        );
+    }
+  }
+  submitDelete(testDetail: TestDetail) {
+    this.testDetailService.deleteDetail(testDetail['id']).subscribe(response => this.uploadPage());
+   }
 }
 
