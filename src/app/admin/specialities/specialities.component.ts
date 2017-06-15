@@ -24,7 +24,7 @@ export class SpecialitiesComponent implements OnInit {
   specialities: Speciality[];
   page = 1;
   count: number;
-  countPerPage = 5;
+  countPerPage = 10;
   headers: string[];
   sortProperties: string[];
   ignoreProperties: string[];
@@ -53,37 +53,34 @@ export class SpecialitiesComponent implements OnInit {
     }
     this.specialitiesService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
       .subscribe(resp => {this.specialities = resp;
-      this.spinnerService.hideSpinner(); }, err => this.router.navigate(['/bad_request']));
+      this.spinnerService.hideSpinner(); });
   }
 
   getCount(): void {
-    this.specialitiesService.getCount().subscribe(resp => this.count = resp,
-      err => this.router.navigate(['/bad_request']));
+    this.specialitiesService.getCount().subscribe(resp => this.count = resp);
   }
 
-  add():void {
+  add(): void {
     this.popup.sendItem(new Speciality('', ''), 'Speciality');
     this.popup.showModal();
   }
 
-  edit(speciality: Speciality):void {
+  edit(speciality: Speciality): void {
     this.popup.sendItem(speciality);
     this.popup.showModal();
   }
 
-  delete(speciality: Speciality):void {
+  delete(speciality: Speciality): void {
     this.popup.deleteEntity(speciality);
   }
 
   formSubmitted(speciality: Speciality): void {
     if (speciality['speciality_id']) {
-      console.log(speciality);
       this.specialitiesService.edit(speciality).subscribe(resp => {
           this.popup.cancel();
           this.getSpecialities();
           this.toastr.success(`Спеціальність ${speciality.speciality_name} успішно відредагована`);
-        },
-        err => this.router.navigate(['/bad_request']));
+        });
     } else {
       delete speciality.speciality_id;
       this.specialitiesService.save(speciality).subscribe(resp => {
@@ -91,12 +88,11 @@ export class SpecialitiesComponent implements OnInit {
           this.getSpecialities();
           this.count++;
           this.toastr.success(`Спеціальність ${speciality.speciality_name} успішно збережена`);
-        },
-        err => this.router.navigate(['/bad_request']));
+        });
     }
   }
 
-  getGroupsBySpeciality(speciality: Speciality):void {
+  getGroupsBySpeciality(speciality: Speciality): void {
     this.router.navigate(['./group'], {queryParams: {'specialityId': speciality.speciality_id}, relativeTo: this.activatedRoute.parent});
   }
 
@@ -106,8 +102,7 @@ export class SpecialitiesComponent implements OnInit {
           --this.count;
           this.getSpecialities();
             this.toastr.success(`Спеціальність ${speciality.speciality_name} успішно видалена`);
-        },
-        err => this.router.navigate(['/bad_request']));
+        });
   }
 
   changePage(page: number): void {
@@ -117,10 +112,11 @@ export class SpecialitiesComponent implements OnInit {
 
   changeCountPerPage(itemsPerPage: number): void {
     this.countPerPage = itemsPerPage;
+    this.page = 1;
     this.getSpecialities();
   }
 
-  startSearch(criteria: string):void {
+  startSearch(criteria: string): void {
     if (criteria === '') {
     this.getSpecialities();
     this.getCount();
@@ -137,8 +133,7 @@ export class SpecialitiesComponent implements OnInit {
         this.specialities = resp;
       }
       this.spinnerService.hideSpinner();
-    },
-      err => this.router.navigate(['/bad_request']));
+    });
   }
   }
 

@@ -1,9 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { StudentsService} from './students.service';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
 import { Student } from './student';
 import { ActivatedRoute } from '@angular/router';
+import { Group } from '../group/group';
+import { GetRecordsByIdService } from '../services/get-records-by-id.service';
+import { GetAllRecordsService } from '../services/get-all-records.service';
+import { STUDENT_CONFIG } from '../universal/dynamic-form/config';
+import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import {SpinnerService} from '../universal/spinner/spinner.service';
+import {ToastsManager} from 'ng2-toastr';
 
 @Component({
   selector: 'dtester-students',
@@ -13,136 +19,70 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class StudentsComponent implements OnInit {
 
-  headers: string[] = [];
-  ignoreProperties: string[] = [];
+  headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові', 'Група'];
+  ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
+  displayProperties = ['student_surname', 'student_name', 'student_fname', 'group_name'];
+  sortProperties = ['student_surname', 'student_name', 'student_fname', 'group_name'];
+
+  configs = STUDENT_CONFIG;
+
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
   MAIN_HEADER = 'Студенти';
   MODAL_ADD = 'Додати студента';
-  MODAL_NAME = 'Ім\'я:';
-  MODAL_SURNAME = 'Прізвище:';
-  MODAL_F_NAME = 'Пo-батькові:';
-  MODAL_PASSWORD = 'Пароль:';
-  MODAL_CONFIRM_PASSWORD = 'Підтвердіть пароль:';
-  MODAL_ADD_ACTION = 'Додати';
-  MODAL_CANSEL = 'Відміна';
-  MODAL_DEL_HEADER = 'Видалення';
-  MODAL_DEL_BODY = 'Ви дійсно хочете видалити студента?';
-  MODAL_DEL = 'Видалити';
-  MODAL_EDIR_HEADER = 'Редагувати студента';
-  MODAL_EDIT = 'Редагувати';
-
-  student: Student = new Student();
-  studentForEdit: Student;
-  studentForDel: Student;
   students: Student[];
+  groups: Group[];
   page = 1;
   count: number;
   countPerPage = 10;
 
-  studentData = {};
-  studentName: FormControl;
-  studentSurname: FormControl;
-  studentFname: FormControl;
-  studentPassword: FormControl;
-  studentPasswordConfirm: FormControl;
-  studentForm: FormGroup;
-  studentEmail = 'test' + Math.random() + '@mail.if.ua';
-  studentGradebookId = 'If-' + Math.random().toFixed(9);
-  studentUsername = 'test' + Math.random();
-  studentPhoto = '';
-  studentGroupId = 1;
-  studentPlainPassword = '1qaz2wsx';
 
-  studentEditData = {};
-  studentEditName: FormControl;
-  studentEditSurname: FormControl;
-  studentEditFname: FormControl;
-  studentEditPassword = '1qaz2wsx';
-  studentEditPasswordConfirm = '1qaz2wsx';
-  studentEditForm: FormGroup;
-  studentEditEmail = 'test' + Math.random() + '@mail.if.ua';
-  studentEditGradebookId = 'If-' + Math.random().toFixed(9);
-  studentEditUsername = 'test' + Math.random();
-  studentEditPhoto = '';
-  studentEditGroupId = 1;
-  studentEditPlainPassword = '1qaz2wsx';
-
-  constructor(private studentsService: StudentsService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private studentsService: StudentsService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute,
+              private getRecordsByIdService: GetRecordsByIdService,
+              private getAllRecordsService: GetAllRecordsService,
+              private spinner: SpinnerService, private toastr: ToastsManager) {}
 
   ngOnInit() {
-    this.headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові'];
-    this.ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
-    // this.studentsService.getAllStudents().subscribe((data) => {
-    //   this.students = data;
-    // });
-    // this.getCount();
     this.getStudents();
-    const  groupId = this.route.snapshot.queryParams['group_id'];
+    this.getGroups();
+    this.getStudentsForGroup();
+  }
+
+  getStudentsForGroup() {
+    const  groupId = this.activatedRoute.snapshot.queryParams['group_id'];
     if (groupId) {
       this.studentsService.getStudentsByGroupId(groupId).subscribe(resp => {
         if (resp['response'] === 'no records') {
           this.students = [];
         } else {
-          this.students = resp;
+          this.getStudentsWithGroupName(resp);
         }
       });
     }
-
-    this.studentName = new FormControl('');
-    this.studentSurname = new FormControl('');
-    this.studentFname = new FormControl('');
-    this.studentPassword = new FormControl('');
-    this.studentPasswordConfirm = new FormControl('');
-    this.studentForm = new FormGroup({
-      'student_name': this.studentName,
-      'student_surname': this.studentSurname,
-      'student_fname': this.studentFname,
-      'password': this.studentPassword,
-      'password_confirm': this.studentPasswordConfirm
-    });
-
-    this.studentEditName = new FormControl('');
-    this.studentEditSurname = new FormControl('');
-    this.studentEditFname = new FormControl('');
-    this.studentEditForm = new FormGroup({
-      'editName': this.studentEditName,
-      'editSurname': this.studentEditSurname,
-      'editF_name': this.studentEditFname
-    });
-
-    this.studentData = {
-      'username' : this.studentUsername,
-      'email' : this.studentEmail,
-      'gradebook_id' : this.studentGradebookId,
-      'group_id' : this.studentGroupId,
-      'plain_password' : this.studentPlainPassword,
-      'photo' : this.studentPhoto
-    };
-
-    this.studentEditData = {
-      'username' : this.studentEditUsername,
-      'password' : this.studentEditPassword,
-      'password_confirm': this.studentEditPasswordConfirm,
-      'email' : this.studentEditEmail,
-      'gradebook_id' : this.studentEditGradebookId,
-      'group_id' : this.studentEditGroupId,
-      'plain_password' : this.studentEditPlainPassword,
-      'photo' : this.studentEditPhoto
-    };
   }
 
   getStudents(): void {
+    this.spinner.showSpinner();
     if (this.count <= (this.page - 1) * this.countPerPage) {
       --this.page;
     }
     this.getCount();
     this.studentsService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
-      .subscribe(resp => this.students = resp, err => this.router.navigate(['/bad_request']));
+      .subscribe(resp => {
+        this.getStudentsWithGroupName(resp);
+        this.spinner.hideSpinner();
+      }, err => this.router.navigate(['/bad_request'])
+        );
   }
 
   getCount(): void {
-    this.studentsService.getCount().subscribe(resp => this.count = resp,
-      err => this.router.navigate(['/bad_request']));
+    this.studentsService.getCount().subscribe(resp => {
+      this.count = resp;
+    }, err => {
+      this.toastr.error(err);
+    });
   }
 
   changePage(page: number) {
@@ -155,39 +95,77 @@ export class StudentsComponent implements OnInit {
     this.getStudents();
   }
 
-  selectedStudent(student: Student) {
-    this.studentForDel = student;
-    this.studentForEdit = student;
-  }
-
-  deleteStudent() {
-     this.studentsService.delete(this.studentForDel['user_id']).subscribe(resp => {
-       this.getStudents();
-     });
-  }
-
-  addStudent() {
-    this.studentsService.insert(this.studentForm.value, this.studentData).subscribe(resp => {
-      this.getStudents();
-    });
-    this.studentForm.reset();
-  }
-
-  editStudent() {
-    this.studentsService.update(this.studentEditForm.value, this.studentEditData, this.studentForEdit['user_id']).subscribe(resp => {
-      this.getStudents();
-    });
-    this.studentEditForm.reset();
-  }
-
-  searchStudent(criteria: string){
+  searchStudent(criteria: string) {
     this.studentsService.searchByName(criteria).subscribe(resp => {
       if (resp['response'] === 'no records') {
         this.students = [];
       } else {
-        this.students = <Student[]> resp;
+        this.students = resp;
         this.count = this.students.length;
       }
+      if (criteria === '') {
+        this.getStudents();
+      }
     });
+  }
+
+  getStudentsWithGroupName(data) {
+    this.students = data;
+    for (const student of this.students) {
+      this.getRecordsByIdService.getRecordsById('group', student.group_id).subscribe((StudentData) => {
+        student.group_name = StudentData[0].group_name;
+      });
+    }
+  }
+
+  getGroups() {
+    this.getAllRecordsService.getAllRecords('group').subscribe((data) => {
+      this.groups = data;
+    });
+  }
+
+  goToStudentProfile(student: Student) {
+    this.router.navigate(['students', student.user_id], {relativeTo: this.activatedRoute.parent});
+  }
+
+  generateStudentData() {
+    const password = Math.random().toString(36).substr(2, 8);
+    const username = 's' + Math.random().toFixed(3) + ' q' + Math.random().toFixed(3);
+    const photo = '';
+    return {
+      'username': username,
+      'password': password,
+      'password_confirm': password,
+      'plain_password': password,
+      'photo': photo
+    };
+  }
+
+  add() {
+    this.popup.sendItem(new Student(), 'Student');
+    this.popup.showModal();
+  }
+
+  del(student: Student) {
+    this.popup.deleteEntity(student);
+  }
+
+  formSubmitted(value) {
+      this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
+        this.getStudents();
+        this.popup.cancel();
+        this.toastr.success(`Студент ${value['student_name']} ${value['student_surname']} ${value['student_fname']} успішно створений`);
+      }, error2 => {
+      this.toastr.error(error2);
+    });
+  }
+
+  submitDelete(student: Student) {
+    this.studentsService.del(student['user_id']).subscribe(response => {
+      this.getStudents();
+      this.toastr.success(`Студент ${student['student_name']} ${student['student_surname']} ${student['student_fname']} успішно видалений`);
+    }, error => {
+      this.toastr.error(error);
+      });
   }
 }

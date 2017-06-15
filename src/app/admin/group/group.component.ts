@@ -3,7 +3,7 @@ import { GroupService } from './group.service';
 import { Group } from './group';
 import { Speciality } from '../specialities/speciality';
 import { SpecialitiesService } from '../services/specialities.service';
-import { FacultyService } from '../faculties/faculty.service';
+import { FacultyService } from '../services/faculty.service';
 import { Faculty } from '../faculties/Faculty';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GROUPS_HEADERS, IGNORE_PROPERTIES } from './groupConstants';
@@ -20,7 +20,6 @@ import { GROUP_CONFIG } from '../universal/dynamic-form/config';
 })
 export class GroupComponent implements OnInit {
 
-  isLoading: boolean;
   groupsOnPage: Group[];
   pageNumber: number = 1;
   offset = 5;   /*number of the records for the stating page*/
@@ -29,7 +28,10 @@ export class GroupComponent implements OnInit {
   ignoreProperties: string[];
   btnClass: string = 'fa fa-calendar';
   CREATING_NEW_GROUP = 'Додати нову групу';
-
+  DISPLAY_PROPERTIES_ORDER: string[] = ['group_name'];
+  SORT_PROPERTIES: string[] = ['group_name'];
+  displayPropertiesOrder: string[];
+  sortProperties: string[];
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = GROUP_CONFIG;
 
@@ -39,6 +41,8 @@ export class GroupComponent implements OnInit {
               private spinner: SpinnerService
   ) {}
   ngOnInit() {
+    this.sortProperties = this.SORT_PROPERTIES;
+    this.displayPropertiesOrder = this.DISPLAY_PROPERTIES_ORDER;
     this.headers = GROUPS_HEADERS;
     this.ignoreProperties = IGNORE_PROPERTIES;
     let specialityId = this.route.snapshot.queryParams['specialityId'];
@@ -67,7 +71,7 @@ export class GroupComponent implements OnInit {
 
   getGroups(): void {
     this.spinner.showSpinner();
-    this.getCountRecords()
+    this.getCountRecords();
     /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.countRecords <= (this.pageNumber - 1) * this.offset) {
       --this.pageNumber;

@@ -28,7 +28,8 @@
         <button *ngIf="canAction" type="button" class="btn btn-warning btn-sm" (click)="actionEntityCallback(entity)">
           <i [class]="btnClass" aria-hidden="true"></i>
         </button>
-        <button *ngIf="canEdit" type="button" class="btn btn-success btn-sm" (click)="editEntityCallback(entity)">
+        <button *ngIf="canEdit" type="button" class="btn btn-success btn-sm" (click)="editEntityCallback(entity)"
+                data-toggle="modal" data-target="#AdminEdit" data-whatever="@mdo">
           <i class="fa fa-pencil" aria-hidden="true"></i>
         </button>
         <button *ngIf="canDelete" type="button" class="btn btn-danger btn-sm" (click)="deleteEntityCallback(entity)">

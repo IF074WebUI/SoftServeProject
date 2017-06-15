@@ -41,6 +41,7 @@ import { TestsService } from './services/tests.service';
 import { DetailedResultsComponent } from './detailed-results/detailed-results.component';
 import { SpinnerService } from './universal/spinner/spinner.service';
 import { LoadingModule } from 'ngx-loading';
+import { StudentProfileComponent } from './student-profile/student-profile.component';
 import { TestDetailComponent } from './test-detail/test-detail.component';
 import { DynamicFormModule } from './universal/dynamic-form/dynamic-form.module';
 import { QuestionsService } from './services/questions.service';
@@ -49,10 +50,15 @@ import { TestDetailService } from './test-detail/test-detail.service';
 import { SubjectComponent } from './subject/subject.component';
 import { GetRecordsBySearchService } from './services/get-records-by-search.service';
 import { GetTestsBySubjectService } from './services/get-tests-by-subject.service';
+import { StatisticGraphsComponent } from './statistics/statistic-graphs/statistic-graphs.component';
+import {ChartModule} from 'primeng/primeng';
 import { SubjectService } from './subject/subject.service';
+import { AdminUserComponent } from './admin-user/admin-user.component';
+import { AdminUserService } from './admin-user/admin-user.service';
 import { QuestionsComponent } from './questions/questions.component';
 import { AnswersComponent } from './answers/answers.component';
 import { ModalImgComponent } from './modal-img/modal-img.component';
+import { FacultyService } from "./services/faculty.service";
 
 @NgModule({
   declarations: [
@@ -81,7 +87,11 @@ import { ModalImgComponent } from './modal-img/modal-img.component';
     SubjectComponent,
     QuestionsComponent,
     AnswersComponent,
-    ModalImgComponent
+    ModalImgComponent,
+    StudentProfileComponent,
+    AdminUserComponent,
+    SubjectComponent,
+    StatisticGraphsComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -92,8 +102,10 @@ import { ModalImgComponent } from './modal-img/modal-img.component';
     MdDialogModule,
     MdButtonModule,
     DynamicFormModule,
+    LoadingModule,
     MdButtonModule,
-    LoadingModule
+    LoadingModule,
+    ChartModule
   ],
   providers: [
     StatisticsService,
@@ -115,7 +127,9 @@ import { ModalImgComponent } from './modal-img/modal-img.component';
     TestDetailService,
     GetRecordsBySearchService,
     GetTestsBySubjectService,
-    SubjectService
+    SubjectService,
+    FacultyService,
+    AdminUserService
   ],
 })
 export class AdminModule {

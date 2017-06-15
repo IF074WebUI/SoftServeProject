@@ -9,8 +9,9 @@ import { StatisticsService } from '../statistics/statistics.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { arrFromSrtToNum } from './time-validator';
 import { Subject } from '../subject/subject';
+import {SpinnerService} from "../universal/spinner/spinner.service";
 
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: 'app-timetable',
@@ -29,14 +30,17 @@ export class TimetableComponent implements OnInit {
   page: number;
   numberOfRecords: number;
   groupQueryParam: string;
-  subjectQueryParam: string;
+  subjectIdQueryParam: string;
+  subjectNameQueryParam: string;
   action: string;
+  sortProperties: string[];
   constructor(private timetableService: TimetableService,
               private getRecordsByIdService: GetRecordsByIdService,
               private getAllRecordsService: GetAllRecordsService,
               private getRecordsRangeService: GetRecordsRangeService,
               private statisticsService: StatisticsService,
-              private activatedRoute: ActivatedRoute) {}
+              private activatedRoute: ActivatedRoute,
+              private spinnerService: SpinnerService) {}
 
   ngOnInit() {
     this.page = 1;
@@ -45,12 +49,15 @@ export class TimetableComponent implements OnInit {
     this.getSubjects();
     this.getCountRecords();
     this.getQueryParams();
+    this.sortProperties = ['group_name', 'subject_name'];
   }
   getQueryParams() {
+    this.spinnerService.showSpinner();
     this.activatedRoute.queryParams.subscribe((params: Params) => {
-      this.groupQueryParam = params['group_id'];
-      this.subjectQueryParam = params['subject_id'];
-      this.checkQueryParams();
+    this.groupQueryParam = params['group_id'];
+    this.subjectIdQueryParam = params['subject_id'];
+    this.subjectNameQueryParam = params['subject_name'];
+    this.checkQueryParams();
     });
   }
   checkQueryParams() {
@@ -58,7 +65,7 @@ export class TimetableComponent implements OnInit {
       this.getTimetableForOneGroup();
       this.headers = ['№', 'Предмет', 'Час початку тестування', 'Час закінчення тестування'];
       this.displayPropertiesOrder = ['subject_name', 'start_timeInterval', 'end_timeInterval'];
-    } else if (this.subjectQueryParam) {
+    } else if (this.subjectIdQueryParam) {
       this.getTimetableForOneSubject();
       this.headers = ['№', 'Навчальна група', 'Час початку тестування', 'Час закінчення тестування'];
       this.displayPropertiesOrder = ['group_name', 'start_timeInterval', 'end_timeInterval'];
@@ -83,7 +90,7 @@ export class TimetableComponent implements OnInit {
     });
   }
   getTimetableForOneSubject() {
-    this.timetableService.getTimeTablesForSubject(this.subjectQueryParam).subscribe((data) => {
+    this.timetableService.getTimeTablesForSubject(this.subjectIdQueryParam).subscribe((data) => {
       this.getTimetables(data);
     });
   }
@@ -104,6 +111,7 @@ export class TimetableComponent implements OnInit {
       timetable.start_timeInterval = `${timetable.start_time}, ${timetable.start_date}`;
       timetable.end_timeInterval = `${timetable.end_time}, ${timetable.end_date}`;
       timetable.deprecated = this.checkTime(timetable.end_date, timetable.end_time );
+      this.spinnerService.hideSpinner();
     }
   }
   openModalAddTimetable() {
@@ -117,6 +125,7 @@ export class TimetableComponent implements OnInit {
   }
   getDeletedTimetable(timeTable) {
     this.deletedTimetable = timeTable;
+    $('#modal-delete-timetabel').modal('show');
   }
   getGroups() {
     this.getAllRecordsService.getAllRecords('group').subscribe((data) => {

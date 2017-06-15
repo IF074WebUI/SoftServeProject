@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   templateUrl: './bad-request.component.html',
@@ -7,9 +8,16 @@ import { Location } from '@angular/common';
 })
 export class BadRequestComponent implements OnInit {
 
-  constructor(private location: Location) {}
+  constructor(private location: Location,  private route: ActivatedRoute,
+              private router: Router,) {}
+error: string;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.error = this.route.snapshot.queryParams['error'];
+    console.log('add this' + this.error);
+  }
+
+
   goBack(): void {
     this.location.back();
   }

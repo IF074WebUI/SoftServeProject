@@ -1,8 +1,9 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { FacultyService } from './faculty.service';
+import { FacultyService } from '../services/faculty.service';
 
 describe('FacultyService', () => {
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [FacultyService]

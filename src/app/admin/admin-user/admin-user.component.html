@@ -1,0 +1,63 @@
+<h1>{{HEADER}}</h1>
+
+<div class="alert alert-info" role="alert">
+  <button class="btn btn-primary" (click)="add()">{{MODAL_ADD}}</button>
+  <dtester-items-per-page [numberOfRecords]="count"
+                          (recordsPerPageChanged)="changeCountPerPage($event)">
+  </dtester-items-per-page>
+</div>
+
+<dtester-entities-table [entities]="AdminUsers"
+                        [headers]="headers"
+                        [page]="page"
+                        [itemsPerPage]="countPerPage"
+                        (deleteEntity)="del($event)"
+                        [ignoreProperties]="ignoreProperties"
+                        [displayPropertiesOrder]="displayProperties"
+                        (editEntity)="selectedAdmin($event)"
+                        [canEdit]="true"
+                        [canDelete]="true"
+                        [sortProperties]="sortProperties">
+</dtester-entities-table>
+
+<div class="text-center">
+  <dtester-pagination [countRecords]="count"
+                      [recordsPerPage]="countPerPage"
+                      [currentPage]="page"
+                      (pageChanged)="changePage($event)">
+  </dtester-pagination>
+</div>
+
+<div class="app">
+  <dynamic-form [config]="configs" (submitted)="formSubmitted($event)" (youCanDelete)="submitDelete($event)"></dynamic-form>
+</div>
+
+<div class="modal fade" id="AdminEdit" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Редагування адміністратора</h5>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="AdminForEditForm">
+        <div class="form-group">
+          <label for="email">E-mail:</label>
+          <input formControlName="email" type="text" class="form-control" id="email">
+        </div>
+        <div class="invalid" *ngIf="AdminForEditForm.controls['email'].hasError('required') && AdminForEditForm.controls['email'].touched">
+          {{MODAL_REQUIRED}}
+        </div>
+        <div class="form-group">
+          <label for="username">Логін:</label>
+          <input formControlName="username" type="text" class="form-control" id="username">
+        </div>
+        <div class="invalid" *ngIf="AdminForEditForm.controls['username'].hasError('required') && AdminForEditForm.controls['username'].touched">
+          {{MODAL_REQUIRED}}
+        </div>
+          <button class="btn btn-success my-button" type="submit" (click)="edit()"  data-dismiss="modal">Редагувати</button>
+          <button class="btn btn-secondary my-button" type="button" data-dismiss="modal">Відміна</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

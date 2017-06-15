@@ -5,7 +5,9 @@
                         [headers]="headers"
                         [ignoreProperties]="ignoreProperties"
                         (deleteEntity)=del($event)
-                        (editEntity)="edit($event)" >
+                        (editEntity)="edit($event)"
+                        [sortProperties]="sortProperties"
+                        [displayPropertiesOrder]="displayPropertiesOrder">
 </dtester-entities-table>
 <div class="container">
   <div class="row">
