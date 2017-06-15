@@ -50,6 +50,8 @@ import { TestDetailService } from './test-detail/test-detail.service';
 import { SubjectComponent } from './subject/subject.component';
 import { GetRecordsBySearchService } from './services/get-records-by-search.service';
 import { GetTestsBySubjectService } from './services/get-tests-by-subject.service';
+import { StatisticGraphsComponent } from './statistics/statistic-graphs/statistic-graphs.component';
+import {ChartModule} from 'primeng/primeng';
 import { SubjectService } from './subject/subject.service';
 import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminUserService } from './admin-user/admin-user.service';
@@ -87,7 +89,9 @@ import { FacultyService } from "./services/faculty.service";
     AnswersComponent,
     ModalImgComponent,
     StudentProfileComponent,
-    AdminUserComponent
+    AdminUserComponent,
+    SubjectComponent,
+    StatisticGraphsComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -98,7 +102,10 @@ import { FacultyService } from "./services/faculty.service";
     MdDialogModule,
     MdButtonModule,
     DynamicFormModule,
-    LoadingModule
+    LoadingModule,
+    MdButtonModule,
+    LoadingModule,
+    ChartModule
   ],
   providers: [
     StatisticsService,

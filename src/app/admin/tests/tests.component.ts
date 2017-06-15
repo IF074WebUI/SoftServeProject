@@ -4,7 +4,8 @@ import { Test } from './test';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GetTestsBySubjectService } from '../services/get-tests-by-subject.service';
-declare var $: any;
+
+declare let $: any;
 
 @Component({
   selector: 'app-tests',
@@ -26,8 +27,9 @@ export class TestsComponent implements OnInit {
               private getRecordsByIdService: GetRecordsByIdService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private getTestsBySubjectService: GetTestsBySubjectService) {
-    this.btnClass = 'fa fa-venus-double';
+              private getTestsBySubjectService: GetTestsBySubjectService
+  ) {
+    this.btnClass = 'fa fa-align-justify';
   }
   ngOnInit() {
     this.getQueryParams()
