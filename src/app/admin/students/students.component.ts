@@ -132,7 +132,7 @@ export class StudentsComponent implements OnInit {
   }
 
   add() {
-    this.popup.sendItem(new Student());
+    this.popup.sendItem(new Student(), 'Student');
     this.popup.showModal();
   }
 
