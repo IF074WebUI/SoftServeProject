@@ -7,10 +7,10 @@ import { FacultyService } from '../services/faculty.service';
 import { Faculty } from '../faculties/Faculty';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GROUPS_HEADERS, IGNORE_PROPERTIES } from './groupConstants';
-
 import { SpinnerService } from '../universal/spinner/spinner.service';
 import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 import { GROUP_CONFIG } from '../universal/dynamic-form/config';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'dtester-group',
@@ -38,7 +38,8 @@ export class GroupComponent implements OnInit {
   constructor(private getGroupsService: GroupService,
               private route: ActivatedRoute,
               private router: Router,
-              private spinner: SpinnerService
+              private spinner: SpinnerService,
+              private toastr: ToastsManager,
   ) {}
   ngOnInit() {
     this.sortProperties = this.SORT_PROPERTIES;
@@ -152,7 +153,8 @@ export class GroupComponent implements OnInit {
         .subscribe(response => {
           this.getGroups();
           this.popup.cancel();
-        },
+            this.toastr.success(`Група ${value['group_name']} успішно відредагована`);
+          },
         error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
       );
     } else {
@@ -160,7 +162,8 @@ export class GroupComponent implements OnInit {
             .subscribe(response => {
               this.getGroups();
               this.popup.cancel();
-        },
+                this.toastr.success(`Група ${value['group_name']} успішно додана`);
+              },
         error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
       );
     }
@@ -171,6 +174,7 @@ export class GroupComponent implements OnInit {
     this.getGroupsService.deleteGroup(group['group_id']).subscribe(response => this.getGroups(),
       error => this.router.navigate(['/bad_request'])
     );
+    this.toastr.success(`Група ${group['group_name']} успішно видалена`);
   }
 
 }

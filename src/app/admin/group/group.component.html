@@ -7,7 +7,7 @@
     <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
     <dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
   </div>
-  <dtester-entities-table class="table" [entities]="groupsOnPage"
+  <dtester-entities-table [entities]="groupsOnPage"
                           [headers]="headers" [ignoreProperties]="ignoreProperties"
                           (deleteEntity)=del($event) [canAction]="true"
                           [page]="pageNumber" [itemsPerPage]="offset"
