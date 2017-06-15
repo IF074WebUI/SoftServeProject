@@ -28,7 +28,7 @@ export class TestsService {
     return this.http.post('http://' + HOST + '/test/insertData', bodyForSendingNewTest)
       .map((resp) => resp.json());
   }
-  updateTest(updateTest, updateTestId): Observable<Response> {
+  updateTest(updateTest): Observable<Response> {
     const bodyForSendingUpdateTest = JSON.stringify({
       test_name: updateTest.test_name,
       tasks: updateTest.tasks,
@@ -37,7 +37,7 @@ export class TestsService {
       attempts: updateTest.attempts,
       subject_id: updateTest.subject_id
     });
-    return this.http.post('http://' + HOST + '/test/update/' + updateTestId, bodyForSendingUpdateTest)
+    return this.http.post('http://' + HOST + '/test/update/' + updateTest.test_id, bodyForSendingUpdateTest)
       .map((resp) => resp.json());
   }
 }

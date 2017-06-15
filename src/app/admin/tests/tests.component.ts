@@ -1,10 +1,14 @@
-import {Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { GetAllRecordsService } from '../services/get-all-records.service';
 import { Test } from './test';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GetTestsBySubjectService } from '../services/get-tests-by-subject.service';
-import {GetRecordsBySearchService} from "../services/get-records-by-search.service";
+import { TestsService } from '../services/tests.service';
+import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import { TESTS_CONFIG } from '../universal/dynamic-form/config';
+import { ToastsManager } from 'ng2-toastr';
+import { DeleteRecordByIdService } from '../services/delete-record-by-id.service';
 
 declare var $: any;
 
@@ -16,19 +20,21 @@ declare var $: any;
 export class TestsComponent implements OnInit {
   tests: Test[] = [];
   subjects = [];
-  updatedTest: Test;
-  deletedTest: Test;
   headers: string[];
   displayPropertiesOrder: string[];
-  action: string;
   subjectIdQueryParam: string;
   subjectNameQueryParam: string;
   btnClass: string;
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
+  configs = TESTS_CONFIG;
   constructor(private getAllRecordsService: GetAllRecordsService,
               private getRecordsByIdService: GetRecordsByIdService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private getTestsBySubjectService: GetTestsBySubjectService) {
+              private getTestsBySubjectService: GetTestsBySubjectService,
+              private testsService: TestsService,
+              private toastsManager: ToastsManager,
+              private deleteRecordByIdService: DeleteRecordByIdService) {
     this.btnClass = 'fa fa-venus-double';
   }
   ngOnInit() {
@@ -70,20 +76,6 @@ export class TestsComponent implements OnInit {
       test.enabled_description = 'Доступно';
     }
   }
-  openModalAddTest() {
-    $('#add-update-test').modal('show');
-    this.action = 'add';
-  }
-  getUpdatedTest(test: Test) {
-    this.updatedTest = test;
-    this.action = 'update';
-    $('#add-update-test').modal('show');
-  }
-  getDeletedTest(test: Test) {
-    this.deletedTest = test;
-    $('#delete-test').modal('show');
-  }
-
   getTestDetailsByTest (test: Test) {
     this.router.navigate(['subject/tests/testDetails'], {
       queryParams: {
@@ -91,6 +83,42 @@ export class TestsComponent implements OnInit {
         'test_name': test.test_name
       },
       relativeTo: this.activatedRoute.parent
+    });
+  }
+  add() {
+    this.popup.sendItem(new Test(), 'test');
+    this.popup.showModal();
+  }
+
+  edit(test: Test) {
+    this.popup.sendItem(test);
+    this.popup.showModal();
+  }
+
+  del(test: Test) {
+    this.popup.deleteEntity(test);
+  }
+
+  formSubmitted(inputTest) {
+    if (!inputTest.test_id) {
+      this.testsService.createTest(inputTest).subscribe(() => {
+        this.getTestsForOneSubject();
+        this.popup.cancel();
+        this.toastsManager.success(`Тест "${inputTest.test_name}" успішно створено.`);
+      });
+    } else {
+      this.testsService.updateTest(inputTest).subscribe(() => {
+        this.getTestsForOneSubject();
+        this.popup.cancel();
+        this.toastsManager.success(`Предмет "${inputTest.test_name}" успішно відредаговано.`);
+      });
+    }
+  }
+
+  deleteTest(deletedTest) {
+    this.deleteRecordByIdService.deleteRecordsById('test', deletedTest.test_id).subscribe(() => {
+      this.getTestsForOneSubject();
+      this.toastsManager.success(`Тест "${deletedTest.subject_name}" успішно видалено.`);
     });
   }
 }

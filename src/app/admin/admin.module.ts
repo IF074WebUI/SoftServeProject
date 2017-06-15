@@ -33,8 +33,6 @@ import { BreadcrumbsService } from './services/breadcrumbs.service';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { SpinnerComponent } from './universal/spinner/spinner.component';
 import { TestsComponent } from './tests/tests.component';
-import { AddUpdateTestComponent } from './tests/add-update-test/add-update-test.component';
-import { DeleteTestComponent } from './tests/delete-test/delete-test.component';
 import { DeleteTimetableComponent } from './timetable/delete-timetable/delete-timetable.component';
 import { AddUpdateTimetableComponent } from './timetable/add-update-timetable/add-update-timetable.component';
 import { TestsService } from './services/tests.service';
@@ -56,7 +54,7 @@ import { AdminUserService } from './admin-user/admin-user.service';
 import { QuestionsComponent } from './questions/questions.component';
 import { AnswersComponent } from './answers/answers.component';
 import { ModalImgComponent } from './modal-img/modal-img.component';
-import { FacultyService } from "./services/faculty.service";
+import { FacultyService } from './services/faculty.service';
 
 @NgModule({
   declarations: [
@@ -76,8 +74,6 @@ import { FacultyService } from "./services/faculty.service";
     BreadcrumbsComponent,
     SpinnerComponent,
     TestsComponent,
-    AddUpdateTestComponent,
-    DeleteTestComponent,
     DeleteTimetableComponent,
     AddUpdateTimetableComponent,
     DetailedResultsComponent,

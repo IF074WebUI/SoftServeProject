@@ -2,15 +2,16 @@
 
 <dtester-entities-table [entities]="tests"
                         [headers]="headers"
-                        (editEntity)="getUpdatedTest($event)"
-                        (deleteEntity)="getDeletedTest($event)"
+                        (editEntity)="edit($event)"
+                        (deleteEntity)="del($event)"
                         [displayPropertiesOrder]="displayPropertiesOrder"
                         [canAction]="true"
                         (actionEntity)="getTestDetailsByTest($event)"
                         [btnClass]="btnClass">
 </dtester-entities-table>
 
-<button type="button" class="btn btn-primary" (click)="openModalAddTest()">Додати тест</button>
+<button type="button" class="btn btn-primary" (click)="add()">Додати тест</button>
 
-<app-add-update-test (getTests)="getTestsForOneSubject()" [updatedTest]="updatedTest" [subjects]="subjects" [action]="action"></app-add-update-test>
-<app-delete-test [deletedTest]="deletedTest" (getTests)="getTestsForOneSubject()" ></app-delete-test>
+<dynamic-form [config]="configs"
+              (submitted)="formSubmitted($event)"
+              (youCanDelete)="deleteTest($event)"></dynamic-form>
