@@ -1,5 +1,7 @@
 <h2>Тести з :{{subjectNameQueryParam}}</h2>
-
+<div class="alert alert-info" role="alert">
+  <button type="button" class="btn btn-primary" (click)="openModalAddTest()">Додати тест</button>
+</div>
 <dtester-entities-table [entities]="tests"
                         [headers]="headers"
                         (editEntity)="getUpdatedTest($event)"
@@ -10,7 +12,7 @@
                         [btnClass]="btnClass">
 </dtester-entities-table>
 
-<button type="button" class="btn btn-primary" (click)="openModalAddTest()">Додати тест</button>
+
 
 <app-add-update-test (getTests)="getTestsForOneSubject()" [updatedTest]="updatedTest" [subjects]="subjects" [action]="action"></app-add-update-test>
 <app-delete-test [deletedTest]="deletedTest" (getTests)="getTestsForOneSubject()" ></app-delete-test>

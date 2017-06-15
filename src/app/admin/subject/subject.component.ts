@@ -1,14 +1,14 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Subject} from './subject';
-import {StatisticsService} from '../statistics/statistics.service';
-import {GetRecordsRangeService} from '../services/get-records-range.service';
-import {GetRecordsBySearchService} from '../services/get-records-by-search.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
-import {SUBJECTS_CONFIG} from '../universal/dynamic-form/config';
-import {SubjectService} from './subject.service';
-import {DeleteRecordByIdService} from '../services/delete-record-by-id.service';
-import {ToastsManager} from "ng2-toastr";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Subject } from './subject';
+import { StatisticsService } from '../statistics/statistics.service';
+import { GetRecordsRangeService } from '../services/get-records-range.service';
+import { GetRecordsBySearchService } from '../services/get-records-by-search.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import { SUBJECTS_CONFIG } from '../universal/dynamic-form/config';
+import { SubjectService } from './subject.service';
+import { DeleteRecordByIdService } from '../services/delete-record-by-id.service';
+import { ToastsManager } from 'ng2-toastr';
 
 declare const $: any;
 
@@ -133,12 +133,16 @@ export class SubjectComponent implements OnInit {
         this.getSubjectsRange();
         this.popup.cancel();
         this.toastsManager.success(`Предмет "${inputSubject.subject_name}" успішно створено.`);
+      }, () => {
+        this.toastsManager.error('Помилка. Спробуйте ще раз');
       });
     } else {
       this.subjectService.updateSubject(inputSubject).subscribe(() => {
         this.getSubjectsRange();
         this.popup.cancel();
         this.toastsManager.success(`Предмет "${inputSubject.subject_name}" успішно відредаговано.`);
+      }, () => {
+        this.toastsManager.error('Помилка. Спробуйте ще раз');
       });
     }
   }
@@ -148,6 +152,8 @@ export class SubjectComponent implements OnInit {
       this.getSubjectsRange();
       this.toastsManager.success(`Предмет "${deletedSubject.subject_name}" успішно видалено.`);
       --this.numberOfRecords;
+    }, () => {
+      this.toastsManager.error('Помилка. Спробуйте ще раз');
     });
   }
 }

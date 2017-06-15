@@ -1,11 +1,9 @@
-import {Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GetAllRecordsService } from '../services/get-all-records.service';
 import { Test } from './test';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GetTestsBySubjectService } from '../services/get-tests-by-subject.service';
-import {GetRecordsBySearchService} from "../services/get-records-by-search.service";
-
 declare var $: any;
 
 @Component({
@@ -23,7 +21,7 @@ export class TestsComponent implements OnInit {
   action: string;
   subjectIdQueryParam: string;
   subjectNameQueryParam: string;
-  btnClass: string;
+  btnClass: string;zz
   constructor(private getAllRecordsService: GetAllRecordsService,
               private getRecordsByIdService: GetRecordsByIdService,
               private activatedRoute: ActivatedRoute,

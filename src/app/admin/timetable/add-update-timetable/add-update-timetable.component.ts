@@ -85,6 +85,8 @@ export class AddUpdateTimetableComponent implements OnInit, OnChanges {
         this.getTimetableRecords.emit();
         $('#add-update-timetable').modal('hide');
         this.toastsManager.success(`Розклад успішно відредагований`);
+      }, () => {
+        this.toastsManager.error('Помилка. Спробуйте ще раз');
       });
   }
 }
