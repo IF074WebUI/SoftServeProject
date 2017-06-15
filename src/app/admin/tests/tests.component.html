@@ -9,13 +9,10 @@
                         [displayPropertiesOrder]="displayPropertiesOrder"
                         [canAction]="true"
                         (actionEntity)="goToQuestions($event)"
+                        (clickEntity)="getTestDetailsByTest($event)"
                         [btnClass]="btnClass">
-                        (actionEntity)="getTestDetailsByTest($event)"
                         [btnClass]="btnClass"
                         [sortProperties]="sortProperties">
 </dtester-entities-table>
-
-
-
 <app-add-update-test (getTests)="getTestsForOneSubject()" [updatedTest]="updatedTest" [subjects]="subjects" [action]="action"></app-add-update-test>
 <app-delete-test [deletedTest]="deletedTest" (getTests)="getTestsForOneSubject()" ></app-delete-test>

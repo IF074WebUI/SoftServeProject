@@ -1,16 +1,3 @@
-button, a {
-  cursor: pointer;
+h2{
+  text-align: center;
 }
-select {
-  margin-top: 5px;
-}
-.croup-count {
-  margin-top: 20px;
-}
-p {
-  padding: 0;
-}
-span {
-  font-weight: bold;
-}
-

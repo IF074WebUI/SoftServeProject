@@ -1,8 +1,12 @@
 <h2>Відповіді</h2>
-<dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
+<div class="alert alert-info" role="alert">
 <dtester-items-per-page [numberOfRecords]="countRecords"
                         (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
-
+  <button (click)="add()"
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal">{{CREATING_NEW_ANSWER}}</button>
+</div>
 <dtester-entities-table class="table"
                         [entities]="answersOnPage"
                         [headers]="headers"
@@ -20,11 +24,6 @@
                     [recordsPerPage]="recordsPerPage"
                     [currentPage]="pageNumber"
                     (pageChanged)="changePage($event)"></dtester-pagination>
-
-<button (click)="add()"
-        type="button"
-        class="btn btn-primary"
-        data-dismiss="modal">{{CREATING_NEW_ANSWER}}</button>
 <dynamic-form [config]="configs"
               (submitted)="formSubmitted($event)"
               (youCanDelete)="deleteAnswer($event)">
