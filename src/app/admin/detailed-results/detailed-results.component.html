@@ -42,7 +42,7 @@
                   <div class="text-center"><b>{{question.question_text}}</b></div>
                   <div>Відповіді:</div>
                   <ul *ngFor="let answer of question.answers">
-                    <li *ngIf="answer.answer_text">
+                    <li *ngIf="answer?.answer_text">
                       {{answer.answer_text}} (
                       <span [ngStyle]="{color: 'green'}" *ngIf="answer.true_answer == 1; else wrong">
                         <i class="fa fa-check" aria-hidden="true"></i>
@@ -56,7 +56,7 @@
                       </ng-template>
                       )
                     </li>
-                    <img [src]="answer.attachment">
+                    <img [src]="answer?.attachment">
                   </ul>
                 </div>
                 <div class="col-7">

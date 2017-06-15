@@ -86,10 +86,12 @@ export class EntitiesTableComponent<T> implements OnInit, OnChanges {
 
     if (order === ORDER_ASC) {
       this.order[index + 1] = ORDER_ASC;
-      this.entities.sort((e1: T, e2: T) => e1[propName].localeCompare(e2[propName]));
+      this.entities.sort((e1: T, e2: T) => isNaN(Number(e1[propName])) ?
+        e2[propName].localeCompare(e1[propName]) : e1[propName] - e2[propName]);
     } else {
       this.order[index + 1] = ORDER_DESC;
-      this.entities.sort((e1: T, e2: T) => e2[propName].localeCompare(e1[propName]));
+      this.entities.sort((e1: T, e2: T) => isNaN(Number(e1[propName])) ?
+        e1[propName].localeCompare(e2[propName]) : e2[propName] - e1[propName]);
     }
   }
 }
