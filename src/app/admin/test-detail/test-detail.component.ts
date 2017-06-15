@@ -85,17 +85,7 @@ export class TestDetailComponent implements OnInit {
     }
   }
 
-  getTestDetails() {
-    this.testDetailService.getTestDetails(this.curenntTestId)
-      .subscribe(res => this.testDetails = res);
-  }
-
-  createTestDetail() {
-    this.testDetailService.createTestDetail(+this.curenntTestId, 5, 1, 1).subscribe(() => this.getTestDetails());
-  }
-
-
-// Method for opening editing and deleting commo modal window
+// Method for opening editing and deleting common modal window
 
 add(testDetail: TestDetail) {
   this.configs[2]['test_id'] = this.curenntTestId;
