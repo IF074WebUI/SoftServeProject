@@ -11,29 +11,38 @@
         <form *ngIf="action == 'add_edit'" class="form-group"
               class="dynamic-form"
               [formGroup]="form" (ngSubmit)="submitted.emit(form.value)"
-             >
+        >
           <ng-container
             *ngFor="let field of config"
             dynamicField
             [config]="field"
             [group]="form">
           </ng-container>
-          <div
-            class="dynamic-field form-button">
-            <button  [disabled]="!form.valid" type="submit" class="btn btn-primary btn-lg"> {{ SUBMIT_ADD_EDIT }}</button>
+
+          <div class="modal-footer">
+            <div class="dynamic-field form-button">
+              <button [disabled]="!form.valid" type="submit" class="btn btn-primary"> {{ SUBMIT_ADD_EDIT }}
+              </button>
+            </div>
+            <div class="dynamic-field form-button">
+              <button type="button" class="btn btn-default" (click)="cancel()">{{CLOSE}}</button>
+            </div>
           </div>
         </form>
-
-      <div  *ngIf="action == 'delete'">
-       {{CONFIRM_QUESTION}}?
-      </div>
-      </div>
-      <div class="modal-footer">
-        <div *ngIf="action == 'delete'" class="modal-footer">
-          <button type="submit" class="btn btn-danger"  (click)="submitDelete()" > {{CONFIRM_DELETE}}</button>
+        <div *ngIf="action == 'delete'">
+          {{CONFIRM_QUESTION}}?
         </div>
-        <button type="button" class="btn btn-default"  (click)="cancel()" >{{CLOSE}}</button>
+
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+
+      <div *ngIf="action == 'delete'" class="modal-footer">
+        <div class="dynamic-field form-button">
+          <button type="submit" class="btn btn-danger" (click)="submitDelete()"> {{CONFIRM_DELETE}}</button>
+        </div>
+        <div class="dynamic-field form-button">
+          <button type="button" class="btn btn-default" (click)="cancel()">{{CLOSE}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

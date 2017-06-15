@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { Subject } from './subject';
-import { StatisticsService } from '../statistics/statistics.service';
-import { GetRecordsRangeService } from '../services/get-records-range.service';
-import { GetRecordsBySearchService } from '../services/get-records-by-search.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
-import { SUBJECTS_CONFIG } from '../universal/dynamic-form/config';
-import { SubjectService } from './subject.service';
+import {Subject} from './subject';
+import {StatisticsService} from '../statistics/statistics.service';
+import {GetRecordsRangeService} from '../services/get-records-range.service';
+import {GetRecordsBySearchService} from '../services/get-records-by-search.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import {SUBJECTS_CONFIG} from '../universal/dynamic-form/config';
+import {SubjectService} from './subject.service';
 import {DeleteRecordByIdService} from '../services/delete-record-by-id.service';
 
 declare const $: any;
@@ -26,22 +26,25 @@ export class SubjectComponent implements OnInit {
   btnClass: string = 'fa fa-calendar';
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = SUBJECTS_CONFIG;
+
   constructor(private statisticsService: StatisticsService,
               private getRecordsRangeService: GetRecordsRangeService,
               private getRecordsBySearchService: GetRecordsBySearchService,
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private subjectService: SubjectService,
-              private deleteRecordByIdService: DeleteRecordByIdService) {}
+              private deleteRecordByIdService: DeleteRecordByIdService) {
+  }
 
   ngOnInit() {
     this.page = 1;
     this.recordsPerPage = 5;
     this.getCountRecords();
     this.getSubjectsRange();
-    this.headers = ['№', 'Назва предмету', 'Опис' ];
+    this.headers = ['№', 'Назва предмету', 'Опис'];
     this.displayPropertiesOrder = ['subject_name', 'subject_description'];
   }
+
   getSubjectsRange() {
     if (this.numberOfRecords <= (this.page - 1) * this.recordsPerPage) {
       --this.page;
@@ -51,19 +54,23 @@ export class SubjectComponent implements OnInit {
         this.subjects = data;
       });
   }
+
   getCountRecords() {
     this.statisticsService.getCountRecords('subject').subscribe((data) => {
       this.numberOfRecords = data.numberOfRecords;
     });
   }
+
   changePage(page: number) {
     this.page = page;
     this.getSubjectsRange();
   }
+
   changeNumberOfRecordsPerPage(newNumberOfRecordsPerPage: number) {
     this.recordsPerPage = newNumberOfRecordsPerPage;
     this.getSubjectsRange();
   }
+
   startSearch(criteria: string) {
     if (criteria === '') {
       this.getSubjectsRange();
@@ -82,6 +89,7 @@ export class SubjectComponent implements OnInit {
         err => this.router.navigate(['/bad_request']));
     }
   }
+
   onTimeTableNavigate(subject: Subject) {
     this.router.navigate(['./timetable'], {
       queryParams: {
@@ -91,6 +99,7 @@ export class SubjectComponent implements OnInit {
       relativeTo: this.activatedRoute.parent
     });
   }
+
   onTestsNavigate(subject: Subject) {
     this.router.navigate(['subject/tests'], {
       queryParams: {
@@ -105,27 +114,31 @@ export class SubjectComponent implements OnInit {
     this.popup.sendItem(new Subject(), 'subject');
     this.popup.showModal();
   }
+
   edit(subject: Subject) {
     this.popup.sendItem(subject);
     this.popup.showModal();
   }
+
   del(subject: Subject) {
     this.popup.deleteEntity(subject);
   }
+
   formSubmitted(inputSubject) {
     if (!inputSubject.subject_id) {
       this.subjectService.createSubject(inputSubject).subscribe(() => {
         this.numberOfRecords++;
         this.getSubjectsRange();
-        $('#add_edit_deletePopup').modal('hide');
+        this.popup.cancel();
       });
     } else {
       this.subjectService.updateSubject(inputSubject).subscribe(() => {
         this.getSubjectsRange();
-        $('#add_edit_deletePopup').modal('hide');
+        this.popup.cancel();
       });
     }
   }
+
   deleteSubject(deletedSubject) {
     this.deleteRecordByIdService.deleteRecordsById('subject', deletedSubject.subject_id).subscribe(() => {
       this.getSubjectsRange();
