@@ -16,23 +16,17 @@ export class StatisticsComponent implements OnInit {
   entity: Statistic[];
   activeTab: number = 0;
   data: any;
-  count: number[];
-  dataValue: number[] = [];
+  entityNames: string[];
+  entityHeaders: string[];
+  entityCountValue = [];
   constructor(private statistics: StatisticsService,
               private spinner: SpinnerService,
               private router: Router,
               private groupService: GroupService,
               private spesialityService: SpecialitiesService,
               private studentsService: StudentsService) {
-    this.entity = [
-      {name: 'speciality', descriptiion: 'Спеціальності', count: 0},
-      {name: 'group', descriptiion: 'Групи', count: 0},
-      {name: 'subject', descriptiion: 'Предмети', count: 0},
-      {name: 'test', descriptiion: 'Тести', count: 0},
-      {name: 'student', descriptiion: 'Студенти', count: 0},
-      {name: 'question', descriptiion: 'Питання', count: 0}
-      ];
-    this.count = [];
+    this.entityHeaders = ['Спеціальності', 'Групи', 'Предмети', 'Тести', 'Студенти', 'Питання'];
+    this.entityNames = ['speciality', 'group', 'subject', 'test', 'student', 'question'];
     this.data = {
       labels: [],
       datasets: [
@@ -47,28 +41,29 @@ export class StatisticsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('check');
     this.getData();
-    this.setData();
   }
 
   getData() {
-    // for (let i = 0; i <= this.entity.length - 1; i++) {
-    //   this.statistics.getCountRecords(this.entity[i]['name']).subscribe((data) => {
-    //       this.count.push(data.numberOfRecords),
-    //     err => this.router.navigate(['/bad_request']);
-    // });
-    // }
-    console.log('hi');
+    this.data.labels = this.entityHeaders;
+      for (let entity of this.entityNames) {
+        this.statistics.getCountRecords(entity).subscribe(
+          (res) => { this.entityCountValue.push(res.numberOfRecords);
+          this.data['datasets'][0].data = this.entityCountValue; console.log(res.numberOfRecords, this.entityCountValue.length, this.data.labels);
+          });
+        // err => this.router.navigate(['/bad_request'])
+        }
+      // this.setData();
   }
-  new() {};
-  setData() {
-    this.refreshData();
-      for (let i = 0; i <= this.entity.length - 1; i++) {
-        this.data.labels.push(this.entity[i].descriptiion);
-        this.data.datasets[0].data[i] = +this.count[i];
-      }
-  }
+
+  // setData() {
+  //   this.refreshData();
+  //   this.data.labels = this.entityHeaders;
+  //   // this.data['datasets'][0].data = this.entityCountValue;
+  //   for (let i = 0; i <= this.data.labels.length; i ++) {
+  //     console.log(this.data.labels[i] + " sdfdsf " + this.entityCountValue);
+  //   }
+  // }
 
   refreshData() {
     this.data.labels.length = 0;
