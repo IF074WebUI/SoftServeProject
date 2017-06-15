@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 import { ADMINUSER_CONFIG } from '../universal/dynamic-form/config';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {SpinnerService} from '../universal/spinner/spinner.service';
+import {ToastsManager} from 'ng2-toastr';
 
 
 @Component({
@@ -17,6 +19,9 @@ export class AdminUserComponent implements OnInit {
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
+  MODAL_ADD = 'Додати адміністратора';
+  HEADER  = 'Адміністратори';
+  MODAL_REQUIRED = 'Поле обов\'язкове до заповнення';
   configs = ADMINUSER_CONFIG;
   AdminUsers: AdminUser[] = [];
   count: number;
@@ -29,7 +34,8 @@ export class AdminUserComponent implements OnInit {
   AdminForEditForm: FormGroup;
   AdminForEdit: AdminUser;
 
-  constructor(private AdminUserService: AdminUserService, private router: Router) { }
+  constructor(private AdminUserService: AdminUserService, private router: Router,
+              private spinner: SpinnerService, private toastr: ToastsManager) { }
 
   ngOnInit() {
     this.getAdmins();
@@ -40,18 +46,24 @@ export class AdminUserComponent implements OnInit {
   }
 
   getCount(): void {
-    this.AdminUserService.getCount().subscribe(resp => this.count = resp,
-      err => this.router.navigate(['/bad_request']));
+    this.AdminUserService.getCount().subscribe(resp => {
+      this.count = resp;
+    }, err => {
+      this.toastr.error(err);
+    });
   }
 
   getAdmins() {
+    this.spinner.showSpinner();
     if (this.count <= (this.page - 1) * this.countPerPage) {
       --this.page;
     }
     this.getCount();
     this.AdminUserService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
-      .subscribe((resp: AdminUser[]) => this.AdminUsers = resp,
-        err => this.router.navigate(['/bad_request'])
+      .subscribe((resp: AdminUser[]) => {
+        this.AdminUsers = resp;
+        this.spinner.hideSpinner();
+      }, err => this.router.navigate(['/bad_request'])
       );
   }
 
@@ -87,12 +99,23 @@ export class AdminUserComponent implements OnInit {
     this.AdminUserService.insert(value).subscribe(resp => {
       this.getAdmins();
       this.popup.cancel();
-    }, error2 => this.router.navigate(['/bad_request']));
+      this.toastr.success(`Адміністратор ${value['username']} успішно створений`);
+    }, error2 => {
+      this.toastr.error(error2);
+    });
   }
 
   submitDelete(AdminUser: AdminUser) {
-    this.AdminUserService.del(AdminUser['id']).subscribe(response => this.getAdmins(),
-      error => this.router.navigate(['/bad_request'])
-    );
+    this.AdminUserService.del(AdminUser['id']).subscribe(response => {
+      this.getAdmins();
+      this.toastr.success(`Адміністратор ${AdminUser['username']} успішно видалений`);
+    },  error => {
+      this.toastr.error(error);
+    });
+  }
+
+  changeCountPerPage(itemsPerPage: number) {
+    this.countPerPage = itemsPerPage;
+    this.getAdmins();
   }
 }

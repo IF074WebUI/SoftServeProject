@@ -1,8 +1,13 @@
 <h1>{{MAIN_HEADER}}</h1>
 
-<dtester-search (searchCriteria)="searchStudent($event)"></dtester-search>
-
-<dtester-items-per-page [numberOfRecords]="count" (recordsPerPageChanged)="changeCountPerPage($event)"></dtester-items-per-page>
+<div class="alert alert-info" role="alert">
+  <button class="btn btn-primary" (click)="add()">{{MODAL_ADD}}</button>
+  <dtester-search (searchCriteria)="searchStudent($event)">
+  </dtester-search>
+  <dtester-items-per-page [numberOfRecords]="count"
+                          (recordsPerPageChanged)="changeCountPerPage($event)">
+  </dtester-items-per-page>
+</div>
 
 <dtester-entities-table [entities]="students"
                         [headers]="headers"
@@ -19,10 +24,11 @@
 </dtester-entities-table>
 
 <div class="app">
-  <dynamic-form [config]="configs" (submitted)="formSubmitted($event)" (youCanDelete)="submitDelete($event)"></dynamic-form>
+  <dynamic-form [config]="configs"
+                (submitted)="formSubmitted($event)"
+                (youCanDelete)="submitDelete($event)">
+  </dynamic-form>
 </div>
-
-<button class="btn btn-lg btn-outline-primary" (click)="add()">{{MODAL_ADD}}</button>
 
 <div class="text-center">
   <dtester-pagination [countRecords]="count"

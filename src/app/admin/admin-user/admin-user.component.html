@@ -1,4 +1,11 @@
-<h1>Адміністратори</h1>
+<h1>{{HEADER}}</h1>
+
+<div class="alert alert-info" role="alert">
+  <button class="btn btn-primary" (click)="add()">{{MODAL_ADD}}</button>
+  <dtester-items-per-page [numberOfRecords]="count"
+                          (recordsPerPageChanged)="changeCountPerPage($event)">
+  </dtester-items-per-page>
+</div>
 
 <dtester-entities-table [entities]="AdminUsers"
                         [headers]="headers"
@@ -12,8 +19,6 @@
                         [canDelete]="true"
                         [sortProperties]="sortProperties">
 </dtester-entities-table>
-
-<button class="btn btn-lg btn-outline-primary" (click)="add()">Додати Адміністратора</button>
 
 <div class="text-center">
   <dtester-pagination [countRecords]="count"
