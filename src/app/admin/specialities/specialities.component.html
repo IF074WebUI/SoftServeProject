@@ -1,33 +1,28 @@
 <h3 class="text-center">Спеціальності</h3>
-
-<div class="header-group">
-  <dtester-items-per-page [numberOfRecords]="count"
-                          (recordsPerPageChanged)="changeCountPerPage($event)">
-  </dtester-items-per-page>
+<div class="alert alert-info" role="alert">
+  <button class="btn btn-primary" (click)="add()">
+    Додати спеціальність
+  </button>
+  <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
+  <div class="header-group">
+    <dtester-items-per-page [numberOfRecords]="count"
+                            (recordsPerPageChanged)="changeCountPerPage($event)">
+    </dtester-items-per-page>
+  </div>
 </div>
-
-<dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
-
 <dtester-entities-table
   [entities]="specialities" [headers]="headers" [ignoreProperties]="ignoreProperties"
   [displayPropertiesOrder]="displayPropertiesOrder" (deleteEntity)="delete($event)"
   [page]="page" [itemsPerPage]="countPerPage" [sortProperties]="sortProperties"
   (editEntity)="edit($event)" (clickEntity)="getGroupsBySpeciality($event)">
 </dtester-entities-table>
-
-<button class="btn btn-primary" (click)="add()">
-  Додати спеціальність
-</button>
-
 <div class="text-center">
   <dtester-pagination [countRecords]="count" [recordsPerPage]="countPerPage" [currentPage]="page"
                       (pageChanged)="changePage($event)">
   </dtester-pagination>
 </div>
-
 <div class="app">
   <dynamic-form
     [config]="configs" (submitted)="formSubmitted($event)" (youCanDelete)="submitDelete($event)">
   </dynamic-form>
 </div>
-

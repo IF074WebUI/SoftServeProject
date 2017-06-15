@@ -21,6 +21,8 @@ export class DeleteTimetableComponent implements OnInit {
       .subscribe(() => {
         this.changeNumberOfRecords.emit('deletingRecord');
         this.toastsManager.success('Розклад успішно видалений');
+      }, () => {
+        this.toastsManager.error('Помилка. Спробуйте ще раз');
       });
   }
 
