@@ -4,6 +4,7 @@ import { timeValidator } from '../time-validator';
 import { TimetableService } from '../timetable.service';
 import { Group } from '../../group/group';
 import { Timetable } from '../timetable';
+import {ToastsManager} from "ng2-toastr";
 
 declare var $: any;
 
@@ -20,7 +21,8 @@ export class AddUpdateTimetableComponent implements OnInit, OnChanges {
   timetableForm: FormGroup;
   @Output() getTimetableRecords = new EventEmitter();
   @Output() changeNumberOfRecords = new EventEmitter<string>();
-  constructor(private timetableService: TimetableService) {
+  constructor(private timetableService: TimetableService,
+              private toastsManager: ToastsManager) {
     this.timetableForm = new FormGroup({
       'group_id': new FormControl('', Validators.required),
       'subject_id': new FormControl('', Validators.required),
@@ -70,8 +72,11 @@ export class AddUpdateTimetableComponent implements OnInit, OnChanges {
     this.timetableService.createTimeTable(this.timetableForm.value)
       .subscribe(() => {
         this.changeNumberOfRecords.emit('addingRecord');
-        this.timetableForm.reset();
         $('#add-update-timetable').modal('hide');
+        this.getTimetableRecords.emit();
+        this.toastsManager.success(`Розклад успішно створений`);
+      }, () => {
+        this.toastsManager.error('Помилка. Спробуйте ще раз');
       });
   }
   updateTimeTable() {
@@ -79,6 +84,7 @@ export class AddUpdateTimetableComponent implements OnInit, OnChanges {
       .subscribe(() => {
         this.getTimetableRecords.emit();
         $('#add-update-timetable').modal('hide');
+        this.toastsManager.success(`Розклад успішно відредагований`);
       });
   }
 }

@@ -8,6 +8,7 @@ import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-
 import {SUBJECTS_CONFIG} from '../universal/dynamic-form/config';
 import {SubjectService} from './subject.service';
 import {DeleteRecordByIdService} from '../services/delete-record-by-id.service';
+import {ToastsManager} from "ng2-toastr";
 
 declare const $: any;
 
@@ -33,7 +34,8 @@ export class SubjectComponent implements OnInit {
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private subjectService: SubjectService,
-              private deleteRecordByIdService: DeleteRecordByIdService) {
+              private deleteRecordByIdService: DeleteRecordByIdService,
+              private toastsManager: ToastsManager) {
   }
 
   ngOnInit() {
@@ -130,11 +132,13 @@ export class SubjectComponent implements OnInit {
         this.numberOfRecords++;
         this.getSubjectsRange();
         this.popup.cancel();
+        this.toastsManager.success(`Предмет "${inputSubject.subject_name}" успішно створено.`);
       });
     } else {
       this.subjectService.updateSubject(inputSubject).subscribe(() => {
         this.getSubjectsRange();
         this.popup.cancel();
+        this.toastsManager.success(`Предмет "${inputSubject.subject_name}" успішно відредаговано.`);
       });
     }
   }
@@ -142,6 +146,7 @@ export class SubjectComponent implements OnInit {
   deleteSubject(deletedSubject) {
     this.deleteRecordByIdService.deleteRecordsById('subject', deletedSubject.subject_id).subscribe(() => {
       this.getSubjectsRange();
+      this.toastsManager.success(`Предмет "${deletedSubject.subject_name}" успішно видалено.`);
       --this.numberOfRecords;
     });
   }
