@@ -1,4 +1,4 @@
-import { Component,  OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { StatisticsService } from './statistics.service';
 import { Statistic } from './statistic';
 import {SpinnerService} from '../universal/spinner/spinner.service';
@@ -18,7 +18,7 @@ export class StatisticsComponent implements OnInit {
   data: any;
   entityNames: string[];
   entityHeaders: string[];
-  entityCountValue = [];
+  entityCountValue: number[] = [];
   constructor(private statistics: StatisticsService,
               private spinner: SpinnerService,
               private router: Router,
@@ -31,7 +31,7 @@ export class StatisticsComponent implements OnInit {
       labels: [],
       datasets: [
         {
-          label: 'My First dataset',
+          label: 'system statistic',
           backgroundColor: '#42A5F5',
           borderColor: '#1E88E5',
           data: []
@@ -48,25 +48,9 @@ export class StatisticsComponent implements OnInit {
     this.data.labels = this.entityHeaders;
       for (let entity of this.entityNames) {
         this.statistics.getCountRecords(entity).subscribe(
-          (res) => { this.entityCountValue.push(res.numberOfRecords);
-          this.data['datasets'][0].data = this.entityCountValue; console.log(res.numberOfRecords, this.entityCountValue.length, this.data.labels);
-          });
-        // err => this.router.navigate(['/bad_request'])
+          (res) => { this.entityCountValue.push(+res.numberOfRecords);
+          this.data.datasets[0].data = this.entityCountValue,
+          err => this.router.navigate(['/bad_request']); });
         }
-      // this.setData();
-  }
-
-  // setData() {
-  //   this.refreshData();
-  //   this.data.labels = this.entityHeaders;
-  //   // this.data['datasets'][0].data = this.entityCountValue;
-  //   for (let i = 0; i <= this.data.labels.length; i ++) {
-  //     console.log(this.data.labels[i] + " sdfdsf " + this.entityCountValue);
-  //   }
-  // }
-
-  refreshData() {
-    this.data.labels.length = 0;
-    this.data['datasets'][0].data.length = 0;
   }
 }
