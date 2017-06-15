@@ -6,11 +6,9 @@ import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Observable';
 import { HOST } from '../../constants';
 import { ENTITY } from './testDetailConsntants';
-import { TestDetail } from './testDetail';
 
 @Injectable()
 export class TestDetailService {
-  testDetails: TestDetail[] = [];
   constructor(private http: Http) { }
 
   getTestDetails(testId: number) {

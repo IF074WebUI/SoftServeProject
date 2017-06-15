@@ -1,5 +1,5 @@
 <h3 class="text-center">Результати</h3>
-<hr/>
+<div class="alert alert-info" role="alert">
 <form class="form-inline" [formGroup]="searchByGroupTestForm" (submit)="findByGroupTest()">
   <div class="form-group">
     <select class="selectpicker form-control form-control-sm" formControlName="group" data-style="btn-primary">
@@ -29,6 +29,7 @@
 </form>
 <dtester-items-per-page [numberOfRecords]="count" (recordsPerPageChanged)="changeCountPerPage($event)">
 </dtester-items-per-page>
+</div>
 <dtester-entities-table id="print-section" [entities]="results" [ignoreProperties]="IGNORE_PROPERTIES"
                         [headers]="RESULTS_HEADERS" [sortProperties]="sortProperties"
                         [page]="page" [displayPropertiesOrder]="DISPLAY_ORDER" [itemsPerPage]="countPerPage"

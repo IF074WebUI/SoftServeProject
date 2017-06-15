@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import { StatisticsService } from './statistics.service';
-import { Statistic } from './statistic';
 import {SpinnerService} from '../universal/spinner/spinner.service';
 import { GroupService } from '../group/group.service';
 import { SpecialitiesService } from '../services/specialities.service';
@@ -13,8 +12,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./statistics.component.css']
 })
 export class StatisticsComponent implements OnInit {
-  entity: Statistic[];
-  activeTab: number = 0;
   data: any;
   entityNames: string[];
   entityHeaders: string[];
@@ -39,18 +36,19 @@ export class StatisticsComponent implements OnInit {
       ]
     };
   }
-
   ngOnInit() {
     this.getData();
-  }
+  };
 
   getData() {
     this.data.labels = this.entityHeaders;
       for (let entity of this.entityNames) {
+        this.spinner.showSpinner();
         this.statistics.getCountRecords(entity).subscribe(
           (res) => { this.entityCountValue.push(+res.numberOfRecords);
-          this.data.datasets[0].data = this.entityCountValue,
-          err => this.router.navigate(['/bad_request']); });
+            this.data.datasets[0].data = this.entityCountValue;
+            this.spinner.hideSpinner(),
+            err => this.router.navigate(['/bad_request']); });
         }
   }
 }

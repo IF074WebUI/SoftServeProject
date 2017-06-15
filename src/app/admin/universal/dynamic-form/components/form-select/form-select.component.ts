@@ -23,7 +23,6 @@ export class FormSelectComponent<T> implements OnInit {
       this.entities = resp;
       this.Properties = Object.getOwnPropertyNames(this.entities[0]);
       if (this.config.name === 'Speciality'){this.item_name = this.Properties[+[2]]} else {this.item_name = this.Properties[+[1]]}
-      console.log(this.Properties);
     });
 
 
