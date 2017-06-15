@@ -104,7 +104,6 @@ export const STUDENT_CONFIG =
   [
     {
       type: 'input',
-   //   text: '',
       label: `Ім'я студента`,
       name: 'student_name',
       placeholder: `Введіть ім'я студента`,
@@ -112,14 +111,13 @@ export const STUDENT_CONFIG =
     },
     {
       type: 'input',
-   //   text: '',
       label: `Прізвище студента`,
       name: 'student_surname',
       placeholder: `Введіть прізвище студента`,
+      required: true
     },
     {
       type: 'input',
-  //    text: '',
       label: `По-батькові студента`,
       name: 'student_fname',
       placeholder: `Введіть по-батькові студента`,
@@ -130,30 +128,31 @@ export const STUDENT_CONFIG =
       label: `Номер залікової книжки студента`,
       name: 'gradebook',
       placeholder: `Введіть номер залікової книжки студента`,
+      required: true
     },
     {
       type: 'email',
       label: `Електронна пошта студента`,
       name: 'email',
-      placeholder: `Введіть адрес електроної пошти студента`
+      placeholder: `Введіть адрес електроної пошти студента`,
+      required: true,
+      emailPattern: true
     },
     {
       type: 'id',
-      //     text: null,
       label: 'ID студента',
       name: 'group_id',
-      placeholder: '',
+      placeholder: ''
     },
     {
       type: 'select',
-      //   text: '',
       label: 'Група',
       name: 'group',
       placeholder: 'Виберіть групу',
+      required: true
     },
     {
       type: 'id',
-      // text: null,
       label: 'ID',
       name: 'user_id',
       placeholder: ''
@@ -323,37 +322,38 @@ export const TESTS_CONFIG = [
 export const ADMINUSER_CONFIG = [
   {
     type: 'email',
-    //  text: '',
     label: 'E-mail:',
     name: 'email',
     placeholder: 'Введіть e-mail',
-    required: true
+    required: true,
+    emailPattern: true
   },
   {
     type: 'id',
-    //  text: null,
     label: 'ID',
     name: 'id',
-    placeholder: '',
+    placeholder: ''
   },
   {
     type: 'input',
     label: 'Пароль',
     name: 'password',
-    placeholder: 'Введіть пароль:'
+    placeholder: 'Введіть пароль:',
+    required: true
   },
   {
     type: 'input',
     label: 'Повторіть пароль:',
     name: 'password_confirm',
-    placeholder: 'Повторіть пароль'
+    placeholder: 'Повторіть пароль',
+    required: true
   },
   {
     type: 'input',
-    //     text: '',
     label: 'Логін:',
     name: 'username',
     placeholder: 'Введіть логін',
+    required: true
   }
 ];
 
