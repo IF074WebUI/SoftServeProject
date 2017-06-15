@@ -19,7 +19,6 @@ export class AnswersComponent implements OnInit {
   headers: string[];
   ignoreProperties: string[];
   btnClass = 'fa fa-question';
-  imgAttach = 'answer.attachment';
   CREATING_NEW_ANSWER = 'Додати нову відповідь';
   question_id: number;
 
@@ -49,18 +48,6 @@ export class AnswersComponent implements OnInit {
         }
       });
     }
-    // else
-    // if (level) {
-    //   this.questionsService.getQuestionsByLevelRand(this.test_id, level, number).subscribe(resp => {
-    //     if (resp['response'] === 'no records') {
-    //       this.questionsOnPage = [];
-    //     } else {
-    //       this.questionsOnPage = resp;
-    //     }
-    //   });
-    // } else {
-    //   this.getQuestions();
-    // }}
   }
   getAnswers(): void {
     this.spinner.showSpinner();
@@ -90,10 +77,6 @@ export class AnswersComponent implements OnInit {
     this.getAnswers();
   }
 
-  // getRecordsRangeByTest(test: Test){
-  //   this.router.navigate(['./question'], {queryParams: {'testId': test.test_id}, relativeTo: this.activatedRoute.parent});
-  // }
-  // search group
   startSearch(criteria: string) {   /* callback method for output in search component */
     this.spinner.showSpinner();
     if (criteria === '' || +criteria <= 0 ) {

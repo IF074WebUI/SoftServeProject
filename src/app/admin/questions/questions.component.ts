@@ -94,10 +94,6 @@ export class QuestionsComponent implements OnInit {
     this.getQuestions();
   }
 
-  // getRecordsRangeByTest(test: Test){
-  //   this.router.navigate(['./question'], {queryParams: {'testId': test.test_id}, relativeTo: this.activatedRoute.parent});
-  // }
-  // search group
   startSearch(criteria: string) {   /* callback method for output in search component */
     this.spinner.showSpinner();
     if (criteria === '' || +criteria <= 0 ) {

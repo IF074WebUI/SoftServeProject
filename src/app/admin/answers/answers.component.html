@@ -9,8 +9,6 @@
                         [ignoreProperties]="ignoreProperties"
                         [btnClass]="btnClass"
                         [canAction]="true"
-                        [canAct]="true"
-                        [imgAttach]="imgAttach"
                         [page]="pageNumber"
                         [itemsPerPage]="recordsPerPage"
                         (deleteEntity)="del($event)"
@@ -27,9 +25,6 @@
         type="button"
         class="btn btn-primary"
         data-dismiss="modal">{{CREATING_NEW_ANSWER}}</button>
-<div *ngFor="let answer of answersOnPage; let i = index">
-  <img [src]="answer.attachment"  width="200px">
-</div>
 <dynamic-form [config]="configs"
               (submitted)="formSubmitted($event)"
               (youCanDelete)="deleteAnswer($event)">
