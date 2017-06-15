@@ -8,6 +8,8 @@ import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { GetAllRecordsService } from '../services/get-all-records.service';
 import { STUDENT_CONFIG } from '../universal/dynamic-form/config';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import {SpinnerService} from '../universal/spinner/spinner.service';
+import {ToastsManager} from 'ng2-toastr';
 
 @Component({
   selector: 'dtester-students',
@@ -39,7 +41,8 @@ export class StudentsComponent implements OnInit {
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private getRecordsByIdService: GetRecordsByIdService,
-              private getAllRecordsService: GetAllRecordsService) {}
+              private getAllRecordsService: GetAllRecordsService,
+              private spinner: SpinnerService, private toastr: ToastsManager) {}
 
   ngOnInit() {
     this.getStudents();
@@ -61,19 +64,25 @@ export class StudentsComponent implements OnInit {
   }
 
   getStudents(): void {
+    this.spinner.showSpinner();
     if (this.count <= (this.page - 1) * this.countPerPage) {
       --this.page;
     }
     this.getCount();
     this.studentsService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
-      .subscribe(resp => this.getStudentsWithGroupName(resp),
-        err => this.router.navigate(['/bad_request'])
+      .subscribe(resp => {
+        this.getStudentsWithGroupName(resp);
+        this.spinner.hideSpinner();
+      }, err => this.router.navigate(['/bad_request'])
         );
   }
 
   getCount(): void {
-    this.studentsService.getCount().subscribe(resp => this.count = resp,
-      err => this.router.navigate(['/bad_request']));
+    this.studentsService.getCount().subscribe(resp => {
+      this.count = resp;
+    }, err => {
+      this.toastr.error(err);
+    });
   }
 
   changePage(page: number) {
@@ -145,12 +154,18 @@ export class StudentsComponent implements OnInit {
       this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
         this.getStudents();
         this.popup.cancel();
-      }, error2 => this.router.navigate(['/bad_request']));
+        this.toastr.success(`Студент ${value['student_name']} ${value['student_surname']} ${value['student_fname']} успішно створений`);
+      }, error2 => {
+      this.toastr.error(error2);
+    });
   }
 
   submitDelete(student: Student) {
-    this.studentsService.del(student['user_id']).subscribe(response => this.getStudents(),
-      error => this.router.navigate(['/bad_request'])
-    );
+    this.studentsService.del(student['user_id']).subscribe(response => {
+      this.getStudents();
+      this.toastr.success(`Студент ${student['student_name']} ${student['student_surname']} ${student['student_fname']} успішно видалений`);
+    }, error => {
+      this.toastr.error(error);
+      });
   }
 }
