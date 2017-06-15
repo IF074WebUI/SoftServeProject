@@ -32,10 +32,10 @@ export class AdminUserService {
     return this.http.post('http://' + HOST + '/AdminUser/insertData', body).map(resp => resp.json());
   }
 
-  update(id, username, email): Observable<AdminUser> {
+  update(AdminForm, id): Observable<AdminUser> {
     let body = {
-      'username': username,
-      'email': email
+      'username': AdminForm.username,
+      'email': AdminForm.email
     };
     return this.http.post('http://' + HOST + '/AdminUser/update/' + id, body).map(resp => resp.json());
   }

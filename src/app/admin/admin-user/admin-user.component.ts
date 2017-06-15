@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AdminUser } from './admin-user';
 import {AdminUserService} from './admin-user.service';
 import { Router } from '@angular/router';
-import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
+import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 import { ADMINUSER_CONFIG } from '../universal/dynamic-form/config';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 
 @Component({
@@ -25,11 +26,17 @@ export class AdminUserComponent implements OnInit {
   ignoreProperties = ['password', 'logins', 'last_login'];
   displayProperties = ['email', 'username'];
   sortProperties = ['email', 'username'];
+  AdminForEditForm: FormGroup;
+  AdminForEdit: AdminUser;
 
   constructor(private AdminUserService: AdminUserService, private router: Router) { }
 
   ngOnInit() {
     this.getAdmins();
+    this.AdminForEditForm = new FormGroup ({
+      'email': new FormControl('', Validators.required),
+      'username': new FormControl('', Validators.required)
+    });
   }
 
   getCount(): void {
@@ -53,15 +60,18 @@ export class AdminUserComponent implements OnInit {
     this.getAdmins();
   }
 
-  edit(AdminUser: AdminUser) {
-    this.popup.sendItem(
-      {
-        email: AdminUser.email,
-        id: AdminUser.id,
-        username: AdminUser.username
-      }
-    );
-    this.popup.showModal();
+  selectedAdmin(Admin) {
+    this.AdminForEdit = Admin;
+    this.AdminForEditForm.setValue({
+      email: this.AdminForEdit.email,
+      username: this.AdminForEdit.username
+    });
+  }
+
+  edit() {
+    this.AdminUserService.update(this.AdminForEditForm.value , this.AdminForEdit.id).subscribe(resp => {
+        this.getAdmins();
+      });
   }
 
   del(AdminUser: AdminUser) {
@@ -74,17 +84,10 @@ export class AdminUserComponent implements OnInit {
   }
 
   formSubmitted(value) {
-    if (value['id']) {
-      this.AdminUserService.update(value['id'], value['username'], value['email']).subscribe(resp => {
-        this.getAdmins();
-        this.popup.cancel();
-      }, error2 => this.router.navigate(['/bad_request']));
-    } else {
-      this.AdminUserService.insert(value).subscribe(resp => {
-        this.getAdmins();
-        this.popup.cancel();
-      }, error2 => this.router.navigate(['/bad_request']));
-    }
+    this.AdminUserService.insert(value).subscribe(resp => {
+      this.getAdmins();
+      this.popup.cancel();
+    }, error2 => this.router.navigate(['/bad_request']));
   }
 
   submitDelete(AdminUser: AdminUser) {
