@@ -1,23 +1,56 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { StatisticsService } from './statistics.service';
+import { Statistic } from './statistic';
+import {SpinnerService} from '../universal/spinner/spinner.service';
+import { GroupService } from '../group/group.service';
+import { SpecialitiesService } from '../services/specialities.service';
+import { StudentsService } from '../students/students.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-statistics',
+  selector: 'dtester-statistics',
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.css']
 })
 export class StatisticsComponent implements OnInit {
-  entities: string[] = ['speciality', 'group', 'subject', 'test', 'student', 'question'];
-  entitiesNumber = {};
-
-
-  constructor(private statistics: StatisticsService) { }
+  entity: Statistic[];
+  activeTab: number = 0;
+  data: any;
+  entityNames: string[];
+  entityHeaders: string[];
+  entityCountValue: number[] = [];
+  constructor(private statistics: StatisticsService,
+              private spinner: SpinnerService,
+              private router: Router,
+              private groupService: GroupService,
+              private spesialityService: SpecialitiesService,
+              private studentsService: StudentsService) {
+    this.entityHeaders = ['Спеціальності', 'Групи', 'Предмети', 'Тести', 'Студенти', 'Питання'];
+    this.entityNames = ['speciality', 'group', 'subject', 'test', 'student', 'question'];
+    this.data = {
+      labels: [],
+      datasets: [
+        {
+          label: 'system statistic',
+          backgroundColor: '#42A5F5',
+          borderColor: '#1E88E5',
+          data: []
+        }
+      ]
+    };
+  }
 
   ngOnInit() {
-    for (const entity of this.entities) {
-      this.statistics.getCountRecords(entity).subscribe((data) => {
-        this.entitiesNumber[entity] = data.numberOfRecords;
-      });
-    }
+    this.getData();
+  }
+
+  getData() {
+    this.data.labels = this.entityHeaders;
+      for (let entity of this.entityNames) {
+        this.statistics.getCountRecords(entity).subscribe(
+          (res) => { this.entityCountValue.push(+res.numberOfRecords);
+          this.data.datasets[0].data = this.entityCountValue,
+          err => this.router.navigate(['/bad_request']); });
+        }
   }
 }

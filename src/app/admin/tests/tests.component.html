@@ -1,4 +1,4 @@
-<h2 *ngIf="tests.length">Тести з :{{tests[0]?.subject_name}}</h2>
+<h2>Тести з :{{subjectNameQueryParam}}</h2>
 
 <dtester-entities-table [entities]="tests"
                         [headers]="headers"
@@ -12,5 +12,5 @@
 
 <button type="button" class="btn btn-primary" (click)="openModalAddTest()">Додати тест</button>
 
-<app-add-update-test (getTests)="getAllTests()" [updatedTest]="updatedTest" [subjects]="subjects" [action]="action"></app-add-update-test>
-<app-delete-test [deletedTest]="deletedTest" (getTests)="getAllTests()" ></app-delete-test>
+<app-add-update-test (getTests)="getTestsForOneSubject()" [updatedTest]="updatedTest" [subjects]="subjects" [action]="action"></app-add-update-test>
+<app-delete-test [deletedTest]="deletedTest" (getTests)="getTestsForOneSubject()" ></app-delete-test>

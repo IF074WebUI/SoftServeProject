@@ -20,8 +20,7 @@ export class LoginComponent implements OnInit {
 
   login(form: FormGroup): void {
     this.loginService.login(form.controls['name'].value, form.controls['password'].value)
-      .mergeMap(res => this.checkIfLogged()).subscribe(response => {
-      }, err => {
+      .mergeMap(res => this.checkIfLogged()).subscribe(response => {}, err => {
         if (JSON.parse(err['_body'])['response'] === INVALID_CREDENTIALS) {
           this.invalidCredentials = true;
         }

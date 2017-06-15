@@ -20,7 +20,6 @@ import { GROUP_CONFIG } from '../universal/dynamic-form/config';
 })
 export class GroupComponent implements OnInit {
 
-  isLoading: boolean;
   groupsOnPage: Group[];
   pageNumber: number = 1;
   offset = 5;   /*number of the records for the stating page*/
@@ -29,7 +28,10 @@ export class GroupComponent implements OnInit {
   ignoreProperties: string[];
   btnClass: string = 'fa fa-calendar';
   CREATING_NEW_GROUP = 'Додати нову групу';
-
+  DISPLAY_PROPERTIES_ORDER: string[] = ['group_name'];
+  SORT_PROPERTIES: string[] = ['group_name'];
+  displayPropertiesOrder: string[];
+  sortProperties: string[];
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = GROUP_CONFIG;
 
@@ -39,6 +41,8 @@ export class GroupComponent implements OnInit {
               private spinner: SpinnerService
   ) {}
   ngOnInit() {
+    this.sortProperties = this.SORT_PROPERTIES;
+    this.displayPropertiesOrder = this.DISPLAY_PROPERTIES_ORDER;
     this.headers = GROUPS_HEADERS;
     this.ignoreProperties = IGNORE_PROPERTIES;
     let specialityId = this.route.snapshot.queryParams['specialityId'];

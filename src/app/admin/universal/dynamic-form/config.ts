@@ -103,18 +103,6 @@ export const GROUP_CONFIG =
 export const STUDENT_CONFIG =
   [
     {
-      type: 'id',
-      label: 'ID студента',
-      name: 'group_id',
-      placeholder: '',
-    },
-    {
-      type: 'select',
-      label: 'Група',
-      name: 'Group',
-      placeholder: 'Виберіть групу',
-    },
-    {
       type: 'input',
       label: `Ім'я студента`,
       name: 'student_name',
@@ -122,16 +110,17 @@ export const STUDENT_CONFIG =
       required: true
     },
     {
-      type: 'number',
-      label: `По-батькові студента`,
-      name: 'student_second_name',
-      placeholder: `Введіть по-батькові студента`,
+      type: 'input',
+      label: `Прізвище студента`,
+      name: 'student_surname',
+      placeholder: `Введіть прізвище студента`,
+      required: true
     },
     {
       type: 'input',
-      label: `Прізвище студента`,
+      label: `По-батькові студента`,
       name: 'student_fname',
-      placeholder: `Введіть прізвище студента`,
+      placeholder: `Введіть по-батькові студента`,
       required: true
     },
     {
@@ -139,19 +128,34 @@ export const STUDENT_CONFIG =
       label: `Номер залікової книжки студента`,
       name: 'gradebook',
       placeholder: `Введіть номер залікової книжки студента`,
+      required: true
     },
     {
       type: 'email',
       label: `Електронна пошта студента`,
       name: 'email',
       placeholder: `Введіть адрес електроної пошти студента`,
+      required: true,
       emailPattern: true
     },
     {
-      type: 'input_file',
-      label: `Фотографія студента`,
-      name: 'imageURL',
-      placeholder: ``,
+      type: 'id',
+      label: 'ID студента',
+      name: 'group_id',
+      placeholder: ''
+    },
+    {
+      type: 'select',
+      label: 'Група',
+      name: 'group',
+      placeholder: 'Виберіть групу',
+      required: true
+    },
+    {
+      type: 'id',
+      label: 'ID',
+      name: 'user_id',
+      placeholder: ''
     }
   ];
 export const TEST_DETAIL_CONFIG = [
@@ -314,6 +318,45 @@ export const TESTS_CONFIG = [
     placeholder: 'Виберіть предмет',
   }
 ];
+
+export const ADMINUSER_CONFIG = [
+  {
+    type: 'email',
+    label: 'E-mail:',
+    name: 'email',
+    placeholder: 'Введіть e-mail',
+    required: true,
+    emailPattern: true
+  },
+  {
+    type: 'id',
+    label: 'ID',
+    name: 'id',
+    placeholder: ''
+  },
+  {
+    type: 'input',
+    label: 'Пароль',
+    name: 'password',
+    placeholder: 'Введіть пароль:',
+    required: true
+  },
+  {
+    type: 'input',
+    label: 'Повторіть пароль:',
+    name: 'password_confirm',
+    placeholder: 'Повторіть пароль',
+    required: true
+  },
+  {
+    type: 'input',
+    label: 'Логін:',
+    name: 'username',
+    placeholder: 'Введіть логін',
+    required: true
+  }
+];
+
 
 
 

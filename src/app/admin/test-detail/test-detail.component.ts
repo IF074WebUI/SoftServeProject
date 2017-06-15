@@ -30,6 +30,10 @@ export class TestDetailComponent implements OnInit {
   MAIN_HEADER: string = 'Деталі тесту ';
   testName: string;
   CREATE_NEW_DETAIL: string;
+  DISPLAY_PROPERTIES_ORDER: string[] = ['level', 'tasks', 'rate'];
+  SORT_PROPERTIES: string[] = ['level'];
+  displayPropertiesOrder: string[];
+  sortProperties: string[];
 
   constructor(private testDetailService: TestDetailService,
               private route: ActivatedRoute,
@@ -39,6 +43,8 @@ export class TestDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.sortProperties = this.SORT_PROPERTIES;
+    this.displayPropertiesOrder = this.DISPLAY_PROPERTIES_ORDER;
     this.spinner.showSpinner()
     this.headers = TEST_DETAIL_HEADERS;
     this.ignoreProperties = IGNORE_PROPERTIES;
