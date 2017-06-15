@@ -104,7 +104,6 @@ export class GroupComponent implements OnInit {
   // get students by group
   getStudentsByGroup(group: Group) {
     this.router.navigate(['./students'], {queryParams: {'group_id': group.group_id}, relativeTo: this.route.parent});
-    console.log(group);
   }
     // search group
   startSearch(criteria: string) {   /* callback method for output in search component */
@@ -151,9 +150,8 @@ export class GroupComponent implements OnInit {
   // Method for  add/edit, delete form submiting
 
   formSubmitted(value) {
-    console.log(value);
     if (value['group_id']) {
-      this.getGroupsService.editGroup(+value['group_id'], value['group_name'], value['Faculty'], value['Speciality'])
+      this.getGroupsService.editGroup(value['group_id'], value['group_name'], value['Faculty'], value['Speciality'])
         .subscribe(response => {
           this.getGroups();
           this.popup.cancel();
