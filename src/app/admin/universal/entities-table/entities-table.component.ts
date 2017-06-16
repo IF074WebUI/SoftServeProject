@@ -11,10 +11,6 @@ export class EntitiesTableComponent<T> implements OnInit, OnChanges {
 
   @Input() itemsPerPage = 5;
   @Input() page = 1;
-  NO_ENTITIES = 'Сутності відсутні';
-
-  // @Input() itemsPerPage = 5;
-  // @Input() page = 1;
   @Input() entities: T[] = [];
   @Input() displayPropertiesOrder: string[] = [];
   @Input() ignoreProperties: string[] = [];
