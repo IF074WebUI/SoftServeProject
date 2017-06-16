@@ -5,8 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { Group } from '../group/group';
-import {GetAllRecordsService} from '../services/get-all-records.service';
-
+import { GetAllRecordsService } from '../services/get-all-records.service';
+import {SpinnerService} from '../universal/spinner/spinner.service';
+import {ToastsManager} from 'ng2-toastr';
 @Component({
   selector: 'dtester-student-profile',
   templateUrl: './student-profile.component.html',
@@ -29,7 +30,8 @@ export class StudentProfileComponent implements OnInit {
               private router: Router,
               private getRecordsByIdService: GetRecordsByIdService,
               private getAllRecordsService: GetAllRecordsService,
-              private changeDetectorRef: ChangeDetectorRef) { }
+              private spinner: SpinnerService,
+              private toastr: ToastsManager) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(resp => this.user_id = resp['user_id']);
@@ -64,8 +66,10 @@ export class StudentProfileComponent implements OnInit {
   }
 
   getStudent() {
+    this.spinner.showSpinner();
     this.studentsService.getStudentById(this.user_id).subscribe((resp: Student) => {
      this.getStudentsWithGroupName(resp[0]);
+      this.spinner.hideSpinner();
    });
    }
 
@@ -86,8 +90,10 @@ export class StudentProfileComponent implements OnInit {
    }
 
   getAdminUser() {
+    this.spinner.showSpinner();
     this.studentsService.getAdminUser(this.user_id).subscribe(resp => {
       this.AdminUser = resp[0];
+      this.spinner.hideSpinner();
     });
   }
 
@@ -96,8 +102,10 @@ export class StudentProfileComponent implements OnInit {
   }
 
   getGroups() {
+    this.spinner.showSpinner();
     this.getAllRecordsService.getAllRecords('group').subscribe((data) => {
       this.groups = data;
+      this.spinner.hideSpinner();
     });
   }
 
@@ -117,6 +125,10 @@ export class StudentProfileComponent implements OnInit {
       .subscribe(resp => {
         this.getStudent();
         this.getAdminUser();
+        this.toastr.success(`Студент ${this.studentForEdit['student_name']} ${this.studentForEdit['student_surname']} 
+        ${this.studentForEdit['student_fname']} успішно відредагований`);
+      }, error2 => {
+        this.toastr.error(error2);
     });
   }
 }

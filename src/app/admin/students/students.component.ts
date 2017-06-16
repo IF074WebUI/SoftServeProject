@@ -42,7 +42,8 @@ export class StudentsComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private getRecordsByIdService: GetRecordsByIdService,
               private getAllRecordsService: GetAllRecordsService,
-              private spinner: SpinnerService, private toastr: ToastsManager) {}
+              private spinner: SpinnerService,
+              private toastr: ToastsManager) {}
 
   ngOnInit() {
     this.getStudents();
@@ -130,14 +131,12 @@ export class StudentsComponent implements OnInit {
 
   generateStudentData() {
     const password = Math.random().toString(36).substr(2, 8);
-    const username = 's' + Math.random().toFixed(3) + ' q' + Math.random().toFixed(3);
-    const photo = '';
     return {
-      'username': username,
+      'username': Math.random().toString(36).substr(2, 8),
       'password': password,
       'password_confirm': password,
       'plain_password': password,
-      'photo': photo
+      'photo': ''
     };
   }
 
