@@ -41,14 +41,22 @@ export class StatisticsComponent implements OnInit {
   };
 
   getData() {
+    this.refreshData();
     this.data.labels = this.entityHeaders;
+    let index = 0;
       for (let entity of this.entityNames) {
         this.spinner.showSpinner();
         this.statistics.getCountRecords(entity).subscribe(
           (res) => { this.entityCountValue.push(+res.numberOfRecords);
-            this.data.datasets[0].data = this.entityCountValue;
+            this.data.datasets[0].data[index] = this.entityCountValue[index];
             this.spinner.hideSpinner(),
             err => this.router.navigate(['/bad_request']); });
-        }
+        index++;
+      }
+  }
+  refreshData() {
+    this.data.datasets[0].data.length = 0;
+    this.data.labels.length = 0;
+    this.entityCountValue.length = 0;
   }
 }
