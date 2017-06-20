@@ -6,6 +6,7 @@ import { SpecialitiesService } from '../services/specialities.service';
 import { StudentsService } from '../students/students.service';
 import { Router } from '@angular/router';
 import { GraphData } from './graph-data';
+import { ORDER_ASC, ORDER_DESC } from '../../constants';
 
 @Component({
   selector: 'dtester-statistics',
@@ -59,22 +60,39 @@ export class StatisticsComponent implements OnInit {
     }
   }
 
+  compareDataByValue(a: any, b: any) {
+       const genreA = a['value'];
+       const genreB = b['value'];
+       let comparison = 0;
+       if (genreA > genreB) {
+         comparison = 1;
+       } else if (genreA < genreB) {
+         comparison = -1;
+       }
+       return comparison;
+     }
+  compareDataByLabel(a: any, b: any) {
+       const genreA = a.label.toUpperCase();
+       const genreB = b.label.toUpperCase();
+       let comparison = 0;
+       if (genreA > genreB) {
+         comparison = 1;
+       } else if (genreA < genreB) {
+         comparison = -1;
+       }
+       return comparison;
+     }
   sortGraphData(criteria: string) {
+    this.getDataForSorting()
     if (criteria === 'value') {
-      this.sortGraphByValue();
+      this.graphData.sort(this.compareDataByValue);
+      this.showDataOnGraph()
+      console.log(this.data.labels, this.data.datasets[0].data);
     } else {
-      this.sortGraphByName();
+      this.graphData.sort(this.compareDataByLabel);
+      this.showDataOnGraph()
+      console.log(this.data.labels, this.data.datasets[0].data);
     }
-    this.getDataForSorting();
-  }
-
-  sortGraphByValue() {
-    console.log('1234567');
-
-  }
-
-  sortGraphByName() {
-    console.log('qwerty');
   }
   getDataForSorting() {
     for (let i = 0; i < this.data.labels.length; i++) {
@@ -83,7 +101,12 @@ export class StatisticsComponent implements OnInit {
         value: this.data.datasets[0].data[i]
       };
     }
-    console.log(this.graphData);
+  }
+  showDataOnGraph() {
+    for (let i = 0; i < this.graphData.length; i++) {
+      this.data.labels[i] = this.graphData[i].label;
+      this.data.datasets[0].data[i] = this.graphData[i].value;
+    }
   }
 }
 
