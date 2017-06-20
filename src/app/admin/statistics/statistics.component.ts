@@ -20,6 +20,7 @@ export class StatisticsComponent implements OnInit {
   entityDataName: string[];
   dataValue: number[];
   graphData: GraphData[];
+  selectedEntity: string;
   @ViewChild('chart') chart: UIChart;
   constructor(private statistics: StatisticsService,
               private spinner: SpinnerService,
@@ -27,6 +28,7 @@ export class StatisticsComponent implements OnInit {
               private groupService: GroupService,
               private spesialityService: SpecialitiesService,
               private studentsService: StudentsService) {
+    this.selectedEntity = 'default';
     this.dataValue = [];
     this.graphData = [];
     this.entityNames = ['faculty', 'speciality', 'group', 'subject', 'test', 'student', 'question'];
@@ -116,6 +118,13 @@ export class StatisticsComponent implements OnInit {
    if (criteria === 'valueDec' || criteria === 'nameDec') {
      this.graphData.reverse();
    }
+  }
+  selectEntityForGraph() {
+    switch (this.selectedEntity) {
+      case 'default': console.log(this.selectedEntity); break;
+      case 'faculty': console.log(this.selectedEntity); break;
+      case 'speciality': console.log(this.selectedEntity); break;
+    }
   }
 }
 
