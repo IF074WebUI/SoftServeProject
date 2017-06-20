@@ -5,6 +5,7 @@ import { GroupService } from '../group/group.service';
 import { SpecialitiesService } from '../services/specialities.service';
 import { StudentsService } from '../students/students.service';
 import { Router } from '@angular/router';
+import { GraphData } from './graph-data';
 
 @Component({
   selector: 'dtester-statistics',
@@ -16,7 +17,7 @@ export class StatisticsComponent implements OnInit {
   entityNames: string[];
   entityDataName: string[];
   dataValue: number[];
-
+  graphData: GraphData[];
   constructor(private statistics: StatisticsService,
               private spinner: SpinnerService,
               private router: Router,
@@ -24,6 +25,7 @@ export class StatisticsComponent implements OnInit {
               private spesialityService: SpecialitiesService,
               private studentsService: StudentsService) {
     this.dataValue = [];
+    this.graphData = [];
     this.entityNames = ['faculty', 'speciality', 'group', 'subject', 'test', 'student', 'question'];
     this.entityDataName = ['Факультети', 'Спеціальності', 'Групи', 'Предмети', 'Тести', 'Студенти', 'Питання'];
     this.data = {
@@ -38,9 +40,11 @@ export class StatisticsComponent implements OnInit {
       ]
     };
   }
+
   ngOnInit() {
     this.getData();
   };
+
   getData() {
     this.data.labels = this.entityDataName;
     for (let index = 0; index < this.entityNames.length; index++) {
@@ -54,19 +58,33 @@ export class StatisticsComponent implements OnInit {
         });
     }
   }
+
   sortGraphData(criteria: string) {
     if (criteria === 'value') {
       this.sortGraphByValue();
     } else {
-      this.sortgraphByName();
+      this.sortGraphByName();
     }
+    this.getDataForSorting();
   }
+
   sortGraphByValue() {
     console.log('1234567');
 
   }
-  sortgraphByName() {
+
+  sortGraphByName() {
     console.log('qwerty');
   }
+  getDataForSorting() {
+    for (let i = 0; i < this.data.labels.length; i++) {
+      this.graphData[i] = {
+        label: this.data.labels[i],
+        value: this.data.datasets[0].data[i]
+      };
+    }
+    console.log(this.graphData);
+  }
 }
+
 
