@@ -5,6 +5,7 @@
   <option data-tokens="ketchup mustard" value="name">назвою</option>
 </select>
 <p-chart
+  #chart
   *ngIf="data.datasets[0].data.length === data.labels.length"
   type="bar"
   [data]="data">

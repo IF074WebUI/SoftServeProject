@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { StatisticsService } from './statistics.service';
 import { SpinnerService } from '../universal/spinner/spinner.service';
 import { GroupService } from '../group/group.service';
@@ -7,6 +7,7 @@ import { StudentsService } from '../students/students.service';
 import { Router } from '@angular/router';
 import { GraphData } from './graph-data';
 import { ORDER_ASC, ORDER_DESC } from '../../constants';
+import { UIChart } from 'primeng/primeng';
 
 @Component({
   selector: 'dtester-statistics',
@@ -19,6 +20,7 @@ export class StatisticsComponent implements OnInit {
   entityDataName: string[];
   dataValue: number[];
   graphData: GraphData[];
+  @ViewChild('chart') chart: UIChart;
   constructor(private statistics: StatisticsService,
               private spinner: SpinnerService,
               private router: Router,
@@ -86,11 +88,13 @@ export class StatisticsComponent implements OnInit {
     this.getDataForSorting()
     if (criteria === 'value') {
       this.graphData.sort(this.compareDataByValue);
-      this.showDataOnGraph()
+      this.showDataOnGraph();
+      this.chart.reinit();
       console.log(this.data.labels, this.data.datasets[0].data);
     } else {
       this.graphData.sort(this.compareDataByLabel);
-      this.showDataOnGraph()
+      this.showDataOnGraph();
+      this.chart.reinit();
       console.log(this.data.labels, this.data.datasets[0].data);
     }
   }
