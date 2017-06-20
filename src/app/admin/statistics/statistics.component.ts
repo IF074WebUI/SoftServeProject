@@ -121,10 +121,20 @@ export class StatisticsComponent implements OnInit {
   }
   selectEntityForGraph() {
     switch (this.selectedEntity) {
-      case 'default': console.log(this.selectedEntity); break;
-      case 'faculty': console.log(this.selectedEntity); break;
-      case 'speciality': console.log(this.selectedEntity); break;
+      case 'default': console.log(this.selectedEntity); this.getData(); break;
+      case 'faculty': this.countDataForFaculty(); break;
+      case 'speciality':  this.countDataForSpeciality(); break;
     }
+  }
+  countDataForFaculty() {
+    console.log(this.selectedEntity);
+  }
+  countDataForSpeciality() {
+    console.log(this.selectedEntity);
+    this.spesialityService.getAll().subscribe(
+      (res) => {
+        for (let i = 0; i < res.length; i++) { this.data.labels[i] = res[i].speciality_name; }; console.log(this.data.labels); this.chart.reinit();
+      });
   }
 }
 
