@@ -6,8 +6,8 @@ import { SpecialitiesService } from '../services/specialities.service';
 import { StudentsService } from '../students/students.service';
 import { Router } from '@angular/router';
 import { GraphData } from './graph-data';
-import { ORDER_ASC, ORDER_DESC } from '../../constants';
 import { UIChart } from 'primeng/primeng';
+import { FacultyService } from '../services/faculty.service';
 
 @Component({
   selector: 'dtester-statistics',
@@ -27,7 +27,8 @@ export class StatisticsComponent implements OnInit {
               private router: Router,
               private groupService: GroupService,
               private spesialityService: SpecialitiesService,
-              private studentsService: StudentsService) {
+              private studentsService: StudentsService,
+              private facultyService: FacultyService) {
     this.selectedEntity = 'default';
     this.dataValue = [];
     this.graphData = [];
@@ -51,6 +52,7 @@ export class StatisticsComponent implements OnInit {
   };
 
   getData() {
+    this.resfreshData();
     this.data.labels = this.entityDataName;
     for (let index = 0; index < this.entityNames.length; index++) {
       this.spinner.showSpinner();
@@ -58,12 +60,17 @@ export class StatisticsComponent implements OnInit {
         (res) => {
           this.dataValue[index] = +res.numberOfRecords;
           this.data.datasets[0].data[index] = this.dataValue[index];
-          this.spinner.hideSpinner(),
+          this.showDataOnGraph(),
             err => this.router.navigate(['/bad_request']);
         });
     }
+    this.spinner.hideSpinner();
   }
-
+  resfreshData() {
+    this.graphData.length = 0;
+    this.data.labels.length = 0;
+    this.data.datasets[0].data.length = 0;
+  }
   compareDataByValue(a: any, b: any) {
        const genreA = a['value'];
        const genreB = b['value'];
@@ -92,12 +99,10 @@ export class StatisticsComponent implements OnInit {
       this.graphData.sort(this.compareDataByValue);
       this.checkAndReverseData(criteria);
       this.showDataOnGraph();
-      this.chart.reinit();
     } else {
       this.graphData.sort(this.compareDataByLabel);
       this.checkAndReverseData(criteria);
       this.showDataOnGraph();
-      this.chart.reinit();
     }
   }
   getDataForSorting() {
@@ -113,6 +118,7 @@ export class StatisticsComponent implements OnInit {
       this.data.labels[i] = this.graphData[i].label;
       this.data.datasets[0].data[i] = this.graphData[i].value;
     }
+    this.chart.reinit();
   }
   checkAndReverseData(criteria: string) {
    if (criteria === 'valueDec' || criteria === 'nameDec') {
@@ -127,14 +133,34 @@ export class StatisticsComponent implements OnInit {
     }
   }
   countDataForFaculty() {
-    console.log(this.selectedEntity);
+    this.resfreshData();
+    console.log(this.graphData);
+      this.spinner.showSpinner();
+      this.facultyService.getAllFaculties().subscribe(
+        (res) => {
+          for (let i = 0; i < res.length; i++) {
+            this.graphData[i] = { label: res[i].faculty_name, value: res.length };
+          };
+          this.showDataOnGraph();
+          console.log(this.graphData);
+          this.spinner.hideSpinner(),
+            err => this.router.navigate(['/bad_request']);
+        });
   }
-  countDataForSpeciality() {
-    console.log(this.selectedEntity);
-    this.spesialityService.getAll().subscribe(
-      (res) => {
-        for (let i = 0; i < res.length; i++) { this.data.labels[i] = res[i].speciality_name; }; console.log(this.data.labels); this.chart.reinit();
-      });
+    countDataForSpeciality() {
+      this.resfreshData();
+      console.log(this.selectedEntity);
+      this.spinner.showSpinner();
+      this.spesialityService.getAll().subscribe(
+        (res) => {
+          for (let i = 0; i < res.length; i++) {
+            this.graphData[i] = { label: res[i].speciality_name, value: res.length };
+          };
+          this.showDataOnGraph();
+          console.log(this.graphData);
+          this.spinner.hideSpinner(),
+            err => this.router.navigate(['/bad_request']);
+        });
   }
 }
 
