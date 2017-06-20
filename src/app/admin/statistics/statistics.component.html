@@ -1,5 +1,12 @@
 <h2>Статистика системи</h2>
-
-<p-chart type="bar"  [data]="data"></p-chart>
-
+<select class="form-control" data-style="btn-primary" #s (change)="sortGraphData(s.value)">
+  <option data-tokens="ketchup mustard" disabled>Сортувати за</option>
+  <option data-tokens="ketchup mustard" value="value" >величиною</option>
+  <option data-tokens="ketchup mustard" value="name">назвою</option>
+</select>
+<p-chart
+  *ngIf="data.datasets[0].data.length === data.labels.length"
+  type="bar"
+  [data]="data">
+</p-chart>
 
