@@ -90,12 +90,10 @@ export class StatisticsComponent implements OnInit {
       this.graphData.sort(this.compareDataByValue);
       this.showDataOnGraph();
       this.chart.reinit();
-      console.log(this.data.labels, this.data.datasets[0].data);
     } else {
       this.graphData.sort(this.compareDataByLabel);
       this.showDataOnGraph();
       this.chart.reinit();
-      console.log(this.data.labels, this.data.datasets[0].data);
     }
   }
   getDataForSorting() {
