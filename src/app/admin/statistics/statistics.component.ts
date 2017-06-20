@@ -86,12 +86,14 @@ export class StatisticsComponent implements OnInit {
      }
   sortGraphData(criteria: string) {
     this.getDataForSorting()
-    if (criteria === 'value') {
+    if (criteria === 'valueInc' || criteria === 'valueDec') {
       this.graphData.sort(this.compareDataByValue);
+      this.checkAndReverseData(criteria);
       this.showDataOnGraph();
       this.chart.reinit();
     } else {
       this.graphData.sort(this.compareDataByLabel);
+      this.checkAndReverseData(criteria);
       this.showDataOnGraph();
       this.chart.reinit();
     }
@@ -109,6 +111,11 @@ export class StatisticsComponent implements OnInit {
       this.data.labels[i] = this.graphData[i].label;
       this.data.datasets[0].data[i] = this.graphData[i].value;
     }
+  }
+  checkAndReverseData(criteria: string) {
+   if (criteria === 'valueDec' || criteria === 'nameDec') {
+     this.graphData.reverse();
+   }
   }
 }
 
