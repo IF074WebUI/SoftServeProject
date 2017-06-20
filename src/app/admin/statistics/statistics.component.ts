@@ -41,6 +41,7 @@ export class StatisticsComponent implements OnInit {
   };
 
   getData() {
+    this.resetData();
     this.data.labels = this.entityHeaders;
       for (let entity of this.entityNames) {
         this.spinner.showSpinner();
@@ -50,5 +51,10 @@ export class StatisticsComponent implements OnInit {
             this.spinner.hideSpinner(),
             err => this.router.navigate(['/bad_request']); });
         }
+  }
+  resetData() {
+    this.entityCountValue.length = 0;
+    this.data.datasets[0].data.length = 0;
+    this.data.labels.length = 0;
   }
 }
