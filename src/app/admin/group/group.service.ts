@@ -63,7 +63,7 @@ export class GroupService {
     return this.http.get( 'http://' + HOST + GROUP_ENITY + '/countRecords')
       .map((resp: Response) => resp.json()['numberOfRecords']);
   }
-  getGroupsBySpeciality(specialytyId: number) {
+  getGroupsBySpeciality(specialytyId: number): Observable<[Group]> {
     return this.http.get('http://' + HOST + GROUP_ENITY + '/getGroupsBySpeciality/' + specialytyId)
       .map((resp: Response) => resp.json());
   }

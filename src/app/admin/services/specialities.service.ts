@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { Speciality } from '../specialities/speciality';
 import { SPECIALITY_URI } from '../../constants';
 import { Router } from '@angular/router';
+import {GroupService} from "../group/group.service";
+import {Group} from "../group/group";
 
 @Injectable()
 export class SpecialitiesService {
@@ -11,7 +13,7 @@ export class SpecialitiesService {
   options: RequestOptions;
 
 
-  constructor(private http: Http, private router: Router) {
+  constructor(private http: Http, private router: Router, private groupsService: GroupService) {
     const headers: Headers = new Headers({'Content-Type': 'application/json'});
     this.options = new RequestOptions({headers: headers});
   }
@@ -40,6 +42,18 @@ export class SpecialitiesService {
     return this.http.delete(`${SPECIALITY_URI}del/${id}`).map((resp: Response) => resp.json())
       .catch(this.handleError.bind(this));
   }
+
+ deleteCascade(id: number): Observable<any> {
+   let delGroupsObs = [];
+   return this.groupsService.getGroupsBySpeciality(id).flatMap((groups: Group[]) => {
+     console.log(groups);
+     for (let group of groups) {
+       delGroupsObs.push(this.groupsService.deleteGroup(group.group_id));
+     }
+     console.log(delGroupsObs);
+     return Observable.forkJoin(...delGroupsObs);
+   });
+ }
 
   edit(speciality: Speciality): Observable<Speciality> {
     return this.http.post(`${SPECIALITY_URI}update/${speciality['speciality_id']}`, JSON.stringify(speciality), this.options)
