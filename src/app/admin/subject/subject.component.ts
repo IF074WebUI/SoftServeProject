@@ -9,7 +9,7 @@ import { SUBJECTS_CONFIG } from '../universal/dynamic-form/config';
 import { SubjectService } from './subject.service';
 import { DeleteRecordByIdService } from '../services/delete-record-by-id.service';
 import { ToastsManager } from 'ng2-toastr';
-import {SpinnerService} from "../universal/spinner/spinner.service";
+import {SpinnerService} from '../universal/spinner/spinner.service';
 
 declare const $: any;
 

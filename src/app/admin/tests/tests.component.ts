@@ -100,6 +100,6 @@ export class TestsComponent implements OnInit {
   }
 
   goToQuestions(test: Test) {
-    this.router.navigate(['./questions'], {queryParams: {'test_id': test.test_id}, relativeTo: this.activatedRoute.parent});
+    this.router.navigate(['subject/tests/questions'], {queryParams: {'test_id': test.test_id}, relativeTo: this.activatedRoute.parent});
   }
 }

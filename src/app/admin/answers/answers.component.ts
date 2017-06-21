@@ -1,10 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Answer} from './answer';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {AnswersService} from '../services/answers.service';
 import {ANSWER_CONFIG} from '../universal/dynamic-form/config';
 import {SpinnerService} from '../universal/spinner/spinner.service';
+import {GetRecordsByIdService} from '../services/get-records-by-id.service';
+import {FormGroup} from '@angular/forms';
+
 
 @Component({
   selector: 'dtester-answers',
@@ -21,6 +24,9 @@ export class AnswersComponent implements OnInit {
   btnClass = 'fa fa-question';
   CREATING_NEW_ANSWER = 'Додати нову відповідь';
   question_id: number;
+  questionIdQueryParam: number;
+  imageForm: FormGroup;
+  answerEdit: Answer;
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = ANSWER_CONFIG;
@@ -28,27 +34,82 @@ export class AnswersComponent implements OnInit {
   constructor(private answersService: AnswersService,
               private route: ActivatedRoute,
               private router: Router,
-              private spinner: SpinnerService
+              private spinner: SpinnerService,
+              private getRecordsByIdService: GetRecordsByIdService
   ) {}
 
+  // ngOnInit() {
+  //   this.headers = ['№', 'Відповідь', 'Правильність', 'Вкладення'];
+  //   this.ignoreProperties = ['question_id', 'answer_id', 'attachment'];
+  //   this.getAnswers();
+  //   this.question_id = this.route.snapshot.queryParams['question_id'];
+  //   console.log(this.question_id);
+  //
+  //
+  //   if (this.question_id) {
+  //     this.answersService.getAnswersByQuestion(this.question_id).subscribe(resp => {
+  //       if (resp['response'] === 'no records') {
+  //         this.answersOnPage = [], error => this.router.navigate(['/bad_request']);
+  //       } else {
+  //         this.answersOnPage = resp, error => this.router.navigate(['/bad_request']);
+  //       }
+  //     });
+  //   }
+  // }
+
+
+
+
+
   ngOnInit() {
+    this.getQueryParams();
+    this.getAnswers();
+    this.getCountRecords();
     this.headers = ['№', 'Відповідь', 'Правильність', 'Вкладення'];
     this.ignoreProperties = ['question_id', 'answer_id', 'attachment'];
-    this.getAnswers();
-    this.question_id = this.route.snapshot.queryParams['question_id'];
-    console.log(this.question_id);
-
-
-    if (this.question_id) {
-      this.answersService.getAnswersByQuestion(this.question_id).subscribe(resp => {
-        if (resp['response'] === 'no records') {
-          this.answersOnPage = [], error => this.router.navigate(['/bad_request']);
-        } else {
-          this.answersOnPage = resp, error => this.router.navigate(['/bad_request']);
-        }
-      });
-    }
+    this.imageForm = new FormGroup({});
   }
+  changeListener($event): void {
+    this.readThis($event.target);
+  }
+
+  readThis(inputValue: any): void {
+    const file: File = inputValue.files[0];
+    const myReader: FileReader = new FileReader();
+
+    myReader.onloadend = (e) => {
+      this.answerEdit.attachment = myReader.result;
+    };
+    myReader.readAsDataURL(file);
+  }
+  getQueryParams() {
+    this.route.queryParams.subscribe((params: Params) => {
+      this.questionIdQueryParam = params['question_id'];
+      this.getAnswersForOneQuestion();
+    });
+  }
+  getAnswersForOneQuestion() {
+    this.answersService.getAnswersByQuestion(this.questionIdQueryParam).subscribe(resp => {
+      this.answersOnPage = resp;
+      for (const answer of this.answersOnPage) {
+        this.setNameOfQuestion(answer);
+      }
+    });
+  }
+  // getQuestions() {
+  //   this.getAllRecordsService.getAllRecords('question').subscribe((resp) => {
+  //     this.questions = resp;
+  //   });
+  // }
+  setNameOfQuestion(answer: Answer) {
+    this.getRecordsByIdService.getRecordsById('question', answer.question_id).subscribe((resp) => {
+      answer.question_id = resp[0].question_id;
+    });
+  }
+
+
+  // PARAMS
+
   getAnswers(): void {
     this.spinner.showSpinner();
     this.getCountRecords();
@@ -120,8 +181,8 @@ export class AnswersComponent implements OnInit {
     value['question_id'] = this.question_id;
     console.log(value);
     if (value['answer_id']) {
-      this.answersService.editAnswer(value['question_id'], value['answer_text'],
-        value['answer_id'], value['true_answer'], value['attachment'])
+      this.answersService.editAnswer(value['answer_id'], value['answer_text'], value['question_id'],
+        value['true_answer'], value['attachment'])
         .subscribe(response => {
             this.getAnswers();
             this.popup.cancel();
@@ -130,8 +191,8 @@ export class AnswersComponent implements OnInit {
             relativeTo: this.route.parent})
         );
     } else {
-      this.answersService.createAnswer(value['answer_text'],
-        value['answer_id'], value['true_answer'], value['attachment'])
+      this.answersService.createAnswer(value['answer_text'], value['question_id'],
+        value['true_answer'], value['attachment'])
         .subscribe(response => {
             this.getAnswers();
             this.popup.cancel();

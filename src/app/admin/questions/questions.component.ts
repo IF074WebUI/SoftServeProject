@@ -5,6 +5,8 @@ import {QUESTION_CONFIG} from '../universal/dynamic-form/config';
 import {QuestionsService} from '../services/questions.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SpinnerService} from '../universal/spinner/spinner.service';
+import {ToastsManager} from 'ng2-toastr';
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'dtester-questions',
@@ -22,6 +24,8 @@ export class QuestionsComponent implements OnInit {
   imgAttach = 'question.attachment';
   CREATING_NEW_QUESTION = 'Додати нове питання';
   test_id: number;
+  imageFormQ: FormGroup;
+  questionEdit: Question;
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = QUESTION_CONFIG;
@@ -29,19 +33,19 @@ export class QuestionsComponent implements OnInit {
   constructor(private questionsService: QuestionsService,
               private route: ActivatedRoute,
               private router: Router,
-              private spinner: SpinnerService
+              private spinner: SpinnerService,
+              private toastr: ToastsManager
   ) {}
 
   ngOnInit() {
     this.headers = ['№', 'Питання', 'Рівень', 'Тип', 'Вкладення'];
     this.ignoreProperties = ['test_id', 'question_id', 'attachment'];
-
+    this.imageFormQ = new FormGroup({});
     this.getQuestions();
     this.test_id = this.route.snapshot.queryParams['test_id'];
     console.log(this.test_id);
-
-    let level = this.route.snapshot.queryParams['level'];
-    let number = this.route.snapshot.queryParams['number'];
+    const level = this.route.snapshot.queryParams['level'];
+    const number = this.route.snapshot.queryParams['number'];
     if (this.test_id) {
       this.questionsService.getRecordsRangeByTest(this.test_id, this.recordsPerPage,
         (this.pageNumber - 1) * this.recordsPerPage).subscribe(resp => {
@@ -51,8 +55,7 @@ export class QuestionsComponent implements OnInit {
           this.questionsOnPage = resp, error => this.router.navigate(['/bad_request']);
         }
       });
-    } else
-      if (level) {
+    } else if (level) {
       this.questionsService.getQuestionsByLevelRand(this.test_id, level, number).subscribe(resp => {
         if (resp['response'] === 'no records') {
           this.questionsOnPage = [];
@@ -63,8 +66,21 @@ export class QuestionsComponent implements OnInit {
     } else {
       this.getQuestions();
     }
+
+  }
+  changeListener($event): void {
+    this.readThis($event.target);
   }
 
+  readThis(inputValue: any): void {
+    const file: File = inputValue.files[0];
+    const myReader: FileReader = new FileReader();
+
+    myReader.onloadend = (e) => {
+      this.questionEdit.attachment = myReader.result;
+    };
+    myReader.readAsDataURL(file);
+  }
   getQuestions(): void {
     this.spinner.showSpinner();
     this.getCountRecords();
@@ -115,12 +131,10 @@ export class QuestionsComponent implements OnInit {
           err => this.router.navigate(['/bad_request']));
     }
   }
-  // onTimeTableNavigate(question: Question) {
-  //   this.router.navigate(['./timetable'], {queryParams: {'group_id': group.group_id}, relativeTo: this.route.parent});
+
+  // getAnswersByQuestion(question: Question) {
+  //   this.router.navigate(['./answer'], {queryParams: {'questionId': question.question_id}, relativeTo: this.route.parent});
   // }
-  getAnswersByQuestion(question: Question) {
-    this.router.navigate(['./answer'], {queryParams: {'questionId': question.question_id}, relativeTo: this.route.parent});
-  }
 // Method for opening editing and deleting commo modal window
 
   add() {
@@ -147,6 +161,7 @@ export class QuestionsComponent implements OnInit {
         .subscribe(response => {
             this.getQuestions();
             this.popup.cancel();
+            this.toastr.success('Edited');
           },
           error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': +value['test_name']}, relativeTo: this.route.parent})
         );
@@ -156,6 +171,7 @@ export class QuestionsComponent implements OnInit {
         .subscribe(response => {
             this.getQuestions();
             this.popup.cancel();
+            this.toastr.success('Created');
           },
           error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': value['test_name']}, relativeTo: this.route.parent})
         );
@@ -163,11 +179,14 @@ export class QuestionsComponent implements OnInit {
   }
 
   deleteQuestion(question: Question) {
-    this.questionsService.deleteQuestion(question['question_id']).subscribe(response => this.getQuestions(),
+    this.questionsService.deleteQuestion(question['question_id']).subscribe(response => {this.getQuestions();
+    this.toastr.success('Deleted');
+    },
       error => this.router.navigate(['/bad_request'])
     );
   }
   goToAnswers(question: Question) {
-    this.router.navigate(['./answers'], {queryParams: {'question_id': question.question_id}, relativeTo: this.route.parent});
+    this.router.navigate(['subject/tests/questions/answers'],
+      {queryParams: {'question_id': question.question_id}, relativeTo: this.route.parent});
   }
 }

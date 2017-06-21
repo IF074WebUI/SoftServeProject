@@ -262,7 +262,7 @@ export const ANSWER_CONFIG = [
     type: 'select_with_options',
     label: 'Правильність відповіді',
     name: 'true_answer',
-    options: ['Правильно', 'Неправильноо'],
+    options: ['0', '1'],
     placeholder: ''
   },
   {

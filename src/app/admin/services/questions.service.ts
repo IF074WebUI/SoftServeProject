@@ -73,11 +73,11 @@ export class QuestionsService {
     return this.http.get('http://' + HOST + '/question/getRecordsBySearch/' + criteria).map((resp: Response) => resp.json());
   }
   getQuestionsByLevelRand(testId: number, level: number, number: number): Observable <any> {
-    return this.http.get('http://' + HOST + '/question/getQuestionsByLevelRand' + testId + level + number)
+    return this.http.get('http://' + HOST + '/question/getQuestionsByLevelRand/' + testId + '/' + level + '/' + number)
       .map((resp: Response) => resp.json());
 }
   getRecordsRangeByTest(test_id: number, limit: number, offset: number) {
-    return this.http.get('http://' + HOST + '/question/getRecordsRangeByTest' + test_id + limit + offset)
+    return this.http.get('http://' + HOST + '/question/getRecordsRangeByTest/' + test_id + '/' + limit + '/' + offset)
       .map((resp: Response) => resp.json());
 }
 

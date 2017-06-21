@@ -17,7 +17,6 @@
                         [itemsPerPage]="recordsPerPage"
                         (deleteEntity)="del($event)"
                         (editEntity)="edit($event)"
-                        (clickEntity)="getAnswersByQuestion($event)"
                         (actionEntity)="goToAnswers($event)">
 </dtester-entities-table>
 <dtester-pagination class="text-center"
@@ -29,3 +28,10 @@
               (submitted)="formSubmitted($event)"
               (youCanDelete)="deleteQuestion($event)">
 </dynamic-form>
+<img class="img-thumbnail attachment" [src]="question.attachment">
+<form [formGroup]="imageFormQ">
+  <div class="form-group">
+    <label for="imgAttach">Insert IMG</label>
+    <input type="file" accept="image/*" (change)="changeListener($event)" id="imgAttach">
+  </div>
+</form>

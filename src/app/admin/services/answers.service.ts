@@ -42,7 +42,7 @@ export class AnswersService {
       .map((resp: Response) => resp.json());
   }
   getAnswersByQuestion(question_id: number) {
-    return this.http.get('http://' + HOST + '/question/getAnswersByQuestion' + question_id)
+    return this.http.get('http://' + HOST + '/answer/getAnswersByQuestion/' + question_id)
       .map((resp: Response) => resp.json());  }
 
   getPaginatedPage(pageNumber: number, recordsPerPage: number) {
@@ -60,8 +60,8 @@ export class AnswersService {
       .map((resp: Response) => resp.json());
   }
   editAnswer(answer_id: number, answertext: string, questionId: number, true_answer: string, attach: any) {
-    const bodyForSendingEditedAnswers = JSON.stringify({answer_text: answertext, question_id: questionId,
-      trueanswer: true_answer, attachment: attach});
+    const bodyForSendingEditedAnswers = JSON.stringify({answer_id: answer_id, answer_text: answertext, question_id: questionId,
+      true_answer: true_answer, attachment: attach});
     return this.http.post('http://' + HOST + '/answer/update/' + answer_id, bodyForSendingEditedAnswers)
       .map((resp) => resp.json());
   }
