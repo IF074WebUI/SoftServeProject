@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { GraphData } from './graph-data';
 import { UIChart } from 'primeng/primeng';
 import { FacultyService } from '../services/faculty.service';
+import {ToastsManager} from "ng2-toastr";
 
 @Component({
   selector: 'dtester-statistics',
@@ -21,6 +22,7 @@ export class StatisticsComponent implements OnInit {
   dataValue: number[];
   graphData: GraphData[];
   selectedEntity: string;
+  countSudentsByGroup: number;
   @ViewChild('chart') chart: UIChart;
   constructor(private statistics: StatisticsService,
               private spinner: SpinnerService,
@@ -28,10 +30,12 @@ export class StatisticsComponent implements OnInit {
               private groupService: GroupService,
               private spesialityService: SpecialitiesService,
               private studentsService: StudentsService,
-              private facultyService: FacultyService) {
+              private facultyService: FacultyService,
+              private toastr: ToastsManager) {
     this.selectedEntity = 'default';
     this.dataValue = [];
     this.graphData = [];
+    this.countSudentsByGroup = 0;
     this.entityNames = ['faculty', 'speciality', 'group', 'subject', 'test', 'student', 'question'];
     this.entityDataName = ['Факультети', 'Спеціальності', 'Групи', 'Предмети', 'Тести', 'Студенти', 'Питання'];
     this.data = {
@@ -52,7 +56,7 @@ export class StatisticsComponent implements OnInit {
   };
 
   getData() {
-    // this.refreshData();
+    this.refreshData();
     console.log(this.entityDataName);
     for (let index = 0; index < this.entityNames.length; index++) {
       this.spinner.showSpinner();
@@ -62,10 +66,13 @@ export class StatisticsComponent implements OnInit {
             label: this.entityDataName[index],
             value: +res.numberOfRecords
           };
-          this.spinner.hideSpinner(),
-          err => this.router.navigate(['/bad_request']),
+          this.spinner.hideSpinner();
           this.showDataOnGraph();
-        });
+          },
+            error => {
+              this.toastr.error(error);
+            }
+      );
     }
     console.log(this.graphData);
   }
@@ -126,12 +133,13 @@ export class StatisticsComponent implements OnInit {
     this.chart.reinit();
   }
   checkAndReverseData(criteria: string) {
-   if (criteria === 'valueDec' || criteria === 'nameDec') {
+    if (criteria === 'valueDec' || criteria === 'nameDec') {
      this.graphData.reverse();
    }
   }
   selectEntityForGraph() {
     this.refreshData();
+    console.log(this.selectedEntity);
     switch (this.selectedEntity) {
       case 'default': this.getData(); break;
       case 'faculty': this.countDataForFaculty(); break;
@@ -156,13 +164,28 @@ export class StatisticsComponent implements OnInit {
       this.spesialityService.getAll().subscribe(
         (res) => {
           for (let i = 0; i < res.length; i++) {
-            this.graphData[i] = { label: res[i].speciality_name, value: res.length };
-          };
-          this.showDataOnGraph();
-          this.chart.reinit();
-          this.spinner.hideSpinner(),
-            err => this.router.navigate(['/bad_request']);
-        });
+            this.graphData[i] = { label: res[i].speciality_name, value: 5 };
+            this.groupService.getGroupsBySpeciality(+res[i].speciality_id).subscribe(groupRes => {
+              if (groupRes['response'] === 'no records') {
+                this.graphData[i].value = 0;
+              } else {
+                for (let groupItem = 0; groupItem < groupRes.length; groupItem++) {
+                  this.studentsService.getStudentsByGroupId(+groupRes[groupItem].group_id).subscribe(studentRes => {
+                    if (studentRes['response'] === 'no records') {
+                      this.graphData[i].value += 0;
+                    } else {
+                      this.graphData[i].value += studentRes.length;
+                    }
+                  });
+                }
+              }
+              });
+          }; this.spinner.hideSpinner(),
+            err => this.router.navigate(['/bad_request']),
+            console.log(this.graphData);
+            this.showDataOnGraph();
+            console.log(this.data);
+      });
   }
 }
 
