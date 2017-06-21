@@ -144,7 +144,6 @@ export class FacultiesComponent implements OnInit {
   // Method for  add-edit, delete  submit
 
   formSubmitted(value) {
-    console.log(value);
     if (value['faculty_id']) {
       this.http.editItem(value['faculty_id'], value['faculty_name'], value['faculty_description']).subscribe(response => {
           this.popup.cancel();
