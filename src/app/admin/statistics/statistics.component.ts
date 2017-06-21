@@ -52,26 +52,28 @@ export class StatisticsComponent implements OnInit {
   };
 
   getData() {
-    this.resfreshData();
-    this.data.labels = this.entityDataName;
-    console.log(this.data.labels);
+    // this.refreshData();
+    console.log(this.entityDataName);
     for (let index = 0; index < this.entityNames.length; index++) {
       this.spinner.showSpinner();
       this.statistics.getCountRecords(this.entityNames[index]).subscribe(
         (res) => {
-          this.dataValue[index] = +res.numberOfRecords;
-          this.data.datasets[0].data[index] = this.dataValue[index];
+          this.graphData[index] = {
+            label: this.entityDataName[index],
+            value: +res.numberOfRecords
+          };
           this.spinner.hideSpinner(),
-            err => this.router.navigate(['/bad_request']);
+          err => this.router.navigate(['/bad_request']),
+          this.showDataOnGraph();
         });
     }
-
+    console.log(this.graphData);
   }
 
-  resfreshData() {
-    this.graphData.length = 0;
-    this.data.labels.length = 0;
-    this.data.datasets[0].data.length = 0;
+  refreshData() {
+    this.graphData = [];
+    this.data.labels = [];
+    this.data.datasets[0].data = [];
   }
   compareDataByValue(a: any, b: any) {
        const genreA = a['value'];
@@ -121,6 +123,7 @@ export class StatisticsComponent implements OnInit {
       this.data.labels[i] = this.graphData[i].label;
       this.data.datasets[0].data[i] = this.graphData[i].value;
     }
+    this.chart.reinit();
   }
   checkAndReverseData(criteria: string) {
    if (criteria === 'valueDec' || criteria === 'nameDec') {
@@ -128,6 +131,7 @@ export class StatisticsComponent implements OnInit {
    }
   }
   selectEntityForGraph() {
+    this.refreshData();
     switch (this.selectedEntity) {
       case 'default': this.getData(); break;
       case 'faculty': this.countDataForFaculty(); break;
@@ -135,7 +139,6 @@ export class StatisticsComponent implements OnInit {
     }
   }
   countDataForFaculty() {
-    this.resfreshData();
       this.spinner.showSpinner();
       this.facultyService.getAllFaculties().subscribe(
         (res) => {
@@ -149,7 +152,6 @@ export class StatisticsComponent implements OnInit {
         });
   }
     countDataForSpeciality() {
-      this.resfreshData();
       this.spinner.showSpinner();
       this.spesialityService.getAll().subscribe(
         (res) => {
