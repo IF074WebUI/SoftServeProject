@@ -12,19 +12,34 @@ export class FormInputFileComponent {
   file_src:string;
   files;
   constructor() {
-    this.file_src = "//placehold.it/200"
+    this.file_src = '//placehold.it/200';
   }
-  imageChange(event){
-    var input = event.target;
 
-    var reader = new FileReader();
-    reader.onload = function(){
-      var dataURL = reader.result;
+  imageChange($event): void {
+    this.readThis($event.target);
+  }
+
+  readThis(inputValue: any): void {
+    const file: File = inputValue.files[0];
+    const myReader: FileReader = new FileReader();
+
+    myReader.onloadend = (e) => {
+     this.config.name =  myReader.result;
     };
-    reader.readAsDataURL(input.files[0]);
-
-  };
-
+    myReader.readAsDataURL(file);
+  }
+  //
+  // imageChange(event){
+  //   var input = event.target;
+  //
+  //   var reader = new FileReader();
+  //   reader.onload = function(){
+  //     var dataURL = reader.result;
+  //   };
+  //   reader.readAsDataURL(input.files[0]);
+  //
+  // };
+  //
 
   resize (img, MAX_WIDTH:number = 500, MAX_HEIGHT:number = 500){
     var canvas = document.createElement("canvas");
