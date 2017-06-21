@@ -54,18 +54,20 @@ export class StatisticsComponent implements OnInit {
   getData() {
     this.resfreshData();
     this.data.labels = this.entityDataName;
+    console.log(this.data.labels);
     for (let index = 0; index < this.entityNames.length; index++) {
       this.spinner.showSpinner();
       this.statistics.getCountRecords(this.entityNames[index]).subscribe(
         (res) => {
           this.dataValue[index] = +res.numberOfRecords;
           this.data.datasets[0].data[index] = this.dataValue[index];
-          this.showDataOnGraph(),
+          this.spinner.hideSpinner(),
             err => this.router.navigate(['/bad_request']);
         });
     }
-    this.spinner.hideSpinner();
+
   }
+
   resfreshData() {
     this.graphData.length = 0;
     this.data.labels.length = 0;
@@ -103,6 +105,7 @@ export class StatisticsComponent implements OnInit {
       this.graphData.sort(this.compareDataByLabel);
       this.checkAndReverseData(criteria);
       this.showDataOnGraph();
+      this.chart.reinit();
     }
   }
   getDataForSorting() {
@@ -118,7 +121,6 @@ export class StatisticsComponent implements OnInit {
       this.data.labels[i] = this.graphData[i].label;
       this.data.datasets[0].data[i] = this.graphData[i].value;
     }
-    this.chart.reinit();
   }
   checkAndReverseData(criteria: string) {
    if (criteria === 'valueDec' || criteria === 'nameDec') {
@@ -127,14 +129,13 @@ export class StatisticsComponent implements OnInit {
   }
   selectEntityForGraph() {
     switch (this.selectedEntity) {
-      case 'default': console.log(this.selectedEntity); this.getData(); break;
+      case 'default': this.getData(); break;
       case 'faculty': this.countDataForFaculty(); break;
       case 'speciality':  this.countDataForSpeciality(); break;
     }
   }
   countDataForFaculty() {
     this.resfreshData();
-    console.log(this.graphData);
       this.spinner.showSpinner();
       this.facultyService.getAllFaculties().subscribe(
         (res) => {
@@ -142,14 +143,13 @@ export class StatisticsComponent implements OnInit {
             this.graphData[i] = { label: res[i].faculty_name, value: res.length };
           };
           this.showDataOnGraph();
-          console.log(this.graphData);
+          this.chart.reinit();
           this.spinner.hideSpinner(),
             err => this.router.navigate(['/bad_request']);
         });
   }
     countDataForSpeciality() {
       this.resfreshData();
-      console.log(this.selectedEntity);
       this.spinner.showSpinner();
       this.spesialityService.getAll().subscribe(
         (res) => {
@@ -157,7 +157,7 @@ export class StatisticsComponent implements OnInit {
             this.graphData[i] = { label: res[i].speciality_name, value: res.length };
           };
           this.showDataOnGraph();
-          console.log(this.graphData);
+          this.chart.reinit();
           this.spinner.hideSpinner(),
             err => this.router.navigate(['/bad_request']);
         });

@@ -21,7 +21,7 @@ export class FacultiesComponent implements OnInit {
   id: number;
 
   ignoreProperties: string[];
-  //text: string;
+  // text: string;
   headers: string[];
   sortProperties: string[];
   displayPropertiesOrder: string[];
