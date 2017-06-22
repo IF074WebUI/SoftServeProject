@@ -29,15 +29,9 @@ export class StatisticsComponent implements OnInit {
               private router: Router,
               private groupService: GroupService,
               private spesialityService: SpecialitiesService,
-              private studentsService: StudentsService,
-              private facultyService: FacultyService,
-              private toastr: ToastsManager) {
-    this.selectedEntity = 'default';
-    this.dataValue = [];
-    this.graphData = [];
-    this.countSudentsByGroup = 0;
-    this.entityNames = ['faculty', 'speciality', 'group', 'subject', 'test', 'student', 'question'];
-    this.entityDataName = ['Факультети', 'Спеціальності', 'Групи', 'Предмети', 'Тести', 'Студенти', 'Питання'];
+              private studentsService: StudentsService) {
+    this.entityHeaders = ['Спеціальності', 'Групи', 'Предмети', 'Тести', 'Студенти', 'Питання'];
+    this.entityNames = ['speciality', 'group', 'subject', 'test', 'student', 'question'];
     this.data = {
       labels: [],
       datasets: [

@@ -160,7 +160,7 @@ export class StudentsComponent implements OnInit {
   }
 
   submitDelete(student: Student) {
-    this.studentsService.del(student['user_id']).subscribe(response => {
+    this.studentsService.deleteCascade(student['user_id']).subscribe(response => {
       this.getStudents();
       this.toastr.success(`Студент ${student['student_name']} ${student['student_surname']} ${student['student_fname']} успішно видалений`);
     }, error => {

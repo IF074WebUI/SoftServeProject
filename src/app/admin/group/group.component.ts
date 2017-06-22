@@ -173,7 +173,7 @@ export class GroupComponent implements OnInit {
 
 
   submitDelete(group: Group) {
-    this.getGroupsService.deleteGroup(group['group_id']).subscribe(response => this.getGroups(),
+    this.getGroupsService.deleteCascade(group['group_id']).subscribe(response => this.getGroups(),
       error => this.router.navigate(['/bad_request'])
     );
     this.toastr.success(`Група ${group['group_name']} успішно видалена`);

@@ -7,11 +7,14 @@ import { Observable } from 'rxjs/Observable';
 import { HOST } from '../../constants';
 import { Group } from './group';
 import { GROUP_ENITY } from './groupConstants';
+import { StudentsService } from '../students/students.service';
+import { TimetableService } from '../timetable/timetable.service';
+import { Student } from '../students/student';
 
 @Injectable()
 export class GroupService {
   groups: Group[] = [];
-  constructor(private http: Http) { }
+  constructor(private http: Http, private studentsService: StudentsService, private timetablesService: TimetableService) { }
 
   getGroups() {
     return this.http.get('http://' + HOST + GROUP_ENITY + '/getRecords')
@@ -43,15 +46,18 @@ export class GroupService {
    return this.http.delete('http://' + HOST + GROUP_ENITY + '/del/' + id)
      .map((resp: Response) => resp.json());
   }
-  // METHOD FOR THE FUTURE
-  // deleteGroupsBySpeciality(specialityId: number): Observable<any> {
-  //   return this.http.get('http://' + HOST + GROUP_ENITY + '/getGroupsBySpeciality/' + specialityId)
-  //     .map((resp: Response) => <Group[]>resp.json())
-  //     .map((data: Group[]) => {
-  //     data.map((g: Group) => {
-  //       this.deleteGroup(g.group_id).subscribe(r => console.log(r)); }); });
-  // }
 
+  deleteCascade(id: number): Observable<any> {
+    let delStudentsObs = [];
+    return this.studentsService.getStudentsByGroupId(id).flatMap((students: Student[]) => {
+      for (let student of students) {
+        delStudentsObs.push(this.studentsService.deleteCascade(student.user_id));
+      }
+      return Observable.forkJoin(...delStudentsObs);
+    }).flatMap(arr =>
+        this.deleteGroup(id)
+    );
+  }
 
   editGroup(id: number, groupname: string, specialytyId: number, facultyId: number ) {
     const bodyForSendingEditedGroups = JSON.stringify({group_name: groupname, faculty_id: facultyId, speciality_id: specialytyId});
@@ -63,7 +69,7 @@ export class GroupService {
     return this.http.get( 'http://' + HOST + GROUP_ENITY + '/countRecords')
       .map((resp: Response) => resp.json()['numberOfRecords']);
   }
-  getGroupsBySpeciality(specialytyId: number) {
+  getGroupsBySpeciality(specialytyId: number): Observable<[Group]> {
     return this.http.get('http://' + HOST + GROUP_ENITY + '/getGroupsBySpeciality/' + specialytyId)
       .map((resp: Response) => resp.json());
   }

@@ -3,7 +3,7 @@ import {Faculty} from './Faculty';
 import {FacultyService} from '../services/faculty.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
-import {FACULTY_CONFIG} from '../universal/dynamic-form/config';
+import {FACULTY_CONFIG, TEST} from '../universal/dynamic-form/config';
 import {SpinnerService} from '../universal/spinner/spinner.service';
 import {ToastsManager} from 'ng2-toastr';
 
@@ -32,10 +32,12 @@ export class FacultiesComponent implements OnInit {
   SORT_PROPERTIES: string[] = ['faculty_name'];
   DISPLAY_PROPERTIES_ORDER: string[] = ['faculty_name', 'faculty_description'];
   CREATE_NEW_FACULTY = 'Додати новий факультет';
+  CHOSEN_ACTION: any;
 
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = FACULTY_CONFIG;
+
 
   constructor(private http: FacultyService, private route: ActivatedRoute,
               private router: Router, private spinner: SpinnerService, private toastr: ToastsManager) {
@@ -127,12 +129,13 @@ export class FacultiesComponent implements OnInit {
 
   add() {
    // this.configs[1]['action'] = 'add';
+  //  this.CHOSEN_ACTION = TEST;
     this.popup.sendItem(new Faculty('', '', ''), 'Faculty');
     this.popup.showModal();
   }
 
   edit(faculty: Faculty) {
-   // this.configs[1]['action'] = 'edit';
+    // this.configs[1]['action'] = 'edit';
     this.popup.sendItem(faculty);
     this.popup.showModal();
   }
