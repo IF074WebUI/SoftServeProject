@@ -30,9 +30,14 @@ export class StatisticsComponent implements OnInit {
               private groupService: GroupService,
               private spesialityService: SpecialitiesService,
               private studentsService: StudentsService,
-              private facultyService: FacultyService) {
-    this.entityHeaders = ['Спеціальності', 'Групи', 'Предмети', 'Тести', 'Студенти', 'Питання'];
-    this.entityNames = ['speciality', 'group', 'subject', 'test', 'student', 'question'];
+              private facultyService: FacultyService,
+              private toastr: ToastsManager) {
+    this.selectedEntity = 'default';
+    this.dataValue = [];
+    this.graphData = [];
+    this.countSudentsByGroup = 0;
+    this.entityNames = ['faculty', 'speciality', 'group', 'subject', 'test', 'student', 'question'];
+    this.entityDataName = ['Факультети', 'Спеціальності', 'Групи', 'Предмети', 'Тести', 'Студенти', 'Питання'];
     this.data = {
       labels: [],
       datasets: [
@@ -51,8 +56,6 @@ export class StatisticsComponent implements OnInit {
   };
 
   getData() {
-    this.refreshData();
-    console.log(this.entityDataName);
     for (let index = 0; index < this.entityNames.length; index++) {
       this.spinner.showSpinner();
       this.statistics.getCountRecords(this.entityNames[index]).subscribe(
@@ -60,16 +63,15 @@ export class StatisticsComponent implements OnInit {
           this.graphData[index] = {
             label: this.entityDataName[index],
             value: +res.numberOfRecords
-          };
-          this.spinner.hideSpinner();
-          },
-            error => {
-              this.toastr.error(error);
-            },
-        () => { this.showDataOnGraph(); }
+          }; this.showDataOnGraph();
+        },
+        error => {
+          this.toastr.error(error);
+        },
+        () => { this.spinner.hideSpinner();  }
       );
     }
-    console.log(this.graphData);
+    console.log(this.data);
   }
 
   refreshData() {
@@ -78,27 +80,27 @@ export class StatisticsComponent implements OnInit {
     this.data.datasets[0].data = [];
   }
   compareDataByValue(a: any, b: any) {
-       const genreA = a['value'];
-       const genreB = b['value'];
-       let comparison = 0;
-       if (genreA > genreB) {
-         comparison = 1;
-       } else if (genreA < genreB) {
-         comparison = -1;
-       }
-       return comparison;
-     }
+    const genreA = a['value'];
+    const genreB = b['value'];
+    let comparison = 0;
+    if (genreA > genreB) {
+      comparison = 1;
+    } else if (genreA < genreB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
   compareDataByLabel(a: any, b: any) {
-       const genreA = a.label.toUpperCase();
-       const genreB = b.label.toUpperCase();
-       let comparison = 0;
-       if (genreA > genreB) {
-         comparison = 1;
-       } else if (genreA < genreB) {
-         comparison = -1;
-       }
-       return comparison;
-     }
+    const genreA = a.label.toUpperCase();
+    const genreB = b.label.toUpperCase();
+    let comparison = 0;
+    if (genreA > genreB) {
+      comparison = 1;
+    } else if (genreA < genreB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
   sortGraphData(criteria: string) {
     this.getDataForSorting();
     if (criteria === 'valueInc' || criteria === 'valueDec') {
@@ -129,8 +131,8 @@ export class StatisticsComponent implements OnInit {
   }
   checkAndReverseData(criteria: string) {
     if (criteria === 'valueDec' || criteria === 'nameDec') {
-     this.graphData.reverse();
-   }
+      this.graphData.reverse();
+    }
   }
   selectEntityForGraph() {
     this.refreshData();
@@ -142,49 +144,56 @@ export class StatisticsComponent implements OnInit {
     }
   }
   countDataForFaculty() {
-      this.spinner.showSpinner();
-      this.facultyService.getAllFaculties().subscribe(
-        (res) => {
-          for (let i = 0; i < res.length; i++) {
-            this.graphData[i] = { label: res[i].faculty_name, value: res.length };
-          };
-          this.showDataOnGraph();
-          this.chart.reinit();
-          this.spinner.hideSpinner(),
-            err => this.router.navigate(['/bad_request']);
-        });
+    this.spinner.showSpinner();
+    this.facultyService.getAllFaculties().subscribe(
+      (res) => {
+        for (let i = 0; i < res.length; i++) {
+          this.graphData[i] = { label: res[i].faculty_name, value: 0 };
+          this.groupService.getGroupsByFaculty(+res[i].faculty_id).subscribe(groupRes => {
+            if (groupRes['response'] === 'no records') {
+              this.graphData[i].value = 0;
+            } else {
+              for (let groupItem = 0; groupItem < groupRes.length; groupItem++) {
+                this.studentsService.getStudentsByGroupId(+groupRes[groupItem].group_id).subscribe(studentRes => {
+                  if (studentRes['response'] === 'no records') {
+                    this.graphData[i].value += 0;
+                  } else {
+                    this.graphData[i].value += studentRes.length;
+                  } this.showDataOnGraph();
+                });
+              }
+            }
+          });
+        } },
+      err => this.toastr.error(err),
+      () => { this.chart.refresh(); }
+    );
+    this.spinner.hideSpinner();
   }
-    countDataForSpeciality() {
-      this.spinner.showSpinner();
-      this.spesialityService.getAll().subscribe(
-        (res) => {
-          for (let i = 0; i < res.length; i++) {
-            this.graphData[i] = { label: res[i].speciality_name, value: 5 };
-            this.groupService.getGroupsBySpeciality(+res[i].speciality_id).subscribe(groupRes => {
-              if (groupRes['response'] === 'no records') {
-                this.graphData[i].value = 0;
-              } else {
-                for (let groupItem = 0; groupItem < groupRes.length; groupItem++) {
-                  this.studentsService.getStudentsByGroupId(+groupRes[groupItem].group_id).subscribe(studentRes => {
-                    if (studentRes['response'] === 'no records') {
-                      this.graphData[i].value += 0;
-                    } else {
-                      this.graphData[i].value += studentRes.length;
-                    }
-                  });
-                }
+  countDataForSpeciality() {
+    this.spinner.showSpinner();
+    this.spesialityService.getAll().subscribe(
+      (res) => {
+        for (let i = 0; i < res.length; i++) {
+          this.graphData[i] = { label: res[i].speciality_name, value: 0 };
+          this.groupService.getGroupsBySpeciality(+res[i].speciality_id).subscribe(groupRes => {
+            if (groupRes['response'] === 'no records') {
+              this.graphData[i].value = 0;
+            } else {
+              for (let groupItem = 0; groupItem < groupRes.length; groupItem++) {
+                this.studentsService.getStudentsByGroupId(+groupRes[groupItem].group_id).subscribe(studentRes => {
+                  if (studentRes['response'] === 'no records') {
+                    this.graphData[i].value += 0;
+                  } else {
+                    this.graphData[i].value += studentRes.length;
+                  } this.showDataOnGraph();
+                });
               }
-              });
-          }this.spinner.hideSpinner(); } ,
-            err => this.router.navigate(['/bad_request']),
-            () => { console.log(this.graphData);
-              for (let i = 0; i < this.graphData.length; i++) {
-                this.data.labels[i] = this.graphData[i].label;
-                this.data.datasets[0].data[i] = this.graphData[i].value;
-              }
-              this.chart.refresh(); }
-      );
+            }
+          });
+        } },
+      err => this.toastr.error(err),
+      () => { this.chart.refresh(); this.spinner.hideSpinner();  }
+    );
   }
 }
-
-
