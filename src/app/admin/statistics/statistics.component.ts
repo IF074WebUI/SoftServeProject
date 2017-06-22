@@ -56,22 +56,23 @@ export class StatisticsComponent implements OnInit {
   };
 
   getData() {
+    // this.spinner.showSpinner();
     for (let index = 0; index < this.entityNames.length; index++) {
-      this.spinner.showSpinner();
       this.statistics.getCountRecords(this.entityNames[index]).subscribe(
         (res) => {
+          this.data.labels[index] = this.entityDataName[index];
+          this.data.datasets[0].data[index] = +res.numberOfRecords;
           this.graphData[index] = {
             label: this.entityDataName[index],
             value: +res.numberOfRecords
           };
+          this.chart.refresh();
         },
         error => {
           this.toastr.error(error);
         },
       );
     }
-    console.log(this.graphData);
-    this.spinner.hideSpinner();
   }
 
   refreshData() {
@@ -139,7 +140,6 @@ export class StatisticsComponent implements OnInit {
   }
   selectEntityForGraph() {
     this.refreshData();
-    console.log(this.selectedEntity);
     switch (this.selectedEntity) {
       case 'default': this.getData(); break;
       case 'faculty': this.countDataForFaculty(); break;
