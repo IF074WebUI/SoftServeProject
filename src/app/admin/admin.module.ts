@@ -58,6 +58,8 @@ import { QuestionsComponent } from './questions/questions.component';
 import { AnswersComponent } from './answers/answers.component';
 import { ModalImgComponent } from './modal-img/modal-img.component';
 import { FacultyService } from "./services/faculty.service";
+import { RadioButtonModule } from 'primeng/primeng';
+
 
 @NgModule({
   declarations: [
@@ -103,7 +105,8 @@ import { FacultyService } from "./services/faculty.service";
     LoadingModule,
     MdButtonModule,
     LoadingModule,
-    ChartModule
+    ChartModule,
+    RadioButtonModule
   ],
   providers: [
     StatisticsService,
