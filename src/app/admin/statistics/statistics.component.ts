@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { GraphData } from './graph-data';
 import { UIChart } from 'primeng/primeng';
 import { FacultyService } from '../services/faculty.service';
-import {ToastsManager} from "ng2-toastr";
+import {ToastsManager} from 'ng2-toastr';
 
 @Component({
   selector: 'dtester-statistics',
@@ -29,7 +29,8 @@ export class StatisticsComponent implements OnInit {
               private router: Router,
               private groupService: GroupService,
               private spesialityService: SpecialitiesService,
-              private studentsService: StudentsService) {
+              private studentsService: StudentsService,
+              private facultyService: FacultyService) {
     this.entityHeaders = ['Спеціальності', 'Групи', 'Предмети', 'Тести', 'Студенти', 'Питання'];
     this.entityNames = ['speciality', 'group', 'subject', 'test', 'student', 'question'];
     this.data = {
@@ -99,7 +100,7 @@ export class StatisticsComponent implements OnInit {
        return comparison;
      }
   sortGraphData(criteria: string) {
-    this.getDataForSorting()
+    this.getDataForSorting();
     if (criteria === 'valueInc' || criteria === 'valueDec') {
       this.graphData.sort(this.compareDataByValue);
       this.checkAndReverseData(criteria);
