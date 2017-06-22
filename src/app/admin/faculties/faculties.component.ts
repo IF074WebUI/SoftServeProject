@@ -169,7 +169,7 @@ export class FacultiesComponent implements OnInit {
   }
 
   submitDelete(faculty: Faculty) {
-    this.http.deleteItem(faculty['faculty_id']).subscribe(response => {
+    this.http.deleteCascade(faculty['faculty_id']).subscribe(response => {
         this.getCount();
         (this.count % this.countPerPage === 1) ? this.page = this.page - 1 : this.page;
         this.uploadAllPages(this.page);

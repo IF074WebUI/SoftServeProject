@@ -85,10 +85,15 @@ export class StudentsService {
   deleteCascade(id: number): Observable<any> {
     let delResultsObs = [];
     return this.resultsService.getAllByStudent(id).flatMap((results: Result[]) => {
-      for (let result of results) {
-        delResultsObs.push(this.resultsService.delete(result.session_id));
+      if (results['response'] === 'no records') {
+        console.log('empty');
+        return Observable.empty();
+      } else {
+        for (let result of results) {
+          delResultsObs.push(this.resultsService.delete(result.session_id));
+        }
+        return Observable.forkJoin(...delResultsObs);
       }
-      return Observable.forkJoin(...delResultsObs);
     }).flatMap(arr =>
       this.del(id)
     );
