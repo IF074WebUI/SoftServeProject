@@ -63,15 +63,15 @@ export class StatisticsComponent implements OnInit {
           this.graphData[index] = {
             label: this.entityDataName[index],
             value: +res.numberOfRecords
-          }; this.showDataOnGraph();
+          };
         },
         error => {
           this.toastr.error(error);
         },
-        () => { this.spinner.hideSpinner();  }
       );
     }
-    console.log(this.data);
+    console.log(this.graphData);
+    this.spinner.hideSpinner();
   }
 
   refreshData() {
@@ -124,10 +124,13 @@ export class StatisticsComponent implements OnInit {
   }
   showDataOnGraph() {
     for (let i = 0; i < this.graphData.length; i++) {
-      this.data.labels[i] = this.graphData[i].label;
+      if (this.selectedEntity === 'default') {
+        this.data.labels = this.entityDataName;
+      } else {this.data.labels[i] = this.graphData[i].label; }
       this.data.datasets[0].data[i] = this.graphData[i].value;
     }
     this.chart.reinit();
+    this.spinner.hideSpinner();
   }
   checkAndReverseData(criteria: string) {
     if (criteria === 'valueDec' || criteria === 'nameDec') {
@@ -165,11 +168,9 @@ export class StatisticsComponent implements OnInit {
             }
           });
         } },
-      err => this.toastr.error(err),
-      () => { this.chart.refresh(); }
+      err => this.toastr.error(err)
     );
-    this.spinner.hideSpinner();
-  }
+}
   countDataForSpeciality() {
     this.spinner.showSpinner();
     this.spesialityService.getAll().subscribe(
@@ -192,8 +193,7 @@ export class StatisticsComponent implements OnInit {
             }
           });
         } },
-      err => this.toastr.error(err),
-      () => { this.chart.refresh(); this.spinner.hideSpinner();  }
+      err => this.toastr.error(err)
     );
   }
 }
