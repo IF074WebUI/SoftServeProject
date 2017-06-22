@@ -1,11 +1,12 @@
-import {Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GetAllRecordsService } from '../services/get-all-records.service';
 import { Test } from './test';
 import { GetRecordsByIdService } from '../services/get-records-by-id.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GetTestsBySubjectService } from '../services/get-tests-by-subject.service';
+import { SpinnerService } from '../universal/spinner/spinner.service';
 
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: 'app-tests',
@@ -23,21 +24,24 @@ export class TestsComponent implements OnInit {
   subjectIdQueryParam: string;
   subjectNameQueryParam: string;
   btnClass: string;
+  sortProperties: string[];
   constructor(private getAllRecordsService: GetAllRecordsService,
               private getRecordsByIdService: GetRecordsByIdService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private getTestsBySubjectService: GetTestsBySubjectService
-  ) {
+              private getTestsBySubjectService: GetTestsBySubjectService,
+              private spinnerService: SpinnerService) {
     this.btnClass = 'fa fa-align-justify';
   }
   ngOnInit() {
-    this.getQueryParams()
+    this.getQueryParams();
     this.getSubjects();
     this.headers = ['№', 'Назва тесту', 'Завдання', 'Тривалість тесту', 'Спроби', 'Статус'];
     this.displayPropertiesOrder = ['test_name', 'tasks', 'time_for_test', 'attempts', 'enabled_description' ];
+    this.sortProperties = ['test_name'];
   }
   getQueryParams() {
+    this.spinnerService.showSpinner();
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.subjectIdQueryParam = params['subject_id'];
       this.subjectNameQueryParam = params['subject_name'];
@@ -51,6 +55,7 @@ export class TestsComponent implements OnInit {
         this.setNameOfSubject(test);
         this.setEnabledDescription(test);
       }
+      this.spinnerService.hideSpinner();
     });
   }
   getSubjects() {
@@ -92,5 +97,9 @@ export class TestsComponent implements OnInit {
       },
       relativeTo: this.activatedRoute.parent
     });
+  }
+
+  goToQuestions(test: Test) {
+    this.router.navigate(['./questions'], {queryParams: {'test_id': test.test_id}, relativeTo: this.activatedRoute.parent});
   }
 }

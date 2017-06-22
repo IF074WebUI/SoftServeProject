@@ -7,10 +7,10 @@ import { FacultyService } from '../services/faculty.service';
 import { Faculty } from '../faculties/Faculty';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GROUPS_HEADERS, IGNORE_PROPERTIES } from './groupConstants';
-
 import { SpinnerService } from '../universal/spinner/spinner.service';
 import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 import { GROUP_CONFIG } from '../universal/dynamic-form/config';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'dtester-group',
@@ -21,12 +21,12 @@ import { GROUP_CONFIG } from '../universal/dynamic-form/config';
 export class GroupComponent implements OnInit {
 
   groupsOnPage: Group[];
-  pageNumber: number = 1;
+  pageNumber: number;
   offset = 5;   /*number of the records for the stating page*/
   countRecords: number;
   headers: string[];            /* array of headers */
   ignoreProperties: string[];
-  btnClass: string = 'fa fa-calendar';
+  btnClass: string;
   CREATING_NEW_GROUP = 'Додати нову групу';
   DISPLAY_PROPERTIES_ORDER: string[] = ['group_name'];
   SORT_PROPERTIES: string[] = ['group_name'];
@@ -38,8 +38,12 @@ export class GroupComponent implements OnInit {
   constructor(private getGroupsService: GroupService,
               private route: ActivatedRoute,
               private router: Router,
-              private spinner: SpinnerService
-  ) {}
+              private spinner: SpinnerService,
+              private toastr: ToastsManager,
+  ) {
+    this.pageNumber = 1;
+    this.btnClass = 'fa fa-calendar';
+  }
   ngOnInit() {
     this.sortProperties = this.SORT_PROPERTIES;
     this.displayPropertiesOrder = this.DISPLAY_PROPERTIES_ORDER;
@@ -77,7 +81,8 @@ export class GroupComponent implements OnInit {
       --this.pageNumber;
     }
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset).delay(301)
-      .subscribe(resp => { this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']);
+      .subscribe(resp => {
+        this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']);
       this.spinner.hideSpinner();
       });
   }
@@ -99,7 +104,6 @@ export class GroupComponent implements OnInit {
   // get students by group
   getStudentsByGroup(group: Group) {
     this.router.navigate(['./students'], {queryParams: {'group_id': group.group_id}, relativeTo: this.route.parent});
-    console.log(group);
   }
     // search group
   startSearch(criteria: string) {   /* callback method for output in search component */
@@ -146,13 +150,13 @@ export class GroupComponent implements OnInit {
   // Method for  add/edit, delete form submiting
 
   formSubmitted(value) {
-    console.log(value);
     if (value['group_id']) {
-      this.getGroupsService.editGroup(+value['group_id'], value['group_name'], value['Faculty'], value['Speciality'])
+      this.getGroupsService.editGroup(value['group_id'], value['group_name'], value['Faculty'], value['Speciality'])
         .subscribe(response => {
           this.getGroups();
           this.popup.cancel();
-        },
+            this.toastr.success(`Група ${value['group_name']} успішно відредагована`);
+          },
         error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
       );
     } else {
@@ -160,7 +164,8 @@ export class GroupComponent implements OnInit {
             .subscribe(response => {
               this.getGroups();
               this.popup.cancel();
-        },
+                this.toastr.success(`Група ${value['group_name']} успішно додана`);
+              },
         error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': value['faculty_name']}, relativeTo: this.route.parent})
       );
     }
@@ -168,9 +173,10 @@ export class GroupComponent implements OnInit {
 
 
   submitDelete(group: Group) {
-    this.getGroupsService.deleteGroup(group['group_id']).subscribe(response => this.getGroups(),
+    this.getGroupsService.deleteCascade(group['group_id']).subscribe(response => this.getGroups(),
       error => this.router.navigate(['/bad_request'])
     );
+    this.toastr.success(`Група ${group['group_name']} успішно видалена`);
   }
 
 }

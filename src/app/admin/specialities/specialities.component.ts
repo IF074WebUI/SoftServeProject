@@ -97,7 +97,7 @@ export class SpecialitiesComponent implements OnInit {
   }
 
   submitDelete(speciality: Speciality): void {
-      this.specialitiesService.delete(speciality['speciality_id'])
+      this.specialitiesService.deleteCascade(speciality['speciality_id'])
         .subscribe(resp => {
           --this.count;
           this.getSpecialities();

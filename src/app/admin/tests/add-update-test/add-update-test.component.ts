@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TestsService } from '../../services/tests.service';
 import { Test } from '../test';
+import {ToastsManager} from "ng2-toastr";
 
 declare var $: any;
 
@@ -16,7 +17,8 @@ export class AddUpdateTestComponent implements OnInit, OnChanges {
   @Input() action: string;
   @Output() getTests = new EventEmitter();
   testForm: FormGroup;
-  constructor(private testsService: TestsService) {
+  constructor(private testsService: TestsService,
+              private toastsManager: ToastsManager) {
     this.testForm = new FormGroup({
       'test_name': new FormControl('', Validators.required),
       'tasks': new FormControl('', Validators.required),
@@ -58,17 +60,23 @@ export class AddUpdateTestComponent implements OnInit, OnChanges {
   createTest() {
     this.testsService.createTest(this.testForm.value)
       .subscribe(() => {
+        this.toastsManager.success(`Тест "${this.testForm.value.test_name}" успішно створено.`);
         this.testForm.reset();
         this.getTests.emit();
         $('#add-update-test').modal('hide');
+      }, () => {
+        this.toastsManager.error('Помилка. Спробуйте ще раз');
       });
   }
   updateTest() {
     this.testsService.updateTest(this.testForm.value, this.updatedTest.test_id)
       .subscribe(() => {
+        this.toastsManager.success(`Тест "${this.testForm.value.test_name}" успішно відредаговано.`);
         this.testForm.reset();
         this.getTests.emit();
         $('#add-update-test').modal('hide');
+      }, () => {
+        this.toastsManager.error('Помилка. Спробуйте ще раз');
       });
   }
 }

@@ -21,7 +21,8 @@
                         (actionEntity)="onTimeTableNavigate($event)"
                         (clickEntity)="onTestsNavigate($event)"
                         (deleteEntity)="del($event)"
-                        (editEntity)="edit($event)">
+                        (editEntity)="edit($event)"
+                        [sortProperties]="sortProperties">
 </dtester-entities-table>
 
 <dtester-pagination [countRecords]="numberOfRecords"

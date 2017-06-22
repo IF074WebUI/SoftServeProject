@@ -4,11 +4,13 @@ import { HOST } from '../../constants';
 import { Observable } from 'rxjs/Observable';
 import { Student } from './student';
 import 'rxjs/add/operator/map';
+import { ResultsService } from '../services/results.service';
+import { Result } from '../results/result';
 
 @Injectable()
 export class StudentsService {
 
-  constructor(private http: Http) {}
+  constructor(private http: Http, private resultsService: ResultsService) {}
 
   getAllStudents(): Observable<Student[]> {
     return this.http.get('http://' + HOST + '/student/getRecords').map(resp => resp.json());
@@ -78,5 +80,17 @@ export class StudentsService {
 
   del(user_id: number): Observable<Student> {
     return this.http.delete('http://' + HOST + '/Student/del/' + user_id).map(resp => resp.json());
+  }
+
+  deleteCascade(id: number): Observable<any> {
+    let delResultsObs = [];
+    return this.resultsService.getAllByStudent(id).flatMap((results: Result[]) => {
+      for (let result of results) {
+        delResultsObs.push(this.resultsService.delete(result.session_id));
+      }
+      return Observable.forkJoin(...delResultsObs);
+    }).flatMap(arr =>
+      this.del(id)
+    );
   }
 }

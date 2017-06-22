@@ -59,7 +59,7 @@ export class DynamicFormComponent implements OnInit {
       }
       if (control.requiredAsync) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
-      // group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
+    //   group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
       } else {
         group.addControl(control.name, this.fb.control(''));
       }

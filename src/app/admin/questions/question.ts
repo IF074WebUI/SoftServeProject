@@ -5,7 +5,7 @@ export class Question {
   question_text: string;
   level: number;
   type: number;
-  attachment: any;
+  attachment?: any;
   answers: Answer[];
   true_answer: boolean;
   // constructor(text: string) {
