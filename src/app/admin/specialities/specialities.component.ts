@@ -98,12 +98,6 @@ export class SpecialitiesComponent implements OnInit {
 
   submitDelete(speciality: Speciality): void {
       this.specialitiesService.deleteCascade(speciality['speciality_id'])
-        .flatMap(arr => {
-          console.log(arr);
-          return this.specialitiesService.delete(speciality['speciality_id']);
-        }
-
-      )
         .subscribe(resp => {
           --this.count;
           this.getSpecialities();

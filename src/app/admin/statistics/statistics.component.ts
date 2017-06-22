@@ -49,6 +49,6 @@ export class StatisticsComponent implements OnInit {
             this.data.datasets[0].data = this.entityCountValue;
             this.spinner.hideSpinner(),
             err => this.router.navigate(['/bad_request']); });
-        }
+      }
   }
 }

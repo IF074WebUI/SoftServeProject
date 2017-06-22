@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { Speciality } from '../specialities/speciality';
 import { SPECIALITY_URI } from '../../constants';
 import { Router } from '@angular/router';
-import {GroupService} from "../group/group.service";
-import {Group} from "../group/group";
+import { GroupService } from '../group/group.service';
+import { Group } from '../group/group';
 
 @Injectable()
 export class SpecialitiesService {
@@ -46,13 +46,13 @@ export class SpecialitiesService {
  deleteCascade(id: number): Observable<any> {
    let delGroupsObs = [];
    return this.groupsService.getGroupsBySpeciality(id).flatMap((groups: Group[]) => {
-     console.log(groups);
      for (let group of groups) {
-       delGroupsObs.push(this.groupsService.deleteGroup(group.group_id));
+       delGroupsObs.push(this.groupsService.deleteCascade(group.group_id));
      }
-     console.log(delGroupsObs);
      return Observable.forkJoin(...delGroupsObs);
-   });
+   }).flatMap(arr =>
+     this.delete(id)
+   );
  }
 
   edit(speciality: Speciality): Observable<Speciality> {
