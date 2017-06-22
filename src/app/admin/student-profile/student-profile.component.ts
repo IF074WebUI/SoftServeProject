@@ -64,7 +64,6 @@ export class StudentProfileComponent implements OnInit {
     };
     myReader.readAsDataURL(file);
   }
-
   getStudent() {
     this.spinner.showSpinner();
     this.studentsService.getStudentById(this.user_id).subscribe((resp: Student) => {

@@ -24,8 +24,6 @@ export class QuestionsComponent implements OnInit {
   imgAttach = 'question.attachment';
   CREATING_NEW_QUESTION = 'Додати нове питання';
   test_id: number;
-  imageFormQ: FormGroup;
-  questionEdit: Question;
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = QUESTION_CONFIG;
@@ -40,7 +38,7 @@ export class QuestionsComponent implements OnInit {
   ngOnInit() {
     this.headers = ['№', 'Питання', 'Рівень', 'Тип', 'Вкладення'];
     this.ignoreProperties = ['test_id', 'question_id', 'attachment'];
-    this.imageFormQ = new FormGroup({});
+    // this.imageFormQ = new FormGroup({});
     this.getQuestions();
     this.test_id = this.route.snapshot.queryParams['test_id'];
     console.log(this.test_id);
@@ -67,19 +65,6 @@ export class QuestionsComponent implements OnInit {
       this.getQuestions();
     }
 
-  }
-  changeListener($event): void {
-    this.readThis($event.target);
-  }
-
-  readThis(inputValue: any): void {
-    const file: File = inputValue.files[0];
-    const myReader: FileReader = new FileReader();
-
-    myReader.onloadend = (e) => {
-      this.questionEdit.attachment = myReader.result;
-    };
-    myReader.readAsDataURL(file);
   }
   getQuestions(): void {
     this.spinner.showSpinner();
@@ -132,9 +117,6 @@ export class QuestionsComponent implements OnInit {
     }
   }
 
-  // getAnswersByQuestion(question: Question) {
-  //   this.router.navigate(['./answer'], {queryParams: {'questionId': question.question_id}, relativeTo: this.route.parent});
-  // }
 // Method for opening editing and deleting commo modal window
 
   add() {

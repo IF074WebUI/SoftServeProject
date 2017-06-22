@@ -1,4 +1,11 @@
-<ul class="nav flex-column">
+<section class="wrapper">
+  <section class="hamburger" (click)="heroes.addInactive()">
+    <button class="fa fa-arrow-left">
+      <span class="fa fa-bars"></span>
+    </button>
+  </section>
+  <section class="menu">
+<ul class="nav flex-column" [@flyInOut]="'in'">
   <li class="nav-item" routerLinkActive="active">
     <a class="nav-link" [routerLink]="['students']">Cтуденти</a>
   </li>
@@ -30,3 +37,5 @@
      <span class="nav-link">Вихід</span>
   </li>
 </ul>
+  </section>
+</section>

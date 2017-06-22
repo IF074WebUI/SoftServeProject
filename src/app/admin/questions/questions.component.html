@@ -28,10 +28,3 @@
               (submitted)="formSubmitted($event)"
               (youCanDelete)="deleteQuestion($event)">
 </dynamic-form>
-<img class="img-thumbnail attachment" [src]="question.attachment">
-<form [formGroup]="imageFormQ">
-  <div class="form-group">
-    <label for="imgAttach">Insert IMG</label>
-    <input type="file" accept="image/*" (change)="changeListener($event)" id="imgAttach">
-  </div>
-</form>

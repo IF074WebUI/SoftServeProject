@@ -38,29 +38,6 @@ export class AnswersComponent implements OnInit {
               private getRecordsByIdService: GetRecordsByIdService
   ) {}
 
-  // ngOnInit() {
-  //   this.headers = ['№', 'Відповідь', 'Правильність', 'Вкладення'];
-  //   this.ignoreProperties = ['question_id', 'answer_id', 'attachment'];
-  //   this.getAnswers();
-  //   this.question_id = this.route.snapshot.queryParams['question_id'];
-  //   console.log(this.question_id);
-  //
-  //
-  //   if (this.question_id) {
-  //     this.answersService.getAnswersByQuestion(this.question_id).subscribe(resp => {
-  //       if (resp['response'] === 'no records') {
-  //         this.answersOnPage = [], error => this.router.navigate(['/bad_request']);
-  //       } else {
-  //         this.answersOnPage = resp, error => this.router.navigate(['/bad_request']);
-  //       }
-  //     });
-  //   }
-  // }
-
-
-
-
-
   ngOnInit() {
     this.getQueryParams();
     this.getAnswers();
@@ -68,19 +45,6 @@ export class AnswersComponent implements OnInit {
     this.headers = ['№', 'Відповідь', 'Правильність', 'Вкладення'];
     this.ignoreProperties = ['question_id', 'answer_id', 'attachment'];
     this.imageForm = new FormGroup({});
-  }
-  changeListener($event): void {
-    this.readThis($event.target);
-  }
-
-  readThis(inputValue: any): void {
-    const file: File = inputValue.files[0];
-    const myReader: FileReader = new FileReader();
-
-    myReader.onloadend = (e) => {
-      this.answerEdit.attachment = myReader.result;
-    };
-    myReader.readAsDataURL(file);
   }
   getQueryParams() {
     this.route.queryParams.subscribe((params: Params) => {
@@ -96,18 +60,11 @@ export class AnswersComponent implements OnInit {
       }
     });
   }
-  // getQuestions() {
-  //   this.getAllRecordsService.getAllRecords('question').subscribe((resp) => {
-  //     this.questions = resp;
-  //   });
-  // }
   setNameOfQuestion(answer: Answer) {
     this.getRecordsByIdService.getRecordsById('question', answer.question_id).subscribe((resp) => {
       answer.question_id = resp[0].question_id;
     });
   }
-
-
   // PARAMS
 
   getAnswers(): void {
