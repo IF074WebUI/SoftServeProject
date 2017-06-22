@@ -67,11 +67,11 @@ export class StatisticsComponent implements OnInit {
             value: +res.numberOfRecords
           };
           this.spinner.hideSpinner();
-          this.showDataOnGraph();
           },
             error => {
               this.toastr.error(error);
-            }
+            },
+        () => { this.showDataOnGraph(); }
       );
     }
     console.log(this.graphData);
@@ -180,12 +180,15 @@ export class StatisticsComponent implements OnInit {
                 }
               }
               });
-          }; this.spinner.hideSpinner(),
+          }this.spinner.hideSpinner(); } ,
             err => this.router.navigate(['/bad_request']),
-            console.log(this.graphData);
-            this.showDataOnGraph();
-            console.log(this.data);
-      });
+            () => { console.log(this.graphData);
+              for (let i = 0; i < this.graphData.length; i++) {
+                this.data.labels[i] = this.graphData[i].label;
+                this.data.datasets[0].data[i] = this.graphData[i].value;
+              }
+              this.chart.refresh(); }
+      );
   }
 }
 

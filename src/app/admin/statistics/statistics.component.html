@@ -1,4 +1,5 @@
 <h2>Статистика системи</h2>
+<button (click)="chart.refresh()">refresh data</button>
   <p-radioButton name="group1" value="default" label="Загальні" [(ngModel)]="selectedEntity" (click)="selectEntityForGraph()"></p-radioButton>
   <p-radioButton name="group1" value="faculty" label="Факультети" [(ngModel)]="selectedEntity" (click)="selectEntityForGraph()"></p-radioButton>
   <p-radioButton name="group1" value="speciality" label="Спеціальності" [(ngModel)]="selectedEntity" (click)="selectEntityForGraph()"></p-radioButton>
