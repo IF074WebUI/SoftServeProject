@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 
 import { GroupComponent } from './group.component';
 
 describe('GroupComponent', () => {
   let component: GroupComponent;
-  let fixture: ComponentFixture<GroupComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ GroupComponent ]
-    })
-    .compileComponents();
-  }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroupComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new GroupComponent;
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  fit('it should change page number to 1', () => {
+    component.ngOnInit();
+    component.changePage(1);
+
+    expect(component.offset).toBe(1);
+  });
+
+  fit('it should change page number to 5 ', () => {
+    component.ngOnInit();
+    component.changePage(5);
+
+    expect(component.offset).toBe(5);
   });
 });
