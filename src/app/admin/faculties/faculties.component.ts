@@ -3,7 +3,7 @@ import {Faculty} from './Faculty';
 import {FacultyService} from '../services/faculty.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
-import {FACULTY_CONFIG} from '../universal/dynamic-form/config';
+import {QUESTION_CONFIG} from '../universal/dynamic-form/config';
 import {SpinnerService} from '../universal/spinner/spinner.service';
 import {ToastsManager} from 'ng2-toastr';
 
@@ -36,7 +36,7 @@ export class FacultiesComponent implements OnInit {
 
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
-  configs = FACULTY_CONFIG;
+  configs = QUESTION_CONFIG;
 
 
   constructor(private http: FacultyService, private route: ActivatedRoute,

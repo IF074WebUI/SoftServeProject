@@ -1,0 +1,7 @@
+
+  <label *ngFor="let option of config.options">
+    <input type="radio" name='option'  (change)="onValueChanged($event)" [value]="option">
+    {{option}}
+  </label>
+
+
