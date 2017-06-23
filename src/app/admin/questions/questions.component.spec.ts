@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { QuestionsComponent } from './questions.component';
+import { Observable } from 'rxjs/Observable';
 
 describe('QuestionsComponent', () => {
   let component: QuestionsComponent;
@@ -19,7 +20,24 @@ describe('QuestionsComponent', () => {
     fixture.detectChanges();
   });
 
+  // beforeEach(() => {
+  //   component = new QuestionsComponent(null);
+  // });
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  // it(`should have a title of 'Питання'`, () => {
+  //   component.changeNumberOfRecordsOnPage();
+  //   expect(component.changeNumberOfRecordsOnPage).toBe(10);
+  // });
+  fit(`should have a title of 'Питання'`, () => {
+    expect(component.title).toContain('Питання');
+  });
+  // fit(`should have a title of 'Питання'`, () => {
+  //   expect(component).toBeTruthy();
+  // });
+  // expect (questionsService.getRecordsRangeByTest)
+  //
+  // expect (questionsService.getQuestionById).toHaveBeenCalled();
+  // expect (questionsService.getQuestions).toHaveBeenCalled();
 });

@@ -6,7 +6,9 @@ import {
   state,
   style,
   animate,
-  transition
+  transition,
+  keyframes,
+  group
 } from '@angular/animations';
 
 
@@ -15,24 +17,27 @@ import {
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
   animations: [
-    trigger('flyInOut', [
-      state('in', style({transform: 'translateX(0)'})),
-      transition('void => *', [
-        style({transform: 'translateX(-100%)'}),
-        animate(100)
-      ]),
-      transition('* => void', [
-        animate(100, style({transform: 'translateX(100%)'}))
-      ])
-    ])
+    trigger('moveLeftRight', [
+      state('left', style({
+        transform: 'translateX(-100%)'
+      })),
+      state('right', style({
+        transform: 'translateX(100%)'
+      })),
+      transition('left => right', [animate('0.5s')]),
+      transition('right => left', [animate('0.5s')])
+        ])
   ]
 })
 export class MenuComponent implements OnInit {
-
+  menuMove: string = 'left';
   constructor(private loginService: LoginService, private router: Router) {
   }
 
   ngOnInit() {
+  }
+  toggleMove() {
+    this.menuMove = (this.menuMove === 'left') ? 'right' : 'left';
   }
 
   logout() {

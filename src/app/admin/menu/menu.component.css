@@ -25,50 +25,12 @@ li.active a{
   background-color: indianred;
   cursor: pointer;
 }
+.wrapper .menu{
+  width:150px;
+}
+.wrapper .menu-btn{
+  width:70%;
+}
 
 
-
-
-/*.material-design-hamburger{*/
-  /*background-color: #f0f;*/
-/*}*/
-/*.menu--off {*/
-  /*position: absolute;*/
-  /*left: -50%;*/
-  /*width: 50%;*/
-  /*display: block;*/
-  /*background: #eee;*/
-  /*min-height: 600px;*/
-  /*height: 125%;*/
-  /*margin-top: 1em;*/
-  /*transition: all 300ms;*/
-/*}*/
-
-/*.menu--on {*/
-  /*left: 0;*/
-  /*box-shadow: 8px 8px 20px 0 rgba(0, 0, 0, 0.2);*/
-  /*transition: all 300ms;*/
-/*}*/
-
-/*.material-design-hamburger button {*/
-  /*display: block;*/
-  /*border: none;*/
-  /*background: none;*/
-  /*outline: 0;*/
-/*}*/
-
-/*.fa fa-arrow-left {*/
-  /*padding: 3rem 1rem;*/
-  /*cursor: pointer;*/
-/*}*/
-
-/*.fa fa-bars {*/
-  /*display: block;*/
-  /*width: 100px;*/
-  /*height: 10px;*/
-  /*background: #eee;*/
-  /*position: relative;*/
-  /*animation-duration: 300ms;*/
-  /*animation-timing-function: ease-in-out;*/
-/*}*/
 

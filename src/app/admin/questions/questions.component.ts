@@ -24,6 +24,7 @@ export class QuestionsComponent implements OnInit {
   imgAttach = 'question.attachment';
   CREATING_NEW_QUESTION = 'Додати нове питання';
   test_id: number;
+  title = 'Питання';
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = QUESTION_CONFIG;
