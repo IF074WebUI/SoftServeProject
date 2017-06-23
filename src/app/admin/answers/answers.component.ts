@@ -40,8 +40,7 @@ export class AnswersComponent implements OnInit {
 
   ngOnInit() {
     this.getQueryParams();
-    this.getAnswers();
-    this.getCountRecords();
+    // this.getAnswers();
     this.headers = ['№', 'Відповідь', 'Правильність', 'Вкладення'];
     this.ignoreProperties = ['question_id', 'answer_id', 'attachment'];
     this.imageForm = new FormGroup({});
@@ -49,12 +48,15 @@ export class AnswersComponent implements OnInit {
   getQueryParams() {
     this.route.queryParams.subscribe((params: Params) => {
       this.questionIdQueryParam = params['question_id'];
-      this.getAnswersForOneQuestion();
+      if (this.questionIdQueryParam) this.getAnswersForOneQuestion();
+      else
+      this.getAnswers();
     });
   }
   getAnswersForOneQuestion() {
     this.answersService.getAnswersByQuestion(this.questionIdQueryParam).subscribe(resp => {
       this.answersOnPage = resp;
+      this.countRecords = 0;
       for (const answer of this.answersOnPage) {
         this.setNameOfQuestion(answer);
       }
