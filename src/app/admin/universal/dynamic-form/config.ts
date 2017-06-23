@@ -23,14 +23,6 @@ export const FACULTY_CONFIG =
     }
   ];
 
-export const TEST =
-  [
-    {
-      type: 'input',
-      name: 'test'
-    }
-  ];
-
 export const SPECIALITY_CONFIG =
   [
     {
@@ -169,6 +161,11 @@ export const STUDENT_CONFIG =
       type: 'input_file',
       label: 'Вкладення',
       name: 'attachment'
+    },
+    {
+      type: 'hidden_field',
+      label: 'Вкладення',
+      name: 'photo'
     }
   ];
 export const TEST_DETAIL_CONFIG = [
@@ -244,7 +241,12 @@ export const QUESTION_CONFIG = [
   {
     type: 'input_file',
     label: 'Вкладення',
-    name: 'attachment'
+    name: 'attach'
+  },
+  {
+    type: 'hidden_field',
+    label: 'Вкладення',
+    name: 'photo'
   }
 ];
 export const ANSWER_CONFIG = [

@@ -14,6 +14,7 @@ import { FormSelectTestDetailByIdComponent } from './components/form-select-test
 import { FormInputFileComponent } from './components/form-input-file/form-input-file.component';
 import { FormNumberComponent } from './components/form-number/form-number.component';
 import { FormRadioButtonComponent } from './components/form-radio-button/form-radio-button.component';
+import { FormHiddenComponent } from './components/form-hidden/form-hidden.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { FormRadioButtonComponent } from './components/form-radio-button/form-ra
     FormSelectTestDetailByIdComponent,
     FormInputFileComponent,
     FormNumberComponent,
-    FormRadioButtonComponent
+    FormRadioButtonComponent,
+    FormHiddenComponent
   ],
   exports: [DynamicFormComponent],
   entryComponents: [
@@ -45,7 +47,8 @@ import { FormRadioButtonComponent } from './components/form-radio-button/form-ra
     FormSelectTestDetailByIdComponent,
     FormInputFileComponent,
     FormNumberComponent,
-    FormRadioButtonComponent
+    FormRadioButtonComponent,
+    FormHiddenComponent
   ],
   providers: []
 

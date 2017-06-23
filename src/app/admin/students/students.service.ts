@@ -53,7 +53,7 @@ export class StudentsService {
         'student_fname': studentForm.student_fname,
         'group_id': studentForm.group,
         'plain_password': studentData.plain_password,
-        'photo': studentData.photo
+        'photo': studentForm.photo
       }
     );
     return this.http.post('http://' + HOST + '/Student/insertData', body).map(resp => resp.json());
