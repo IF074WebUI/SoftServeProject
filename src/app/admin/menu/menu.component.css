@@ -25,12 +25,5 @@ li.active a{
   background-color: indianred;
   cursor: pointer;
 }
-.wrapper .menu{
-  width:150px;
-}
-.wrapper .menu-btn{
-  width:70%;
-}
-
 
 
