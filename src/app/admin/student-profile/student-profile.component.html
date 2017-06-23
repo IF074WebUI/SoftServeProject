@@ -9,6 +9,8 @@
   <h5>E-mail: {{AdminUser?.email}}</h5>
   <h5>Логін: {{AdminUser?.username}}</h5>
   <h5>Пароль: {{student?.plain_password}}</h5>
+  <h5>photo: {{student?.photo}}</h5>
+
   <button class="btn btn-info" (click)="goToStudentResult()">Результати</button>
   <button class="btn btn-info" data-toggle="modal" (click)="selectedStudent(student, AdminUser)"  data-target="#modalEdit" data-whatever="@mdo">Редагувати</button>
 </div>

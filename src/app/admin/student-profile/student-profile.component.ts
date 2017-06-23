@@ -61,7 +61,6 @@ export class StudentProfileComponent implements OnInit {
 
     myReader.onloadend = (e) => {
       this.studentForEdit.photo = myReader.result;
-      console.log(myReader.result);
     };
     myReader.readAsDataURL(file);
   }
@@ -111,6 +110,7 @@ export class StudentProfileComponent implements OnInit {
 
   getStudentsWithGroupName(data) {
     this.student = data;
+    console.log(this.student);
     this.getRecordsByIdService.getRecordsById('group', this.student.group_id).subscribe((StudentData) => {
       this.student.group_name = StudentData[0].group_name;
     });
