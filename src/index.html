@@ -9,32 +9,5 @@
 </head>
 <body>
 <app-root>Loading...</app-root>
-<script>
-  (function() {
-
-    'use strict';
-
-    document.querySelector('.fa fa-arrow-left').addEventListener(
-      'click',
-      function() {
-        var child;
-
-        document.body.classList.toggle('background--blur');
-        this.parentNode.nextElementSibling.classList.toggle('menu--on');
-
-        child = this.childNodes[1].classList;
-
-        if (child.contains('fa fa-arrow-left--to-arrow')) {
-          child.remove('fa fa-arrow-left--to-arrow');
-          child.add('fa fa-arrow-left--from-arrow');
-        } else {
-          child.remove('fa fa-arrow-left__icon--from-arrow');
-          child.add('fa fa-arrow-left--to-arrow');
-        }
-
-      });
-
-  })();
-</script>
 </body>
 </html>
