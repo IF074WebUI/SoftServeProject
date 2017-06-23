@@ -64,18 +64,18 @@ export class GroupService {
     let delStudentsTimetablesObs = [];
     return Observable.forkJoin(this.timetablesService.getTimeTablesForGroup(id), this.studentsService.getStudentsByGroupId(id))
       .flatMap(resp => {
-        console.log(resp[0]);
-        for (let timetable of resp[0]) {
-          delStudentsTimetablesObs.push(this.delRecService.deleteRecordsById('timeTable', timetable.timetable_id));
+        if (resp[0]['response'] === 'no records' && resp[1]['response'] === 'no records') {
+          return Observable.forkJoin(Observable.of(1));
+        } else {
+          for (let timetable of resp[0]) {
+            delStudentsTimetablesObs.push(this.delRecService.deleteRecordsById('timeTable', timetable.timetable_id));
+          }
+          for (let student of resp[1]) {
+            delStudentsTimetablesObs.push(this.studentsService.deleteCascade(student.user_id));
+          }
+          return Observable.forkJoin(...delStudentsTimetablesObs);
         }
-        console.log(resp[1]);
-        for (let student of resp[1]) {
-          delStudentsTimetablesObs.push(this.studentsService.deleteCascade(student.user_id));
-        }
-        console.log(delStudentsTimetablesObs);
-        return Observable.forkJoin(...delStudentsTimetablesObs);
       }).flatMap(arr => {
-        console.log(arr);
         return this.deleteGroup(id);
       });
   }

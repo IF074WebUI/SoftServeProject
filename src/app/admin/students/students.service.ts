@@ -86,8 +86,7 @@ export class StudentsService {
     let delResultsObs = [];
     return this.resultsService.getAllByStudent(id).flatMap((results: Result[]) => {
       if (results['response'] === 'no records') {
-        console.log('empty');
-        return Observable.empty();
+        return Observable.forkJoin(Observable.of(1));
       } else {
         for (let result of results) {
           delResultsObs.push(this.resultsService.delete(result.session_id));
