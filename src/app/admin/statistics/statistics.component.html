@@ -1,4 +1,19 @@
 <h2>Статистика системи</h2>
-<p-chart *ngIf="entityCountValue[5]" type="bar"  [data]="data"></p-chart>
+<button (click)="chart.refresh()">refresh data</button>
+  <p-radioButton name="group1" value="default" label="Загальні" [(ngModel)]="selectedEntity" (click)="selectEntityForGraph()"></p-radioButton>
+  <p-radioButton name="group1" value="faculty" label="Факультети" [(ngModel)]="selectedEntity" (click)="selectEntityForGraph()"></p-radioButton>
+  <p-radioButton name="group1" value="speciality" label="Спеціальності" [(ngModel)]="selectedEntity" (click)="selectEntityForGraph()"></p-radioButton>
+<select class="form-control" data-style="btn-primary" #s (change)="sortGraphData(s.value)">
+  <option data-tokens="ketchup mustard" disabled>Сортувати за</option>
+  <option data-tokens="ketchup mustard" value="valueInc" >величиною по зростанню</option>
+  <option data-tokens="ketchup mustard" value="valueDec" >величиною по спаданню</option>
+  <option data-tokens="ketchup mustard" value="nameIns">назвою по зростанню</option>
+  <option data-tokens="ketchup mustard" value="nameDec">назвою по спаданню</option>
+</select>
 
-
+<p-chart
+  #chart
+  *ngIf="data.datasets[0].data.length === data.labels.length"
+  type="bar"
+  [data]="data">
+</p-chart>

@@ -5,11 +5,13 @@ import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { HOST } from '../../constants';
 import {Router} from "@angular/router";
+import {GroupService} from "../group/group.service";
+import {Group} from "../group/group";
 
 @Injectable()
 export class FacultyService {
 
-  constructor(private http: Http, private router: Router) {
+  constructor(private http: Http, private groupsService: GroupService, private router: Router) {
   }
 
 
@@ -41,6 +43,18 @@ export class FacultyService {
   deleteItem(id: number) {
     return this.http.delete('http://' + HOST + '/Faculty/del/' + id).map((resp: Response) => resp.json()).catch(this.handleError);
 
+  }
+
+  deleteCascade(id: number): Observable<any> {
+    let delGroupsObs = [];
+    return this.groupsService.getGroupsBySpeciality(id).flatMap((groups: Group[]) => {
+      for (let group of groups) {
+        delGroupsObs.push(this.groupsService.deleteCascade(group.group_id));
+      }
+      return Observable.forkJoin(...delGroupsObs);
+    }).flatMap(arr =>
+      this.deleteItem(id)
+    );
   }
 
   editItem(id: number, name: string, description: string): Observable<Response> {

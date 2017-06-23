@@ -61,6 +61,7 @@ export class StudentProfileComponent implements OnInit {
 
     myReader.onloadend = (e) => {
       this.studentForEdit.photo = myReader.result;
+      console.log(myReader.result);
     };
     myReader.readAsDataURL(file);
   }

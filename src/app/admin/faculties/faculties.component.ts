@@ -21,7 +21,7 @@ export class FacultiesComponent implements OnInit {
   id: number;
 
   ignoreProperties: string[];
-  //text: string;
+  // text: string;
   headers: string[];
   sortProperties: string[];
   displayPropertiesOrder: string[];
@@ -32,10 +32,12 @@ export class FacultiesComponent implements OnInit {
   SORT_PROPERTIES: string[] = ['faculty_name'];
   DISPLAY_PROPERTIES_ORDER: string[] = ['faculty_name', 'faculty_description'];
   CREATE_NEW_FACULTY = 'Додати новий факультет';
+  CHOSEN_ACTION: any;
 
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = FACULTY_CONFIG;
+
 
   constructor(private http: FacultyService, private route: ActivatedRoute,
               private router: Router, private spinner: SpinnerService, private toastr: ToastsManager) {
@@ -127,12 +129,13 @@ export class FacultiesComponent implements OnInit {
 
   add() {
    // this.configs[1]['action'] = 'add';
+  //  this.CHOSEN_ACTION = TEST;
     this.popup.sendItem(new Faculty('', '', ''), 'Faculty');
     this.popup.showModal();
   }
 
   edit(faculty: Faculty) {
-   // this.configs[1]['action'] = 'edit';
+    // this.configs[1]['action'] = 'edit';
     this.popup.sendItem(faculty);
     this.popup.showModal();
   }
@@ -166,7 +169,7 @@ export class FacultiesComponent implements OnInit {
   }
 
   submitDelete(faculty: Faculty) {
-    this.http.deleteItem(faculty['faculty_id']).subscribe(response => {
+    this.http.deleteCascade(faculty['faculty_id']).subscribe(response => {
         this.getCount();
         (this.count % this.countPerPage === 1) ? this.page = this.page - 1 : this.page;
         this.uploadAllPages(this.page);

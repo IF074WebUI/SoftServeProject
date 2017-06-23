@@ -1,10 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { StatisticsService } from './statistics.service';
-import {SpinnerService} from '../universal/spinner/spinner.service';
+import { SpinnerService } from '../universal/spinner/spinner.service';
 import { GroupService } from '../group/group.service';
 import { SpecialitiesService } from '../services/specialities.service';
 import { StudentsService } from '../students/students.service';
 import { Router } from '@angular/router';
+import { GraphData } from './graph-data';
+import { UIChart } from 'primeng/primeng';
+import { FacultyService } from '../services/faculty.service';
+import {ToastsManager} from 'ng2-toastr';
 
 @Component({
   selector: 'dtester-statistics',
@@ -14,16 +18,26 @@ import { Router } from '@angular/router';
 export class StatisticsComponent implements OnInit {
   data: any;
   entityNames: string[];
-  entityHeaders: string[];
-  entityCountValue: number[] = [];
+  entityDataName: string[];
+  dataValue: number[];
+  graphData: GraphData[];
+  selectedEntity: string;
+  countSudentsByGroup: number;
+  @ViewChild('chart') chart: UIChart;
   constructor(private statistics: StatisticsService,
               private spinner: SpinnerService,
               private router: Router,
               private groupService: GroupService,
               private spesialityService: SpecialitiesService,
-              private studentsService: StudentsService) {
-    this.entityHeaders = ['Спеціальності', 'Групи', 'Предмети', 'Тести', 'Студенти', 'Питання'];
-    this.entityNames = ['speciality', 'group', 'subject', 'test', 'student', 'question'];
+              private studentsService: StudentsService,
+              private facultyService: FacultyService,
+              private toastr: ToastsManager) {
+    this.selectedEntity = 'default';
+    this.dataValue = [];
+    this.graphData = [];
+    this.countSudentsByGroup = 0;
+    this.entityNames = ['faculty', 'speciality', 'group', 'subject', 'test', 'student', 'question'];
+    this.entityDataName = ['Факультети', 'Спеціальності', 'Групи', 'Предмети', 'Тести', 'Студенти', 'Питання'];
     this.data = {
       labels: [],
       datasets: [
@@ -36,19 +50,150 @@ export class StatisticsComponent implements OnInit {
       ]
     };
   }
+
   ngOnInit() {
     this.getData();
   };
 
   getData() {
-    this.data.labels = this.entityHeaders;
-      for (let entity of this.entityNames) {
-        this.spinner.showSpinner();
-        this.statistics.getCountRecords(entity).subscribe(
-          (res) => { this.entityCountValue.push(+res.numberOfRecords);
-            this.data.datasets[0].data = this.entityCountValue;
-            this.spinner.hideSpinner(),
-            err => this.router.navigate(['/bad_request']); });
-        }
+    // this.spinner.showSpinner();
+    for (let index = 0; index < this.entityNames.length; index++) {
+      this.statistics.getCountRecords(this.entityNames[index]).subscribe(
+        (res) => {
+          this.data.labels[index] = this.entityDataName[index];
+          this.data.datasets[0].data[index] = +res.numberOfRecords;
+          this.graphData[index] = {
+            label: this.entityDataName[index],
+            value: +res.numberOfRecords
+          };
+          this.chart.refresh();
+        },
+        error => {
+          this.toastr.error(error);
+        },
+      );
+    }
+  }
+
+  refreshData() {
+    this.graphData = [];
+    this.data.labels = [];
+    this.data.datasets[0].data = [];
+  }
+  compareDataByValue(a: any, b: any) {
+    const genreA = a['value'];
+    const genreB = b['value'];
+    let comparison = 0;
+    if (genreA > genreB) {
+      comparison = 1;
+    } else if (genreA < genreB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+  compareDataByLabel(a: any, b: any) {
+    const genreA = a.label.toUpperCase();
+    const genreB = b.label.toUpperCase();
+    let comparison = 0;
+    if (genreA > genreB) {
+      comparison = 1;
+    } else if (genreA < genreB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+  sortGraphData(criteria: string) {
+    this.getDataForSorting();
+    if (criteria === 'valueInc' || criteria === 'valueDec') {
+      this.graphData.sort(this.compareDataByValue);
+      this.checkAndReverseData(criteria);
+      this.showDataOnGraph();
+    } else {
+      this.graphData.sort(this.compareDataByLabel);
+      this.checkAndReverseData(criteria);
+      this.showDataOnGraph();
+      this.chart.reinit();
+    }
+  }
+  getDataForSorting() {
+    for (let i = 0; i < this.data.labels.length; i++) {
+      this.graphData[i] = {
+        label: this.data.labels[i],
+        value: this.data.datasets[0].data[i]
+      };
+    }
+  }
+  showDataOnGraph() {
+    for (let i = 0; i < this.graphData.length; i++) {
+      if (this.selectedEntity === 'default') {
+        this.data.labels = this.entityDataName;
+      } else {this.data.labels[i] = this.graphData[i].label; }
+      this.data.datasets[0].data[i] = this.graphData[i].value;
+    }
+    this.chart.reinit();
+    this.spinner.hideSpinner();
+  }
+  checkAndReverseData(criteria: string) {
+    if (criteria === 'valueDec' || criteria === 'nameDec') {
+      this.graphData.reverse();
+    }
+  }
+  selectEntityForGraph() {
+    this.refreshData();
+    switch (this.selectedEntity) {
+      case 'default': this.getData(); break;
+      case 'faculty': this.countDataForFaculty(); break;
+      case 'speciality':  this.countDataForSpeciality(); break;
+    }
+  }
+  countDataForFaculty() {
+    this.spinner.showSpinner();
+    this.facultyService.getAllFaculties().subscribe(
+      (res) => {
+        for (let i = 0; i < res.length; i++) {
+          this.graphData[i] = { label: res[i].faculty_name, value: 0 };
+          this.groupService.getGroupsByFaculty(+res[i].faculty_id).subscribe(groupRes => {
+            if (groupRes['response'] === 'no records') {
+              this.graphData[i].value = 0;
+            } else {
+              for (let groupItem = 0; groupItem < groupRes.length; groupItem++) {
+                this.studentsService.getStudentsByGroupId(+groupRes[groupItem].group_id).subscribe(studentRes => {
+                  if (studentRes['response'] === 'no records') {
+                    this.graphData[i].value += 0;
+                  } else {
+                    this.graphData[i].value += studentRes.length;
+                  } this.showDataOnGraph();
+                });
+              }
+            }
+          });
+        } },
+      err => this.toastr.error(err)
+    );
+}
+  countDataForSpeciality() {
+    this.spinner.showSpinner();
+    this.spesialityService.getAll().subscribe(
+      (res) => {
+        for (let i = 0; i < res.length; i++) {
+          this.graphData[i] = { label: res[i].speciality_name, value: 0 };
+          this.groupService.getGroupsBySpeciality(+res[i].speciality_id).subscribe(groupRes => {
+            if (groupRes['response'] === 'no records') {
+              this.graphData[i].value = 0;
+            } else {
+              for (let groupItem = 0; groupItem < groupRes.length; groupItem++) {
+                this.studentsService.getStudentsByGroupId(+groupRes[groupItem].group_id).subscribe(studentRes => {
+                  if (studentRes['response'] === 'no records') {
+                    this.graphData[i].value += 0;
+                  } else {
+                    this.graphData[i].value += studentRes.length;
+                  } this.showDataOnGraph();
+                });
+              }
+            }
+          });
+        } },
+      err => this.toastr.error(err)
+    );
   }
 }

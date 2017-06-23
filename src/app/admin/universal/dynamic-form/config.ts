@@ -23,6 +23,14 @@ export const FACULTY_CONFIG =
     }
   ];
 
+export const TEST =
+  [
+    {
+      type: 'input',
+      name: 'test'
+    }
+  ];
+
 export const SPECIALITY_CONFIG =
   [
     {
@@ -156,6 +164,11 @@ export const STUDENT_CONFIG =
       label: 'ID',
       name: 'user_id',
       placeholder: ''
+    },
+    {
+      type: 'input_file',
+      label: 'Вкладення',
+      name: 'attachment'
     }
   ];
 export const TEST_DETAIL_CONFIG = [
