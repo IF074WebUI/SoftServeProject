@@ -136,7 +136,7 @@ export class StudentsComponent implements OnInit {
       'password': password,
       'password_confirm': password,
       'plain_password': password,
-   //   'photo': ''
+      'photo': ''
     };
   }
 
@@ -150,7 +150,10 @@ export class StudentsComponent implements OnInit {
   }
 
   formSubmitted(value) {
-      this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
+    console.log(value);
+    this.generateStudentData()['photo'] = value['photo'];
+    console.log(this.generateStudentData()['photo']);
+    this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
         this.getStudents();
         this.popup.cancel();
         this.toastr.success(`Студент ${value['student_name']} ${value['student_surname']} ${value['student_fname']} успішно створений`);
