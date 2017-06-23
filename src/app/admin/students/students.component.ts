@@ -136,7 +136,7 @@ export class StudentsComponent implements OnInit {
       'password': password,
       'password_confirm': password,
       'plain_password': password,
-      'photo': ''
+   //   'photo': ''
     };
   }
 

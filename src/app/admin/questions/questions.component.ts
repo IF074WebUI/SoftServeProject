@@ -124,12 +124,12 @@ export class QuestionsComponent implements OnInit {
 // Method for opening editing and deleting commo modal window
 
   add() {
-    this.popup.sendItem(new Question());
+    this.popup.sendItem({question_id: '', test_id:  this.test_id, question_text: '', level: '', type: '', attach: '', photo: ''});
     this.popup.showModal();
   }
 
   edit(question: Question) {
-    this.popup.sendItem(question);
+    this.popup.sendItem({question, photo: ''});
     this.popup.showModal();
   }
 
@@ -139,11 +139,11 @@ export class QuestionsComponent implements OnInit {
   // Method for  add/edit, delete form submiting
 
   formSubmitted(value) {
-    value['test_id'] = this.test_id;
     console.log(value);
+    value['test_id'] = this.test_id;
     if (value['question_id']) {
       this.questionsService.editQuestion(value['question_id'], value['question_text'],
-        value['test_id'], value['level'], value['type'], value['attachment'])
+        value['test_id'], value['level'], value['type'], value['photo'])
         .subscribe(response => {
             this.getQuestions();
             this.popup.cancel();
@@ -152,7 +152,7 @@ export class QuestionsComponent implements OnInit {
         );
     } else {
       this.questionsService.createQuestion(value['question_text'], value['test_id'], value['level'],
-        value['type'], value['attachment'])
+        value['type'], value['photo'])
         .subscribe(response => {
             this.getQuestions();
             this.popup.cancel();

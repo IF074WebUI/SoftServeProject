@@ -80,6 +80,7 @@ export class DynamicFormComponent implements OnInit {
 
 
   sendItem(entity: any, entity_name?: string, test_id?: number) {
+    console.log(entity);
     this.test_id = test_id;
     this.action = 'add_edit';
     this.entity = entity;
