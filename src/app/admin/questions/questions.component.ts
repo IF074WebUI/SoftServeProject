@@ -6,7 +6,6 @@ import {QuestionsService} from '../services/questions.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SpinnerService} from '../universal/spinner/spinner.service';
 import {ToastsManager} from 'ng2-toastr';
-import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'dtester-questions',
@@ -39,8 +38,8 @@ export class QuestionsComponent implements OnInit {
   ngOnInit() {
     this.headers = ['№', 'Питання', 'Рівень', 'Тип', 'Вкладення'];
     this.ignoreProperties = ['test_id', 'question_id'];
-    // this.imageFormQ =  new FormGroup({});
-    // this.getQuestions();
+
+    this.getQuestions();
     this.test_id = this.route.snapshot.queryParams['test_id'];
     console.log(this.test_id);
     const level = this.route.snapshot.queryParams['level'];

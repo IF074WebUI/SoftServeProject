@@ -42,7 +42,7 @@ export class AnswersComponent implements OnInit {
     this.getQueryParams();
     // this.getAnswers();
     this.headers = ['№', 'Відповідь', 'Правильність', 'Вкладення'];
-    this.ignoreProperties = ['question_id', 'answer_id', 'attachment'];
+    this.ignoreProperties = ['question_id', 'answer_id'];
     this.imageForm = new FormGroup({});
   }
   getQueryParams() {
