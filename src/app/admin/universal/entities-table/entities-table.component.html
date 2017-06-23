@@ -21,7 +21,12 @@
   <tr *ngFor="let entity of entities; let i = index" [ngClass]="{'table-warning': entity.deprecated}">
     <td>{{i + itemsPerPage * (page - 1) + 1}}</td>
     <ng-container *ngFor="let name of getProperties(entity)">
-      <td *ngIf="!ignoreProperties?.includes(name)" (click)="clickEntityCallback(entity)">{{entity[name]}}</td>
+      <td *ngIf="!ignoreProperties?.includes(name) && name !== 'attachment'" (click)="clickEntityCallback(entity)">{{entity[name]}}
+      <img *ngIf="name == 'attachment'" [src]="entity[name]">
+      </td>
+      <td *ngIf="name == 'attachment'">
+        <img style="max-width: 150px; height: auto" [src]="entity[name]">
+      </td>
     </ng-container>
     <td class="hidden-print">
       <div class="btn-group" role="group" aria-label="Basic example">

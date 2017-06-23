@@ -33,7 +33,7 @@ export class AnswersComponent implements OnInit {
 
   ngOnInit() {
     this.headers = ['№', 'Відповідь', 'Правильність', 'Вкладення'];
-    this.ignoreProperties = ['question_id', 'answer_id', 'attachment'];
+    this.ignoreProperties = ['question_id', 'answer_id'];
     this.getAnswers();
     this.question_id = this.route.snapshot.queryParams['question_id'];
     console.log(this.question_id);
