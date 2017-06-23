@@ -13,6 +13,7 @@ import {FacultyService} from '../../services/faculty.service';
 import { FormSelectTestDetailByIdComponent } from './components/form-select-test-detail-by-id/form-select-test-detail-by-id.component';
 import { FormInputFileComponent } from './components/form-input-file/form-input-file.component';
 import { FormNumberComponent } from './components/form-number/form-number.component';
+import { FormRadioButtonComponent } from './components/form-radio-button/form-radio-button.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { FormNumberComponent } from './components/form-number/form-number.compon
     FormSelectWithOptionsComponent,
     FormSelectTestDetailByIdComponent,
     FormInputFileComponent,
-    FormNumberComponent
+    FormNumberComponent,
+    FormRadioButtonComponent
   ],
   exports: [DynamicFormComponent],
   entryComponents: [
@@ -42,7 +44,8 @@ import { FormNumberComponent } from './components/form-number/form-number.compon
     FormSelectWithOptionsComponent,
     FormSelectTestDetailByIdComponent,
     FormInputFileComponent,
-    FormNumberComponent
+    FormNumberComponent,
+    FormRadioButtonComponent
   ],
   providers: []
 

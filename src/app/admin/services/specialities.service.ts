@@ -46,10 +46,14 @@ export class SpecialitiesService {
  deleteCascade(id: number): Observable<any> {
    let delGroupsObs = [];
    return this.groupsService.getGroupsBySpeciality(id).flatMap((groups: Group[]) => {
-     for (let group of groups) {
-       delGroupsObs.push(this.groupsService.deleteCascade(group.group_id));
+     if (groups['response'] === 'no records') {
+       return Observable.forkJoin(Observable.of(1));
+     } else {
+       for (let group of groups) {
+         delGroupsObs.push(this.groupsService.deleteCascade(group.group_id));
+       }
+       return Observable.forkJoin(...delGroupsObs);
      }
-     return Observable.forkJoin(...delGroupsObs);
    }).flatMap(arr =>
      this.delete(id)
    );

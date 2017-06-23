@@ -235,10 +235,10 @@ export const QUESTION_CONFIG = [
     placeholder: 'Виберіть рівень питання'
   },
   {
-    type: 'select_with_options',
+    type: 'radio',
     label: 'Тип питання',
     name: 'type',
-    options: ['1', '2'],
+    options: ['singlechoise', 'multichoise', 'input field'],
     placeholder: 'Виберіть тип питання'
   },
   {
