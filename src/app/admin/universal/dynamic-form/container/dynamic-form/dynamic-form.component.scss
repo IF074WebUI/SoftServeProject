@@ -1,1 +1,6 @@
-.control-label.error { color: red; }
+@import '../../styles/error';
+@import "../../styles/const";
+@import "../../styles/button";
+.modal-header {
+  background-color: $primary-color;
+}

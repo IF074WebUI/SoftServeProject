@@ -5,7 +5,7 @@ import {FormGroup} from '@angular/forms';
 @Component({
   selector: 'app-form-number',
   templateUrl: './form-number.component.html',
-  styleUrls: ['./form-number.component.css']
+  styleUrls: ['./form-number.component.scss']
 })
 export class FormNumberComponent implements OnInit {
   config;
