@@ -7,12 +7,14 @@ import {FACULTY_CONFIG} from '../universal/dynamic-form/config';
 import {SpinnerService} from '../universal/spinner/spinner.service';
 import {ToastsManager} from 'ng2-toastr';
 
+
 @Component({
   selector: 'dtester-faculties',
   templateUrl: './faculties.component.html',
   styleUrls: ['./faculties.component.css'],
   providers: [FacultyService]
 })
+
 export class FacultiesComponent implements OnInit {
   faculties: Faculty[] = [];
   page: number = 1; // current number of page

@@ -155,7 +155,6 @@ export const STUDENT_CONFIG =
       type: 'id',
       label: 'ID',
       name: 'user_id',
-      placeholder: ''
     },
     {
       type: 'input_file',

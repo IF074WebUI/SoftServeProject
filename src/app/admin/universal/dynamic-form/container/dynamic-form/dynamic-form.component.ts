@@ -2,6 +2,7 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
 
+
 declare var $: any;
 
 @Component({

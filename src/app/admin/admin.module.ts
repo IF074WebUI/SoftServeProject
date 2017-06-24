@@ -50,14 +50,14 @@ import { TestDetailService } from './test-detail/test-detail.service';
 import { SubjectComponent } from './subject/subject.component';
 import { GetRecordsBySearchService } from './services/get-records-by-search.service';
 import { GetTestsBySubjectService } from './services/get-tests-by-subject.service';
-import {ChartModule} from 'primeng/primeng';
+import { ChartModule } from 'primeng/primeng';
 import { SubjectService } from './subject/subject.service';
 import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminUserService } from './admin-user/admin-user.service';
 import { QuestionsComponent } from './questions/questions.component';
 import { AnswersComponent } from './answers/answers.component';
 import { ModalImgComponent } from './modal-img/modal-img.component';
-import { FacultyService } from "./services/faculty.service";
+import { FacultyService } from './services/faculty.service';
 import { RadioButtonModule } from 'primeng/primeng';
 
 
