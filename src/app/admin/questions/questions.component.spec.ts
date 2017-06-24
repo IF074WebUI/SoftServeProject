@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { QuestionsComponent } from './questions.component';
 import { Observable } from 'rxjs/Observable';
 
-describe('QuestionsComponent', () => {
+fdescribe('QuestionsComponent', () => {
   let component: QuestionsComponent;
   let fixture: ComponentFixture<QuestionsComponent>;
 
