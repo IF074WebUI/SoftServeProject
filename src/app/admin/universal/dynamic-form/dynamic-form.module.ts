@@ -15,8 +15,8 @@ import { FormInputFileComponent } from './components/form-input-file/form-input-
 import { FormNumberComponent } from './components/form-number/form-number.component';
 import { FormRadioButtonComponent } from './components/form-radio-button/form-radio-button.component';
 import { FormHiddenComponent } from './components/form-hidden/form-hidden.component';
-import { ConfirmDeleteDirective } from './directives/confirm-delete.directive';
-import { FormInputDirective } from './directives/form-input.directive';
+import { ConfirmDeleteDirective } from './styles/directives/confirm-delete.directive';
+import { FormInputDirective } from './styles/directives/form-input.directive';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({

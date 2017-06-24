@@ -44,32 +44,32 @@ export class StudentProfileComponent implements OnInit {
     this.getStudent();
     this.getAdminUser();
     this.getGroups();
-    //
-    // this.studentEditForm = new FormGroup({
-    //   'group_id': new FormControl(''),
-    //   'student_surname': new FormControl('', Validators.required),
-    //   'student_name': new FormControl('', Validators.required),
-    //   'student_fname': new FormControl('', Validators.required),
-    //   'gradebook_id': new FormControl('', Validators.required),
-    //   'username': new FormControl('', Validators.required),
-    //   'password': new FormControl('', Validators.required),
-    //   'email': new FormControl('', Validators.required)
-    // });
+
+    this.studentEditForm = new FormGroup({
+      'group_id': new FormControl(''),
+      'student_surname': new FormControl('', Validators.required),
+      'student_name': new FormControl('', Validators.required),
+      'student_fname': new FormControl('', Validators.required),
+      'gradebook_id': new FormControl('', Validators.required),
+      'username': new FormControl('', Validators.required),
+      'password': new FormControl('', Validators.required),
+      'email': new FormControl('', Validators.required)
+    });
   }
 
-  // changeListener($event): void {
-  //   this.readThis($event.target);
-  // }
-  //
-  // readThis(inputValue: any): void {
-  //   const file: File = inputValue.files[0];
-  //   const myReader: FileReader = new FileReader();
-  //
-  //   myReader.onloadend = (e) => {
-  //     this.studentForEdit.photo = myReader.result;
-  //   };
-  //   myReader.readAsDataURL(file);
-  // }
+  changeListener($event): void {
+    this.readThis($event.target);
+  }
+
+  readThis(inputValue: any): void {
+    const file: File = inputValue.files[0];
+    const myReader: FileReader = new FileReader();
+
+    myReader.onloadend = (e) => {
+      this.studentForEdit.photo = myReader.result;
+    };
+    myReader.readAsDataURL(file);
+  }
   getStudent() {
     this.spinner.showSpinner();
     this.studentsService.getStudentById(this.user_id).subscribe((resp: Student) => {
@@ -77,11 +77,13 @@ export class StudentProfileComponent implements OnInit {
       this.spinner.hideSpinner();
    });
    }
-  edit(faculty: Faculty) {
+
+  edit(student: any) {
     // this.configs[1]['action'] = 'edit';
-    this.popup.sendItem(faculty);
+    this.popup.sendItem(student);
     this.popup.showModal();
   }
+
    selectedStudent(student: Student, AdminUser) {
     this.studentForEdit = student;
     this.studentForEdit.username = AdminUser.username;
@@ -120,7 +122,7 @@ export class StudentProfileComponent implements OnInit {
 
   getStudentsWithGroupName(data) {
     this.student = data;
-    console.log(this.student);
+    // console.log(this.student);
     this.getRecordsByIdService.getRecordsById('group', this.student.group_id).subscribe((StudentData) => {
       this.student.group_name = StudentData[0].group_name;
     });
