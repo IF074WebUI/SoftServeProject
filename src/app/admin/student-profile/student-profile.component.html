@@ -1,94 +1,138 @@
-<h2 class="text-center header">Профіль студента</h2>
+<h2>Профіль студента</h2>
 
-<div class="profile-data">
-  <h5>Ім'я: {{student?.student_name}}</h5>
-  <h5>Прізвище: {{student?.student_surname}}</h5>
-  <h5>По-батькові: {{student?.student_fname}}</h5>
-  <h5>№ заліковки: {{student?.gradebook_id}}</h5>
-  <h5>Група: {{student?.group_name}}</h5>
-  <h5>E-mail: {{AdminUser?.email}}</h5>
-  <h5>Логін: {{AdminUser?.username}}</h5>
-  <h5>Пароль: {{student?.plain_password}}</h5>
-  <h5>photo: {{student?.photo}}</h5>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <table>
+        <tr>
+          <td>Студент:</td>
+          <td>{{student?.student_surname}}   {{student?.student_name}}  {{student?.student_fname}}</td>
+        </tr>
+        <tr>
+          <td>№ заліковки:</td>
+          <td>{{student?.gradebook_id}}</td>
+        </tr>
+        <tr>
+          <td>Група:</td>
+          <td>{{student?.group_name}}</td>
+        </tr>
+        <tr>
+          <td>E-mail:</td>
+          <td>{{AdminUser?.email}}</td>
+        </tr>
+        <tr>
+          <td>Логін:</td>
+          <td>{{AdminUser?.username}}</td>
+        </tr>
+        <tr>
+          <td>Пароль:</td>
+          <td>{{student?.plain_password}}</td>
+        </tr>
+      </table>
+
+    </div>
+    <div class="col">
+
+      <img class="img-thumbnail photo" *ngIf="!student?.photo" src="../../../assets/default-avatar.png">
+      <img class="img-thumbnail photo" *ngIf="student?.photo" [src]="student?.photo">    </div>
+  </div>
+
+<div class="buttons">
+  <!--<h5>Ім'я: {{student?.student_name}}</h5>-->
+  <!--<h5>Прізвище: {{student?.student_surname}}</h5>-->
+  <!--<h5>По-батькові: {{student?.student_fname}}</h5>-->
+  <!--<h5>№ заліковки: {{student?.gradebook_id}}</h5>-->
+  <!--<h5>Група: {{student?.group_name}}</h5>-->
+  <!--<h5>E-mail: {{AdminUser?.email}}</h5>-->
+  <!--<h5>Логін: {{AdminUser?.username}}</h5>-->
+  <!--<h5>Пароль: {{student?.plain_password}}</h5>-->
 
   <button class="btn btn-info" (click)="goToStudentResult()">Результати</button>
-  <button class="btn btn-info" data-toggle="modal" (click)="selectedStudent(student, AdminUser)"  data-target="#modalEdit" data-whatever="@mdo">Редагувати</button>
+  <button class="btn btn-info" data-toggle="modal" (click)="selectedStudent(student, AdminUser)"
+          data-target="#modalEdit" data-whatever="@mdo">Редагувати
+  </button>
 </div>
 
-<img class="img-thumbnail photo" *ngIf="!student?.photo" src="../../../assets/default-avatar.png">
-<img class="img-thumbnail photo" *ngIf="student?.photo" [src]="student?.photo">
-
-<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Редагування студента</h5>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="studentEditForm">
-          <div class="form-group">
-            <label class="form-control-label" for="groupEditId">Група:</label>
-            <select formControlName="group_id" id="groupEditId" class="form-control">
-              <option *ngFor="let group of groups" [ngValue]="group.group_id">{{group.group_name}}</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="editName">Ім'я:</label>
-            <input formControlName="student_name" type="text" class="form-control" id="editName">
-          </div>
-          <div class="invalid" *ngIf="studentEditForm.controls['student_name'].hasError('required') && studentEditForm.controls['student_name'].touched">
-            {{MODAL_REQUIRED}}
-          </div>
-          <div class="form-group">
-            <label for="editSurname">Прізвище:</label>
-            <input formControlName="student_surname" type="text" class="form-control" id="editSurname">
-          </div>
-          <div class="invalid" *ngIf="studentEditForm.controls['student_surname'].hasError('required') && studentEditForm.controls['student_surname'].touched">
-            {{MODAL_REQUIRED}}
-          </div>
-          <div class="form-group">
-            <label for="editF_name">По-батькові:</label>
-            <input formControlName="student_fname" type="text" class="form-control" id="editF_name">
-          </div>
-          <div class="invalid" *ngIf="studentEditForm.controls['student_fname'].hasError('required') && studentEditForm.controls['student_fname'].touched">
-            {{MODAL_REQUIRED}}
-          </div>
-          <div class="form-group">
-            <label for="gradebook_id">Залікова книжка:</label>
-            <input formControlName="gradebook_id" type="text" class="form-control" id="gradebook_id">
-          </div>
-          <div class="invalid" *ngIf="studentEditForm.controls['gradebook_id'].hasError('required') && studentEditForm.controls['gradebook_id'].touched">
-            {{MODAL_REQUIRED}}
-          </div>
-          <div class="form-group">
-            <label for="username">Логін:</label>
-            <input formControlName="username" type="text" class="form-control" id="username">
-          </div>
-          <div class="invalid" *ngIf="studentEditForm.controls['username'].hasError('required') && studentEditForm.controls['username'].touched">
-            {{MODAL_REQUIRED}}
-          </div>
-          <div class="form-group">
-            <label for="password">Пароль:</label>
-            <input formControlName="password" type="text" class="form-control" id="password" [(ngModel)]="studentForEdit_password">
-          </div>
-          <div class="invalid" *ngIf="studentEditForm.controls['password'].hasError('required') && studentEditForm.controls['password'].touched">
-            {{MODAL_REQUIRED}}
-          </div>
-          <div class="form-group">
-            <label for="email">E-mail:</label>
-            <input formControlName="email" type="text" class="form-control" id="email">
-          </div>
-          <div class="invalid" *ngIf="studentEditForm.controls['email'].hasError('required') && studentEditForm.controls['email'].touched">
-            {{MODAL_REQUIRED}}
-          </div>
-          <div class="form-group">
-            <label for="filePicker">Фото:</label><br>
-            <input type="file" accept="image/*" (change)="changeListener($event)" id="filePicker">
-          </div>
-          <button class="btn btn-success my-button" type="submit" (click)="editStudent()" data-dismiss="modal">Редагувати</button>
-          <button class="btn btn-secondary my-button" type="button" data-dismiss="modal">Відміна</button>
-        </form>
-      </div>
-    </div>
+  <div class="app">
+    <dynamic-form
+      [config]="configs"
+      (submitted)="formSubmitted($event)"
+      (youCanDelete)="submitDelete($event)">
+    </dynamic-form>
   </div>
-</div>
+
+
+  <!--<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="exampleModalLabel">-->
+<!--<div class="modal-dialog" role="document">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<h5 class="modal-title">Редагування студента</h5>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<form [formGroup]="studentEditForm">-->
+<!--<div class="form-group">-->
+<!--<label class="form-control-label" for="groupEditId">Група:</label>-->
+<!--<select formControlName="group_id" id="groupEditId" class="form-control">-->
+<!--<option *ngFor="let group of groups" [ngValue]="group.group_id">{{group.group_name}}</option>-->
+<!--</select>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label for="editName">Ім'я:</label>-->
+<!--<input formControlName="student_name" type="text" class="form-control" id="editName">-->
+<!--</div>-->
+<!--<div class="invalid" *ngIf="studentEditForm.controls['student_name'].hasError('required') && studentEditForm.controls['student_name'].touched">-->
+<!--{{MODAL_REQUIRED}}-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label for="editSurname">Прізвище:</label>-->
+<!--<input formControlName="student_surname" type="text" class="form-control" id="editSurname">-->
+<!--</div>-->
+<!--<div class="invalid" *ngIf="studentEditForm.controls['student_surname'].hasError('required') && studentEditForm.controls['student_surname'].touched">-->
+<!--{{MODAL_REQUIRED}}-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label for="editF_name">По-батькові:</label>-->
+<!--<input formControlName="student_fname" type="text" class="form-control" id="editF_name">-->
+<!--</div>-->
+<!--<div class="invalid" *ngIf="studentEditForm.controls['student_fname'].hasError('required') && studentEditForm.controls['student_fname'].touched">-->
+<!--{{MODAL_REQUIRED}}-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label for="gradebook_id">Залікова книжка:</label>-->
+<!--<input formControlName="gradebook_id" type="text" class="form-control" id="gradebook_id">-->
+<!--</div>-->
+<!--<div class="invalid" *ngIf="studentEditForm.controls['gradebook_id'].hasError('required') && studentEditForm.controls['gradebook_id'].touched">-->
+<!--{{MODAL_REQUIRED}}-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label for="username">Логін:</label>-->
+<!--<input formControlName="username" type="text" class="form-control" id="username">-->
+<!--</div>-->
+<!--<div class="invalid" *ngIf="studentEditForm.controls['username'].hasError('required') && studentEditForm.controls['username'].touched">-->
+<!--{{MODAL_REQUIRED}}-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label for="password">Пароль:</label>-->
+<!--<input formControlName="password" type="text" class="form-control" id="password" [(ngModel)]="studentForEdit_password">-->
+<!--</div>-->
+<!--<div class="invalid" *ngIf="studentEditForm.controls['password'].hasError('required') && studentEditForm.controls['password'].touched">-->
+<!--{{MODAL_REQUIRED}}-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label for="email">E-mail:</label>-->
+<!--<input formControlName="email" type="text" class="form-control" id="email">-->
+<!--</div>-->
+<!--<div class="invalid" *ngIf="studentEditForm.controls['email'].hasError('required') && studentEditForm.controls['email'].touched">-->
+<!--{{MODAL_REQUIRED}}-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label for="filePicker">Фото:</label><br>-->
+<!--<input type="file" accept="image/*" (change)="changeListener($event)" id="filePicker">-->
+<!--</div>-->
+<!--<button class="btn btn-success my-button" type="submit" (click)="editStudent()" data-dismiss="modal">Редагувати</button>-->
+<!--<button class="btn btn-secondary my-button" type="button" data-dismiss="modal">Відміна</button>-->
+<!--</form>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->

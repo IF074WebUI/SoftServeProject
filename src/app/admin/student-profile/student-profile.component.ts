@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import { Student } from '../students/student';
 import { StudentsService } from '../students/students.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,10 +8,12 @@ import { Group } from '../group/group';
 import { GetAllRecordsService } from '../services/get-all-records.service';
 import {SpinnerService} from '../universal/spinner/spinner.service';
 import {ToastsManager} from 'ng2-toastr';
+import {DynamicFormComponent} from "../universal/dynamic-form/container/dynamic-form/dynamic-form.component";
+import {STUDENT_CONFIG} from "../universal/dynamic-form/config";
 @Component({
   selector: 'dtester-student-profile',
   templateUrl: './student-profile.component.html',
-  styleUrls: ['./student-profile.component.css'],
+  styleUrls: ['./student-profile.component.scss'],
   providers: [StudentsService, GetRecordsByIdService, GetAllRecordsService]
 })
 export class StudentProfileComponent implements OnInit {
@@ -24,6 +26,10 @@ export class StudentProfileComponent implements OnInit {
   studentEditForm: FormGroup;
   studentForEdit_password: string;
   studentEditData = {};
+
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
+  configs = STUDENT_CONFIG;
+
 
   constructor(private studentsService: StudentsService,
               private activatedRoute: ActivatedRoute,
@@ -38,32 +44,32 @@ export class StudentProfileComponent implements OnInit {
     this.getStudent();
     this.getAdminUser();
     this.getGroups();
-
-    this.studentEditForm = new FormGroup({
-      'group_id': new FormControl(''),
-      'student_surname': new FormControl('', Validators.required),
-      'student_name': new FormControl('', Validators.required),
-      'student_fname': new FormControl('', Validators.required),
-      'gradebook_id': new FormControl('', Validators.required),
-      'username': new FormControl('', Validators.required),
-      'password': new FormControl('', Validators.required),
-      'email': new FormControl('', Validators.required)
-    });
+    //
+    // this.studentEditForm = new FormGroup({
+    //   'group_id': new FormControl(''),
+    //   'student_surname': new FormControl('', Validators.required),
+    //   'student_name': new FormControl('', Validators.required),
+    //   'student_fname': new FormControl('', Validators.required),
+    //   'gradebook_id': new FormControl('', Validators.required),
+    //   'username': new FormControl('', Validators.required),
+    //   'password': new FormControl('', Validators.required),
+    //   'email': new FormControl('', Validators.required)
+    // });
   }
 
-  changeListener($event): void {
-    this.readThis($event.target);
-  }
-
-  readThis(inputValue: any): void {
-    const file: File = inputValue.files[0];
-    const myReader: FileReader = new FileReader();
-
-    myReader.onloadend = (e) => {
-      this.studentForEdit.photo = myReader.result;
-    };
-    myReader.readAsDataURL(file);
-  }
+  // changeListener($event): void {
+  //   this.readThis($event.target);
+  // }
+  //
+  // readThis(inputValue: any): void {
+  //   const file: File = inputValue.files[0];
+  //   const myReader: FileReader = new FileReader();
+  //
+  //   myReader.onloadend = (e) => {
+  //     this.studentForEdit.photo = myReader.result;
+  //   };
+  //   myReader.readAsDataURL(file);
+  // }
   getStudent() {
     this.spinner.showSpinner();
     this.studentsService.getStudentById(this.user_id).subscribe((resp: Student) => {
@@ -71,7 +77,11 @@ export class StudentProfileComponent implements OnInit {
       this.spinner.hideSpinner();
    });
    }
-
+  edit(faculty: Faculty) {
+    // this.configs[1]['action'] = 'edit';
+    this.popup.sendItem(faculty);
+    this.popup.showModal();
+  }
    selectedStudent(student: Student, AdminUser) {
     this.studentForEdit = student;
     this.studentForEdit.username = AdminUser.username;
@@ -116,7 +126,7 @@ export class StudentProfileComponent implements OnInit {
     });
   }
 
-  editStudent() {
+  formSubmitted() {
     this.studentEditData = {
       'password_confirm' : this.studentForEdit_password,
       'plain_password': this.studentForEdit_password
@@ -125,7 +135,7 @@ export class StudentProfileComponent implements OnInit {
       .subscribe(resp => {
         this.getStudent();
         this.getAdminUser();
-        this.toastr.success(`Студент ${this.studentForEdit['student_name']} ${this.studentForEdit['student_surname']} 
+        this.toastr.success(`Студент ${this.studentForEdit['student_name']} ${this.studentForEdit['student_surname']}
         ${this.studentForEdit['student_fname']} успішно відредагований`);
       }, error2 => {
         this.toastr.error(error2);

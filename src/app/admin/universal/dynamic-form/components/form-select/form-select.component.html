@@ -2,8 +2,8 @@
 <div
   class="dynamic-field form-select"
   [formGroup]="group">
-  <!--<label>{{ config.label }}</label>-->
-  <select [formControlName]="config.name" class="form-control">
+  <label>{{ config.label }}</label>
+  <select appFormInput [formControlName]="config.name" class="form-control">
     <option value="">{{ config.placeholder }}</option>
     <option [value]="item[Properties[[0]]]" *ngFor="let item of entities">
       {{ item[item_name] }}

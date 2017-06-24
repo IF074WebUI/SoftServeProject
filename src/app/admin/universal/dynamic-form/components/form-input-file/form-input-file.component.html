@@ -4,7 +4,7 @@
   <div class="fileContainer">
     <button type="submit" class="btn btn-default">
       {{ config.label }}</button>
-  <input type="file" class="form-control-file" accept='image/*' (change)='imageChange($event)'
+  <input  type="file" class="form-control-file" accept='image/*' (change)='imageChange($event)'
          [attr.placeholder]="config.placeholder"
          [formControlName]="config.name"/>
   </div>
