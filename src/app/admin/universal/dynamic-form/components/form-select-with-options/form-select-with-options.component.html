@@ -1,11 +1,13 @@
+<div class="form-group">
 <div
   class="dynamic-field form-select"
   [formGroup]="group">
   <label>{{ config.label }}</label>
-  <select [formControlName]="config.name"  class="form-control">
+  <select appFormInput [formControlName]="config.name"  class="form-control">
     <option value="">{{ config.placeholder }}</option>
-    <option *ngFor="let option of config.options">
+    <option *ngFor="let option of config.options"   >
       {{ option }}
     </option>
   </select>
+</div>
 </div>

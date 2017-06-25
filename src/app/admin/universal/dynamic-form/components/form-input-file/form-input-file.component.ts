@@ -4,7 +4,7 @@ import {FormGroup} from '@angular/forms';
 @Component({
   selector: 'app-form-input-file',
   templateUrl: './form-input-file.component.html',
-  styleUrls: ['./form-input-file.component.css']
+  styleUrls: ['./form-input-file.component.scss']
 })
 export class FormInputFileComponent {
   config;
@@ -15,7 +15,6 @@ export class FormInputFileComponent {
   img;
 
   constructor() {
-    this.file_src = '//placehold.it/200';
   }
 
   imageChange($event): void {

@@ -5,7 +5,7 @@
   <input class="form-control"
     type="text"
     [attr.placeholder]="config.placeholder"
-    [formControlName]="config.name"  />
+    [formControlName]="config.name"  appFormInput />
   <label
     *ngIf="group.controls[config.name].hasError('required') && group.controls[config.name].touched"
     class="control-label error">{{MODAL_VALIDATION_NAME_REQUIRED}}</label>

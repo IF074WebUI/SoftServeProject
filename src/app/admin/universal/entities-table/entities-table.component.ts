@@ -5,7 +5,7 @@ import {Question} from '../../questions/question';
 @Component({
   selector: 'dtester-entities-table',
   templateUrl: './entities-table.component.html',
-  styleUrls: ['./entities-table.component.css']
+  styleUrls: ['./entities-table.component.scss']
 })
 export class EntitiesTableComponent<T> implements OnInit, OnChanges {
 

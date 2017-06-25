@@ -1,0 +1,14 @@
+@import "const";
+
+.form-control {
+  border-color: white;
+  border-bottom-color: $line-color;
+  &:focus{
+    &::placeholder {
+      color: $primary-color;
+    }
+    border-bottom-color: $primary-color;
+    border-bottom-width: thin;
+  }
+}
+

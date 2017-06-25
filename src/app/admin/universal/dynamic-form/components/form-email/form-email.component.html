@@ -5,7 +5,7 @@
   <input class="form-control"
          type="email"
          [attr.placeholder]="config.placeholder"
-         [formControlName]="config.name" />
+         [formControlName]="config.name" appFormInput/>
   <label *ngIf="group.controls[config.name].hasError('validateEmail') && group.controls[config.name].dirty"  class="control-label error">
     {{ERROR_MSG}}.
   </label>

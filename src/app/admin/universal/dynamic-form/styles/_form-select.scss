@@ -1,0 +1,7 @@
+@import "const";
+@import "form-control";
+
+.form-select {
+  @extend .form-control;
+}
+
