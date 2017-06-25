@@ -156,16 +156,16 @@ export const STUDENT_CONFIG =
       label: 'ID',
       name: 'user_id',
     },
-    {
-      type: 'input_file',
-      label: 'Вкладення',
-      name: 'attachment'
-    },
-    {
-      type: 'hidden_field',
-      label: 'Вкладення',
-      name: 'photo'
-    }
+    // {
+    //   type: 'input_file',
+    //   label: 'Вкладення',
+    //   name: 'attachment'
+    // },
+    // {
+    //   type: 'hidden_field',
+    //   label: 'Вкладення',
+    //   name: 'photo'
+    // }
   ];
 export const TEST_DETAIL_CONFIG = [
   {

@@ -15,7 +15,6 @@ export class FormInputFileComponent {
   img;
 
   constructor() {
-    this.file_src = '//placehold.it/200';
   }
 
   imageChange($event): void {

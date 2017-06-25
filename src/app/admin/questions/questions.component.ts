@@ -120,12 +120,12 @@ export class QuestionsComponent implements OnInit {
 // Method for opening editing and deleting commo modal window
 
   add() {
-    this.popup.sendItem({question_id: '', test_id:  this.test_id, question_text: '', level: '', type: '', attach: '', photo: ''});
+    this.popup.sendItem({question_id: '', test_id:  this.test_id, question_text: '', level: '', type: '', attach: '', photo: ''}, 'Question');
     this.popup.showModal();
   }
 
   edit(question: Question) {
-    this.popup.sendItem({question, photo: ''});
+    this.popup.sendItem({question, photo: ''}, 'Question');
     this.popup.showModal();
   }
 

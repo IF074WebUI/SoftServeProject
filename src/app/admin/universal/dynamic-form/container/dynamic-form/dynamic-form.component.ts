@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
-
+import {SessionService} from "./session.service";
 
 declare var $: any;
 
@@ -28,7 +28,6 @@ export class DynamicFormComponent implements OnInit {
   entity_name: string;
   uniq_name: string;
 
-
   MODAL_ADD_TITLE = 'Створити';
   MODAL_EDIT_TITLE = 'Редагувати';
   MODAL_DELETE_TITLE = 'Видалення';
@@ -38,12 +37,20 @@ export class DynamicFormComponent implements OnInit {
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';
   SUBMIT_ADD_EDIT = 'Зберегти';
+  NEXT_STEP = 'Далі';
+  SKIP = 'Пропустити';
 
-  constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService) {
+  step1: boolean;
+  step2: boolean;
+  photo: string;
+
+  constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService, private _SessionService: SessionService) {
   }
 
   ngOnInit() {
     this.form = this.createGroup();
+    this.step1 = true;
+    this.step2 = false;
   }
 
   createGroup() {
@@ -60,13 +67,78 @@ export class DynamicFormComponent implements OnInit {
       }
       if (control.requiredAsync) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
-    //   group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
+        //   group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
       } else {
         group.addControl(control.name, this.fb.control(''));
       }
     });
     return group;
   }
+
+  //  multistep modal
+
+  submit() {
+    //  console.log('submit works');
+    if (this.entity_name === 'Question') {
+      this.step2 = true;
+      this.step1 = false;
+      this.photo = '';
+      this._SessionService.set('formValue', this.form.value);
+    } else {
+      this.submitted.emit(this.form.value);
+    }
+  }
+
+  imageChange($event): void {
+    this.readThis($event.target);
+    const preview = document.querySelector('img');
+  }
+
+
+  readThis(inputValue: any): void {
+    const file: File = inputValue.files[0];
+    const myReader: FileReader = new FileReader();
+
+    myReader.onloadend = (e) => {
+      let string = myReader.result;
+      // this.photoForm.controls['photo'].setValue(string);
+      this.photo = string;
+      console.log(this.photo);
+    };
+    myReader.readAsDataURL(file);
+    this.readAndPreview(file);
+  }
+
+
+  readAndPreview(file) {
+    let preview = document.querySelector('#preview');
+    if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+      let reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        let image = new Image();
+        image.height = 100;
+        image.title = file.name;
+        image.src = this.result;
+        preview.appendChild(image);
+      }, false);
+
+      reader.readAsDataURL(file);
+    }
+
+  }
+  skip(){
+    let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': ''});
+    console.log(formValue);
+    this.submitted.emit(formValue);
+  }
+
+  savePhoto() {
+    let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
+    console.log(formValue);
+    this.submitted.emit(formValue);
+  }
+
 
 // Methods for parents
 
@@ -105,13 +177,13 @@ export class DynamicFormComponent implements OnInit {
     this.Properties = Object.getOwnPropertyNames(this.entityForDelete);
     this.TITLE = this.MODAL_DELETE_TITLE;
     let Properties = Object.getOwnPropertyNames(entity);
-      if (Properties[0] === 'speciality_id' || Properties[0] === 'test_id' || Properties[0] === 'id') {
-        this.uniq_name = this.entityForDelete[Properties[2]];
-      } else if (Properties[0] === 'user_id') {
-        this.uniq_name = this.entityForDelete[Properties[2]] + ' ' + this.entityForDelete[Properties[3]] + ' ' + this.entityForDelete[Properties[4]];
-      } else {
-        this.uniq_name = this.entityForDelete[Properties[1]];
-      }
+    if (Properties[0] === 'speciality_id' || Properties[0] === 'test_id' || Properties[0] === 'id') {
+      this.uniq_name = this.entityForDelete[Properties[2]];
+    } else if (Properties[0] === 'user_id') {
+      this.uniq_name = this.entityForDelete[Properties[2]] + ' ' + this.entityForDelete[Properties[3]] + ' ' + this.entityForDelete[Properties[4]];
+    } else {
+      this.uniq_name = this.entityForDelete[Properties[1]];
+    }
     this.CONFIRM_QUESTION = this.CONFIRM_QUESTION_TEXT + ' ' + this.uniq_name;
     $('#add_edit_deletePopup').modal('show');
   }

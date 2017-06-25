@@ -7,9 +7,11 @@
   color: black;
 
   transition: background-color .3s;
-}
-
-.btn:hover, .btn:focus {
-  cursor: pointer;
-  background-color: $button-hover;
+  &:hover, &:focus {
+    cursor: pointer;
+    background-color: $button-hover;
+  }
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
