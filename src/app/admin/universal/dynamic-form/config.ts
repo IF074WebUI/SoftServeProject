@@ -237,16 +237,16 @@ export const QUESTION_CONFIG = [
     options: ['singlechoise', 'multichoise', 'input field'],
     placeholder: 'Виберіть тип питання'
   },
-  {
-    type: 'input_file',
-    label: 'Вкладення',
-    name: 'attach'
-  },
-  {
-    type: 'hidden_field',
-    label: 'Вкладення',
-    name: 'photo'
-  }
+  // {
+  //   type: 'input_file',
+  //   label: 'Вкладення',
+  //   name: 'attach'
+  // },
+  // {
+  //   type: 'hidden_field',
+  //   label: 'Вкладення',
+  //   name: 'photo'
+  // }
 ];
 export const ANSWER_CONFIG = [
   {

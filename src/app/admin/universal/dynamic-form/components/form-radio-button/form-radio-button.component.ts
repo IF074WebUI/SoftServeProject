@@ -15,12 +15,10 @@ export class FormRadioButtonComponent implements OnInit {
 
   ngOnInit() {
     this.model = {'singlechoise': 1, 'multichoise': 2, 'input field': 3};
-    console.log(this.model);
   }
 
   onValueChanged(event) {
     let value: any = event.target.value;
     this.group.controls[this.config.name].setValue(this.model[value]);
-    console.log(this.group.controls[this.config.name].value);
   }
 }

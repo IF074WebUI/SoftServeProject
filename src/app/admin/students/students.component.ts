@@ -151,8 +151,6 @@ export class StudentsComponent implements OnInit {
   }
 
   formSubmitted(value) {
-    // if (!!this.generateStudentData()['photo'] === false) {this.generateStudentData()['photo'] = ''; };
-    console.log(this.generateStudentData()['photo']);
     this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
       this.getStudents();
       this.popup.cancel();

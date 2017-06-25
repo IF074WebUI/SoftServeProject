@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
-import {SessionService} from "./session.service";
+import {SessionService} from './session.service';
 
 declare var $: any;
 
@@ -37,7 +37,7 @@ export class DynamicFormComponent implements OnInit {
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';
   SUBMIT_ADD_EDIT = 'Зберегти';
-  NEXT_STEP = 'Далі';
+  INPUT_PHOTO = 'Завантажити фотографію';
   SKIP = 'Пропустити';
 
   step1: boolean;
@@ -49,8 +49,9 @@ export class DynamicFormComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.createGroup();
-    this.step1 = true;
-    this.step2 = false;
+    // this.step1 = true;
+    // this.step2 = false;
+
   }
 
   createGroup() {
@@ -78,11 +79,10 @@ export class DynamicFormComponent implements OnInit {
   //  multistep modal
 
   submit() {
-    //  console.log('submit works');
-    if (this.entity_name === 'Question') {
+    if (this.entity_name === 'Question' || this.entity_name === 'Student') {
       this.step2 = true;
       this.step1 = false;
-      this.photo = '';
+      this.TITLE = this.INPUT_PHOTO;
       this._SessionService.set('formValue', this.form.value);
     } else {
       this.submitted.emit(this.form.value);
@@ -101,9 +101,7 @@ export class DynamicFormComponent implements OnInit {
 
     myReader.onloadend = (e) => {
       let string = myReader.result;
-      // this.photoForm.controls['photo'].setValue(string);
       this.photo = string;
-      console.log(this.photo);
     };
     myReader.readAsDataURL(file);
     this.readAndPreview(file);
@@ -117,7 +115,7 @@ export class DynamicFormComponent implements OnInit {
 
       reader.addEventListener('load', function () {
         let image = new Image();
-        image.height = 100;
+        image.height = 200;
         image.title = file.name;
         image.src = this.result;
         preview.appendChild(image);
@@ -127,16 +125,21 @@ export class DynamicFormComponent implements OnInit {
     }
 
   }
-  skip(){
-    let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': ''});
-    console.log(formValue);
+
+  skip() {
+    let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
     this.submitted.emit(formValue);
+    let preview = document.querySelector('#preview');
+    preview.innerHTML = '';
   }
 
   savePhoto() {
     let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
-    console.log(formValue);
     this.submitted.emit(formValue);
+    this.step1 = true;
+    this.step2 = false;
+    let preview = document.querySelector('#preview');
+    preview.innerHTML = '';
   }
 
 
@@ -152,12 +155,14 @@ export class DynamicFormComponent implements OnInit {
   }
 
 
-  sendItem(entity: any, entity_name?: string, test_id?: number) {
-    console.log(entity);
+  sendItem(entity: any, entity_name?: string, test_id?: number, photo?: string) {
+    this.step1 = true;
+    this.step2 = false;
     this.test_id = test_id;
     this.action = 'add_edit';
     this.entity = entity;
     this.entity_name = entity_name;
+    this.photo = photo || '';
     let InputEntityNames = Object.getOwnPropertyNames(entity);
     let FormNames = Object.getOwnPropertyNames(this.form.controls);
     for (let i = 0; i < InputEntityNames.length; i++) {
