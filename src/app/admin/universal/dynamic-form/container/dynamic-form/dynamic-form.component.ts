@@ -104,27 +104,27 @@ export class DynamicFormComponent implements OnInit {
       this.photo = string;
     };
     myReader.readAsDataURL(file);
-    this.readAndPreview(file);
+ //   this.readAndPreview(file);
   }
 
-
-  readAndPreview(file) {
-    let preview = document.querySelector('#preview');
-    if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
-      let reader = new FileReader();
-
-      reader.addEventListener('load', function () {
-        let image = new Image();
-        image.height = 200;
-        image.title = file.name;
-        image.src = this.result;
-        preview.appendChild(image);
-      }, false);
-
-      reader.readAsDataURL(file);
-    }
-
-  }
+  //
+  // readAndPreview(file) {
+  //   let preview = document.querySelector('#preview');
+  //   if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+  //     let reader = new FileReader();
+  //
+  //     reader.addEventListener('load', function () {
+  //       let image = new Image();
+  //       image.height = 200;
+  //       image.title = file.name;
+  //       image.src = this.result;
+  //       preview.appendChild(image);
+  //     }, false);
+  //
+  //     reader.readAsDataURL(file);
+  //   }
+  //
+  // }
 
   skip() {
     let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
