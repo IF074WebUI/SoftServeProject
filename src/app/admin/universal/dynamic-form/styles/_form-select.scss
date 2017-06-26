@@ -3,5 +3,10 @@
 
 .form-select {
   @extend .form-control;
+  select{
+    color: $primary-color;
+  }
 }
+
+
 
