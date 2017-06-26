@@ -18,7 +18,7 @@ export class FormRadioButtonComponent implements OnInit {
   }
 
   onValueChanged(event) {
-    let value: any = event.target.value;
+    let value: any = event.target.value || 1;
     this.group.controls[this.config.name].setValue(this.model[value]);
   }
 }
