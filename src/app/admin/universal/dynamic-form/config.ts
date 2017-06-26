@@ -156,16 +156,16 @@ export const STUDENT_CONFIG =
       label: 'ID',
       name: 'user_id',
     },
-    {
-      type: 'input_file',
-      label: 'Вкладення',
-      name: 'attachment'
-    },
-    {
-      type: 'hidden_field',
-      label: 'Вкладення',
-      name: 'photo'
-    }
+    // {
+    //   type: 'input_file',
+    //   label: 'Вкладення',
+    //   name: 'attachment'
+    // },
+    // {
+    //   type: 'hidden_field',
+    //   label: 'Вкладення',
+    //   name: 'photo'
+    // }
   ];
 export const TEST_DETAIL_CONFIG = [
   {
@@ -186,21 +186,21 @@ export const TEST_DETAIL_CONFIG = [
     label: 'Номер рівня завдань',
     name: 'level',
     options: [],
-    placeholder: 'Select an option'
+    placeholder: 'встановити рівень тесту'
   },
   {
     type: 'select_with_options',
     label: 'Кількіст завдань',
     name: 'tasks',
     options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
-    placeholder: 'Select an option'
+    placeholder: 'Встановити кількість завдань тесту'
   },
   {
     type: 'select_with_options',
     label: 'Кількіст балів',
     name: 'rate',
     options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
-    placeholder: 'Select an option'
+    placeholder: 'Встановити кількість балів'
   }
 ];
 export const QUESTION_CONFIG = [
@@ -237,16 +237,16 @@ export const QUESTION_CONFIG = [
     options: ['singlechoise', 'multichoise', 'input field'],
     placeholder: 'Виберіть тип питання'
   },
-  {
-    type: 'input_file',
-    label: 'Вкладення',
-    name: 'attach'
-  },
-  {
-    type: 'hidden_field',
-    label: 'Вкладення',
-    name: 'photo'
-  }
+  // {
+  //   type: 'input_file',
+  //   label: 'Вкладення',
+  //   name: 'attach'
+  // },
+  // {
+  //   type: 'hidden_field',
+  //   label: 'Вкладення',
+  //   name: 'photo'
+  // }
 ];
 export const ANSWER_CONFIG = [
   {
@@ -371,7 +371,6 @@ export const ADMINUSER_CONFIG = [
     required: true
   }
 ];
-
 
 
 

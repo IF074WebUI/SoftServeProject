@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import { Student } from '../students/student';
 import { StudentsService } from '../students/students.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,10 +8,12 @@ import { Group } from '../group/group';
 import { GetAllRecordsService } from '../services/get-all-records.service';
 import {SpinnerService} from '../universal/spinner/spinner.service';
 import {ToastsManager} from 'ng2-toastr';
+import {DynamicFormComponent} from "../universal/dynamic-form/container/dynamic-form/dynamic-form.component";
+import {STUDENT_CONFIG} from "../universal/dynamic-form/config";
 @Component({
   selector: 'dtester-student-profile',
   templateUrl: './student-profile.component.html',
-  styleUrls: ['./student-profile.component.css'],
+  styleUrls: ['./student-profile.component.scss'],
   providers: [StudentsService, GetRecordsByIdService, GetAllRecordsService]
 })
 export class StudentProfileComponent implements OnInit {
@@ -24,6 +26,10 @@ export class StudentProfileComponent implements OnInit {
   studentEditForm: FormGroup;
   studentForEdit_password: string;
   studentEditData = {};
+
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
+  configs = STUDENT_CONFIG;
+
 
   constructor(private studentsService: StudentsService,
               private activatedRoute: ActivatedRoute,
@@ -72,6 +78,12 @@ export class StudentProfileComponent implements OnInit {
    });
    }
 
+  edit(student: any) {
+    // this.configs[1]['action'] = 'edit';
+    this.popup.sendItem(student);
+    this.popup.showModal();
+  }
+
    selectedStudent(student: Student, AdminUser) {
     this.studentForEdit = student;
     this.studentForEdit.username = AdminUser.username;
@@ -110,13 +122,13 @@ export class StudentProfileComponent implements OnInit {
 
   getStudentsWithGroupName(data) {
     this.student = data;
-    console.log(this.student);
+    // console.log(this.student);
     this.getRecordsByIdService.getRecordsById('group', this.student.group_id).subscribe((StudentData) => {
       this.student.group_name = StudentData[0].group_name;
     });
   }
 
-  editStudent() {
+  formSubmitted() {
     this.studentEditData = {
       'password_confirm' : this.studentForEdit_password,
       'plain_password': this.studentForEdit_password
@@ -125,7 +137,7 @@ export class StudentProfileComponent implements OnInit {
       .subscribe(resp => {
         this.getStudent();
         this.getAdminUser();
-        this.toastr.success(`Студент ${this.studentForEdit['student_name']} ${this.studentForEdit['student_surname']} 
+        this.toastr.success(`Студент ${this.studentForEdit['student_name']} ${this.studentForEdit['student_surname']}
         ${this.studentForEdit['student_fname']} успішно відредагований`);
       }, error2 => {
         this.toastr.error(error2);

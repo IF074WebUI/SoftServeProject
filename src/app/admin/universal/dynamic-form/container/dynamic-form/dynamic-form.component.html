@@ -4,41 +4,74 @@
       <div class="modal-header">
         <button type="button" class="close" aria-label="Close" (click)="cancel()"><span
           aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title"><span *ngIf="action === 'add_edit'">{{TITLE}}</span></h4>
-        <h4 class="modal-title"><span *ngIf="action === 'delete'">{{TITLE}}</span></h4>
+        <h4 class="container-fluid"><span>{{TITLE}}</span></h4>
       </div>
       <div class="modal-body">
-        <form *ngIf="action == 'add_edit'" class="form-group"
-              class="dynamic-form"
-               [formGroup]="form" (ngSubmit)="submitted.emit(form.value)"
-        >
-          <ng-container
-            *ngFor="let field of config"
-            dynamicField
-            [config]="field"
-            [group]="form">
-          </ng-container>
+
+        <div class='step-1' [hidden]='!step1'>
+          <form *ngIf="action == 'add_edit'" class="form-group"
+                class="dynamic-form"
+                [formGroup]="form">
+            <!--(ngSubmit)="submitted.emit(form.value)"-->
+            <ng-container
+              *ngFor="let field of config"
+              dynamicField
+              [config]="field"
+              [group]="form">
+            </ng-container>
+            <div class="modal-footer">
+              <div class="form-button">
+                <button [disabled]="!form.valid" type="submit" class="btn btn-default" (click)="submit()"> {{
+                  SUBMIT_ADD_EDIT }}
+                </button>
+              </div>
+              <div class="dynamic-field form-button">
+                <button type="button" class="btn btn-default" (click)="cancel()">{{CLOSE}}</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class='step-2' *ngIf="action == 'add_edit'" [hidden]='!step2'>
+          <div class="fileContainer">
+            <div class="button-container">
+              <!--<button type="submit" class="btn btn-default">-->
+              <!--{{ PHOTO_LABEL }}-->
+              <!--</button>-->
+              <input type="file" class="form-control-file" accept='image/*' (change)='imageChange($event)'/>
+            </div>
+            <div id="preview">
+              <!--<img class="img-thumbnail photo" *ngIf="step2" [src]="photo">-->
+            </div>
+
+          </div>
 
           <div class="modal-footer">
             <div class="form-button">
-              <button [disabled]="!form.valid" type="submit" class="btn btn-default"> {{ SUBMIT_ADD_EDIT }}
+              <button type="submit" class="btn btn-default" (click)="savePhoto()"> {{ SUBMIT_ADD_EDIT }}
               </button>
             </div>
-            <div class="dynamic-field form-button">
+            <div class="form-button">
+              <button type="submit" class="btn btn-default" (click)="skip()"> {{ SKIP }}
+              </button>
+            </div>
+            <div class="form-button">
               <button type="button" class="btn btn-default" (click)="cancel()">{{CLOSE}}</button>
             </div>
           </div>
-        </form>
-        <div *ngIf="action == 'delete'">
-          {{CONFIRM_QUESTION}}?
         </div>
-
       </div>
 
+      <div *ngIf="action == 'delete'" class="container">
+        {{CONFIRM_QUESTION}}?
+      </div>
       <div *ngIf="action == 'delete'" class="modal-footer">
         <div class="form-button">
           <button type="submit" class="btn btn-danger" (click)="submitDelete()"> {{CONFIRM_DELETE}}</button>
         </div>
+        <!--<div class="form-button">-->
+        <!--<button type="submit" class="btn btn-danger" [appConfirmDelete]="submitDelete" (click)="submitDelete()"> {{CONFIRM_DELETE}}</button>-->
+        <!--</div>-->
         <div class="form-button">
           <button type="button" class="btn btn-default" (click)="cancel()">{{CLOSE}}</button>
         </div>
@@ -46,3 +79,4 @@
     </div>
   </div>
 </div>
+

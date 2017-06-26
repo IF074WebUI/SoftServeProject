@@ -11,7 +11,7 @@ import {ToastsManager} from 'ng2-toastr';
 @Component({
   selector: 'dtester-faculties',
   templateUrl: './faculties.component.html',
-  styleUrls: ['./faculties.component.css'],
+  styleUrls: ['./faculties.component.scss'],
   providers: [FacultyService]
 })
 

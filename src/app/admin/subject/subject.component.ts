@@ -154,7 +154,7 @@ export class SubjectComponent implements OnInit {
   }
 
   deleteSubject(deletedSubject) {
-    this.deleteRecordByIdService.deleteRecordsById('subject', deletedSubject.subject_id).subscribe(() => {
+    this.subjectService.deleteCascade(deletedSubject.subject_id).subscribe(() => {
       this.getSubjectsRange();
       this.toastsManager.success(`Предмет "${deletedSubject.subject_name}" успішно видалено.`);
       --this.numberOfRecords;

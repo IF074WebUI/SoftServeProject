@@ -15,13 +15,15 @@ import { FormInputFileComponent } from './components/form-input-file/form-input-
 import { FormNumberComponent } from './components/form-number/form-number.component';
 import { FormRadioButtonComponent } from './components/form-radio-button/form-radio-button.component';
 import { FormHiddenComponent } from './components/form-hidden/form-hidden.component';
+import { ConfirmDeleteDirective } from './styles/directives/confirm-delete.directive';
+import { FormInputDirective } from './styles/directives/form-input.directive';
+import { SessionService } from './container/dynamic-form/session.service';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
-   // BrowserModule
   ],
   declarations: [
     DynamicFormComponent,
@@ -36,7 +38,9 @@ import { FormHiddenComponent } from './components/form-hidden/form-hidden.compon
     FormInputFileComponent,
     FormNumberComponent,
     FormRadioButtonComponent,
-    FormHiddenComponent
+    FormHiddenComponent,
+    ConfirmDeleteDirective,
+    FormInputDirective
   ],
   exports: [DynamicFormComponent],
   entryComponents: [
@@ -52,7 +56,7 @@ import { FormHiddenComponent } from './components/form-hidden/form-hidden.compon
     FormRadioButtonComponent,
     FormHiddenComponent
   ],
-  providers: []
+  providers: [SessionService]
 
 })
 export class DynamicFormModule {}

@@ -1,7 +1,7 @@
 <div
   class="dynamic-field" class="form-radio">
   <label *ngFor="let option of config.options">
-    <input type="radio" name='option'  (change)="onValueChanged($event)" [value]="option" >
+    <input type="radio" name='option'  (change)="onValueChanged($event)" [value]="option" appFormInput>
     {{option}}
   </label>
 </div>
