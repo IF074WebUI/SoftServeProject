@@ -40,10 +40,9 @@
               <!--</button>-->
               <input type="file" class="form-control-file" accept='image/*' (change)='imageChange($event)'/>
             </div>
-            <div id="preview">
-              <!--<img class="img-thumbnail photo" *ngIf="step2" [src]="photo">-->
-            </div>
-
+            <!--<div id="preview">-->
+            <!--</div>-->
+            <img class="img-thumbnail photo" [src]="photo">
           </div>
 
           <div class="modal-footer">
