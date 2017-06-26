@@ -32,7 +32,7 @@ export class SubjectService {
 
   deleteCascade(id: number): Observable<any> {
     let delTestsTimetablesObs = [];
-    return Observable.forkJoin(this.timetablesService.getTimeTablesForGroup(id), this.testsService.getTestsBySubject(id))
+    return Observable.forkJoin(this.timetablesService.getTimeTablesForSubject(id), this.testsService.getTestsBySubject(id))
       .flatMap(resp => {
         if (resp[0]['response'] === 'no records' && resp[1]['response'] === 'no records') {
           return Observable.forkJoin(Observable.of(1));
