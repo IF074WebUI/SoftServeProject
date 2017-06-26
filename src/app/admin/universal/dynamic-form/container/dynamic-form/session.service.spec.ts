@@ -1,5 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
-
+import {TestBed, inject} from '@angular/core/testing';
 import { SessionService } from './session.service';
 
 describe('SessionService', () => {
@@ -9,7 +8,12 @@ describe('SessionService', () => {
     });
   });
 
-  it('should ...', inject([SessionService], (service: SessionService) => {
-    expect(service).toBeTruthy();
+  it('should input value in ssesion object', inject([SessionService], (service: SessionService) => {
+    expect(service.set('olena', 2)).toBeTruthy();
   }));
+
+  it('should delete value in ssesion object', inject([SessionService], (service: SessionService) => {
+    expect(service.remove('formValue')).toBeFalsy();
+  }));
+
 });
