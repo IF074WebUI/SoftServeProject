@@ -21,7 +21,6 @@ export class AnswersComponent implements OnInit {
   countRecords: number;
   headers: string[];
   ignoreProperties: string[];
-  btnClass = 'fa fa-question';
   CREATING_NEW_ANSWER = 'Додати нову відповідь';
   question_id: number;
   questionIdQueryParam: number;
@@ -122,7 +121,7 @@ export class AnswersComponent implements OnInit {
 // Method for opening editing and deleting commo modal window
 
   add() {
-    this.popup.sendItem(new Answer());
+    this.popup.sendItem(new Answer(), 'Answer');
     this.popup.showModal();
   }
 
@@ -140,7 +139,7 @@ export class AnswersComponent implements OnInit {
     value['question_id'] = this.question_id;
     console.log(value);
     if (value['answer_id']) {
-      this.answersService.editAnswer(value['answer_id'], value['answer_text'], value['question_id'],
+      this.answersService.editAnswer(value['answer_id'], value['question_id'], value['answer_text'],
         value['true_answer'], value['attachment'])
         .subscribe(response => {
             this.getAnswers();
@@ -150,7 +149,7 @@ export class AnswersComponent implements OnInit {
             relativeTo: this.route.parent})
         );
     } else {
-      this.answersService.createAnswer(value['answer_text'], value['question_id'],
+      this.answersService.createAnswer(value['question_id'], value['answer_text'],
         value['true_answer'], value['attachment'])
         .subscribe(response => {
             this.getAnswers();

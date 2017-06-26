@@ -49,8 +49,8 @@ export class AnswersService {
     return this.http.get('http://' + HOST + '/answer/getRecordsRange/' + recordsPerPage + '/' + (pageNumber - 1) * recordsPerPage )
       .map((resp: Response) => resp.json());
   }
-  createAnswer(answertext: string, questionId: number, trueanswer: string, attach: any ): Observable<Response> {
-    const bodyForSendingNewAnswers = JSON.stringify({answer_text: answertext, question_id: questionId,
+  createAnswer(question_id: number, answertext: string, trueanswer: string, attach: any ): Observable<Response> {
+    const bodyForSendingNewAnswers = JSON.stringify({question_id: question_id, answer_text: answertext,
       true_answer: trueanswer, attachment: attach});
     return this.http.post('http://' + HOST + '/answer/insertData', bodyForSendingNewAnswers)
       .map((resp: Response) => resp.json());
@@ -59,8 +59,8 @@ export class AnswersService {
     return this.http.delete('http://' + HOST + '/answer/del/' + answer_id)
       .map((resp: Response) => resp.json());
   }
-  editAnswer(answer_id: number, answertext: string, questionId: number, true_answer: string, attach: any) {
-    const bodyForSendingEditedAnswers = JSON.stringify({answer_id: answer_id, answer_text: answertext, question_id: questionId,
+  editAnswer(answer_id: number, question_id: number, answertext: string, true_answer: string, attach: any) {
+    const bodyForSendingEditedAnswers = JSON.stringify({answer_id: answer_id, question_id: question_id, answer_text: answertext,
       true_answer: true_answer, attachment: attach});
     return this.http.post('http://' + HOST + '/answer/update/' + answer_id, bodyForSendingEditedAnswers)
       .map((resp) => resp.json());
