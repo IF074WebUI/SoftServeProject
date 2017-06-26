@@ -41,7 +41,7 @@ export class SubjectService {
             delTestsTimetablesObs.push(this.delRecService.deleteRecordsById('timeTable', timetable.timetable_id));
           }
           for (let test of resp[1]) {
-            delTestsTimetablesObs.push(this.testsService.deleteCascade(test.test_id));
+            delTestsTimetablesObs.push(this.testsService.deleteCascade(test['test_id']));
           }
           return Observable.forkJoin(...delTestsTimetablesObs);
         }

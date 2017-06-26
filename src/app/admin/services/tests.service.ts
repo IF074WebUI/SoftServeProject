@@ -26,7 +26,7 @@ export class TestsService {
   deleteCascade(id: number): Observable<any> {
     let delResultsQuestionsTDObs = [];
     return Observable.forkJoin(
-      this.resultsService.getAllByTestGroupDate(id),
+      this.resultsService.getAllByTestGroupDate(id, 1),
       this.questionsService.getRecordsRangeByTest(id, 50, 0),
       this.testDetailsService.getTestDetails(id))
       .flatMap(resp => {
