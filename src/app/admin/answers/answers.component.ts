@@ -49,7 +49,7 @@ export class AnswersComponent implements OnInit {
       this.questionIdQueryParam = params['question_id'];
       if (this.questionIdQueryParam) this.getAnswersForOneQuestion();
       else
-      this.getAnswers();
+        this.getAnswers();
     });
   }
   getAnswersForOneQuestion() {
