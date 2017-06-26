@@ -30,12 +30,12 @@ export class ResultsService {
       .map((resp: Response) => resp.json()).catch(this.handleError.bind(this));
   }
 
-  getAllByTestGroupDate(testId: number, groupId: number, date?: Date): Observable<Result[]> {
-    if (date) {
+  getAllByTestGroupDate(testId: number, groupId?: number, date?: Date): Observable<Result[]> {
+    if (date && groupId) {
       return this.http.get(`${RESULT_URI}getRecordsByTestGroupDate/${testId}/${groupId}/${date}`)
         .map((resp: Response) => resp.json()).catch(this.handleError.bind(this));
     } else {
-      return this.http.get(`${RESULT_URI}getRecordsByTestGroupDate/${testId}/${groupId}`)
+      return this.http.get(`${RESULT_URI}getRecordsByTestGroupDate/${testId}`)
         .map((resp: Response) => resp.json()).catch(this.handleError.bind(this));
     }
   }
