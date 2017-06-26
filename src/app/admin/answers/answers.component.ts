@@ -122,12 +122,12 @@ export class AnswersComponent implements OnInit {
 // Method for opening editing and deleting commo modal window
 
   add() {
-    this.popup.sendItem(new Answer());
+    this.popup.sendItem(new Answer(), 'answer');
     this.popup.showModal();
   }
 
   edit(answer: Answer) {
-    this.popup.sendItem(answer);
+    this.popup.sendItem(answer, 'answer');
     this.popup.showModal();
   }
 

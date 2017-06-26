@@ -79,7 +79,7 @@ export class DynamicFormComponent implements OnInit {
   //  multistep modal
 
   submit() {
-    if (this.entity_name === 'Question' || this.entity_name === 'Student') {
+    if (this.entity_name === 'Question' || this.entity_name === 'Student' || this.entity_name === 'answer') {
       this.step2 = true;
       this.step1 = false;
       this.TITLE = this.INPUT_PHOTO;
