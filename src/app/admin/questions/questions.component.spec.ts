@@ -23,16 +23,16 @@ describe('QuestionsComponent', () => {
   // beforeEach(() => {
   //   component = new QuestionsComponent(null);
   // });
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  // it('should create', () => {
+  //   expect(component).toBeTruthy();
+  // });
   // it(`should have a title of 'Питання'`, () => {
   //   component.changeNumberOfRecordsOnPage();
   //   expect(component.changeNumberOfRecordsOnPage).toBe(10);
   // });
-  fit(`should have a title of 'Питання'`, () => {
-    expect(component.title).toContain('Питання');
-  });
+  // fit(`should have a title of 'Питання'`, () => {
+  //   expect(component.title).toContain('Питання');
+  // });
   // fit(`should have a title of 'Питання'`, () => {
   //   expect(component).toBeTruthy();
   // });
