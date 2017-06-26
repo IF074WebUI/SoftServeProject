@@ -1,6 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
+import {SessionService} from './session.service';
 
 declare var $: any;
 
@@ -27,7 +28,6 @@ export class DynamicFormComponent implements OnInit {
   entity_name: string;
   uniq_name: string;
 
-
   MODAL_ADD_TITLE = 'Створити';
   MODAL_EDIT_TITLE = 'Редагувати';
   MODAL_DELETE_TITLE = 'Видалення';
@@ -37,12 +37,21 @@ export class DynamicFormComponent implements OnInit {
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';
   SUBMIT_ADD_EDIT = 'Зберегти';
+  INPUT_PHOTO = 'Завантажити фотографію';
+  SKIP = 'Пропустити';
 
-  constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService) {
+  step1: boolean;
+  step2: boolean;
+  photo: string;
+
+  constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService, private _SessionService: SessionService) {
   }
 
   ngOnInit() {
     this.form = this.createGroup();
+    // this.step1 = true;
+    // this.step2 = false;
+
   }
 
   createGroup() {
@@ -59,13 +68,80 @@ export class DynamicFormComponent implements OnInit {
       }
       if (control.requiredAsync) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
-    //   group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
+        //   group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
       } else {
         group.addControl(control.name, this.fb.control(''));
       }
     });
     return group;
   }
+
+  //  multistep modal
+
+  submit() {
+    if (this.entity_name === 'Question' || this.entity_name === 'Student') {
+      this.step2 = true;
+      this.step1 = false;
+      this.TITLE = this.INPUT_PHOTO;
+      this._SessionService.set('formValue', this.form.value);
+    } else {
+      this.submitted.emit(this.form.value);
+    }
+  }
+
+  imageChange($event): void {
+    this.readThis($event.target);
+    const preview = document.querySelector('img');
+  }
+
+
+  readThis(inputValue: any): void {
+    const file: File = inputValue.files[0];
+    const myReader: FileReader = new FileReader();
+
+    myReader.onloadend = (e) => {
+      let string = myReader.result;
+      this.photo = string;
+    };
+    myReader.readAsDataURL(file);
+    this.readAndPreview(file);
+  }
+
+
+  readAndPreview(file) {
+    let preview = document.querySelector('#preview');
+    if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+      let reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        let image = new Image();
+        image.height = 200;
+        image.title = file.name;
+        image.src = this.result;
+        preview.appendChild(image);
+      }, false);
+
+      reader.readAsDataURL(file);
+    }
+
+  }
+
+  skip() {
+    let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
+    this.submitted.emit(formValue);
+    let preview = document.querySelector('#preview');
+    preview.innerHTML = '';
+  }
+
+  savePhoto() {
+    let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
+    this.submitted.emit(formValue);
+    this.step1 = true;
+    this.step2 = false;
+    let preview = document.querySelector('#preview');
+    preview.innerHTML = '';
+  }
+
 
 // Methods for parents
 
@@ -79,11 +155,14 @@ export class DynamicFormComponent implements OnInit {
   }
 
 
-  sendItem(entity: any, entity_name?: string, test_id?: number) {
+  sendItem(entity: any, entity_name?: string, test_id?: number, photo?: string) {
+    this.step1 = true;
+    this.step2 = false;
     this.test_id = test_id;
     this.action = 'add_edit';
     this.entity = entity;
     this.entity_name = entity_name;
+    this.photo = photo || '';
     let InputEntityNames = Object.getOwnPropertyNames(entity);
     let FormNames = Object.getOwnPropertyNames(this.form.controls);
     for (let i = 0; i < InputEntityNames.length; i++) {
@@ -103,13 +182,13 @@ export class DynamicFormComponent implements OnInit {
     this.Properties = Object.getOwnPropertyNames(this.entityForDelete);
     this.TITLE = this.MODAL_DELETE_TITLE;
     let Properties = Object.getOwnPropertyNames(entity);
-      if (Properties[0] === 'speciality_id' || Properties[0] === 'test_id' || Properties[0] === 'id') {
-        this.uniq_name = this.entityForDelete[Properties[2]];
-      } else if (Properties[0] === 'user_id') {
-        this.uniq_name = this.entityForDelete[Properties[2]] + ' ' + this.entityForDelete[Properties[3]] + ' ' + this.entityForDelete[Properties[4]];
-      } else {
-        this.uniq_name = this.entityForDelete[Properties[1]];
-      }
+    if (Properties[0] === 'speciality_id' || Properties[0] === 'test_id' || Properties[0] === 'id') {
+      this.uniq_name = this.entityForDelete[Properties[2]];
+    } else if (Properties[0] === 'user_id') {
+      this.uniq_name = this.entityForDelete[Properties[2]] + ' ' + this.entityForDelete[Properties[3]] + ' ' + this.entityForDelete[Properties[4]];
+    } else {
+      this.uniq_name = this.entityForDelete[Properties[1]];
+    }
     this.CONFIRM_QUESTION = this.CONFIRM_QUESTION_TEXT + ' ' + this.uniq_name;
     $('#add_edit_deletePopup').modal('show');
   }

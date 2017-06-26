@@ -1,9 +1,12 @@
 <div
   class="dynamic-field form-input" class="form-group"
   [formGroup]="group">
-  <label>{{ config.label }}</label>
-  <input type="file" class="form-control-file" accept='image/*' (change)='imageChange($event)'
+  <div class="fileContainer">
+    <button type="submit" class="btn btn-default">
+      {{ config.label }}</button>
+  <input  type="file" class="form-control-file" accept='image/*' (change)='imageChange($event)'
          [attr.placeholder]="config.placeholder"
-         [formControlName]="config.name" multiple/>
+         [formControlName]="config.name"/>
+  </div>
 </div>
 <div id="preview"></div>

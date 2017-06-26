@@ -8,13 +8,16 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import {Test} from '../tests/test';
 import {ActivatedRoute, Router} from '@angular/router';
+import {AnswersService} from "./answers.service";
+import {Answer} from "../answers/answer";
 
 @Injectable()
 export class QuestionsService {
   questions: Question[] = [];
   // private successResponse = (response: Response) => response.json();
 
-  constructor(private http: Http, private router: Router,  private activatedRoute: ActivatedRoute) {}
+  constructor(private http: Http, private router: Router,  private activatedRoute: ActivatedRoute,
+  private answersService: AnswersService) {}
 
   getQuestionById(id: number): Observable<any> {
     return this.http.get('http://' + HOST + '/question/getRecords/' + id).map(resp => resp.json());
@@ -48,6 +51,22 @@ export class QuestionsService {
       .map((resp: Response) => resp.json());
   }
 
+  deleteCascade(id: number): Observable<any> {
+    let delAnswersObs = [];
+    return this.answersService.getAnswersByQuestion(id).flatMap((answers: Answer[]) => {
+      if (answers['response'] === 'no records') {
+        return Observable.forkJoin(Observable.of(1));
+      } else {
+        for (let answer of answers) {
+          delAnswersObs.push(this.answersService.deleteAnswer(answer.answer_id));
+        }
+        return Observable.forkJoin(...delAnswersObs);
+      }
+    }).flatMap(arr =>
+      this.deleteQuestion(id)
+    );
+  }
+
   editQuestion(question_id: number, questiontext: string, testId: number, level: number, type: number, attach: any) {
     const bodyForSendingEditedQuestions = JSON.stringify({question_text: questiontext, test_id: testId,
       level: level, type: type, attachment: attach});
@@ -73,11 +92,11 @@ export class QuestionsService {
     return this.http.get('http://' + HOST + '/question/getRecordsBySearch/' + criteria).map((resp: Response) => resp.json());
   }
   getQuestionsByLevelRand(testId: number, level: number, number: number): Observable <any> {
-    return this.http.get('http://' + HOST + '/question/getQuestionsByLevelRand' + testId + level + number)
+    return this.http.get('http://' + HOST + '/question/getQuestionsByLevelRand/' + testId + '/' + level + '/' + number)
       .map((resp: Response) => resp.json());
 }
   getRecordsRangeByTest(test_id: number, limit: number, offset: number) {
-    return this.http.get('http://' + HOST + '/question/getRecordsRangeByTest' + test_id + limit + offset)
+    return this.http.get('http://' + HOST + '/question/getRecordsRangeByTest/' + test_id + '/' + limit + '/' + offset)
       .map((resp: Response) => resp.json());
 }
 

@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import {DynamicFormComponent} from './container/dynamic-form/dynamic-form.component';
+import { DynamicFormComponent } from './container/dynamic-form/dynamic-form.component';
 import { FormInputComponent } from './components/form-input/form-input.component';
 import { FormSelectComponent } from './components/form-select/form-select.component';
 import { DynamicFieldDirective } from './components/dynamic-field/dynamic-field.directive';
@@ -9,15 +10,20 @@ import { FormIdComponent } from './components/form-id/form-id.component';
 import { FormTextareaComponent } from './components/form-textarea/form-textarea.component';
 import { FormEmailComponent } from './components/form-email/form-email.component';
 import { FormSelectWithOptionsComponent } from './components/form-select-with-options/form-select-with-options.component';
-import {FacultyService} from '../../services/faculty.service';
 import { FormSelectTestDetailByIdComponent } from './components/form-select-test-detail-by-id/form-select-test-detail-by-id.component';
 import { FormInputFileComponent } from './components/form-input-file/form-input-file.component';
 import { FormNumberComponent } from './components/form-number/form-number.component';
+import { FormRadioButtonComponent } from './components/form-radio-button/form-radio-button.component';
+import { FormHiddenComponent } from './components/form-hidden/form-hidden.component';
+import { ConfirmDeleteDirective } from './styles/directives/confirm-delete.directive';
+import { FormInputDirective } from './styles/directives/form-input.directive';
+import { SessionService } from './container/dynamic-form/session.service';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [
     DynamicFormComponent,
@@ -30,7 +36,11 @@ import { FormNumberComponent } from './components/form-number/form-number.compon
     FormSelectWithOptionsComponent,
     FormSelectTestDetailByIdComponent,
     FormInputFileComponent,
-    FormNumberComponent
+    FormNumberComponent,
+    FormRadioButtonComponent,
+    FormHiddenComponent,
+    ConfirmDeleteDirective,
+    FormInputDirective
   ],
   exports: [DynamicFormComponent],
   entryComponents: [
@@ -42,9 +52,11 @@ import { FormNumberComponent } from './components/form-number/form-number.compon
     FormSelectWithOptionsComponent,
     FormSelectTestDetailByIdComponent,
     FormInputFileComponent,
-    FormNumberComponent
+    FormNumberComponent,
+    FormRadioButtonComponent,
+    FormHiddenComponent
   ],
-  providers: []
+  providers: [SessionService]
 
 })
 export class DynamicFormModule {}

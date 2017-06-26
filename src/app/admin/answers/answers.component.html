@@ -1,4 +1,4 @@
-<h2>Відповіді</h2>
+  <h2>Відповіді</h2>
 <div class="alert alert-info" role="alert">
 <dtester-items-per-page [numberOfRecords]="countRecords"
                         (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
@@ -16,8 +16,7 @@
                         [page]="pageNumber"
                         [itemsPerPage]="recordsPerPage"
                         (deleteEntity)="del($event)"
-                        (editEntity)="edit($event)"
-                        (clickEntity)="getAnswersByQuestion($event)">
+                        (editEntity)="edit($event)">
 </dtester-entities-table>
 <dtester-pagination class="text-center"
                     [countRecords]="countRecords"

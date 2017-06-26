@@ -23,14 +23,6 @@ export const FACULTY_CONFIG =
     }
   ];
 
-export const TEST =
-  [
-    {
-      type: 'input',
-      name: 'test'
-    }
-  ];
-
 export const SPECIALITY_CONFIG =
   [
     {
@@ -163,13 +155,17 @@ export const STUDENT_CONFIG =
       type: 'id',
       label: 'ID',
       name: 'user_id',
-      placeholder: ''
     },
-    {
-      type: 'input_file',
-      label: 'Вкладення',
-      name: 'attachment'
-    }
+    // {
+    //   type: 'input_file',
+    //   label: 'Вкладення',
+    //   name: 'attachment'
+    // },
+    // {
+    //   type: 'hidden_field',
+    //   label: 'Вкладення',
+    //   name: 'photo'
+    // }
   ];
 export const TEST_DETAIL_CONFIG = [
   {
@@ -190,21 +186,21 @@ export const TEST_DETAIL_CONFIG = [
     label: 'Номер рівня завдань',
     name: 'level',
     options: [],
-    placeholder: 'Select an option'
+    placeholder: 'встановити рівень тесту'
   },
   {
     type: 'select_with_options',
     label: 'Кількіст завдань',
     name: 'tasks',
     options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
-    placeholder: 'Select an option'
+    placeholder: 'Встановити кількість завдань тесту'
   },
   {
     type: 'select_with_options',
     label: 'Кількіст балів',
     name: 'rate',
     options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
-    placeholder: 'Select an option'
+    placeholder: 'Встановити кількість балів'
   }
 ];
 export const QUESTION_CONFIG = [
@@ -235,17 +231,22 @@ export const QUESTION_CONFIG = [
     placeholder: 'Виберіть рівень питання'
   },
   {
-    type: 'select_with_options',
+    type: 'radio',
     label: 'Тип питання',
     name: 'type',
-    options: ['1', '2'],
+    options: ['singlechoise', 'multichoise', 'input field'],
     placeholder: 'Виберіть тип питання'
   },
-  {
-    type: 'input_file',
-    label: 'Вкладення',
-    name: 'attachment'
-  }
+  // {
+  //   type: 'input_file',
+  //   label: 'Вкладення',
+  //   name: 'attach'
+  // },
+  // {
+  //   type: 'hidden_field',
+  //   label: 'Вкладення',
+  //   name: 'photo'
+  // }
 ];
 export const ANSWER_CONFIG = [
   {
@@ -275,7 +276,7 @@ export const ANSWER_CONFIG = [
     type: 'select_with_options',
     label: 'Правильність відповіді',
     name: 'true_answer',
-    options: ['Правильно', 'Неправильноо'],
+    options: ['0', '1'],
     placeholder: ''
   },
   {
@@ -370,7 +371,6 @@ export const ADMINUSER_CONFIG = [
     required: true
   }
 ];
-
 
 
 

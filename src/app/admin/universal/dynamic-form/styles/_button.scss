@@ -1,0 +1,17 @@
+
+.btn {
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+
+  background-color: white;
+  color: black;
+
+  transition: background-color .3s;
+  &:hover, &:focus {
+    cursor: pointer;
+    background-color: $button-hover;
+  }
+  &:disabled {
+    cursor: not-allowed;
+  }
+}

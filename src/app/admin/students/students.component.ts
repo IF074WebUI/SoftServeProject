@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { StudentsService} from './students.service';
-import { Router } from '@angular/router';
-import { Student } from './student';
-import { ActivatedRoute } from '@angular/router';
-import { Group } from '../group/group';
-import { GetRecordsByIdService } from '../services/get-records-by-id.service';
-import { GetAllRecordsService } from '../services/get-all-records.service';
-import { STUDENT_CONFIG } from '../universal/dynamic-form/config';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {StudentsService} from './students.service';
+import {Router} from '@angular/router';
+import {Student} from './student';
+import {ActivatedRoute} from '@angular/router';
+import {Group} from '../group/group';
+import {GetRecordsByIdService} from '../services/get-records-by-id.service';
+import {GetAllRecordsService} from '../services/get-all-records.service';
+import {STUDENT_CONFIG} from '../universal/dynamic-form/config';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 import {SpinnerService} from '../universal/spinner/spinner.service';
 import {ToastsManager} from 'ng2-toastr';
+import {isUndefined} from "util";
 
 @Component({
   selector: 'dtester-students',
@@ -43,7 +44,8 @@ export class StudentsComponent implements OnInit {
               private getRecordsByIdService: GetRecordsByIdService,
               private getAllRecordsService: GetAllRecordsService,
               private spinner: SpinnerService,
-              private toastr: ToastsManager) {}
+              private toastr: ToastsManager) {
+  }
 
   ngOnInit() {
     this.getStudents();
@@ -52,7 +54,7 @@ export class StudentsComponent implements OnInit {
   }
 
   getStudentsForGroup() {
-    const  groupId = this.activatedRoute.snapshot.queryParams['group_id'];
+    const groupId = this.activatedRoute.snapshot.queryParams['group_id'];
     if (groupId) {
       this.studentsService.getStudentsByGroupId(groupId).subscribe(resp => {
         if (resp['response'] === 'no records') {
@@ -72,10 +74,10 @@ export class StudentsComponent implements OnInit {
     this.getCount();
     this.studentsService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
       .subscribe(resp => {
-        this.getStudentsWithGroupName(resp);
-        this.spinner.hideSpinner();
-      }, err => this.router.navigate(['/bad_request'])
-        );
+          this.getStudentsWithGroupName(resp);
+          this.spinner.hideSpinner();
+        }, err => this.router.navigate(['/bad_request'])
+      );
   }
 
   getCount(): void {
@@ -136,7 +138,6 @@ export class StudentsComponent implements OnInit {
       'password': password,
       'password_confirm': password,
       'plain_password': password,
-      'photo': ''
     };
   }
 
@@ -150,11 +151,11 @@ export class StudentsComponent implements OnInit {
   }
 
   formSubmitted(value) {
-      this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
-        this.getStudents();
-        this.popup.cancel();
-        this.toastr.success(`Студент ${value['student_name']} ${value['student_surname']} ${value['student_fname']} успішно створений`);
-      }, error2 => {
+    this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
+      this.getStudents();
+      this.popup.cancel();
+      this.toastr.success(`Студент ${value['student_name']} ${value['student_surname']} ${value['student_fname']} успішно створений`);
+    }, error2 => {
       this.toastr.error(error2);
     });
   }
@@ -165,6 +166,6 @@ export class StudentsComponent implements OnInit {
       this.toastr.success(`Студент ${student['student_name']} ${student['student_surname']} ${student['student_fname']} успішно видалений`);
     }, error => {
       this.toastr.error(error);
-      });
+    });
   }
 }

@@ -9,7 +9,7 @@ import { SUBJECTS_CONFIG } from '../universal/dynamic-form/config';
 import { SubjectService } from './subject.service';
 import { DeleteRecordByIdService } from '../services/delete-record-by-id.service';
 import { ToastsManager } from 'ng2-toastr';
-import {SpinnerService} from "../universal/spinner/spinner.service";
+import {SpinnerService} from '../universal/spinner/spinner.service';
 
 declare const $: any;
 
@@ -154,7 +154,7 @@ export class SubjectComponent implements OnInit {
   }
 
   deleteSubject(deletedSubject) {
-    this.deleteRecordByIdService.deleteRecordsById('subject', deletedSubject.subject_id).subscribe(() => {
+    this.subjectService.deleteCascade(deletedSubject.subject_id).subscribe(() => {
       this.getSubjectsRange();
       this.toastsManager.success(`Предмет "${deletedSubject.subject_name}" успішно видалено.`);
       --this.numberOfRecords;

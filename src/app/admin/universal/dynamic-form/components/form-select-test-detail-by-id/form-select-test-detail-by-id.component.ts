@@ -6,7 +6,7 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-form-select-test-detail-by-id',
   templateUrl: './form-select-test-detail-by-id.component.html',
-  styleUrls: ['./form-select-test-detail-by-id.component.css']
+  styleUrls: ['./form-select-test-detail-by-id.component.scss']
 })
 
 export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentInit, AfterContentChecked {
