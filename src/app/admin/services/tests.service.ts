@@ -45,7 +45,7 @@ export class TestsService {
           return Observable.forkJoin(...delResultsQuestionsTDObs);
         }
       }).flatMap(arr => {
-        return this.deleteRecordByIdService.deleteRecordsById('test', id)
+        return this.deleteRecordByIdService.deleteRecordsById('test', id);
       });
   }
 
