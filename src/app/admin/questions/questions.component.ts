@@ -44,7 +44,6 @@ export class QuestionsComponent implements OnInit {
     this.headers = ['№', 'Питання', 'Рівень', 'Тип', 'Вкладення'];
     this.ignoreProperties = ['test_id', 'question_id'];
 
-    this.getQuestions();
     this.test_id = this.route.snapshot.queryParams['test_id'];
     console.log(this.test_id);
     const level = this.route.snapshot.queryParams['level'];
