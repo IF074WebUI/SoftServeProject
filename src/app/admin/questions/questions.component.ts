@@ -3,14 +3,15 @@ import {Question} from './question';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 import {QUESTION_CONFIG} from '../universal/dynamic-form/config';
 import {QuestionsService} from '../services/questions.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {SpinnerService} from '../universal/spinner/spinner.service';
 import {ToastsManager} from 'ng2-toastr';
+import {GetRecordsByIdService} from "../services/get-records-by-id.service";
 
 @Component({
   selector: 'dtester-questions',
   templateUrl: './questions.component.html',
-  styleUrls: ['./questions.component.css']
+  styleUrls: ['./questions.component.scss']
 })
 export class QuestionsComponent implements OnInit {
   questionsOnPage: Question[];
@@ -24,6 +25,9 @@ export class QuestionsComponent implements OnInit {
   CREATING_NEW_QUESTION = 'Додати нове питання';
   test_id: number;
   title = 'Питання';
+  testIdQueryParam: number;
+  limit: number;
+  offset: number;
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = QUESTION_CONFIG;
@@ -32,8 +36,9 @@ export class QuestionsComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private spinner: SpinnerService,
-              private toastr: ToastsManager
-  ) {}
+              private toastr: ToastsManager,
+              private getRecordsByIdService: GetRecordsByIdService) {
+  }
 
   ngOnInit() {
     this.headers = ['№', 'Питання', 'Рівень', 'Тип', 'Вкладення'];
@@ -44,6 +49,7 @@ export class QuestionsComponent implements OnInit {
     console.log(this.test_id);
     const level = this.route.snapshot.queryParams['level'];
     const number = this.route.snapshot.queryParams['number'];
+
     if (this.test_id) {
       this.questionsService.getRecordsRangeByTest(this.test_id, this.recordsPerPage,
         (this.pageNumber - 1) * this.recordsPerPage).subscribe(resp => {
@@ -61,11 +67,37 @@ export class QuestionsComponent implements OnInit {
           this.questionsOnPage = resp;
         }
       });
-    } else {
+    }
+    else {
       this.getQuestions();
     }
 
   }
+/*
+  getQueryParams() {
+  this.route.queryParams.subscribe((params: Params) => {
+    this.testIdQueryParam = params['test_id'];
+    if (this.testIdQueryParam) this.getQuestionsForOneTest();
+    else
+      this.getQuestions();
+  });
+}
+  getQuestionsForOneTest() {
+    this.questionsService.getRecordsRangeByTest(this.testIdQueryParam, this.limit, this.offset).subscribe(resp => {
+      this.questionsOnPage = resp;
+      this.countRecords = 0;
+      for (const question of this.questionsOnPage) {
+        this.setNameOfTest(question);
+      }
+    });
+  }
+  setNameOfTest(question: Question) {
+    this.getRecordsByIdService.getRecordsById('test', question.test_id).subscribe((resp) => {
+      question.test_id = resp[0].test_id;
+    });
+}
+*/
+  // PARAMS
   getQuestions(): void {
     this.spinner.showSpinner();
     this.getCountRecords();

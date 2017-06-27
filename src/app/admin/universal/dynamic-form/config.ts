@@ -270,22 +270,22 @@ export const ANSWER_CONFIG = [
     label: 'Текст відповіді',
     name: 'answer_text',
     options: '',
-    placeholder: ''
+    placeholder: 'Введіть текст відповіді на питання'
   },
   {
     type: 'select_with_options',
     label: 'Правильність відповіді',
     name: 'true_answer',
     options: ['0', '1'],
-    placeholder: ''
+    placeholder: '  '
   },
-  {
-    type: 'input_file',
-    label: 'Вкладення',
-    name: 'attachment',
-    options: ['1', '2'],
-    placeholder: 'Select an option'
-  }
+  // {
+  //   type: 'input_file',
+  //   label: 'Вкладення',
+  //   name: 'attachment',
+  //   options: ['1', '2'],
+  //   placeholder: 'Select an option'
+  // }
 ];
 export const TESTS_CONFIG = [
   {

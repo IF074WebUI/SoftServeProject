@@ -40,7 +40,7 @@ export class AnswersComponent implements OnInit {
   ngOnInit() {
     this.getQueryParams();
     // this.getAnswers();
-    this.headers = ['№', 'Відповідь', 'Правильність', 'Вкладення'];
+    this.headers = ['№', 'Правильність', 'Відповідь', 'Вкладення'];
     this.ignoreProperties = ['question_id', 'answer_id'];
     this.imageForm = new FormGroup({});
   }
@@ -121,12 +121,12 @@ export class AnswersComponent implements OnInit {
 // Method for opening editing and deleting commo modal window
 
   add() {
-    this.popup.sendItem(new Answer(), 'Answer');
+    this.popup.sendItem({'answer_id': '', 'question_id': this.questionIdQueryParam, 'answer_text': '', 'true_answer': ''}, 'answer');
     this.popup.showModal();
   }
 
   edit(answer: Answer) {
-    this.popup.sendItem(answer);
+    this.popup.sendItem({'answer_id': answer.answer_id, 'question_id': this.questionIdQueryParam, 'answer_text': answer.answer_text, 'true_answer': answer.true_answer}, 'answer',  null, answer.attachment);
     this.popup.showModal();
   }
 
@@ -136,11 +136,11 @@ export class AnswersComponent implements OnInit {
   // Method for  add/edit, delete form submiting
 
   formSubmitted(value) {
-    value['question_id'] = this.question_id;
+    value['question_id'] = this.questionIdQueryParam;
     console.log(value);
     if (value['answer_id']) {
       this.answersService.editAnswer(value['answer_id'], value['question_id'], value['answer_text'],
-        value['true_answer'], value['attachment'])
+        value['true_answer'], value['photo'])
         .subscribe(response => {
             this.getAnswers();
             this.popup.cancel();
@@ -150,7 +150,7 @@ export class AnswersComponent implements OnInit {
         );
     } else {
       this.answersService.createAnswer(value['question_id'], value['answer_text'],
-        value['true_answer'], value['attachment'])
+        value['true_answer'], value['photo'])
         .subscribe(response => {
             this.getAnswers();
             this.popup.cancel();
