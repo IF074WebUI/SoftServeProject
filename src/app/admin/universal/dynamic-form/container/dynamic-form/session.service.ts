@@ -4,8 +4,9 @@ import {Injectable} from '@angular/core';
 export class SessionService {
   _session = {};
 
+
   set(key: string, value: any) {
-    this._session[key] = value; // You can also json-ize 'value' here
+    this._session[key] = value;
   }
 
   get(key: string) {

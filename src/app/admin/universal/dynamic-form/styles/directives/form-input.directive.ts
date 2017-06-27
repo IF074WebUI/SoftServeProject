@@ -11,16 +11,16 @@ export class FormInputDirective {
 
   constructor(private element: ElementRef, private renderer: Renderer){
 
-    this.renderer.setElementStyle(this.element.nativeElement, "cursor", "pointer");
+    this.renderer.setElementStyle(this.element.nativeElement, 'cursor', 'pointer');
   }
 
   onMouseEnter(){
-    this.setFontWeight("bold");
+    this.setFontWeight('bold');
   }
   onMouseLeave(){
-    this.setFontWeight("normal");
+    this.setFontWeight('normal');
   }
   private setFontWeight(val) {
-    this.renderer.setElementStyle(this.element.nativeElement, "font-weight", val);
+    this.renderer.setElementStyle(this.element.nativeElement, 'font-weight', val);
   }
 }

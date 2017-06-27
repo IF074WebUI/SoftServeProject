@@ -104,33 +104,34 @@ export class DynamicFormComponent implements OnInit {
       this.photo = string;
     };
     myReader.readAsDataURL(file);
-    this.readAndPreview(file);
+    //   this.readAndPreview(file);
   }
 
-
-  readAndPreview(file) {
-    let preview = document.querySelector('#preview');
-    if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
-      let reader = new FileReader();
-
-      reader.addEventListener('load', function () {
-        let image = new Image();
-        image.height = 200;
-        image.title = file.name;
-        image.src = this.result;
-        preview.appendChild(image);
-      }, false);
-
-      reader.readAsDataURL(file);
-    }
-
-  }
+  //
+  // readAndPreview(file) {
+  //   let preview = document.querySelector('#preview');
+  //   if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+  //     let reader = new FileReader();
+  //
+  //     reader.addEventListener('load', function () {
+  //       let image = new Image();
+  //       image.height = 200;
+  //       image.title = file.name;
+  //       image.src = this.result;
+  //       preview.appendChild(image);
+  //     }, false);
+  //
+  //     reader.readAsDataURL(file);
+  //   }
+  //
+  // }
 
   skip() {
     let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
     this.submitted.emit(formValue);
     let preview = document.querySelector('#preview');
     preview.innerHTML = '';
+    this._SessionService.remove('formValue');
   }
 
   savePhoto() {
@@ -140,6 +141,7 @@ export class DynamicFormComponent implements OnInit {
     this.step2 = false;
     let preview = document.querySelector('#preview');
     preview.innerHTML = '';
+    this._SessionService.remove('formValue');
   }
 
 
@@ -182,11 +184,15 @@ export class DynamicFormComponent implements OnInit {
     this.Properties = Object.getOwnPropertyNames(this.entityForDelete);
     this.TITLE = this.MODAL_DELETE_TITLE;
     let Properties = Object.getOwnPropertyNames(entity);
-    if (Properties[0] === 'speciality_id' || Properties[0] === 'test_id' || Properties[0] === 'id') {
+    if (Properties[0] === 'speciality_id' || Properties[0] === 'test_id' || Properties[0] === 'id' || Properties[0] === 'question_id') {
       this.uniq_name = this.entityForDelete[Properties[2]];
     } else if (Properties[0] === 'user_id') {
       this.uniq_name = this.entityForDelete[Properties[2]] + ' ' + this.entityForDelete[Properties[3]] + ' ' + this.entityForDelete[Properties[4]];
-    } else {
+    }
+    else if (Properties[0] === 'answer_id') {
+      this.uniq_name = this.entityForDelete[Properties[3]];
+    }
+    else {
       this.uniq_name = this.entityForDelete[Properties[1]];
     }
     this.CONFIRM_QUESTION = this.CONFIRM_QUESTION_TEXT + ' ' + this.uniq_name;
@@ -198,6 +204,7 @@ export class DynamicFormComponent implements OnInit {
   cancel() {
     this.form.reset();
     this.CONFIRM_QUESTION = '';
+    this._SessionService.remove('formValue');
     $('#add_edit_deletePopup').modal('hide');
   }
 }
