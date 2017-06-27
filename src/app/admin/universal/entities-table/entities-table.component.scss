@@ -6,3 +6,47 @@ button, tr {
 .deprecated{
   background-color: orange !important;
 }
+$primary-color: #008cba;
+$background-color: #73eaaf;
+
+@mixin heading-font-regular {
+  font-family: 'Roboto', 'Roboto-Condensed', 'Roboto-Condensed-Regular', sans-serif;;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  float: left;
+  margin: 0 0 2em;
+  thead {
+    background-color: $background-color;
+    th {
+      padding: 0.35em 0 .35em;
+      font-weight: 400;
+      text-align: left;
+      @include heading-font-regular;
+      font-size: 1.25em;
+    }
+
+  }
+
+  tbody {
+    tr {
+      border-bottom: 2px solid #ddd;
+
+      td {
+        padding: .75em 0;
+
+        a {
+          color: $primary-color;
+          text-decoration: none;
+          display: inline-block;
+          margin: 0 .5em 0 0;
+          &:hover, &:active, &:focus {
+            color: darken($primary-color, 10%);
+            border: none;
+          }
+        }
+      }
+    }
+  }
+}
