@@ -1,16 +1,6 @@
 @import "../styles/const";
 
-$table-header-font-weight:      400;
-$table-header-font-color:       #757575;
 
-$table-condensed-cell-padding:  16rem/2;
-
-
-$table-bg:                      #fff;
-$table-bg-accent:               #f5f5f5;
-$table-bg-hover:                rgba(0,0,0,.12);
-$table-bg-active:               $table-bg-hover;
-$table-border-color:            #e0e0e0;
 button, tr {
   cursor: pointer;
 }
@@ -30,10 +20,8 @@ table {
         border-bottom: 1px solid rgba(0,0,0,.12);
       }
     }
-    background-color: $mint-color;
   }
   tbody {
-    border-top: 1px solid rgba(0,0,0,.12);
     tr:nth-child(odd) {
       background-color: $table-bg-accent;
     }
