@@ -1,0 +1,15 @@
+@import "../styles/const";
+@import "../dynamic-form/styles/const";
+
+input {
+  margin-bottom: 10px;
+  border-color: white;
+  border-bottom-color: $line-color;
+  &:focus{
+    &::placeholder {
+      color: $primary-color;
+    }
+    border-bottom-color: $primary-color;
+    border-bottom-width: thin;
+  }
+}

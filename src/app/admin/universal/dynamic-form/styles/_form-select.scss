@@ -4,7 +4,6 @@
 .form-select {
   @extend .form-control;
   select{
-    font-family: "Roboto";
     color: $line-color;
   }
 }
