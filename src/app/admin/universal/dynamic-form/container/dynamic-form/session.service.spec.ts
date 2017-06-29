@@ -3,9 +3,9 @@ import { SessionService } from './session.service';
 
 describe('SessionService', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [SessionService]
-    });
+    // TestBed.cofigureTestingModule({
+    //   providers: [SessionService]
+    // });
   });
 
   it('should input value in ssesion object', inject([SessionService], (service: SessionService) => {

@@ -3,6 +3,7 @@ import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
 import {SessionService} from './session.service';
 
+
 declare var $: any;
 
 @Component({
@@ -43,6 +44,7 @@ export class DynamicFormComponent implements OnInit {
   step1: boolean;
   step2: boolean;
   photo: string;
+  validateEmail: Function;
 
   constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService, private _SessionService: SessionService) {
   }
@@ -215,7 +217,7 @@ interface Validator<T extends FormControl> {
   (c: T): { [error: string]: any };
 }
 
-function validateEmail(c: FormControl) {
+export function validateEmail(c: FormControl) {
   let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
 
   return EMAIL_REGEXP.test(c.value) ? null : {
@@ -225,7 +227,7 @@ function validateEmail(c: FormControl) {
   };
 }
 
-function validateName(c: FormControl) {
+export function validateName(c: FormControl) {
   let name = c.value;
   if (this.entity_name) {
     return this.get_records_by_search.getRecordsBySearch(this.entity_name, name).map((resp) => {
