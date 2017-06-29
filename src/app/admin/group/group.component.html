@@ -3,7 +3,7 @@
   <p class="col-lg-7">зареєстровано груп: <span>{{countRecords}}</span></p>
 
   <div class="alert alert-info" role="alert">
-    <button class=""(click)="add()" type="button" class="btn btn-primary" data-dismiss="modal">{{CREATING_NEW_GROUP}}</button>
+    <button class=""(click)="add()" type="button" class="btn-add" data-dismiss="modal">+</button>
     <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
     <dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
   </div>
