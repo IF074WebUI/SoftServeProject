@@ -9,9 +9,13 @@
   transition: background-color .3s;
   &:hover, &:focus {
     cursor: pointer;
-    background-color: $button-hover;
+    background-color:  $orange-color;
   }
   &:disabled {
     cursor: not-allowed;
   }
+  & .btn-succes{
+    background-color:  $primary-color;
+  }
 }
+
