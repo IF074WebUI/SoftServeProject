@@ -24,6 +24,7 @@
   <button type="submit" [disabled]="!searchByGroupTestForm.valid" class="btn btn-sm btn-primary"><i class="fa fa-list"
                                                                                                     aria-hidden="true"></i>
   </button>
+  <button class="btn btn-sm btn-primary print" (click)="showCharts()"><i class="fa fa-line-chart" aria-hidden="true"></i></button>
   <button type="button" class="btn btn-sm btn-primary" (click)="print()"><i class="fa fa-print" aria-hidden="true"></i>
   </button>
 </form>
@@ -42,5 +43,4 @@
 <dynamic-form
   (youCanDelete)="submitDelete($event)">
 </dynamic-form>
-
-
+<div id="container" style="width:100%; height:400px;"></div>
