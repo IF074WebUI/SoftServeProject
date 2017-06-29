@@ -1,5 +1,5 @@
-<select class="form-control" data-style="btn-primary" #s (change)="getNumberRecords(s.value)">
-  <option data-tokens="ketchup mustard" disabled>К-сть</option>
-  <option data-tokens="ketchup mustard" *ngFor="let i of numberOfRecordsOnPage" >{{i}}</option>
-  <option data-tokens="ketchup mustard" value="{{numberOfRecords}}">Всі</option>
+<select #s  (change)="getNumberRecords(s.value)">
+  <option  disabled>К-сть</option>
+  <option  *ngFor="let i of numberOfRecordsOnPage" >{{i}}</option>
+  <option  value="{{numberOfRecords}}">Всі</option>
 </select>

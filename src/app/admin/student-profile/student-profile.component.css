@@ -19,7 +19,17 @@
   cursor: pointer;
   display: inline; }
 
-.top-panel {
-  background-color: #533687; }
+.buttons {
+  margin: 50px; }
 
-/*# sourceMappingURL=group.component.css.map */
+.photo {
+  max-height: 200px;
+  max-width: 200px; }
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red; }
+
+.invalid {
+  color: red; }
+
+/*# sourceMappingURL=student-profile.component.css.map */

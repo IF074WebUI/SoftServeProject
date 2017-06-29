@@ -15,17 +15,13 @@
   background-color: $button-hover;
 }
 .btn-add {
-  margin: 5px 5px;
-  background-color: $orange-color;
+  margin: 0 10px;
   border-radius: 50%;
   color: white;
-  width: 40px;
-  height: 40px;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  line-height: 1;
+  width: 35px;
+  height: 35px;
   font-size: 30px;
-  position: relative;
   cursor: pointer;
-  display: inline-block;
+  display: inline;
 }
 
