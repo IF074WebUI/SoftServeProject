@@ -1,50 +1,51 @@
-  <table *ngIf="entities?.length; else empty">
-    <thead>
-    <tr>
-      <th *ngFor="let header of headers; index as headerIndex">
-        {{header}}
-        <ng-container *ngIf="sortIndexes.includes(headerIndex - 1)">
-          <i class="fa fa-sort" aria-hidden="true" *ngIf="!order[headerIndex] || order[headerIndex] === '' "
-             (click)="sortEntities(headerIndex - 1, 'desc')">
-          </i>
-          <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="order[headerIndex] === 'desc'"
-             (click)="sortEntities(headerIndex - 1, 'asc')">
-          </i>
-          <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="order[headerIndex] === 'asc'"
-             (click)="sortEntities(headerIndex - 1, '')">
-          </i>
-        </ng-container>
-      </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let entity of entities; let i = index" [ngClass]="{'table-warning': entity.deprecated}">
-      <td>{{i + itemsPerPage * (page - 1) + 1}}</td>
-      <ng-container *ngFor="let name of getProperties(entity)">
-        <td *ngIf="!ignoreProperties?.includes(name) && name !== 'attachment'" (click)="clickEntityCallback(entity)">{{entity[name]}}
-        <img *ngIf="name == 'attachment'" [src]="entity[name]">
-        </td>
-        <td *ngIf="name == 'attachment'">
-          <img style="max-width: 150px; height: auto" [src]="entity[name]">
-        </td>
+<table *ngIf="entities?.length; else empty" class="material striped hover-style bordered lg align-left">
+  <thead>
+  <tr class="entities-header">
+    <th *ngFor="let header of headers; index as headerIndex">
+      {{header}}
+      <ng-container *ngIf="sortIndexes.includes(headerIndex - 1)">
+        <i class="fa fa-sort" aria-hidden="true" *ngIf="!order[headerIndex] || order[headerIndex] === '' "
+           (click)="sortEntities(headerIndex - 1, 'desc')">
+        </i>
+        <i class="fa fa-sort-desc" aria-hidden="true" *ngIf="order[headerIndex] === 'desc'"
+           (click)="sortEntities(headerIndex - 1, 'asc')">
+        </i>
+        <i class="fa fa-sort-asc" aria-hidden="true" *ngIf="order[headerIndex] === 'asc'"
+           (click)="sortEntities(headerIndex - 1, '')">
+        </i>
       </ng-container>
-      <td class="hidden-print">
-        <div>
-          <button *ngIf="canAction" type="button" (click)="actionEntityCallback(entity)">
-            <i [class]="btnClass" aria-hidden="true"></i>
-          </button>
-          <button *ngIf="canEdit" type="button" (click)="editEntityCallback(entity)"
-                  data-toggle="modal" data-target="#AdminEdit" data-whatever="@mdo">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-          </button>
-          <button *ngIf="canDelete" type="button" (click)="deleteEntityCallback(entity)">
-            <i class="fa fa-trash" aria-hidden="true"></i>
-          </button>
-        </div>
+    </th>
+  </tr>
+  </thead>
+  <tbody class="entities-body">
+  <tr *ngFor="let entity of entities; let i = index" [ngClass]="{'table-warning': entity.deprecated}">
+    <td>{{i + itemsPerPage * (page - 1) + 1}}</td>
+    <ng-container *ngFor="let name of getProperties(entity)">
+      <td *ngIf="!ignoreProperties?.includes(name) && name !== 'attachment'" (click)="clickEntityCallback(entity)">{{entity[name]}}
+      <img *ngIf="name == 'attachment'" [src]="entity[name]">
       </td>
-    </tr>
-    </tbody>
-  </table>
-  <ng-template #empty>
-    <div>Сутності відсутні</div>
-  </ng-template>
+      <td *ngIf="name == 'attachment'">
+        <img style="max-width: 150px; height: auto" [src]="entity[name]">
+      </td>
+    </ng-container>
+    <td class="hidden-print">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button *ngIf="canAction" type="button" class="btn btn-warning btn-sm" (click)="actionEntityCallback(entity)">
+          <i [class]="btnClass" aria-hidden="true"></i>
+        </button>
+        <button *ngIf="canEdit" type="button" class="btn btn-success btn-sm" (click)="editEntityCallback(entity)"
+                data-toggle="modal" data-target="#AdminEdit" data-whatever="@mdo">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </button>
+        <button *ngIf="canDelete" type="button" class="btn btn-danger btn-sm" (click)="deleteEntityCallback(entity)">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<ng-template #empty>
+  <div class="text-center">Сутності відсутні</div>
+</ng-template>
+
