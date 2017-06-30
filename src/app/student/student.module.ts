@@ -10,12 +10,15 @@ import {TestPlayerComponent} from './test-player/test-player.component';
 import {TestPlayerService} from './test-player/test-player.service';
 
 import {StudentsMainPageComponent} from './students-main-page/students-main-page.component';
-import {LoginService} from "../login/login.service";
+import {LoginService} from '../login/login.service';
+import {GetTestsBySubjectService} from '../admin/services/get-tests-by-subject.service';
+import {CommonModule} from '@angular/common';
 @NgModule({
 
   declarations: [StudentComponent, TestPlayerComponent, StudentsMainPageComponent],
-  imports: [RouterModule.forChild(studentRoutes)],
-  providers: [TestPlayerService, LoginService],
+  imports: [RouterModule.forChild(studentRoutes),
+    CommonModule],
+  providers: [TestPlayerService, LoginService, GetTestsBySubjectService],
 })
 
   export class StudentModule {

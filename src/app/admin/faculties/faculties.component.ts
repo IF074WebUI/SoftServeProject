@@ -62,7 +62,7 @@ export class FacultiesComponent implements OnInit {
         this.faculties = <Faculty[]> resp;
         this.spinner.hideSpinner();
       },
-      error => this.router.navigate(['/bad_request'])
+      error => {this.toastr.error(error);}
     );
   }
 

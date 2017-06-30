@@ -46,6 +46,8 @@ export class TestsComponent implements OnInit {
       this.subjectIdQueryParam = params['subject_id'];
       this.subjectNameQueryParam = params['subject_name'];
       this.getTestsForOneSubject();
+      console.log('subject ' +  this.subjectIdQueryParam);
+
     });
   }
   getTestsForOneSubject() {

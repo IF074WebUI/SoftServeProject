@@ -1,8 +1,31 @@
-<ul class="nav flex-column">
-  <li class="nav-item logout" (click)="logout()">
-    <span class="nav-link">Вихід</span>
-  </li>
-</ul>
+
 <h1 class="text-centered">Student stuff here</h1>
 
-<app-test-player></app-test-player>
+<!--<h2>Предмет {{subject_id}}</h2>-->
+
+<!--<h3>Доступні тести по даному предмету</h3>-->
+<!--<table>-->
+  <!--<tr *ngFor="let item of Alltests" (click)="startTest(item)">-->
+    <!--<td>Назва тесту</td> <td>  {{item.test_name}}-->
+  <!--</td>-->
+    <!--<td>Кількість спроб</td><td>  {{item.attempts}}-->
+  <!--</td>-->
+    <!--<td>Доступність</td> <td>  {{item.enabled}}-->
+  <!--</td>-->
+    <!--<td>Ід предмету</td><td>  {{item.subject_id}}-->
+  <!--</td>-->
+    <!--<td>Кількість завдань</td>  <td>  {{item.tasks}}-->
+  <!--</td>-->
+    <!--<td>Ід тесту</td> <td>  {{item.test_id}}-->
+  <!--</td>-->
+
+    <!--<td>Загальний час</td> <td>  {{item.time_for_test}}-->
+  <!--</td>-->
+  <!--</tr>-->
+<!--</table>-->
+
+
+
+<button (click)="openTestPlayer()" class="btn btn-default" type="button">Здати тест</button>
+
+<button (click)="logout()">exit</button>
