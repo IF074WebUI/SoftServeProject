@@ -106,6 +106,9 @@ export class DynamicFormComponent implements OnInit {
     myReader.readAsDataURL(file);
     //   this.readAndPreview(file);
   }
+  something(){
+    return 'something';
+  }
 
   //
   // readAndPreview(file) {
