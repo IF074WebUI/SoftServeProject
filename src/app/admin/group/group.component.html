@@ -1,11 +1,13 @@
   <dynamic-form [config]="configs" (submitted)="formSubmitted($event)" (youCanDelete)="submitDelete($event)"></dynamic-form>
-  <h2 class="text-center">Групи</h2>
-  <p class="col-lg-7">зареєстровано груп: <span>{{countRecords}}</span></p>
-
-  <div class="alert alert-info" role="alert">
-    <button class=""(click)="add()" type="button" class="btn btn-primary" data-dismiss="modal">{{CREATING_NEW_GROUP}}</button>
-    <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
-    <dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
+  <div class="container top-panel">
+    <div class="row text-center">
+      <h2>Групи</h2>
+    </div>
+    <div class="row  top-panel">
+     <button (click)="add()" type="button" class="btn btn-add" data-dismiss="modal">+</button>
+      <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
+     <dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
+    </div>
   </div>
   <dtester-entities-table [entities]="groupsOnPage"
                           [headers]="headers" [ignoreProperties]="ignoreProperties"

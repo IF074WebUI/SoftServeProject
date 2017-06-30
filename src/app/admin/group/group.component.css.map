@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEA,IAAK;EACH,aAAa,EAAE,GAAG;EAClB,UAAU,EAAE,4BAA2B;EAEvC,gBAAgB,EAAE,KAAK;EACvB,KAAK,EAAE,KAAK;EAEZ,UAAU,EAAE,oBAAoB;;AAGlC,sBAAuB;EACrB,MAAM,EAAE,OAAO;EACf,gBAAgB,ECZH,OAAO;;ADctB,QAAS;EACP,MAAM,EAAE,MAAM;EACd,aAAa,EAAE,GAAG;EAClB,KAAK,EAAE,KAAK;EACZ,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;EACZ,SAAS,EAAE,IAAI;EACf,MAAM,EAAE,OAAO;EACf,OAAO,EAAE,MAAM;;AEtBjB,UAAW;EACT,gBAAgB,EAFT,OAAO",
+"sources": ["../universal/styles/_button.scss","../universal/styles/_const.scss","../universal/styles/_add-search-block.scss"],
+"names": [],
+"file": "group.component.css"
+}

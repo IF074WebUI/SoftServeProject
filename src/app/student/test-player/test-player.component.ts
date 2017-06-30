@@ -11,8 +11,8 @@ test_id;
   constructor(private test_player: TestPlayerService) { }
 
   ngOnInit() {
-    this.test_id = 13;
-this.test_player.
+    this.test_id = '13';
+    console.log(this.test_id);
   }
 
 }

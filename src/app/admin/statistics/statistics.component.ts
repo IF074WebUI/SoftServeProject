@@ -131,7 +131,6 @@ export class StatisticsComponent implements OnInit {
       this.data.datasets[0].data[i] = this.graphData[i].value;
     }
     this.chart.reinit();
-    this.spinner.hideSpinner();
   }
   checkAndReverseData(criteria: string) {
     if (criteria === 'valueDec' || criteria === 'nameDec') {
@@ -167,7 +166,7 @@ export class StatisticsComponent implements OnInit {
               }
             }
           });
-        } },
+        } this.spinner.hideSpinner(); },
       err => this.toastr.error(err)
     );
 }

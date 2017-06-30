@@ -1,3 +1,5 @@
+@import "../styles/const";
+
 
 button, tr {
   cursor: pointer;
@@ -6,3 +8,46 @@ button, tr {
 .deprecated{
   background-color: orange !important;
 }
+
+
+table {
+  thead {
+    tr {
+      th{
+        font-weight: $table-header-font-weight;
+        color: $table-header-font-color;
+        vertical-align: bottom;
+        border-bottom: 1px solid rgba(0,0,0,.12);
+      }
+    }
+  }
+  tbody {
+    tr:nth-child(odd) {
+      background-color: $table-bg-accent;
+    }
+    tr {
+      td{
+        text-align: left;
+        padding: 1.6rem;
+        vertical-align: top;
+        border-top: 0;
+      }
+    }
+  }
+  background-color: $table-bg;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 2rem;
+  background-color: $table-bg;
+}
+table {
+  tbody {
+    tr:hover {
+      background-color: $table-bg-hover;
+
+    }
+  }
+}
+
+
+

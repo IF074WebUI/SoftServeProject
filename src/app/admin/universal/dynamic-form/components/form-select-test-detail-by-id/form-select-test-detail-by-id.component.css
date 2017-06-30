@@ -1,0 +1,24 @@
+.control-label.error {
+  color: red;
+  font-size: 12px; }
+
+.form-control, .form-select {
+  font-family: "Roboto";
+  border-color: white;
+  border-bottom-color: #949e9e; }
+  .form-control:focus, .form-select:focus {
+    border-bottom-color: #7e8bfe;
+    border-bottom-width: thin; }
+    .form-control:focus::placeholder, .form-select:focus::placeholder {
+      color: #7e8bfe;
+      font-family: "Roboto"; }
+
+.form-select select {
+  color: #949e9e; }
+
+label {
+  font-size: smaller;
+  color: #949e9e;
+  font-family: "Roboto"; }
+
+/*# sourceMappingURL=form-select-test-detail-by-id.component.css.map */

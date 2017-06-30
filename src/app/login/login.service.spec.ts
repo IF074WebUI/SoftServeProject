@@ -104,7 +104,7 @@ describe('LoginService', () => {
         loginService.login('admin', 'admin').subscribe((resp) => {
           expect(resp.response).toEqual('Invalid login or password');
         });
-      }))
+      }));
   });
 
 });

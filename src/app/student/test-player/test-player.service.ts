@@ -6,6 +6,5 @@ export class TestPlayerService {
 
   constructor(private http: Http) { }
 
- get
 
 }
