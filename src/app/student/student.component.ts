@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import {LoginService} from "../login/login.service";
-import {Router} from "@angular/router";
+import {LoginService} from '../login/login.service';
+import {Router} from '@angular/router';
 @Component({
   templateUrl: './student.component.html',
-  styleUrls: ['./student.component.css']
+  styleUrls: ['./student.component.scss']
 })
 export class StudentComponent {
 
@@ -14,7 +14,7 @@ ngOnInit() {
 }
 
 logout() {
-  this.loginService.logout().subscribe(response => {
+  this.loginService.logout().subscribe(() => {
     this.router.navigate(['/login']);
   });
 }

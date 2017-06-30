@@ -1,0 +1,26 @@
+@import "../admin/universal/styles/const";
+:host {
+  font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+header {
+  .container {
+    .row{
+      .col-md-10 {
+        display: fle
+      }
+      .col-md-2 {
+        display: flex;
+      }
+    }
+  }
+  h1 {
+    color: white;
+  }
+  background-color: #401e46;
+}
+.exit {
+  margin: auto auto;
+}
+button {
+  align-items: center;
+}
