@@ -4,5 +4,8 @@ import {StudentsMainPageComponent} from "./students-main-page/students-main-page
 export const studentRoutes: Route[] = [
   {path: '', redirectTo: 'studentMain', pathMatch: 'full'},
   { path: '', component: StudentComponent},
-  { path:  'studentMain', component: StudentsMainPageComponent}
+  { path:  'studentMain', component: StudentsMainPageComponent},
+  { path: '', component: StudentComponent, pathMatch: 'full' },
+  { path: '/test-player', component: StudentComponent, pathMatch: 'full' }
+
 ];

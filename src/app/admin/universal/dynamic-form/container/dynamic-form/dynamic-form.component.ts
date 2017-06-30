@@ -51,9 +51,6 @@ export class DynamicFormComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.createGroup();
-    // this.step1 = true;
-    // this.step2 = false;
-
   }
 
   createGroup() {
@@ -93,46 +90,26 @@ export class DynamicFormComponent implements OnInit {
 
   imageChange($event): void {
     this.readThis($event.target);
-    const preview = document.querySelector('img');
+//    const preview = document.querySelector('img');
   }
 
 
   readThis(inputValue: any): void {
-    const file: File = inputValue.files[0];
-    const myReader: FileReader = new FileReader();
+    let file: File = inputValue.files[0];
+    let myReader: FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
       let string = myReader.result;
       this.photo = string;
     };
     myReader.readAsDataURL(file);
-    //   this.readAndPreview(file);
   }
-
-  //
-  // readAndPreview(file) {
-  //   let preview = document.querySelector('#preview');
-  //   if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
-  //     let reader = new FileReader();
-  //
-  //     reader.addEventListener('load', function () {
-  //       let image = new Image();
-  //       image.height = 200;
-  //       image.title = file.name;
-  //       image.src = this.result;
-  //       preview.appendChild(image);
-  //     }, false);
-  //
-  //     reader.readAsDataURL(file);
-  //   }
-  //
-  // }
 
   skip() {
     let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
     this.submitted.emit(formValue);
-    let preview = document.querySelector('#preview');
-    preview.innerHTML = '';
+    // let preview = document.querySelector('#preview');
+    // preview.innerHTML = '';
     this._SessionService.remove('formValue');
   }
 
@@ -141,8 +118,8 @@ export class DynamicFormComponent implements OnInit {
     this.submitted.emit(formValue);
     this.step1 = true;
     this.step2 = false;
-    let preview = document.querySelector('#preview');
-    preview.innerHTML = '';
+    // let preview = document.querySelector('#preview');
+    // preview.innerHTML = '';
     this._SessionService.remove('formValue');
   }
 

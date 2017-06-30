@@ -41,9 +41,9 @@ export class FacultiesComponent implements OnInit {
   configs = FACULTY_CONFIG;
 
 
-  constructor(private http: FacultyService, private route: ActivatedRoute,
+  constructor(private http: FacultyService,
               private router: Router, private spinner: SpinnerService, private toastr: ToastsManager) {
-  }
+  } //  private route: ActivatedRoute,
 
 
   ngOnInit() {
