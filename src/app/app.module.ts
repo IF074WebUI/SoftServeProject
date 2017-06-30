@@ -26,7 +26,7 @@ import { LoadingModule } from 'ngx-loading';
     LoginComponent,
     AccessDeniedComponent,
     BadRequestComponent,
-    NotFoundComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

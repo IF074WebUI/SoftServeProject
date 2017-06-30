@@ -16,6 +16,7 @@ import { HOURS, NO_RECORDS, SECONDS_MINUTES } from '../../constants';
 import { Question } from '../questions/question';
 import { Answer } from '../answers/answer';
 
+
 @Component({
   templateUrl: './detailed-results.component.html',
   styleUrls: ['./detailed-results.component.css']

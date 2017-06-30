@@ -8,7 +8,6 @@ import {FormTextareaComponent} from '../form-textarea/form-textarea.component';
 import {FormEmailComponent} from '../form-email/form-email.component';
 import {FormSelectWithOptionsComponent} from '../form-select-with-options/form-select-with-options.component';
 import {FormSelectTestDetailByIdComponent} from '../form-select-test-detail-by-id/form-select-test-detail-by-id.component';
-import {FormInputFileComponent} from '../form-input-file/form-input-file.component';
 import {FormNumberComponent} from '../form-number/form-number.component';
 import {FormRadioButtonComponent} from '../form-radio-button/form-radio-button.component';
 import {FormHiddenComponent} from '../form-hidden/form-hidden.component';
@@ -21,7 +20,6 @@ const components = {
   email: FormEmailComponent,
   select_with_options: FormSelectWithOptionsComponent,
   sect_test_detail_by_id: FormSelectTestDetailByIdComponent,
-  input_file: FormInputFileComponent,
   number: FormNumberComponent,
   radio: FormRadioButtonComponent,
   hidden_field: FormHiddenComponent

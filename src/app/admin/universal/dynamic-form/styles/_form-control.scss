@@ -1,11 +1,13 @@
 @import "const";
 
 .form-control {
+  font-family: "Roboto";
   border-color: white;
   border-bottom-color: $line-color;
   &:focus{
     &::placeholder {
       color: $primary-color;
+      font-family: "Roboto";
     }
     border-bottom-color: $primary-color;
     border-bottom-width: thin;
