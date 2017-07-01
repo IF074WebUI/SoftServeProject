@@ -17,6 +17,7 @@ import { FormHiddenComponent } from './components/form-hidden/form-hidden.compon
 import { ConfirmDeleteDirective } from './styles/directives/confirm-delete.directive';
 import { FormInputDirective } from './styles/directives/form-input.directive';
 import { SessionService } from './container/dynamic-form/session.service';
+import {ImageCropperComponent} from "ng2-img-cropper";
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -38,7 +39,9 @@ import { SessionService } from './container/dynamic-form/session.service';
     FormRadioButtonComponent,
     FormHiddenComponent,
     ConfirmDeleteDirective,
-    FormInputDirective
+    FormInputDirective,
+    ImageCropperComponent
+
   ],
   exports: [DynamicFormComponent],
   entryComponents: [
