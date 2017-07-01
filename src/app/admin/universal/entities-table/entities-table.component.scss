@@ -8,8 +8,6 @@ button, tr {
 .deprecated{
   background-color: orange !important;
 }
-
-
 table {
   color: $line-color;
   border-collapse: separate;
@@ -21,15 +19,15 @@ table {
         color: $table-header-font-color;
         vertical-align: top;
         border-bottom: 1px solid rgba(0,0,0,.12);
-       // text-align: center;
+        // text-align: center;
         font-size: smaller;
       }
     }
   }
   tbody {
     //tr:nth-child(odd) {
-      tr{
-        background-color: white;
+    tr{
+      background-color: white;
     }
     tr {
       td{
@@ -43,7 +41,7 @@ table {
   width: 100%;
   max-width: 100%;
   margin-bottom: 2rem;
-//  background-color: $table-bg;
+  //  background-color: $table-bg;
 }
 table {
   tbody {
@@ -52,6 +50,8 @@ table {
     }
   }
 }
+
+
 
 
 

@@ -20,6 +20,37 @@
     <div class="row" *ngIf="checkTestAvailability">
       <h3 ></h3>
     </div>
+
+  </div>
+  <div class="row table-row">
+   <table class="material striped hover-style bordered lg align-left">
+      <thead>
+      <tr class="entities-header">
+        <th *ngFor="let header of tableHeaders; index as headerIndex">
+          {{header}}
+        </th>
+      </tr>
+      </thead>
+     <tbody class="entities-body">
+     <tr *ngFor="let test of result['tests']; let i = index">
+       <td>
+         {{i}}
+       </td>
+       <td>
+         {{test.test_name}}
+       </td>
+       <td>
+         {{test.tasks}}
+       </td>
+       <td>
+         {{test.time_for_test}}
+       </td>
+       <td>
+          <button>Здати тест</button>
+       </td>
+     </tr>
+     </tbody>
+   </table>
   </div>
 </main>
 <button (click)="openTestPlayer()">Перейти до складання тесту</button>

@@ -6,7 +6,7 @@ header {
   .container {
     .row{
       .col-md-10 {
-        display: fle
+        display: flex
       }
       .col-md-2 {
         display: flex;
@@ -24,3 +24,51 @@ header {
 button {
   align-items: center;
 }
+.table-row {
+  margin: 50px;
+}
+table {
+  color: $line-color;
+  border-collapse: separate;
+  border-spacing: 0px 11px;
+  thead {
+    tr {
+      th{
+        font-weight: $table-header-font-weight;
+        color: $table-header-font-color;
+        vertical-align: top;
+        border-bottom: 1px solid rgba(0,0,0,.12);
+        // text-align: center;
+        font-size: smaller;
+      }
+    }
+  }
+  tbody {
+    //tr:nth-child(odd) {
+    tr{
+      background-color: white;
+    }
+    tr {
+      td{
+        text-align: left;
+        padding: 1.6rem;
+        vertical-align: top;
+        border-top: 0;
+      }
+    }
+  }
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 2rem;
+  //  background-color: $table-bg;
+}
+table {
+  tbody {
+    tr:hover {
+      background-color: $table-bg-hover;
+    }
+  }
+}
+
+
+
