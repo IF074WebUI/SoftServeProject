@@ -1,8 +1,8 @@
-<h2>Розклад проведення тестування
+<h3 class="text-center">Розклад проведення тестування
   <span *ngIf="groupQueryParam">групи: {{timeTables[0]?.group_name}}</span>
   <span *ngIf="subjectIdQueryParam">з: {{subjectNameQueryParam}}</span>
-</h2>
-<div class="alert alert-info" role="alert">
+</h3>
+<div class="header-group" role="alert">
   <button type="button" class="btn btn-primary" (click)="openModalAddTimetable()">Запланувати тестування</button>
   <dtester-items-per-page [numberOfRecords]="numberOfRecords"
                           (recordsPerPageChanged)="changeNumberOfRecordsPerPage($event)"

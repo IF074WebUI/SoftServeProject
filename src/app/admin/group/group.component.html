@@ -1,14 +1,14 @@
   <dynamic-form [config]="configs" (submitted)="formSubmitted($event)" (youCanDelete)="submitDelete($event)"></dynamic-form>
-  <div class="container top-panel">
-    <div class="row text-center">
-      <h2>Групи</h2>
-    </div>
-    <div class="row  top-panel">
-     <button (click)="add()" type="button" class="btn btn-add" data-dismiss="modal">+</button>
+  <!--<div class="container top-panel">  </div>-->
+    <!--<div class="row text-center">   </div>-->
+      <h3 class="text-center">Групи</h3>
+
+    <div class="header-group">
+     <button (click)="add()" type="button" class="btn btn-primary" data-dismiss="modal">+</button>
       <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
      <dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
     </div>
-  </div>
+
   <dtester-entities-table [entities]="groupsOnPage"
                           [headers]="headers" [ignoreProperties]="ignoreProperties"
                           (deleteEntity)=del($event) [canAction]="true"

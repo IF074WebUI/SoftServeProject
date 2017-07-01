@@ -11,7 +11,7 @@ import { NO_RECORDS } from '../../constants';
 @Component({
   selector: 'dtester-specialities',
   templateUrl: './specialities.component.html',
-  styleUrls: ['./specialities.component.css']
+  styleUrls: ['./specialities.component.scss']
 })
 
 export class SpecialitiesComponent implements OnInit {

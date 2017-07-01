@@ -13,7 +13,7 @@ import {ToastsManager} from 'ng2-toastr';
 @Component({
   selector: 'dtester-statistics',
   templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.css']
+  styleUrls: ['./statistics.component.scss']
 })
 export class StatisticsComponent implements OnInit {
   data: any;

@@ -19,7 +19,7 @@ import { Answer } from '../answers/answer';
 
 @Component({
   templateUrl: './detailed-results.component.html',
-  styleUrls: ['./detailed-results.component.css']
+  styleUrls: ['./detailed-results.component.scss']
 })
 export class DetailedResultsComponent implements OnInit {
 

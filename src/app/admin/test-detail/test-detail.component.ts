@@ -11,7 +11,7 @@ import {TEST_DETAIL_CONFIG} from '../universal/dynamic-form/config';
 @Component({
   selector: 'dtester-test-detail',
   templateUrl: './test-detail.component.html',
-  styleUrls: ['./test-detail.component.css'],
+  styleUrls: ['./test-detail.component.scss'],
   providers: [TestDetailService]
 })
 export class TestDetailComponent implements OnInit {

@@ -11,7 +11,7 @@ declare let $: any;
 @Component({
   selector: 'app-tests',
   templateUrl: './tests.component.html',
-  styleUrls: ['./tests.component.css']
+  styleUrls: ['./tests.component.scss']
 })
 export class TestsComponent implements OnInit {
   tests: Test[] = [];

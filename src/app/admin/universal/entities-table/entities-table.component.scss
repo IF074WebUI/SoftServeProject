@@ -11,19 +11,25 @@ button, tr {
 
 
 table {
+  color: $line-color;
+  border-collapse: separate;
+  border-spacing: 0px 11px;
   thead {
     tr {
       th{
         font-weight: $table-header-font-weight;
         color: $table-header-font-color;
-        vertical-align: bottom;
+        vertical-align: top;
         border-bottom: 1px solid rgba(0,0,0,.12);
+       // text-align: center;
+        font-size: smaller;
       }
     }
   }
   tbody {
-    tr:nth-child(odd) {
-      background-color: $table-bg-accent;
+    //tr:nth-child(odd) {
+      tr{
+        background-color: white;
     }
     tr {
       td{
@@ -34,17 +40,15 @@ table {
       }
     }
   }
-  background-color: $table-bg;
   width: 100%;
   max-width: 100%;
   margin-bottom: 2rem;
-  background-color: $table-bg;
+//  background-color: $table-bg;
 }
 table {
   tbody {
     tr:hover {
       background-color: $table-bg-hover;
-
     }
   }
 }
