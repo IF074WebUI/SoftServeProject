@@ -12,6 +12,9 @@ export class TestPlayerService {
   getTestDetatilBuTest(id: number) {
     return this.getTestBySubjectService.getTestsBySubject(id);
   }
+  getCurrentTime() {
+    return this.http.get('http://' + HOST + '/TestPlayer/getTimeStamp').map(resp => resp.json());
+  }
 
   getQuestionsByLevelRandom(test_id: number, level: number, number: number) {
     return this.http.get('http://' + HOST + '/question/getQuestionsByLevelRand/' + test_id + '/' + level + '/' + number).map(resp => resp.json());

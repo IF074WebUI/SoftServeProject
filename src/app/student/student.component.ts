@@ -16,6 +16,7 @@ import {QuestionsService} from '../admin/services/questions.service';
 import {AnswersService} from '../admin/services/answers.service';
 import {TestDetailService} from '../admin/test-detail/test-detail.service';
 import {DeleteRecordByIdService} from '../admin/services/delete-record-by-id.service';
+import {TestPlayerService} from "./test-player/test-player.service";
 @Component({
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.scss']
@@ -29,6 +30,9 @@ noRecordsResponce: string;
 checkTestAvailability: boolean;
 result: any;
 tableHeaders: string[];
+unixTime: number;
+date: any;
+currentTime: string;
   constructor(private loginService: LoginService,
               private router: Router,
               private studentService: StudentsService,
@@ -41,7 +45,8 @@ tableHeaders: string[];
               private question: QuestionsService,
               private answer: AnswersService,
               private teestDetail: TestDetailService,
-              private deleteRecords: DeleteRecordByIdService
+              private deleteRecords: DeleteRecordByIdService,
+              private testPlayer: TestPlayerService
   ) {
     this.objLoaderStatus = false;
     this.noTests = 'Немає доступних тестів';
@@ -64,6 +69,7 @@ ngOnInit() {
   });
 this.getStudentId();
 this.getTests();
+this.showTime();
 }
 
 getStudentId() {
@@ -74,6 +80,16 @@ getStudentId() {
         res => { this.spinner.hideSpinner(); },
         err => this.toastr.error(err)
       );
+}
+showTime() {
+    setInterval(() => {
+      this.getTime();
+      this.date = new Date(this.unixTime * 1000);
+      this.currentTime = this.date.getHours() + ':' + this.date.getMinutes() + ':' + this.date.getSeconds();
+    }, 1000);
+}
+getTime() {
+    this.testPlayer.getCurrentTime().subscribe(res => { this.unixTime = res['curtime']; } );
 }
 getTests() {
     Observable.forkJoin([
