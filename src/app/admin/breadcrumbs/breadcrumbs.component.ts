@@ -11,7 +11,6 @@ export class BreadcrumbsComponent implements OnInit {
   links: {path: string, name: string}[] = [];
 
   constructor(private breadcrumbsService: BreadcrumbsService) { }
-
   ngOnInit() {
     this.breadcrumbsService.linksS.subscribe(l => this.links = l);
   }

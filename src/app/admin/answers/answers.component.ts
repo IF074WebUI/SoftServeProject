@@ -7,6 +7,7 @@ import {ANSWER_CONFIG} from '../universal/dynamic-form/config';
 import {SpinnerService} from '../universal/spinner/spinner.service';
 import {GetRecordsByIdService} from '../services/get-records-by-id.service';
 import {FormGroup} from '@angular/forms';
+import {Question} from "../questions/question";
 
 
 @Component({
@@ -25,7 +26,9 @@ export class AnswersComponent implements OnInit {
   question_id: number;
   questionIdQueryParam: number;
   imageForm: FormGroup;
+  questionNameQueryParam: string;
   answerEdit: Answer;
+  sortProperties: string[];
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = ANSWER_CONFIG;
@@ -47,6 +50,7 @@ export class AnswersComponent implements OnInit {
   getQueryParams() {
     this.route.queryParams.subscribe((params: Params) => {
       this.questionIdQueryParam = params['question_id'];
+      this.questionNameQueryParam = params['question_text'];
       if (this.questionIdQueryParam) this.getAnswersForOneQuestion();
       else
       this.getAnswers();
@@ -64,6 +68,7 @@ export class AnswersComponent implements OnInit {
   setNameOfQuestion(answer: Answer) {
     this.getRecordsByIdService.getRecordsById('question', answer.question_id).subscribe((resp) => {
       answer.question_id = resp[0].question_id;
+     // answer.question_text = resp[0].question_text;
     });
   }
   // PARAMS
@@ -88,18 +93,18 @@ export class AnswersComponent implements OnInit {
 
   changePage(page: number) {              /* callback method for change page pagination output event */
     this.pageNumber = page;
-    this.getAnswers();               /* request new groups for new page */
+    this.getAnswersForOneQuestion();               /* request new groups for new page */
   }
   changeNumberOfRecordsOnPage(numberOfRecords: number) {
     this.recordsPerPage = numberOfRecords;
     this.pageNumber = 1;
-    this.getAnswers();
+    this.getAnswersForOneQuestion();
   }
 
   startSearch(criteria: string) {   /* callback method for output in search component */
     this.spinner.showSpinner();
     if (criteria === '' || +criteria <= 0 ) {
-      this.getAnswers();
+      this.getAnswersForOneQuestion();
     } else {
       this.answersService.searchByName(criteria)
         .subscribe(resp => {
@@ -142,7 +147,7 @@ export class AnswersComponent implements OnInit {
       this.answersService.editAnswer(value['answer_id'], value['question_id'], value['answer_text'],
         value['true_answer'], value['photo'])
         .subscribe(response => {
-            this.getAnswers();
+            this.getAnswersForOneQuestion();
             this.popup.cancel();
           },
           error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': +value['question_text']},
@@ -152,7 +157,7 @@ export class AnswersComponent implements OnInit {
       this.answersService.createAnswer(value['question_id'], value['answer_text'],
         value['true_answer'], value['photo'])
         .subscribe(response => {
-            this.getAnswers();
+            this.getAnswersForOneQuestion();
             this.popup.cancel();
           },
           error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': value['question_text']},

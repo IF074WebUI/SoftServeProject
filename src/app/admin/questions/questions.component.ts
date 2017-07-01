@@ -50,14 +50,7 @@ export class QuestionsComponent implements OnInit {
     const number = this.route.snapshot.queryParams['number'];
 
     if (this.test_id) {
-      this.questionsService.getRecordsRangeByTest(this.test_id, this.recordsPerPage,
-        (this.pageNumber - 1) * this.recordsPerPage).subscribe(resp => {
-        if (resp['response'] === 'no records') {
-          this.questionsOnPage = [], error => this.router.navigate(['/bad_request']);
-        } else {
-          this.questionsOnPage = resp, error => this.router.navigate(['/bad_request']);
-        }
-      });
+      this.getQuestionsByTest();
     } else if (level) {
       this.questionsService.getQuestionsByLevelRand(this.test_id, level, number).subscribe(resp => {
         if (resp['response'] === 'no records') {
@@ -70,33 +63,18 @@ export class QuestionsComponent implements OnInit {
     else {
       this.getQuestions();
     }
-
   }
-/*
-  getQueryParams() {
-  this.route.queryParams.subscribe((params: Params) => {
-    this.testIdQueryParam = params['test_id'];
-    if (this.testIdQueryParam) this.getQuestionsForOneTest();
-    else
-      this.getQuestions();
-  });
-}
-  getQuestionsForOneTest() {
-    this.questionsService.getRecordsRangeByTest(this.testIdQueryParam, this.limit, this.offset).subscribe(resp => {
-      this.questionsOnPage = resp;
-      this.countRecords = 0;
-      for (const question of this.questionsOnPage) {
-        this.setNameOfTest(question);
+
+  getQuestionsByTest() {
+    this.questionsService.getRecordsRangeByTest(this.test_id, this.recordsPerPage,
+      (this.pageNumber - 1) * this.recordsPerPage).subscribe(resp => {
+      if (resp['response'] === 'no records') {
+        this.questionsOnPage = [], error => this.router.navigate(['/bad_request']);
+      } else {
+        this.questionsOnPage = resp, error => this.router.navigate(['/bad_request']);
       }
     });
   }
-  setNameOfTest(question: Question) {
-    this.getRecordsByIdService.getRecordsById('test', question.test_id).subscribe((resp) => {
-      question.test_id = resp[0].test_id;
-    });
-}
-*/
-  // PARAMS
   getQuestions(): void {
     this.spinner.showSpinner();
     this.getCountRecords();
@@ -118,12 +96,12 @@ export class QuestionsComponent implements OnInit {
 
   changePage(page: number) {              /* callback method for change page pagination output event */
     this.pageNumber = page;
-    this.getQuestions();               /* request new groups for new page */
+    this.getQuestionsByTest();               /* request new groups for new page */
   }
   changeNumberOfRecordsOnPage(numberOfRecords: number) {
     this.recordsPerPage = numberOfRecords;
     this.pageNumber = 1;
-    this.getQuestions();
+    this.getQuestionsByTest();
   }
 
   startSearch(criteria: string) {   /* callback method for output in search component */
@@ -172,7 +150,7 @@ export class QuestionsComponent implements OnInit {
       this.questionsService.editQuestion(value['question_id'], value['question_text'],
         value['test_id'], value['level'], value['type'], value['photo'])
         .subscribe(response => {
-            this.getQuestions();
+            this.getQuestionsByTest();
             this.popup.cancel();
             this.toastr.success('Edited');
           },
@@ -182,7 +160,7 @@ export class QuestionsComponent implements OnInit {
       this.questionsService.createQuestion(value['question_text'], value['test_id'], value['level'],
         value['type'], value['photo'])
         .subscribe(response => {
-            this.getQuestions();
+            this.getQuestionsByTest();
             this.popup.cancel();
             this.toastr.success('Created');
           },
@@ -192,7 +170,8 @@ export class QuestionsComponent implements OnInit {
   }
 
   deleteQuestion(question: Question) {
-    this.questionsService.deleteQuestion(question['question_id']).subscribe(response => {this.getQuestions();
+    this.questionsService.deleteQuestion(question['question_id']).subscribe(response => {
+      this.getQuestionsByTest();
     this.toastr.success('Deleted');
     },
       error => this.router.navigate(['/bad_request'])

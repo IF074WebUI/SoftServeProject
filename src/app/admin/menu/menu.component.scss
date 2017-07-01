@@ -1,0 +1,71 @@
+ul{
+  /*border: 1px solid lightblue;*/
+  height: 100%;
+}
+
+li:hover{
+  background-color: lightblue;
+  color: white;
+}
+
+li.active{
+  background-color: #fff;  /*#0c56a9;*/
+}
+
+li.active a{
+  color: #5cab22;
+}
+
+.logout{
+  background-color: lightcoral;
+  color: white;
+}
+
+.logout:hover{
+  background-color: indianred;
+  cursor: pointer;
+}
+.wrapper .menu{
+  width:100%;
+}
+.wrapper .menu-btn{
+  width:90%;
+  background-color: yellow;
+}
+.wrapper li{
+  position: relative;
+  width: 80%;
+  background-color: #aafc6f;
+  margin-bottom:5px;
+  color: #fff;
+}
+.wrapper li a{
+  color: #fff;
+}
+.wrapper li:before {
+  left: -20px;
+  border-top: 40px solid transparent;
+  border-left: 10px solid transparent;
+  border-right: 10px solid #5cab22;
+  border-bottom: 0 solid transparent;
+
+}
+.wrapper li:after,
+.wrapper li:before{
+  position: absolute;
+  top: 0;
+  display: block;
+  content: '';
+}
+.wrapper li:after{
+  right: -20px;
+  border-top: 0 solid transparent;
+  border-left: 10px solid #5cab22;
+  border-right: 10px solid transparent;
+  border-bottom: 40px solid transparent;
+
+}
+.wrapper li.active a{
+  background-color: #fff;
+  color: #5cab22;
+}
