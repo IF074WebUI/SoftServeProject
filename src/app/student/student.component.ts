@@ -52,7 +52,7 @@ currentTime: string;
     this.noTests = 'Немає доступних тестів';
     this.noRecordsResponce = 'no records';
     this.checkTestAvailability = false;
-    this.tableHeaders = ['#', 'Назва тесту', 'Кількість завданнь', 'Тривалість'];
+    this.tableHeaders = ['#', 'Назва тесту', 'Кількість завданнь', 'Тривалість', ''];
 
     this.result = {
       student: [],
