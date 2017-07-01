@@ -5,9 +5,10 @@ import {Router} from "@angular/router";
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css']
+  styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
+
   constructor(private loginService: LoginService, private router: Router) {
   }
 

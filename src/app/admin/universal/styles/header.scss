@@ -1,0 +1,27 @@
+@import "const";
+@import "button";
+
+.header-group {
+  background-color: $primary-blue-color;
+  height: 100px;
+  padding: 10px;
+  margin-bottom: 20px;
+  button {
+    float: right;
+    margin-top: 25px;
+    @extend .btn;
+  }
+  dtester-items-per-page {
+    position: absolute;
+    right: 30px;
+    top: 230px;
+  }
+  dtester-search {
+    float: left;
+    margin-top: 20px;
+  }
+}
+
+.text-center{
+  color: $line-color;
+}

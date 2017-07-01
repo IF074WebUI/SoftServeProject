@@ -155,17 +155,7 @@ export const STUDENT_CONFIG =
       type: 'id',
       label: 'ID',
       name: 'user_id',
-    },
-    // {
-    //   type: 'input_file',
-    //   label: 'Вкладення',
-    //   name: 'attachment'
-    // },
-    // {
-    //   type: 'hidden_field',
-    //   label: 'Вкладення',
-    //   name: 'photo'
-    // }
+    }
   ];
 export const TEST_DETAIL_CONFIG = [
   {
@@ -221,32 +211,26 @@ export const QUESTION_CONFIG = [
     text: '',
     label: 'Питання',
     name: 'question_text',
-    placeholder: 'Напишіть текст питання'
+    placeholder: 'Напишіть текст питання',
+    required: true
   },
   {
     type: 'select_with_options',
     label: 'Рівень питання',
     name: 'level',
     options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-    placeholder: 'Виберіть рівень питання'
+    placeholder: 'Виберіть рівень питання',
+    required: true
+
   },
   {
     type: 'radio',
     label: 'Тип питання',
     name: 'type',
     options: ['singlechoise', 'multichoise', 'input field'],
-    placeholder: 'Виберіть тип питання'
-  },
-  // {
-  //   type: 'input_file',
-  //   label: 'Вкладення',
-  //   name: 'attach'
-  // },
-  // {
-  //   type: 'hidden_field',
-  //   label: 'Вкладення',
-  //   name: 'photo'
-  // }
+    placeholder: 'Виберіть тип питання',
+    required: true
+  }
 ];
 export const ANSWER_CONFIG = [
   {

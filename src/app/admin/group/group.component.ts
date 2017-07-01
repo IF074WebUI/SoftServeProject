@@ -15,7 +15,7 @@ import { ToastsManager } from 'ng2-toastr';
 @Component({
   selector: 'dtester-group',
   templateUrl: './group.component.html',
-  styleUrls: ['./group.component.css'],
+  styleUrls: ['./group.component.scss'],
   providers: [FacultyService, SpecialitiesService]
 })
 export class GroupComponent implements OnInit {

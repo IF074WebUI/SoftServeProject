@@ -1,3 +1,65 @@
-<p>
-  test-player works!
-</p>
+
+
+<div class="container-fluid">Здати тест по предмету
+
+  <div> В даному тесті є {{test_details.length}} питань 3-х рівнів
+  </div>
+<button type="button"  (click)="startTest()" >Здати тест</button>
+
+
+</div>
+
+
+
+<div [hidden]="!start">
+<h3>Питання I рівня </h3>
+<table *ngFor="let question of questions1">
+  <tr >
+    <td>Тест питання</td> <td>  {{question['question_text']}}
+  </td>
+  </tr>
+  <tr>
+    <td>Фотографія</td><td> <img [src]=question.attachment>
+  </td>
+  </tr>
+  <tr>
+    <td>Варінти відповіді</td> <td>  {{question.answers}}
+  </td>
+  </tr>
+</table>
+
+  <h3 >Питання II рівня </h3>
+  <table *ngFor="let question of questions2">
+    <tr >
+      <td>Тест питання</td> <td>  {{question['question_text']}}
+    </td>
+    </tr>
+    <tr>
+      <td>Фотографія</td><td> <img [src]=question.attachment>
+    </td>
+    </tr>
+    <tr>
+      <td>Варінти відповіді</td> <td>  {{question.answers}}
+    </td>
+    </tr>
+  </table>
+
+  <h3>Питання III рівня </h3>
+  <table *ngFor="let question of questions3">
+    <tr >
+      <td>Тест питання</td> <td>  {{question['question_text']}}
+    </td>
+    </tr>
+    <tr>
+      <td>Фотографія</td><td> <img [src]=question.attachment>
+    </td>
+    </tr>
+    <tr>
+      <td>Варінти відповіді</td> <td>  {{question.answers}}
+    </td>
+    </tr>
+  </table>
+</div>
+
+
+

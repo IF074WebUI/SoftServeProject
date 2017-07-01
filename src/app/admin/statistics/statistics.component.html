@@ -1,7 +1,10 @@
-<h2>Статистика системи</h2>
+<h3 class="text-center">Статистика системи</h3>
+<div class="header-group">
+
   <p-radioButton name="group1" value="default" label="Загальні" [(ngModel)]="selectedEntity" (click)="selectEntityForGraph()"></p-radioButton>
   <p-radioButton name="group1" value="faculty" label="Факультети" [(ngModel)]="selectedEntity" (click)="selectEntityForGraph()"></p-radioButton>
   <p-radioButton name="group1" value="speciality" label="Спеціальності" [(ngModel)]="selectedEntity" (click)="selectEntityForGraph()"></p-radioButton>
+</div>
 <select class="form-control" data-style="btn-primary" #s (change)="sortGraphData(s.value)">
   <option data-tokens="ketchup mustard" disabled>Сортувати за</option>
   <option data-tokens="ketchup mustard" value="valueInc" >величиною по зростанню</option>

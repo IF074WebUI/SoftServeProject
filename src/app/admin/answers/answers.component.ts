@@ -12,7 +12,7 @@ import {FormGroup} from '@angular/forms';
 @Component({
   selector: 'dtester-answers',
   templateUrl: './answers.component.html',
-  styleUrls: ['./answers.component.css']
+  styleUrls: ['./answers.component.scss']
 })
 export class AnswersComponent implements OnInit {
   answersOnPage: Answer[];

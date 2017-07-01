@@ -19,7 +19,7 @@ declare let $: any;
 @Component({
   selector: 'dtester-results',
   templateUrl: './results.component.html',
-  styleUrls: ['./results.component.css']
+  styleUrls: ['./results.component.scss']
 })
 export class ResultsComponent implements OnInit {
 

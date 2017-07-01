@@ -4,15 +4,14 @@
   border-radius: 2px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
 
-  background-color: white;
-  color: black;
+  background-color: $yellow-color;
+  color: $line-color;
 
   transition: background-color .3s;
 }
 
 .btn:hover, .btn:focus {
   cursor: pointer;
-  background-color: $button-hover;
 }
 .btn-add {
   margin: 0 10px;

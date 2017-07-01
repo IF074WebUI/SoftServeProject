@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginService} from '../login/login.service';
 import {Router} from '@angular/router';
+import {StudentsService} from '../admin/students/students.service';
+import {ResultsService} from '../admin/services/results.service';
+
 import { StudentsService } from '../admin/students/students.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
@@ -56,9 +59,7 @@ ngOnInit() {
 this.getStudentId();
 this.getTests();
 }
-  saveGroupId() {
-  console.log(window.sessionStorage.getItem('studentId'));
-}
+
 getStudentId() {
   this.spinner.showSpinner();
   this.studentId = +window.sessionStorage.getItem('studentId');
@@ -109,4 +110,14 @@ logout() {
     this.router.navigate(['/login']);
   });
 }
+  openTestPlayer() {
+    this.router.navigate(['./student/test-player']);
+  }
+
+
+  logout() {
+    this.loginService.logout().subscribe(() => {
+      this.router.navigate(['/login']);
+    });
+  }
 }

@@ -15,7 +15,7 @@ import {isUndefined} from "util";
 @Component({
   selector: 'dtester-students',
   templateUrl: './students.component.html',
-  styleUrls: ['./students.component.css'],
+  styleUrls: ['./students.component.scss'],
   providers: [StudentsService]
 })
 export class StudentsComponent implements OnInit {
