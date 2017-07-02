@@ -4,6 +4,7 @@ import {GetTestsBySubjectService} from "../../admin/services/get-tests-by-subjec
 import {Answer} from "../../admin/answers/answer";
 import {Observable} from "rxjs/Observable";
 import {TestDetail} from "../../admin/test-detail/testDetail";
+import {ActivatedRoute} from "@angular/router";
 
 export class Object {
   public attempts: number;
@@ -14,12 +15,15 @@ export class Object {
   public test_name: string;
   public time_for_test: number;
 
-  constructor(attempts, enabled,
+  constructor(
+              attempts,
+              enabled,
               subject_id,
               tasks,
               test_id,
               test_name,
-              time_for_test) {
+              time_for_test,
+  ) {
     this.attempts = attempts;
     this.enabled = enabled;
     this.subject_id = subject_id;
@@ -65,11 +69,15 @@ export class TestPlayerComponent implements OnInit {
   test_details: TestDetail[] = [];
   level: number = 1;
 
-  constructor(private test_player: TestPlayerService) {
+  constructor(
+    private test_player: TestPlayerService,
+    private route: ActivatedRoute
+  ) {
   }
 
   ngOnInit() {
-    this.test_id = 13;
+    let testRoute = this.route.snapshot.queryParams['testId'];
+    this.test_id = +testRoute;
     console.log(this.test_id);
     this.getTestDetails();
  //   this.subject_id = '2';
@@ -83,7 +91,7 @@ export class TestPlayerComponent implements OnInit {
   //   });
   // }
 
-  getTestDetails(){
+  getTestDetails() {
     this.test_player.getTestDetail(this.test_id).subscribe(resp => {this.test_details = resp; console.log(this.test_details);
    });
   }

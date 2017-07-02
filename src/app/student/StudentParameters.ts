@@ -6,7 +6,7 @@ import { Student } from '../admin/students/student';
 // import { Subject } from '../admin/subject/subject';
 
 import { Test } from '../admin/tests/test';
-import {Timetable} from "../admin/timetable/timetable";
+import {Timetable} from '../admin/timetable/timetable';
 export interface StudentParameters {
   student: Student[];
   groupId: number;

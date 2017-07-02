@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginService} from '../login/login.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {StudentsService} from '../admin/students/students.service';
 import {ResultsService} from '../admin/services/results.service';
 import { Observable } from 'rxjs/Observable';
@@ -46,7 +46,8 @@ currentTime: string;
               private answer: AnswersService,
               private teestDetail: TestDetailService,
               private deleteRecords: DeleteRecordByIdService,
-              private testPlayer: TestPlayerService
+              private testPlayer: TestPlayerService,
+              private route: ActivatedRoute,
   ) {
     this.objLoaderStatus = false;
     this.noTests = 'Немає доступних тестів';
@@ -140,8 +141,9 @@ logout() {
     this.router.navigate(['/login']);
   });
 }
-  openTestPlayer() {
-    this.router.navigate(['./student/test-player']);
+  openTestPlayer(testId) {
+    console.log(typeof (testId))
+    this.router.navigate(['./test-player'], {queryParams: {'testId': testId}, relativeTo: this.route.parent});
   }
 
 }

@@ -65,7 +65,6 @@ export class TestDetailComponent implements OnInit {
             this.spinner.hideSpinner();
           }
         });
-
     }
   }
 
