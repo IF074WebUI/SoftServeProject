@@ -5,6 +5,8 @@ import {Answer} from '../../admin/answers/answer';
 import {Observable} from 'rxjs/Observable';
 import {TestDetail} from '../../admin/test-detail/testDetail';
 import 'rxjs/add/observable/of';
+import {ActivatedRoute, Router} from "@angular/router";
+import {Test} from "../../admin/tests/test";
 
 
 export class Object {
@@ -53,22 +55,25 @@ export class Question {
 
 export class TestPlayerComponent implements OnInit {
   test_id: number;
-  test: Object;
+  test: Test;
   questions: Question[] = [];
   question: Question;
   start: boolean;
   i: number;
+  student_id: string;
   test_details: TestDetail[] = [];
 
   NEXT_QUESTION = 'Наступне питання';
   PREV_QUESTION = 'Попереднє питання';
 
-  constructor(private test_player: TestPlayerService) {
+  constructor(private test_player: TestPlayerService,  private route: ActivatedRoute,) {
     this.i = 0;
   }
 
   ngOnInit() {
-    this.test_id = 1;
+    this.test_id = this.route.snapshot.queryParams['test_id'] || 1;
+    this.student_id = this.route.snapshot.queryParams['user_id'];
+ //   this.test_id = 1;
     this.getTestDetails();
   }
 

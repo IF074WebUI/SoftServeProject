@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {studentRoutes} from './student.routes';
 import {StudentComponent} from './student.component';
@@ -8,8 +7,6 @@ import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TestPlayerComponent} from './test-player/test-player.component';
-import {StudentsService} from '../admin/students/students.service';
-import {ResultsService} from '../admin/services/results.service';
 import {LoginService} from '../login/login.service';
 import {SpinnerService} from '../admin/universal/spinner/spinner.service';
 import {LoadingModule} from 'ngx-loading';
@@ -22,6 +19,9 @@ import {TestDetailService} from '../admin/test-detail/test-detail.service';
 import {DeleteRecordByIdService} from '../admin/services/delete-record-by-id.service';
 import {TestPlayerService} from './test-player/test-player.service';
 import {GetTestsBySubjectService} from '../admin/services/get-tests-by-subject.service';
+import {CommonModule} from '@angular/common';
+import {StudentsService} from '../admin/students/students.service';
+import {ResultsService} from '../admin/services/results.service';
 
 @NgModule({
 
@@ -32,6 +32,8 @@ import {GetTestsBySubjectService} from '../admin/services/get-tests-by-subject.s
     LoadingModule
   ],
   providers: [
+    TestPlayerService,
+    GetTestsBySubjectService,
     StudentsService,
     ResultsService,
     LoginService,
@@ -43,7 +45,6 @@ import {GetTestsBySubjectService} from '../admin/services/get-tests-by-subject.s
     AnswersService,
     TestDetailService,
     DeleteRecordByIdService,
-    TestPlayerService,
     GetTestsBySubjectService
   ]
 })
