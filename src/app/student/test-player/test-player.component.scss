@@ -1,0 +1,76 @@
+@import "../../admin/universal/styles/const";
+@import "../../admin/universal/styles/table";
+
+.header {
+  height: 100px;
+  background-color: $primary-blue-color;
+  margin-bottom: 20px;
+  .timer {
+    float: left;
+  }
+  .finish {
+    float: right;
+  }
+}
+
+.wrapper {
+  background-color: white;
+  margin-top: 5%;
+  margin-left: 10%;
+  width: 50%;
+  height: 500px;
+}
+
+.content {
+  float: right;
+  width: 100%;
+
+}
+
+#sidebar {
+  background-color: $pink-colo !important;
+  position: absolute;
+  right: 0px;
+  top: 100px;
+  bottom: 0px;
+  width: 500px;
+  margin-left: -200px;
+  background-color: #FFA;
+  z-index: -100;
+}
+
+#cleared {
+  clear: both;
+}
+
+table {
+  caption {
+    caption-side: top;
+  }
+  font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+  margin: auto;
+  width: 400px;
+  font-size: large;
+  color: black;
+  td {
+    text-align: center;
+    img {
+      margin: auto;
+      max-height: 150px;
+    }
+  }
+  @extend table
+}
+
+.navbar {
+  height: 30px;
+}
+
+#footer {
+  background-color: $mint-color;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+}
+
