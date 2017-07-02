@@ -153,7 +153,12 @@ logout() {
 }
   openTestPlayer(testId) {
     this.stopClock();
-    this.router.navigate(['./test-player'], {queryParams: {'testId': testId}, relativeTo: this.route.parent});
+    this.router.navigate(['./test-player'],
+      {
+        queryParams: {'testId': testId,
+          'user_id': this.result.student['user_id']
+        },
+      relativeTo: this.route.parent});
   }
 
 }

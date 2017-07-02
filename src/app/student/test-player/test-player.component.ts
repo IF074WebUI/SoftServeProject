@@ -1,18 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {TestPlayerService} from './test-player.service';
+import 'rxjs/add/observable/of';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Test} from '../../admin/tests/test';
+
 import {GetTestsBySubjectService} from '../../admin/services/get-tests-by-subject.service';
 import {Answer} from '../../admin/answers/answer';
 import {Observable} from 'rxjs/Observable';
 import {TestDetail} from '../../admin/test-detail/testDetail';
-import 'rxjs/add/observable/of';
-import {ActivatedRoute, Router} from "@angular/router";
-import {Test} from "../../admin/tests/test";
-
-import {GetTestsBySubjectService} from "../../admin/services/get-tests-by-subject.service";
-import {Answer} from "../../admin/answers/answer";
-import {Observable} from "rxjs/Observable";
-import {TestDetail} from "../../admin/test-detail/testDetail";
-import {ActivatedRoute} from "@angular/router";
 
 export class Object {
   public attempts: number;
