@@ -153,7 +153,7 @@ export class StudentComponent implements OnInit {
 
   openTestPlayer(test: Test) {
     console.log(test);
-    this.router.navigate(['./student/test-player'], {queryParams: {test_id: test.test_id, user_id: this.result.student['user_id']}});
+    this.router.navigate(['./student/test-player'], {queryParams:  {test_id: test.test_id, user_id: this.result.student['user_id']}});
   }
 
 }

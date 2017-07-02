@@ -62,6 +62,10 @@ export class TestPlayerComponent implements OnInit {
   i: number;
   student_id: string;
   test_details: TestDetail[] = [];
+  unixTime: number;
+  date: any;
+  currentTime: string;
+
 
   NEXT_QUESTION = 'Наступне питання';
   PREV_QUESTION = 'Попереднє питання';
@@ -75,6 +79,7 @@ export class TestPlayerComponent implements OnInit {
     this.student_id = this.route.snapshot.queryParams['user_id'];
  //   this.test_id = 1;
     this.getTestDetails();
+    this.showTime();
   }
 
   getTestDetails() {
@@ -89,7 +94,7 @@ export class TestPlayerComponent implements OnInit {
     this.test_player.getQuestions(this.test_details, this.i).subscribe(resp => {
       this.questions = resp;
       this.question = resp[0];
-      console.log(resp)
+      console.log(resp);
     });
   }
 
@@ -104,5 +109,19 @@ export class TestPlayerComponent implements OnInit {
     let newIndex = currentIndex === this.questions.length - 1 ? 0 : currentIndex + 1;
     this.question = this.questions[newIndex];
   }
+  showTime() {
+    setInterval(() => {
+      this.getTime();
+      this.date = new Date(this.unixTime * 1000);
+      this.currentTime = this.date.getHours() + ':' + this.date.getMinutes() + ':' + this.date.getSeconds();
+    }, 1000);
+  }
+
+  getTime() {
+    this.test_player.getCurrentTime().subscribe(res => {
+      this.unixTime = res['curtime'];
+    });
+  }
+
 
 }
