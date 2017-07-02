@@ -5,25 +5,49 @@
 </div>
 </div>
 
+
 <button type="button"  (click)="startTest()" >Здати тест</button>
 
-<div class="container">
-
-<div [hidden]="!start">
-
-<table *ngFor="let question of questions">
-  <tr >
-    <td>{{question['question_text']}}</td>
-</tr>
-  <tr>
-    <td><img [src]=question.attachment></td>
-</tr>
-
-</table>
+<div class="wrapper">
+<div class="navbar">
+  <ul class="nav navbar-nav navbar-toggler-right">
+    <li> <a href="#"> Marked for review</a></li>
+  </ul>
 
 </div>
+  <div id="content">
+    <table>
 
-  <div>
-    <h4>Всі питання</h4>
+      <tr><td><h3>Питання №1</h3></td></tr>
+      <tr><td>Виберіть правильний тег</td></tr>
+      <tr><td><img src=""></td></tr>
+    </table>
   </div>
+
+<!--<div  class="content" [hidden]="!start">-->
+
+<!--<table *ngFor="let question of questions">-->
+<!--<tr>-->
+  <!--<td>{{questions.indexOf(question)}}</td>-->
+<!--</tr>-->
+  <!--<tr >-->
+    <!--<td>{{question['question_text']}}</td>-->
+<!--</tr>-->
+  <!--<tr>-->
+    <!--<td><img [src]=question.attachment></td>-->
+<!--</tr>-->
+
+<!--</table>-->
+
+<!--</div>-->
+
+
 </div>
+
+<div id="sidebar">
+  <h4>Всі питання</h4>
+</div>
+<div class="cleared"></div>
+
+<div id="footer">
+    </div>
