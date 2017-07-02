@@ -22,20 +22,16 @@ header {
   background-color: #401e46;
 }
 main {
-  table:hover {
-    border: $hover-border-transition;
-  }
   div {
     div:hover {
       border: $hover-border-transition;
       transition: 400ms;
     }
     .headers:hover {
-      color: white;
       background-color: #826199;
     }
     .headers {
-      color: #79777A;
+      color: white;
       background-color: $pink-colo;
     }
     .clock:hover {

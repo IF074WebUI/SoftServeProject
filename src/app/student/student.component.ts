@@ -16,53 +16,54 @@ import {QuestionsService} from '../admin/services/questions.service';
 import {AnswersService} from '../admin/services/answers.service';
 import {TestDetailService} from '../admin/test-detail/test-detail.service';
 import {DeleteRecordByIdService} from '../admin/services/delete-record-by-id.service';
-import {TestPlayerService} from "./test-player/test-player.service";
+import {TestPlayerService} from './test-player/test-player.service';
 @Component({
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.scss']
 })
 export class StudentComponent implements OnInit {
-studentId: number;
-studentFullName: string;
-objLoaderStatus: boolean;
-noTests: string;
-noRecordsResponce: string;
-checkTestAvailability: boolean;
-result: any;
-tableHeaders: string[];
-unixTime: number;
-date: any;
-currentTime: string;
-  constructor(private loginService: LoginService,
-              private router: Router,
-              private studentService: StudentsService,
-              private resultsService: ResultsService,
-              private spinner: SpinnerService,
-              private toastr: ToastsManager,
-              private timeTable: TimetableService,
-              private subject: SubjectService,
-              private test: TestsService,
-              private question: QuestionsService,
-              private answer: AnswersService,
-              private teestDetail: TestDetailService,
-              private deleteRecords: DeleteRecordByIdService,
-              private testPlayer: TestPlayerService,
-              private route: ActivatedRoute,
-  ) {
-    this.objLoaderStatus = false;
-    this.noTests = 'Немає доступних тестів';
-    this.noRecordsResponce = 'no records';
-    this.checkTestAvailability = false;
-    this.tableHeaders = ['#', 'Назва тесту', 'Кількість завданнь', 'Тривалість', ''];
+  studentId: number;
+  studentFullName: string;
+  objLoaderStatus: boolean;
+  noTests: string;
+  noRecordsResponce: string;
+  checkTestAvailability: boolean;
+  result: any;
+  tableHeaders: string[];
+  unixTime: number;
+  date: any;
+  currentTime: string;
+  clock:any;
+    constructor(private loginService: LoginService,
+                private router: Router,
+                private studentService: StudentsService,
+                private resultsService: ResultsService,
+                private spinner: SpinnerService,
+                private toastr: ToastsManager,
+                private timeTable: TimetableService,
+                private subject: SubjectService,
+                private test: TestsService,
+                private question: QuestionsService,
+                private answer: AnswersService,
+                private teestDetail: TestDetailService,
+                private deleteRecords: DeleteRecordByIdService,
+                private testPlayer: TestPlayerService,
+                private route: ActivatedRoute,
+    ) {
+      this.objLoaderStatus = false;
+      this.noTests = 'Немає доступних тестів';
+      this.noRecordsResponce = 'no records';
+      this.checkTestAvailability = false;
+      this.tableHeaders = ['#', 'Назва тесту', 'Кількість завданнь', 'Тривалість', ''];
 
-    this.result = {
-      student: [],
-      groupId: 0,
-      subjectId: 0,
-      tests: [],
-      timeTable: []
-    };
-  }
+      this.result = {
+        student: [],
+        groupId: 0,
+        subjectId: 0,
+        tests: [],
+        timeTable: []
+      };
+    }
 
 ngOnInit() {
   this.spinner.loaderStatus.subscribe((val: boolean) => {
@@ -70,7 +71,11 @@ ngOnInit() {
   });
 this.getStudentId();
 this.getTests();
-this.showTime();
+this.clock = setInterval(() => {
+  this.getTime();
+  this.date = new Date(this.unixTime * 1000);
+  this.currentTime = this.date.getHours() + ':' + this.date.getMinutes() + ':' + this.date.getSeconds();
+  }, 1000);
 }
 
 getStudentId() {
@@ -78,7 +83,7 @@ getStudentId() {
   this.studentId = +window.sessionStorage.getItem('studentId');
   this.loginService.checkLogged()
       .subscribe(
-        res => { this.spinner.hideSpinner(); },
+        res => {},
         err => this.toastr.error(err)
       );
 }
@@ -88,7 +93,11 @@ showTime() {
       this.date = new Date(this.unixTime * 1000);
       this.currentTime = this.date.getHours() + ':' + this.date.getMinutes() + ':' + this.date.getSeconds();
     }, 1000);
+    this.spinner.hideSpinner();
 }
+stopClock() {
+  clearInterval(this.clock);
+  }
 getTime() {
     this.testPlayer.getCurrentTime().subscribe(res => { this.unixTime = res['curtime']; } );
 }
@@ -102,7 +111,7 @@ getTests() {
       this.result.tests = results[2];
       this.result.student = results[0][0];
       // this.result['groupId'] = +results[1]['group_id'];
-      console.log(this.result);
+      this.spinner.hideSpinner();
     });
 
 
@@ -137,12 +146,13 @@ getTests() {
 //     );
 // }
 logout() {
+    this.stopClock();
   this.loginService.logout().subscribe(() => {
     this.router.navigate(['/login']);
   });
 }
   openTestPlayer(testId) {
-    console.log(typeof (testId))
+    this.stopClock();
     this.router.navigate(['./test-player'], {queryParams: {'testId': testId}, relativeTo: this.route.parent});
   }
 
