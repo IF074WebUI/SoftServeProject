@@ -44,27 +44,27 @@ export class Question {
 }
 
 
-
 @Component({
   selector: 'app-test-player',
   templateUrl: './test-player.component.html',
   styleUrls: ['./test-player.component.scss'],
-  providers: [GetTestsBySubjectService]
+  providers: [GetTestsBySubjectService],
 })
+
 export class TestPlayerComponent implements OnInit {
   test_id: number;
   test: Object;
   questions: Question[] = [];
   question: Question;
   start: boolean;
-  disable: boolean;
-  i: number = 0 ;
+  i: number;
   test_details: TestDetail[] = [];
 
   NEXT_QUESTION = 'Наступне питання';
   PREV_QUESTION = 'Попереднє питання';
 
   constructor(private test_player: TestPlayerService) {
+    this.i = 0;
   }
 
   ngOnInit() {
@@ -72,17 +72,32 @@ export class TestPlayerComponent implements OnInit {
     this.getTestDetails();
   }
 
-  getTestDetails(){
-    this.test_player.getTestDetail(this.test_id).subscribe(resp => {this.test_details = resp;
-   });
+  getTestDetails() {
+    this.test_player.getTestDetail(this.test_id).subscribe(resp => {
+      this.test_details = resp;
+    });
   }
 
 
   startTest() {
     this.start = true;
-    this.test_player.getQuestions(this.test_details).subscribe(resp => {this.questions = resp;
-    console.log(resp)});
-   }
+    this.test_player.getQuestions(this.test_details, this.i).subscribe(resp => {
+      this.questions = resp;
+      this.question = resp[0];
+      console.log(resp)
+    });
+  }
 
+  previous() {
+    let currentIndex = this.questions.indexOf(this.question);
+    let newIndex = currentIndex === 0 ? this.questions.length - 1 : currentIndex - 1;
+    this.question = this.questions[newIndex];
+  }
+
+  next() {
+    let currentIndex = this.questions.indexOf(this.question);
+    let newIndex = currentIndex === this.questions.length - 1 ? 0 : currentIndex + 1;
+    this.question = this.questions[newIndex];
+  }
 
 }

@@ -1,29 +1,34 @@
 @import "../../admin/universal/styles/const";
 @import "../../admin/universal/styles/table";
-.header{
+
+.header {
   height: 100px;
   background-color: $primary-blue-color;
   margin-bottom: 20px;
-  .timer{
+  .timer {
     float: left;
   }
-  .finish{
+  .finish {
     float: right;
   }
 }
 
-.wrapper{
+.wrapper {
   background-color: white;
-  margin-left: 40px;
+  margin-top: 5%;
+  margin-left: 10%;
   width: 50%;
   height: 500px;
 }
-#content {
+
+.content {
   float: right;
   width: 100%;
+
 }
+
 #sidebar {
-  background-color: #0c56a9!important;
+  background-color: $pink-colo !important;
   position: absolute;
   right: 0px;
   top: 100px;
@@ -33,32 +38,39 @@
   background-color: #FFA;
   z-index: -100;
 }
+
 #cleared {
   clear: both;
 }
 
-table{
+table {
+  caption {
+    caption-side: top;
+  }
   font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
   margin: auto;
   width: 400px;
   font-size: large;
   color: black;
-  th{
-
-  }
-  td{
+  td {
     text-align: center;
+    img {
+      margin: auto;
+      max-height: 150px;
+    }
   }
   @extend table
 }
-.navbar{
+
+.navbar {
   height: 30px;
 }
 
-#footer{
-  background-color: #2aabd2;
+#footer {
+  background-color: $mint-color;
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 50px;
 }
+

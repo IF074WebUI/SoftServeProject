@@ -25,7 +25,7 @@ export class TestPlayerService {
     return this.http.get('http://' + HOST + '/testDetail/getTestDetailsByTest/' + test_id).map(resp => resp.json());
   }
 
-  getQuestions = (testDetails: any[]) => {
+  getQuestions = (testDetails: any[], i: number) => {
     this.questions = [];
     let forkJoinBatch: Observable<any>[] = testDetails.map(item => {
       return this.getQuestionsByLevelRandom(item.test_id, item.level, item.tasks);

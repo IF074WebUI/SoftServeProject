@@ -1,46 +1,54 @@
 <div class="container-fluid header">
-<div class="header">
-<div class="timer">Таймер</div>
-  <div class="finish">Завершити тест</div>
-</div>
+  <div class="header">
+    <button type="button" (click)="startTest()">Почати тест</button>
+
+    <div class="timer">Таймер</div>
+    <div class="finish">Завершити тест</div>
+  </div>
 </div>
 
-
-<button type="button"  (click)="startTest()" >Здати тест</button>
 
 <div class="wrapper">
-<div class="navbar">
-  <ul class="nav navbar-nav navbar-toggler-right">
-    <li> <a href="#"> Marked for review</a></li>
-  </ul>
 
-</div>
-  <div id="content">
-    <table>
+  <div class="navbar">
+    <ul class="nav navbar-nav navbar-toggler-right">
+      <li><a href="#"> Marked for review</a></li>
+    </ul>
 
-      <tr><td><h3>Питання №1</h3></td></tr>
-      <tr><td>Виберіть правильний тег</td></tr>
-      <tr><td><img src=""></td></tr>
-    </table>
   </div>
 
-<!--<div  class="content" [hidden]="!start">-->
 
-<!--<table *ngFor="let question of questions">-->
-<!--<tr>-->
-  <!--<td>{{questions.indexOf(question)}}</td>-->
-<!--</tr>-->
-  <!--<tr >-->
-    <!--<td>{{question['question_text']}}</td>-->
-<!--</tr>-->
-  <!--<tr>-->
-    <!--<td><img [src]=question.attachment></td>-->
-<!--</tr>-->
+  <div id="content">
 
-<!--</table>-->
 
-<!--</div>-->
+    <div class="content" [hidden]="!start">
+      <!--<table>-->
+      <table *ngIf="question">
+        <caption><h3>Питання №{{questions.indexOf(question)+1}}</h3></caption>
+        <tr>
+          <td>{{question['question_text']}}</td>
+        </tr>
+        <tr>
+          <td><img [src]=question.attachment></td>
+        </tr>
 
+      </table>
+
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <a class="page-link" id="prev" (click)="previous()" tabindex="-1">{{PREV_QUESTION}}</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" id="next" (click)="next()">{{NEXT_QUESTION}}</a>
+          </li>
+        </ul>
+      </nav>
+
+    </div>
+
+
+  </div>
 
 </div>
 
@@ -50,4 +58,4 @@
 <div class="cleared"></div>
 
 <div id="footer">
-    </div>
+</div>
