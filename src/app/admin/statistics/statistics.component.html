@@ -9,8 +9,8 @@
   <option data-tokens="ketchup mustard" disabled>Сортувати за</option>
   <option data-tokens="ketchup mustard" value="valueInc" >величиною по зростанню</option>
   <option data-tokens="ketchup mustard" value="valueDec" >величиною по спаданню</option>
-  <option data-tokens="ketchup mustard" value="nameIns">назвою по зростанню</option>
-  <option data-tokens="ketchup mustard" value="nameDec">назвою по спаданню</option>
+  <option *ngIf="selectedEntity != 'default' "  data-tokens="ketchup mustard" value="nameIns">назвою по зростанню</option>
+  <option *ngIf="selectedEntity != 'default' " data-tokens="ketchup mustard" value="nameDec">назвою по спаданню</option>
 </select>
 
 <p-chart

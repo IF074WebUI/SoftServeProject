@@ -19,7 +19,7 @@ declare let $: any;
 @Component({
   selector: 'dtester-results',
   templateUrl: './results.component.html',
-  styleUrls: ['./results.component.scss']
+  styleUrls: ['./results.component.css']
 })
 export class ResultsComponent implements OnInit {
 
@@ -96,7 +96,7 @@ export class ResultsComponent implements OnInit {
       return;
     }
     this.results.map((result: Result, i: number) => {
-      this.studentsService.getStudentById(result.student_id)
+         this.studentsService.getStudentById(result.student_id)
         .subscribe((resp: Student) => {
           result['student_name'] = resp[0]['student_surname'] + ' ' + resp[0]['student_name'];
           Observable.forkJoin(this.groupsService.getGroupById(resp[0].group_id),
@@ -134,8 +134,8 @@ export class ResultsComponent implements OnInit {
 
   findByGroupTest(): void {
     const qp = this.dateControl.value !== '' ?
-      {test: this.testControl.value, group: this.groupControl.value, date: this.dateControl.value} :
-      {test: this.testControl.value, group: this.groupControl.value};
+    {test: this.testControl.value, group: this.groupControl.value, date: this.dateControl.value} :
+    {test: this.testControl.value, group: this.groupControl.value};
     this.spinnerService.showSpinner();
     this.router.navigate(['./results'], {queryParams: qp, relativeTo: this.activatedRoute.parent});
   }
@@ -168,11 +168,11 @@ export class ResultsComponent implements OnInit {
   submitDelete(result: Result) {
     this.spinnerService.showSpinner();
     this.resultsService.delete(result.session_id).subscribe(resp => {
-      --this.count;
-      this.getResults();
-      this.spinnerService.hideSpinner();
-      this.toastr.success(`Результат успішно видалений`);
-    });
+        --this.count;
+        this.getResults();
+        this.spinnerService.hideSpinner();
+        this.toastr.success(`Результат успішно видалений`);
+      });
   }
 
   showCharts() {
