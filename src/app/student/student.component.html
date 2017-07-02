@@ -6,8 +6,8 @@
       <div class="col-md-10">
         <h1>dTester</h1>
       </div>
-      <div class="col-md-2">
-        <button class="exit" (click)="logout()">Вихід</button>
+      <div class="col-md-2 exit">
+        <button class=" btn btn-exit" (click)="logout()">Вихід</button>
       </div>
     </div>
   </div>
@@ -15,7 +15,16 @@
 <main>
   <div class="container">
     <div class="row">
-      <h2>Доброго дня!{{currentTime}}</h2>
+      <div class="col-md-9 headers">
+        <h3>Доброго дня {{result.student['student_name'] + ' ' + result.student['student_surname']}}!</h3><br>
+        <h4>Доступні до здачі тести:</h4>
+      </div>
+      <div class="col-md-3 clock">
+        <p>Час на сервері</p>
+        <span>
+          {{currentTime}}
+        </span>
+      </div>
     </div>
     <div class="row" *ngIf="checkTestAvailability">
       <h3 ></h3>
@@ -34,7 +43,7 @@
      <tbody class="entities-body">
      <tr *ngFor="let test of result['tests']; let i = index">
        <td>
-         {{i}}
+         {{i + 1}}
        </td>
        <td>
          {{test.test_name}}
@@ -46,11 +55,11 @@
          {{test.time_for_test}}хв
        </td>
        <td>
-          <button (click)="openTestPlayer(+test.test_id)">Здати тест</button>
+          <button class="btn btn-test-list" (click)="openTestPlayer(+test.test_id)">Здати тест</button>
        </td>
      </tr>
      </tbody>
    </table>
   </div>
 </main>
-<button (click)="openTestPlayer()">Перейти до складання тесту</button>
+<button (click)="openTestPlayer(13)">Перейти до складання тесту with ID #13</button>
