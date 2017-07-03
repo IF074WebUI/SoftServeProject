@@ -62,10 +62,6 @@ export class StatisticsComponent implements OnInit {
         (res) => {
           this.data.labels[index] = this.entityDataName[index];
           this.data.datasets[0].data[index] = +res.numberOfRecords;
-          this.graphData[index] = {
-            label: this.entityDataName[index],
-            value: +res.numberOfRecords
-          };
           this.chart.refresh();
         },
         error => {
@@ -112,7 +108,6 @@ export class StatisticsComponent implements OnInit {
       this.graphData.sort(this.compareDataByLabel);
       this.checkAndReverseData(criteria);
       this.showDataOnGraph();
-      this.chart.reinit();
     }
   }
   getDataForSorting() {

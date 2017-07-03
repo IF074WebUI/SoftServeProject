@@ -1,22 +1,54 @@
 @import "../admin/universal/styles/const";
+@import "../admin/universal/styles/button";
+@import "../admin/universal/entities-table/entities-table.component";
+$hover-border-transition: 3px solid white;
 :host {
   font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
 header {
+  margin-bottom: 20px;
   .container {
     .row{
-      .col-md-10 {
-        display: fle
-      }
-      .col-md-2 {
+      .col-md-2, .col-md-10 {
         display: flex;
+        height: inherit;
+        padding: 3px;
       }
     }
   }
   h1 {
     color: white;
   }
-  background-color: #401e46;
+  background-color: $primary-violet-color;
+}
+main {
+  div {
+    div:hover {
+      border: $hover-border-transition;
+      transition: 400ms;
+    }
+    .headers:hover {
+      background-color: $primary-violet-bright-color;
+    }
+    .headers {
+      color: white;
+      background-color: $pink-colo;
+    }
+    .clock:hover {
+      background-color: $primary-violet-color;
+    }
+    .clock {
+      p {
+        display: block;
+      }
+      span {
+        display: block;
+      }
+      background-color: rgba(64, 30, 70, 0.75);
+      color: white;
+      font-size: larger;
+    }
+  }
 }
 .exit {
   margin: auto auto;
@@ -24,3 +56,10 @@ header {
 button {
   align-items: center;
 }
+.table-row {
+  margin: 50px;
+}
+
+
+
+

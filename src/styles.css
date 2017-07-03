@@ -2,7 +2,11 @@
 body {
   font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
   background-color:  #f5f5f5;
+  margin-bottom: 60px;
 }
 h1  {
   coor: white;
+}
+html{
+  min-height: 100%;
 }

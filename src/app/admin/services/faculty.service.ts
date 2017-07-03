@@ -4,9 +4,9 @@ import 'rxjs/add/operator/map';
 import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { HOST } from '../../constants';
-import {Router} from "@angular/router";
-import {GroupService} from "../group/group.service";
-import {Group} from "../group/group";
+import {Router} from '@angular/router';
+import {GroupService} from '../group/group.service';
+import {Group} from '../group/group';
 
 @Injectable()
 export class FacultyService {

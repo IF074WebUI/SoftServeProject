@@ -9,6 +9,22 @@
 
   transition: background-color .3s;
 }
+.btn-exit {
+  padding: 3px 5px;
+  height: 35px;
+  background-color:$primary-violet-color;
+  color: white;
+  box-shadow: 0 1px 4px $primary-violet-color;
+}
+.btn-exit:hover {
+  text-decoration: underline;
+  transition: 600ms;
+}
+.btn-test-list {
+  color: white;
+  transition: 400ms;
+  background-color: $primary-violet-bright-color;
+}
 
 .btn:hover, .btn:focus {
   cursor: pointer;

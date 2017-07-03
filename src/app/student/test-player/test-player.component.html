@@ -1,65 +1,65 @@
+<div class="container-fluid header">
+  <div class="header">
 
-
-<div class="container-fluid">Здати тест по предмету
-
-  <div> В даному тесті є {{test_details.length}} питань 3-х рівнів
+    <div class="timer">Таймер</div>
+    <div class="finish">Завершити тест</div>
+    <div class="time">{{currentTime}}</div>
   </div>
-<button type="button"  (click)="startTest()" >Здати тест</button>
+</div>
+
+<div class="wrapper">
+  <div class="navbar">
+    <div class="progress">
+      <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+       кільксть з {{test_details.length}}
+      </div>
+    </div>
+    <ul class="nav navbar-nav navbar-toggler-right">
+      <li><a href="#"> Marked for review</a></li>
+    </ul>
+
+  </div>
+
+
+  <div id="content">
+
+    <ng-container *ngIf="question">
+      <table>
+        <caption><h3>Питання №{{questions.indexOf(question)+1}}</h3></caption>
+        <tr>
+          <td>{{question['question_text']}}</td>
+        </tr>
+        <tr>
+          <td><img [src]=question.attachment></td>
+        </tr>
+      </table>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <a class="page-link" id="prev" (click)="previous()" tabindex="-1">{{PREV_QUESTION}}</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" id="next" (click)="next()">{{NEXT_QUESTION}}</a>
+          </li>
+        </ul>
+      </nav>
+    </ng-container>
+    <div id="button">
+    <ng-container *ngIf="!start">
+      <button type="button" class="btn" (click)="startTest()">Почати тест</button>
+    </ng-container>
+    </div>
+
+  </div>
+
 
 
 </div>
 
-
-
-<div [hidden]="!start">
-<h3>Питання I рівня </h3>
-<table *ngFor="let question of questions1">
-  <tr >
-    <td>Тест питання</td> <td>  {{question['question_text']}}
-  </td>
-  </tr>
-  <tr>
-    <td>Фотографія</td><td> <img [src]=question.attachment>
-  </td>
-  </tr>
-  <tr>
-    <td>Варінти відповіді</td> <td>  {{question.answers}}
-  </td>
-  </tr>
-</table>
-
-  <h3 >Питання II рівня </h3>
-  <table *ngFor="let question of questions2">
-    <tr >
-      <td>Тест питання</td> <td>  {{question['question_text']}}
-    </td>
-    </tr>
-    <tr>
-      <td>Фотографія</td><td> <img [src]=question.attachment>
-    </td>
-    </tr>
-    <tr>
-      <td>Варінти відповіді</td> <td>  {{question.answers}}
-    </td>
-    </tr>
-  </table>
-
-  <h3>Питання III рівня </h3>
-  <table *ngFor="let question of questions3">
-    <tr >
-      <td>Тест питання</td> <td>  {{question['question_text']}}
-    </td>
-    </tr>
-    <tr>
-      <td>Фотографія</td><td> <img [src]=question.attachment>
-    </td>
-    </tr>
-    <tr>
-      <td>Варінти відповіді</td> <td>  {{question.answers}}
-    </td>
-    </tr>
-  </table>
+<div id="sidebar">
+  <h4>Всі питання</h4>
 </div>
+<div class="cleared"></div>
 
-
-
+<div id="footer">
+</div>
