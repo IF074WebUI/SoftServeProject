@@ -14,7 +14,7 @@ import {
 
 @Component({
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css'],
+  styleUrls: ['./admin.component.scss'],
   animations: [
     trigger('moveLeftRight', [
       state('left', style({
@@ -22,7 +22,7 @@ import {
       })),
       state('right', style({
         transform: 'translateX(5%)',
-        background: 'purple'
+        background: '#826199'
       })),
       transition('left => right', [animate('0.3s')]),
       transition('right => left', [animate('0.3s')])

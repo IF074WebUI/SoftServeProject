@@ -1,0 +1,13 @@
+@import "./universal/styles/const";
+
+.wrapper-admin .header-top{
+  background-color: $primary-violet-color;
+}
+.wrapper-admin .hamburger{
+  width:70px;
+  height:70px;
+  font-size:28px;
+  background-color: $primary-violet-color;
+  border: none;
+  color: #fff
+}
