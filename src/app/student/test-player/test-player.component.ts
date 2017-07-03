@@ -1,40 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {TestPlayerService} from './test-player.service';
-import 'rxjs/add/observable/of';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {Test} from '../../admin/tests/test';
 import {GetTestsBySubjectService} from '../../admin/services/get-tests-by-subject.service';
 import {Answer} from '../../admin/answers/answer';
-import {Observable} from 'rxjs/Observable';
 import {TestDetail} from '../../admin/test-detail/testDetail';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
 
-//
-// export class Object {
-//   public attempts: number;
-//   public enabled: number;
-//   public subject_id: number;
-//   public tasks: number;
-//   public test_id: number;
-//   public test_name: string;
-//   public time_for_test: number;
-//
-//   constructor(attempts, enabled,
-//               subject_id,
-//               tasks,
-//               test_id,
-//               test_name,
-//               time_for_test) {
-//     this.attempts = attempts;
-//     this.enabled = enabled;
-//     this.subject_id = subject_id;
-//     this.tasks = tasks;
-//     this.test_id = test_id;
-//     this.test_name = test_name;
-//     this.time_for_test = time_for_test;
-//   }
-// }
 export class Question {
   question_id: number;
   test_id: number;
@@ -45,9 +18,6 @@ export class Question {
   answers: Answer[];
   true_answer: boolean;
 }
-
-
-
 
 @Component({
   selector: 'app-test-player',
@@ -61,17 +31,16 @@ export class TestPlayerComponent implements OnInit {
   questions: Question[] = [];
   question: Question;
   start: boolean;
-  i: number;
+//  i: number;
   student_id: string;
   test_details: TestDetail[] = [];
-  count: number;
   answers: Answer[];
 
   NEXT_QUESTION = 'Наступне питання';
   PREV_QUESTION = 'Попереднє питання';
 
-  constructor(private test_player: TestPlayerService,  private route: ActivatedRoute,) {
-    this.i = 0;
+  constructor(private test_player: TestPlayerService,  private route: ActivatedRoute) {
+  //  this.i = 0;
   }
 
   ngOnInit() {
@@ -88,7 +57,7 @@ export class TestPlayerComponent implements OnInit {
 
   startTest() {
     this.start = true;
-    const answers$ = this.test_player.getQuestions(this.test_details, this.i).do(resp => {this.questions = resp; this.question = resp[0]; })
+    const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {this.questions = resp; this.question = resp[0]; })
       .switchMap(resp => this.test_player.getAnswers(resp));
 
     answers$.subscribe(response => {this.questions['answers'] = response; console.log(this.questions)});
@@ -104,6 +73,9 @@ export class TestPlayerComponent implements OnInit {
     let currentIndex = this.questions.indexOf(this.question);
     let newIndex = currentIndex === this.questions.length - 1 ? 0 : currentIndex + 1;
     this.question = this.questions[newIndex];
+  }
+  onValueChanged($event) {
+    console.log($event.target.value);
   }
 
 

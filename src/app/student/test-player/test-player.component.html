@@ -1,40 +1,63 @@
 <div class="container-fluid header">
   <div class="header">
-
     <div class="timer">Таймер</div>
     <div class="finish">Завершити тест</div>
     <div class="time">{{currentTime}}</div>
   </div>
 </div>
 
-<div class="wrapper">
+<div class="container">
   <div class="navbar">
-
     <ul class="nav navbar-nav navbar-toggler-right">
       <li><a href="#"> Marked for review</a></li>
     </ul>
-
   </div>
 
-  <div class="container">
-    <div class="row">
-      <div class=".col .col-md-8">
-        <ng-container *ngIf="question">
+      <ng-container *ngIf="question">
+        <div class="wrapper">
           <table>
             <caption><h3>Питання №{{questions.indexOf(question)+1}}</h3></caption>
             <tr>
               <td>{{question['question_text']}}</td>
             </tr>
-            <tr>
+            <tr *ngIf="question.attachment">
               <td><img [src]=question.attachment></td>
             </tr>
-            <tr>
-              <td>{{question['type']}}></td>
-            </tr>
           </table>
-<!--<ng-container []>-->
-  <!---->
-<!--</ng-container>-->
+        </div>
+          <ng-container *ngIf="question['type'] == 1">
+            <div *ngIf="question['answers']" class="form-radio">
+
+              <label appFormInput *ngFor="let answer of question['answers']">
+                <input type="radio" name='option' (change)="onValueChanged($event)" [value]="answer['answer_id']">
+                {{answer['answer_text']}}
+                 <img height="100px" [src]="answer['attachment']">
+              </label>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="question['type'] == 2">
+            <div *ngIf="question['answers']" class="form-radio">
+              <label appFormInput *ngFor="let answer of question['answers']">
+                <input type="checkbox" name='answer' (change)="onValueChanged($event)" [value]="answer['answer_id']">
+                {{answer['answer_text']}}
+               <img height="70" [src]="answer['attachment']">
+              </label>
+            </div>
+          </ng-container>
+
+
+          <ng-container *ngIf="question['type'] == 3">
+            <div
+              class="form-input" class="form-group">
+              <label>Ввести відповідь</label>
+              <input class="form-control"
+                     type="text"
+                     maxlength="100" appFormInput/>
+            </div>
+          </ng-container>
+
+
           <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
               <li class="page-item">
@@ -46,38 +69,15 @@
             </ul>
           </nav>
         </ng-container>
+
+
         <div id="button">
           <ng-container *ngIf="!start">
             <button type="button" class="btn" (click)="startTest()">Почати тест</button>
           </ng-container>
         </div>
       </div>
-      <div class=".col-6 .col-md-4">
-        <!--<div class="sidebar">-->
-        <!--<h4>Всі питання</h4>-->
-        <!--<ul>-->
-        <!--<li *ngFor="let item of questionsList()"  >-->
-        <!--<a (click)="goToQuestion(item)">{{item}}</a></li>-->
-        <!--</ul>-->
-        <!--</div>-->
 
-      </div>
-
-    </div>
-  </div>
-</div>
-<!--<div id="content">-->
-
-
-<!--</div>-->
-
-<!--</div>-->
-
-
-<!--</div>-->
-
-
-<!--<div class="cleared"></div>-->
 
 <div id="footer">
 </div>

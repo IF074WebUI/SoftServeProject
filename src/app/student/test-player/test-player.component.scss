@@ -1,7 +1,8 @@
 @import "../../admin/universal/styles/const";
 @import "../../admin/universal/styles/table";
 @import "../../admin/universal/styles/btn-start";
-
+@import "../../admin/universal/styles/const";
+@import "../../admin/universal/dynamic-form/styles/form-control";
 
 .header {
   height: 100px;
@@ -10,22 +11,21 @@
   .timer {
     float: left;
   }
-  .finish{
+  .finish {
     float: right;
   }
-.time{
-  position: absolute;
-  right: 20px;
-  top: 50px;
-}
+  .time {
+    position: absolute;
+    right: 20px;
+    top: 50px;
+  }
 }
 
 .wrapper {
   background-color: white;
   margin-top: 5%;
   margin-left: 10%;
-  width: 50%;
-  height: 500px;
+  width: 70%;
 }
 
 .content {
@@ -46,16 +46,13 @@
 //  z-index: -100;
 //}
 
-#cleared {
-  clear: both;
-}
-
 table {
   caption {
     caption-side: top;
   }
   font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
   margin-top: 20px;
+  margin-left: 100px;
   width: 400px;
   font-size: large;
   color: black;
@@ -81,8 +78,22 @@ table {
   height: 50px;
 }
 
-//.button{
-//  position: relative;
-//  left: 50px;
-//  top: 100px;
-//}
+.form-radio {
+  left: 100px;
+  position: relative;
+  top: 15px;
+  input {
+    margin-right: 50px;
+
+  }
+  label {
+    padding: 10px;
+    display: block;
+    margin-top: 50px;
+    height: 50px;
+    img {
+      margin-left: 100px;
+      max-height: 70px;
+    }
+  }
+}

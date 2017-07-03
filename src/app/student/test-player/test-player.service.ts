@@ -33,7 +33,7 @@ export class TestPlayerService {
     return this.http.get('http://' + HOST + '/SAnswer/getAnswersByQuestion/' + id).map(resp => resp.json());
   }
 
-  getQuestions = (testDetails: any[], i: number) => {
+  getQuestions = (testDetails: any[]) => {
     this.questions = [];
     let forkJoinBatch: Observable<any>[] = testDetails.map(item => {
       return this.getQuestionsByLevelRandom(item.test_id, item.level, item.tasks);
