@@ -5,11 +5,13 @@ import {GetTestsBySubjectService} from 'app/admin/services/get-tests-by-subject.
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import {Question} from './test-player.component';
+import {Answer} from '../../admin/answers/answer';
 
 
 @Injectable()
 export class TestPlayerService {
  private questions: Question[] = [];
+ private answers: Answer[] = [];
 
   constructor(private http: Http, private getTestBySubjectService: GetTestsBySubjectService) {
   }
@@ -26,6 +28,9 @@ export class TestPlayerService {
   }
   getTestDetail(test_id: number){
     return this.http.get('http://' + HOST + '/testDetail/getTestDetailsByTest/' + test_id).map(resp => resp.json());
+  }
+  getAnswersById(id: number): Observable<any> {
+    return this.http.get('http://' + HOST + '/SAnswer/getAnswersByQuestion/' + id).map(resp => resp.json());
   }
 
   getQuestions = (testDetails: any[], i: number) => {
@@ -45,7 +50,7 @@ export class TestPlayerService {
         return this.questions;
       });
 
-  }
+  };
 
   prepareQuestionForTest(questions: Question[][], testDetails: any[]): Question[] {
     let tempArr: Question[] = [];
@@ -56,6 +61,22 @@ export class TestPlayerService {
     return tempArr.map((question: Question) =>  {return question;})
   }
 
+  getAnswers = (questions: Question[]) => {
+    let forkJoinBatch: Observable<any>[] = questions.map(question => {
+      return this.getAnswersById(question['question_id']);
+    });
+    return Observable.forkJoin(forkJoinBatch)
+      .do((answers: Answer[][] | any) => {
+        let error = questions.some((item) => {
+          return item['response'];
+        });
+        if (error) {
+          throw new Error("test data are absent");
+        }
+        answers.forEach((answer, i) => {questions[i]['answers'] = answer; })
+      });
+
+  }
 }
 
 

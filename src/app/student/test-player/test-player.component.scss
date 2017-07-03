@@ -34,17 +34,17 @@
 
 }
 
-#sidebar {
-  background-color: $pink-colo !important;
-  position: absolute;
-  right: 0px;
-  top: 100px;
-  bottom: 0px;
-  width: 500px;
-  margin-left: -200px;
-  background-color: #FFA;
-  z-index: -100;
-}
+//#sidebar {
+//  background-color: $pink-colo !important;
+//  position: absolute;
+//  right: 0px;
+//  top: 100px;
+//  bottom: 0px;
+//  width: 500px;
+//  margin-left: -200px;
+//  background-color: #FFA;
+//  z-index: -100;
+//}
 
 #cleared {
   clear: both;
@@ -55,7 +55,6 @@ table {
     caption-side: top;
   }
   font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
-  margin: auto;
   margin-top: 20px;
   width: 400px;
   font-size: large;
