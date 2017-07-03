@@ -13,7 +13,7 @@ import {Question} from "../questions/question";
 @Component({
   selector: 'dtester-answers',
   templateUrl: './answers.component.html',
-  styleUrls: ['./answers.component.css']
+  styleUrls: ['./answers.component.scss']
 })
 export class AnswersComponent implements OnInit {
   answersOnPage: Answer[];
@@ -43,7 +43,7 @@ export class AnswersComponent implements OnInit {
   ngOnInit() {
     this.getQueryParams();
     // this.getAnswers();
-    this.headers = ['№', 'Правильність', 'Відповідь', 'Вкладення'];
+    this.headers = ['№', 'Відповідь', 'Правильність', 'Вкладення'];
     this.ignoreProperties = ['question_id', 'answer_id'];
     this.imageForm = new FormGroup({});
   }
@@ -53,7 +53,7 @@ export class AnswersComponent implements OnInit {
       this.questionNameQueryParam = params['question_text'];
       if (this.questionIdQueryParam) this.getAnswersForOneQuestion();
       else
-      this.getAnswers();
+        this.getAnswers();
     });
   }
   getAnswersForOneQuestion() {
@@ -126,12 +126,12 @@ export class AnswersComponent implements OnInit {
 // Method for opening editing and deleting commo modal window
 
   add() {
-    this.popup.sendItem({'answer_id': '', 'question_id': this.questionIdQueryParam, 'answer_text': '', 'true_answer': ''}, 'answer');
+    this.popup.sendItem({answer_id: '', question_id:  '', true_answer: '', answer_text: ''}, 'Answer');
     this.popup.showModal();
   }
 
   edit(answer: Answer) {
-    this.popup.sendItem({'answer_id': answer.answer_id, 'question_id': this.questionIdQueryParam, 'answer_text': answer.answer_text, 'true_answer': answer.true_answer}, 'answer',  null, answer.attachment);
+    this.popup.sendItem({answer_id: answer.answer_id, question_id: answer.question_id, true_answer: answer.true_answer, answer_text: answer.answer_text}, 'Answer', null, answer.attachment);
     this.popup.showModal();
   }
 
@@ -141,7 +141,7 @@ export class AnswersComponent implements OnInit {
   // Method for  add/edit, delete form submiting
 
   formSubmitted(value) {
-    value['question_id'] = this.questionIdQueryParam;
+    value['question_id'] = this.question_id;
     console.log(value);
     if (value['answer_id']) {
       this.answersService.editAnswer(value['answer_id'], value['question_id'], value['answer_text'],
@@ -154,7 +154,8 @@ export class AnswersComponent implements OnInit {
             relativeTo: this.route.parent})
         );
     } else {
-      this.answersService.createAnswer(value['question_id'], value['answer_text'],
+      console.log(value['question_id']);
+      this.answersService.createAnswer(this.questionIdQueryParam, value['answer_text'],
         value['true_answer'], value['photo'])
         .subscribe(response => {
             this.getAnswersForOneQuestion();

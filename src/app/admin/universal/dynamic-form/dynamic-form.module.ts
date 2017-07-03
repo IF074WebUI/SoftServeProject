@@ -11,13 +11,13 @@ import { FormTextareaComponent } from './components/form-textarea/form-textarea.
 import { FormEmailComponent } from './components/form-email/form-email.component';
 import { FormSelectWithOptionsComponent } from './components/form-select-with-options/form-select-with-options.component';
 import { FormSelectTestDetailByIdComponent } from './components/form-select-test-detail-by-id/form-select-test-detail-by-id.component';
-import { FormInputFileComponent } from './components/form-input-file/form-input-file.component';
 import { FormNumberComponent } from './components/form-number/form-number.component';
 import { FormRadioButtonComponent } from './components/form-radio-button/form-radio-button.component';
 import { FormHiddenComponent } from './components/form-hidden/form-hidden.component';
 import { ConfirmDeleteDirective } from './styles/directives/confirm-delete.directive';
 import { FormInputDirective } from './styles/directives/form-input.directive';
 import { SessionService } from './container/dynamic-form/session.service';
+import {ImageCropperComponent} from "ng2-img-cropper";
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -35,12 +35,13 @@ import { SessionService } from './container/dynamic-form/session.service';
     FormEmailComponent,
     FormSelectWithOptionsComponent,
     FormSelectTestDetailByIdComponent,
-    FormInputFileComponent,
     FormNumberComponent,
     FormRadioButtonComponent,
     FormHiddenComponent,
     ConfirmDeleteDirective,
-    FormInputDirective
+    FormInputDirective,
+    ImageCropperComponent
+
   ],
   exports: [DynamicFormComponent],
   entryComponents: [
@@ -51,7 +52,6 @@ import { SessionService } from './container/dynamic-form/session.service';
     FormEmailComponent,
     FormSelectWithOptionsComponent,
     FormSelectTestDetailByIdComponent,
-    FormInputFileComponent,
     FormNumberComponent,
     FormRadioButtonComponent,
     FormHiddenComponent

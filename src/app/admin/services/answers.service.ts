@@ -46,18 +46,10 @@ export class AnswersService {
       .map((resp: Response) => resp.json());  }
 
   getPaginatedPage(pageNumber: number, recordsPerPage: number) {
-    //   return this.http.get('http://' + HOST + '/answer/getRecordsRange/' + recordsPerPage + '/' + (pageNumber - 1) * recordsPerPage)
-    //     .map((resp: Response) => resp.json());
-    // }
-    if (pageNumber > 0) {
-      return this.http.get('http://' + HOST + '/answer/getRecordsRange/' + recordsPerPage + '/' + (pageNumber - 1) * recordsPerPage)
-        .map((resp: Response) => resp.json());
-    } else if (pageNumber === 0) {
-      return this.http.get('http://' + HOST + '/answer/getRecordsRange/' + recordsPerPage + '/' + (pageNumber) * recordsPerPage)
-        .map((resp: Response) => resp.json());
-    }
+    return this.http.get('http://' + HOST + '/answer/getRecordsRange/' + recordsPerPage + '/' + (pageNumber - 1) * recordsPerPage )
+      .map((resp: Response) => resp.json());
   }
- createAnswer(question_id: number, answertext: string, trueanswer: string, attach: any ): Observable<Response> {
+  createAnswer(question_id: number, answertext: string, trueanswer: string, attach: any ): Observable<Response> {
     const bodyForSendingNewAnswers = JSON.stringify({question_id: question_id, answer_text: answertext,
       true_answer: trueanswer, attachment: attach});
     return this.http.post('http://' + HOST + '/answer/insertData', bodyForSendingNewAnswers)

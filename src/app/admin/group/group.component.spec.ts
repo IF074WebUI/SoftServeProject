@@ -1,25 +1,28 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import {TestBed, inject, ComponentFixture} from '@angular/core/testing';
+// import {HttpModule} from "@angular/http";
+import {GroupService} from "./group.service";
+// import {DebugElement} from "@angular/core";
 import { GroupComponent } from './group.component';
 
-describe('GroupComponent', () => {
-  let component: GroupComponent;
-  let fixture: ComponentFixture<GroupComponent>;
+describe(`Component: Group Component`, () => {
+    let component: GroupComponent;
+    let fakeGroupService: any;
+    beforeEach(() => {
+      fakeGroupService = {
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ GroupComponent ]
+      };
+      component = new GroupComponent(null);
     })
-    .compileComponents();
-  }));
+    fit('shouldv 1+1', () => {
+      expect(1 + 1).toEqual(2);
+    });
+    fit(`it should have a button class 'fa fa-calendar'`, () => {
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(GroupComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+      expect(component.btnClass).toEqual('fa fa-calendar');
+    });
+    fit(`should set pageNumber to 2`, () => {
+      component.ngOnInit();
+      component.changePage(2);
+      expect(component.pageNumber).toEqual(2);
+    });
 });

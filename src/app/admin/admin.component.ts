@@ -2,12 +2,35 @@ import { Component, OnInit } from '@angular/core';
 import { SpinnerService } from './universal/spinner/spinner.service';
 import {ViewContainerRef} from '@angular/core';
 import {ToastsManager} from 'ng2-toastr';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+  keyframes,
+  group
+} from '@angular/animations';
 
 @Component({
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  styleUrls: ['./admin.component.css'],
+  animations: [
+    trigger('moveLeftRight', [
+      state('left', style({
+        transform: 'translateX(-110%)'
+      })),
+      state('right', style({
+        transform: 'translateX(5%)',
+        background: 'purple'
+      })),
+      transition('left => right', [animate('0.3s')]),
+      transition('right => left', [animate('0.3s')])
+    ])
+  ]
 })
 export class AdminComponent implements OnInit {
+  menuMove: string = 'left';
   objLoaderStatus: boolean;
 
   constructor(private spinner: SpinnerService,
@@ -21,6 +44,9 @@ export class AdminComponent implements OnInit {
     this.spinner.loaderStatus.subscribe((val: boolean) => {
       this.objLoaderStatus = val;
     });
+  }
+  toggleMove() {
+    this.menuMove = (this.menuMove === 'left') ? 'right' : 'left';
   }
 }
 

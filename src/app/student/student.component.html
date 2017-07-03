@@ -1,1 +1,25 @@
-<h1 class="text-centered">Student stuff here</h1>
+<ngx-loading [show]="objLoaderStatus"></ngx-loading>
+
+<header>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10">
+        <h1>dTester</h1>
+      </div>
+      <div class="col-md-2">
+        <button class="exit" (click)="logout()">Вихід</button>
+      </div>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="container">
+    <div class="row">
+      <h2>Доброго дня {{studentFullName}}!</h2>
+    </div>
+    <div class="row" *ngIf="checkTestAvailability">
+      <h3 ></h3>
+    </div>
+  </div>
+</main>
+<button (click)="openTestPlayer()">Перейти до складання тесту</button>

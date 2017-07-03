@@ -12,7 +12,7 @@ import {ToastsManager} from 'ng2-toastr';
 @Component({
   selector: 'dtester-admin-user',
   templateUrl: './admin-user.component.html',
-  styleUrls: ['./admin-user.component.css'],
+  styleUrls: ['./admin-user.component.scss'],
   providers: [AdminUserService]
 })
 export class AdminUserComponent implements OnInit {

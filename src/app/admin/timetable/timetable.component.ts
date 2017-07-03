@@ -16,7 +16,7 @@ declare let $: any;
 @Component({
   selector: 'app-timetable',
   templateUrl: './timetable.component.html',
-  styleUrls: ['./timetable.component.css']
+  styleUrls: ['./timetable.component.scss']
 })
 export class TimetableComponent implements OnInit {
   timeTables: Timetable[] = [];

@@ -14,11 +14,12 @@ import { TestDetailService } from '../test-detail/test-detail.service';
 import { Test } from '../tests/test';
 import { DynamicFormComponent } from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 import { Observable } from 'rxjs/Observable';
+declare let $: any;
 
 @Component({
   selector: 'dtester-results',
   templateUrl: './results.component.html',
-  styleUrls: ['./results.component.css']
+  styleUrls: ['./results.component.scss']
 })
 export class ResultsComponent implements OnInit {
 
@@ -84,6 +85,7 @@ export class ResultsComponent implements OnInit {
     );
     this.groupsService.getGroups().subscribe((resp: Group[]) => this.groups = resp);
     this.testsService.getAll().subscribe((resp: Test[]) => this.tests = resp);
+    this.spinnerService.hideSpinner();
   }
 
   transformResults() {
@@ -171,6 +173,31 @@ export class ResultsComponent implements OnInit {
         this.spinnerService.hideSpinner();
         this.toastr.success(`Результат успішно видалений`);
       });
+  }
+
+  showCharts() {
+    let series = [];
+    for (const test of this.tests) {
+      series.push({
+        name: test.test_name,
+        data: this.results.filter(r => r.test_name === test.test_name).map(r => parseFloat(r['percentage']))
+      });
+    }
+
+    $('#container').highcharts({
+      chart: {
+        type: 'bar'
+      },
+
+      title: {
+        text: 'Графік успішності по тестах'
+      },
+      xAxis: {
+        categories: this.results.map(r => r.student_name)
+      },
+
+      series: series
+    });
   }
 
   print(): void {

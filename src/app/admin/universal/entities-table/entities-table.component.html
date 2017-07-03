@@ -1,4 +1,4 @@
-<table *ngIf="entities?.length; else empty" class="table table-striped table-sm table-hover">
+<table *ngIf="entities?.length; else empty" class="material striped hover-style bordered lg align-left">
   <thead>
   <tr class="entities-header">
     <th *ngFor="let header of headers; index as headerIndex">
@@ -48,4 +48,3 @@
 <ng-template #empty>
   <div class="text-center">Сутності відсутні</div>
 </ng-template>
-

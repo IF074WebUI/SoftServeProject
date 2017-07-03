@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LoginService} from "../../login/login.service";
 import {Router} from "@angular/router";
 import {
@@ -13,26 +13,29 @@ import {
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss'],
+  styleUrls: ['./menu.component.scss']
+  /*,
   animations: [
     trigger('moveLeftRight', [
       state('left', style({
         transform: 'translateX(-110%)'
       })),
       state('right', style({
-        transform: 'translateX(5%)'
+        transform: 'translateX(5%)',
+        background: 'purple'
       })),
       transition('left => right', [animate('0.3s')]),
       transition('right => left', [animate('0.3s')])
     ])
   ]
+  */
 })
 export class MenuComponent implements OnInit {
   menuMove: string = 'left';
-  @Output() onMove = new EventEmitter();
 
   constructor(private loginService: LoginService, private router: Router) {
   }
+
   ngOnInit() {
   }
   toggleMove() {

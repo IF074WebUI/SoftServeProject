@@ -1,16 +1,25 @@
-button, a {
-  cursor: pointer;
-}
-select {
-  margin-top: 5px;
-}
-.croup-count {
-  margin-top: 20px;
-}
-p {
-  padding: 0;
-}
-span {
-  font-weight: bold;
-}
+.btn {
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  background-color: white;
+  color: black;
+  transition: background-color .3s; }
 
+.btn:hover, .btn:focus {
+  cursor: pointer;
+  background-color: #eff5f5; }
+
+.btn-add {
+  margin: 0 10px;
+  border-radius: 50%;
+  color: white;
+  width: 35px;
+  height: 35px;
+  font-size: 30px;
+  cursor: pointer;
+  display: inline; }
+
+.top-panel {
+  background-color: #533687; }
+
+/*# sourceMappingURL=group.component.css.map */

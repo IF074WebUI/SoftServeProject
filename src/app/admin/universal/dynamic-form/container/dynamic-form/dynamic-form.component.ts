@@ -1,14 +1,15 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
 import {SessionService} from './session.service';
+import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
 
 declare var $: any;
 
 @Component({
   selector: 'dynamic-form',
   styleUrls: ['dynamic-form.component.scss'],
-  templateUrl: './dynamic-form.component.html'
+  templateUrl: './dynamic-form.component.html',
 })
 export class DynamicFormComponent implements OnInit {
   @Input()
@@ -43,16 +44,87 @@ export class DynamicFormComponent implements OnInit {
   step1: boolean;
   step2: boolean;
   photo: string;
+  validateEmail: Function;
+  data: any;
+  name: string;
+  data1: any;
+  cropperSettings1: CropperSettings;
+  croppedWidth: number;
+  croppedHeight: number;
+
+  @ViewChild('cropper', undefined) cropper: ImageCropperComponent;
 
   constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService, private _SessionService: SessionService) {
+    this.cropperSettings1 = new CropperSettings();
+    this.cropperSettings1.width = 200;
+    this.cropperSettings1.height = 200;
+
+    this.cropperSettings1.croppedWidth = 200;
+    this.cropperSettings1.croppedHeight = 200;
+
+    this.cropperSettings1.canvasWidth = 400;
+    this.cropperSettings1.canvasHeight = 200;
+
+    this.cropperSettings1.minWidth = 10;
+    this.cropperSettings1.minHeight = 10;
+
+    this.cropperSettings1.rounded = false;
+    this.cropperSettings1.keepAspect = false;
+
+    this.cropperSettings1.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
+    this.cropperSettings1.cropperDrawSettings.strokeWidth = 2;
+
+    this.data1 = {};
   }
 
   ngOnInit() {
     this.form = this.createGroup();
-    // this.step1 = true;
-    // this.step2 = false;
-
   }
+
+  cropped(bounds: Bounds) {
+    this.croppedHeight = bounds.bottom - bounds.top;
+    this.croppedWidth = bounds.right - bounds.left;
+    this.photo = this.data1.image;
+  }
+
+  //
+  // fileChangeListener($event) {
+  //   let image: any = new Image();
+  //   let file: File = $event.target.files[0];
+  //   let myReader: FileReader = new FileReader();
+  //   let that = this;
+  //   myReader.onloadend = function (loadEvent: any) {
+  //     image.src = loadEvent.target.result;
+  //     that.cropper.setImage(image);
+  //   };
+//    this.photo = this.data1.src;
+  //  console.log(this.photo);
+//this.photo = myReader.result;
+//     myReader.readAsDataURL(file);
+//   }
+  //old mwthods
+
+//   imageChange($event): void {
+//     this.readThis($event.target);
+// //    const preview = document.querySelector('img');
+//   }
+//
+//
+//   readThis(inputValue: any): void {
+//     let file: File = inputValue.files[0];
+//     let myReader: FileReader = new FileReader();
+//     let that = this;
+//     myReader.onloadend = (e) => {
+//        let string = myReader.result;
+//       that.cropper.setImage(string);
+//       );
+//       // that.cropper.setImage(image);
+//       this.photo = string;
+//       console.log(string);
+//     };
+//     myReader.readAsDataURL(file);
+//   }
+
 
   createGroup() {
     const group = this.fb.group({});
@@ -79,7 +151,7 @@ export class DynamicFormComponent implements OnInit {
   //  multistep modal
 
   submit() {
-    if (this.entity_name === 'Question' || this.entity_name === 'Student' || this.entity_name === 'answer') {
+    if (this.entity_name === 'Question' || this.entity_name === 'Student' || this.entity_name === 'Answer') {
       this.step2 = true;
       this.step1 = false;
       this.TITLE = this.INPUT_PHOTO;
@@ -89,48 +161,13 @@ export class DynamicFormComponent implements OnInit {
     }
   }
 
-  imageChange($event): void {
-    this.readThis($event.target);
-    const preview = document.querySelector('img');
-  }
-
-
-  readThis(inputValue: any): void {
-    const file: File = inputValue.files[0];
-    const myReader: FileReader = new FileReader();
-
-    myReader.onloadend = (e) => {
-      let string = myReader.result;
-      this.photo = string;
-    };
-    myReader.readAsDataURL(file);
-    //   this.readAndPreview(file);
-  }
-
-  //
-  // readAndPreview(file) {
-  //   let preview = document.querySelector('#preview');
-  //   if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
-  //     let reader = new FileReader();
-  //
-  //     reader.addEventListener('load', function () {
-  //       let image = new Image();
-  //       image.height = 200;
-  //       image.title = file.name;
-  //       image.src = this.result;
-  //       preview.appendChild(image);
-  //     }, false);
-  //
-  //     reader.readAsDataURL(file);
-  //   }
-  //
-  // }
 
   skip() {
     let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
     this.submitted.emit(formValue);
-    let preview = document.querySelector('#preview');
-    preview.innerHTML = '';
+    // let preview = document.querySelector('#preview');
+    // preview.innerHTML = '';
+    this.data1 = {};
     this._SessionService.remove('formValue');
   }
 
@@ -139,8 +176,9 @@ export class DynamicFormComponent implements OnInit {
     this.submitted.emit(formValue);
     this.step1 = true;
     this.step2 = false;
-    let preview = document.querySelector('#preview');
-    preview.innerHTML = '';
+    this.data1 = {};
+    // let preview = document.querySelector('#preview');
+    // preview.innerHTML = '';
     this._SessionService.remove('formValue');
   }
 
@@ -164,7 +202,7 @@ export class DynamicFormComponent implements OnInit {
     this.action = 'add_edit';
     this.entity = entity;
     this.entity_name = entity_name;
-    this.photo = photo || '';
+    this.photo = this.data1.image = photo || '';
     let InputEntityNames = Object.getOwnPropertyNames(entity);
     let FormNames = Object.getOwnPropertyNames(this.form.controls);
     for (let i = 0; i < InputEntityNames.length; i++) {
@@ -204,6 +242,7 @@ export class DynamicFormComponent implements OnInit {
   cancel() {
     this.form.reset();
     this.CONFIRM_QUESTION = '';
+    this.data1 = {};
     this._SessionService.remove('formValue');
     $('#add_edit_deletePopup').modal('hide');
   }
@@ -215,7 +254,7 @@ interface Validator<T extends FormControl> {
   (c: T): { [error: string]: any };
 }
 
-function validateEmail(c: FormControl) {
+export function validateEmail(c: FormControl) {
   let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
 
   return EMAIL_REGEXP.test(c.value) ? null : {
@@ -225,7 +264,7 @@ function validateEmail(c: FormControl) {
   };
 }
 
-function validateName(c: FormControl) {
+export function validateName(c: FormControl) {
   let name = c.value;
   if (this.entity_name) {
     return this.get_records_by_search.getRecordsBySearch(this.entity_name, name).map((resp) => {

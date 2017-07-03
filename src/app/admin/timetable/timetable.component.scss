@@ -1,0 +1,17 @@
+@import "../universal/styles/header";
+
+.header-group{
+  @extend .header-group;
+  button {
+    float: left;
+    margin-left: 20px;
+  }
+}
+h2{
+  text-align: center;
+}
+
+td, th{
+  text-align: center;
+  vertical-align: middle;
+}

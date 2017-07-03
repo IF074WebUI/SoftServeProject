@@ -1,14 +1,13 @@
 <h3 class="text-center">Спеціальності</h3>
-<div class="alert alert-info" role="alert">
+<div class="header-group" role="alert">
   <button class="btn btn-primary" (click)="add()">
     Додати спеціальність
   </button>
   <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
-  <div class="header-group">
+
     <dtester-items-per-page [numberOfRecords]="count"
                             (recordsPerPageChanged)="changeCountPerPage($event)">
     </dtester-items-per-page>
-  </div>
 </div>
 <dtester-entities-table
   [entities]="specialities" [headers]="headers" [ignoreProperties]="ignoreProperties"

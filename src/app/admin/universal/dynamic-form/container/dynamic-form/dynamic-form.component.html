@@ -21,7 +21,7 @@
             </ng-container>
             <div class="modal-footer">
               <div class="form-button">
-                <button [disabled]="!form.valid" type="submit" class="btn btn-default" (click)="submit()"> {{
+                <button [disabled]="!form.valid" type="submit" class="btn btn-succes" (click)="submit()"> {{
                   SUBMIT_ADD_EDIT }}
                 </button>
               </div>
@@ -33,17 +33,25 @@
         </div>
 
         <div class='step-2' *ngIf="action == 'add_edit'" [hidden]='!step2'>
-          <div class="fileContainer">
-            <div class="button-container">
-              <!--<button type="submit" class="btn btn-default">-->
-              <!--{{ PHOTO_LABEL }}-->
-              <!--</button>-->
-              <input type="file" class="form-control-file" accept='image/*' (change)='imageChange($event)'/>
+          <div>
+
+            <img-cropper [image]="data1" [settings]="cropperSettings1" (onCrop)="cropped($event)"></img-cropper>
+            <div class="result" *ngIf="data1.image" >
+                <img [src]="data1.image" [width]="cropperSettings1.croppedWidth" [height]="cropperSettings1.croppedHeight">
             </div>
-            <!--<div id="preview">-->
-            <!--</div>-->
-            <img class="img-thumbnail photo" [src]="photo">
+
           </div>
+          <!--<div class="fileContainer">-->
+          <!--<div class="button-container">-->
+          <!--&lt;!&ndash;<button type="submit" class="btn btn-default">&ndash;&gt;-->
+          <!--&lt;!&ndash;{{ PHOTO_LABEL }}&ndash;&gt;-->
+          <!--&lt;!&ndash;</button>&ndash;&gt;-->
+          <!--<input type="file" class="form-control-file" accept='image/*' (change)='imageChange($event)'/>-->
+          <!--</div>-->
+          <!--&lt;!&ndash;<div id="preview">&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+          <!--<img class="img-thumbnail photo" [src]="photo">-->
+          <!--</div>-->
 
           <div class="modal-footer">
             <div class="form-button">

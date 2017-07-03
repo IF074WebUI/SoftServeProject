@@ -11,7 +11,7 @@ declare let $: any;
 @Component({
   selector: 'app-tests',
   templateUrl: './tests.component.html',
-  styleUrls: ['./tests.component.css']
+  styleUrls: ['./tests.component.scss']
 })
 export class TestsComponent implements OnInit {
   tests: Test[] = [];
@@ -46,6 +46,8 @@ export class TestsComponent implements OnInit {
       this.subjectIdQueryParam = params['subject_id'];
       this.subjectNameQueryParam = params['subject_name'];
       this.getTestsForOneSubject();
+      console.log('subject ' +  this.subjectIdQueryParam);
+
     });
   }
   getTestsForOneSubject() {

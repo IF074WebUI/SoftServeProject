@@ -15,7 +15,7 @@ import { ToastsManager } from 'ng2-toastr';
 @Component({
   selector: 'dtester-group',
   templateUrl: './group.component.html',
-  styleUrls: ['./group.component.css'],
+  styleUrls: ['./group.component.scss'],
   providers: [FacultyService, SpecialitiesService]
 })
 export class GroupComponent implements OnInit {
@@ -82,9 +82,7 @@ export class GroupComponent implements OnInit {
     }
     this.getGroupsService.getPaginatedPage(this.pageNumber, this.offset).delay(301)
       .subscribe(resp => {
-        this.groupsOnPage = <Group[]>resp, err => this.router.navigate(['/bad_request']);
-      this.spinner.hideSpinner();
-      });
+        this.groupsOnPage = <Group[]>resp; this.spinner.hideSpinner(); }, err => this.toastr.error(err) );
   }
 
     getCountRecords() {

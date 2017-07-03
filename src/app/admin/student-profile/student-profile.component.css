@@ -1,0 +1,35 @@
+.btn {
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  background-color: white;
+  color: black;
+  transition: background-color .3s; }
+
+.btn:hover, .btn:focus {
+  cursor: pointer;
+  background-color: #eff5f5; }
+
+.btn-add {
+  margin: 0 10px;
+  border-radius: 50%;
+  color: white;
+  width: 35px;
+  height: 35px;
+  font-size: 30px;
+  cursor: pointer;
+  display: inline; }
+
+.buttons {
+  margin: 50px; }
+
+.photo {
+  max-height: 200px;
+  max-width: 200px; }
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red; }
+
+.invalid {
+  color: red; }
+
+/*# sourceMappingURL=student-profile.component.css.map */

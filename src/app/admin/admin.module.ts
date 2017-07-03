@@ -105,8 +105,6 @@ import { ButtonsDirective } from './universal/directives/buttons.directive';
     MdButtonModule,
     DynamicFormModule,
     LoadingModule,
-    MdButtonModule,
-    LoadingModule,
     ChartModule,
     RadioButtonModule
   ],

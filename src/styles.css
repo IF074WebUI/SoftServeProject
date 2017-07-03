@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 body {
-  background-image: url("assets/black_white_gradient.jpg");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
+  background-color:  #f5f5f5;
+}
+h1  {
+  coor: white;
 }
