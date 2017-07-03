@@ -1,8 +1,8 @@
 <h3 class="text-center">Факультети</h3>
 
-<div class="header-group" role="alert">
+<div class="top-panel" role="alert">
   <!-- Add item -->
-  <button appButtons class="btn btn-primary" (click)="add()"> {{CREATE_NEW_FACULTY}}</button>
+  <div appButtons class="btn-add" (click)="add()">+</div>
   <!--search component -->
     <dtester-search
       (searchCriteria)="search($event)">

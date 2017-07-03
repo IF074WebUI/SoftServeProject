@@ -31,35 +31,38 @@
     </div>
 
   </div>
-  <div class="row table-row">
-   <table class="material striped hover-style bordered lg align-left">
-      <thead>
-      <tr class="entities-header">
-        <th *ngFor="let header of tableHeaders; index as headerIndex">
-          {{header}}
-        </th>
-      </tr>
-      </thead>
-     <tbody class="entities-body">
-     <tr *ngFor="let test of result['tests']; let i = index">
-       <td>
-         {{i + 1}}
-       </td>
-       <td>
-         {{test.test_name}}
-       </td>
-       <td>
-         {{test.tasks}}
-       </td>
-       <td>
-         {{test.time_for_test}}хв
-       </td>
-       <td>
-          <button class="btn btn-test-list" (click)="openTestPlayer(+test.test_id)">Здати тест</button>
-       </td>
-     </tr>
-     </tbody>
-   </table>
+  <div *ngIf="checkTestAvailability" class="container">
+    <h5>{{noTests}}</h5>
   </div>
+  <div *ngIf="!checkTestAvailability" class="row table-row">
+     <table >
+        <thead>
+        <tr >
+          <th *ngFor="let header of tableHeaders; index as headerIndex">
+            {{header}}
+          </th>
+        </tr>
+        </thead>
+       <tbody >
+       <tr *ngFor="let test of result['tests']; let i = index">
+         <td>
+           {{i + 1}}
+         </td>
+         <td>
+           {{test.test_name}}
+         </td>
+         <td>
+           {{test.tasks}}
+         </td>
+         <td>
+           {{test.time_for_test}}хв
+         </td>
+         <td>
+            <button class="btn btn-test-list" (click)="openTestPlayer(+test.test_id)">Здати тест</button>
+         </td>
+       </tr>
+       </tbody>
+     </table>
+    </div>
 </main>
-<button (click)="openTestPlayer(13)">Перейти до складання тесту with ID #13</button>
+<button  class="btn" (click)="openTestPlayer(13)">Перейти до складання тесту with ID #13</button>

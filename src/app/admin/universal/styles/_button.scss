@@ -30,13 +30,22 @@
   cursor: pointer;
 }
 .btn-add {
-  margin: 0 10px;
-  border-radius: 50%;
-  color: white;
-  width: 35px;
-  height: 35px;
-  font-size: 30px;
-  cursor: pointer;
-  display: inline;
-}
+    justify-content: space-between;
+    width: 35px;
+    height: 35px;
+    background-color: #c10000;
+    border-radius: 50%;
+    box-shadow: 0 2px 2px 0 #666;
+    display: inline-block;
+    font-size: 25px;
+    line-height: 35px;
+    color: white;
+    text-align: center;
+    transition: all 0.1s ease-in-out;
+  }
+
+  .btn-add:hover {
+    box-shadow: 0 6px 4px 0 #666;
+    transform: scale(1.05);
+  }
 

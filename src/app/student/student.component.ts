@@ -17,6 +17,7 @@ import {AnswersService} from '../admin/services/answers.service';
 import {TestDetailService} from '../admin/test-detail/test-detail.service';
 import {DeleteRecordByIdService} from '../admin/services/delete-record-by-id.service';
 import {TestPlayerService} from './test-player/test-player.service';
+import {subscribeToResult} from "rxjs/util/subscribeToResult";
 @Component({
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.scss']
@@ -55,10 +56,10 @@ export class StudentComponent implements OnInit {
       this.noRecordsResponce = 'no records';
       this.checkTestAvailability = false;
       this.tableHeaders = ['#', 'Назва тесту', 'Кількість завданнь', 'Тривалість', ''];
-
+      this.studentId = +window.sessionStorage.getItem('studentId');
       this.result = {
         student: [],
-        groupId: 0,
+        groupId: [],
         subjectId: [],
         tests: [],
         timeTable: []
@@ -66,21 +67,21 @@ export class StudentComponent implements OnInit {
     }
 
 ngOnInit() {
+      this.getTestForStudent();
   this.spinner.loaderStatus.subscribe((val: boolean) => {
     this.objLoaderStatus = val;
   });
-this.getStudentId();
-this.getTests();
-this.clock = setInterval(() => {
-  this.getTime();
-  this.date = new Date(this.unixTime * 1000);
-  this.currentTime = this.date.getHours() + ':' + this.date.getMinutes() + ':' + this.date.getSeconds();
-  }, 1000);
+// this.getStudentId();
+// this.getTests();
+// this.clock = setInterval(() => {
+//   this.getTime();
+//   this.date = new Date(this.unixTime * 1000);
+//   this.currentTime = this.date.getHours() + ':' + this.date.getMinutes() + ':' + this.date.getSeconds();
+//   }, 1000);
 }
 
 getStudentId() {
   this.spinner.showSpinner();
-  this.studentId = +window.sessionStorage.getItem('studentId');
   this.loginService.checkLogged()
       .subscribe(
         res => {},
@@ -116,16 +117,36 @@ getTests() {
 
 
 }
-// getTestForStudent() {
-//   this.spinner.showSpinner();
-//   this.studentService.getStudentById(this.studentId)
-//     .flatMap(
-//       (res) => {
-//         this.result.student = res[0];
-//         return this.timeTable.getTimeTablesForGroup(this.result.student.group_id)
-//           .subscribe( resSubjects => { this.result.subjectId = resSubjects; } );
-//     };
-// }
+getTestForStudent() {
+  // this.spinner.showSpinner();
+  this.studentService.getStudentById(this.studentId)
+    .subscribe(res => {
+      this.result.student = res[0];
+        this.timeTable.getTimeTablesForGroup(this.result.student.group_id)
+          .subscribe(timeTableRes => {
+            if (timeTableRes['response'] === this.noRecordsResponce) {
+              this.checkTestAvailability = true;
+            } else {
+              this.result.timeTable = timeTableRes;
+              for (const timeTable of this.result.timeTable) {
+                this.test.getTestsBySubject(timeTable['subject_id'])
+                  .subscribe(testsRes => {
+                      if (testsRes['response'] === this.noRecordsResponce) {
+                        this.checkTestAvailability = true;
+                      } else {
+                        for (const test of testsRes) {
+                          if (test['enabled'] === '1') {
+                            this.result.tests.push(test);
+                          };
+                        }
+                      }
+                    }
+                  );
+              };
+            };
+          }); });
+  console.log(this.result);
+}
 logout() {
     this.stopClock();
   this.loginService.logout().subscribe(() => {

@@ -1,12 +1,9 @@
-@import "../universal/styles/header";
 
-.header-group{
-  @extend .header-group;
-  button {
-    float: left;
-    margin-left: 20px;
-  }
-}
+@import "../universal/styles/const";
+@import "../universal/styles/add-search-block";
+@import "../universal/styles/button";
+
+
 h2{
   text-align: center;
 }

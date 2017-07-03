@@ -107,6 +107,7 @@ import { ButtonsDirective } from './universal/directives/buttons.directive';
     LoadingModule,
     ChartModule,
     RadioButtonModule
+
   ],
   providers: [
     StatisticsService,

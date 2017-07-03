@@ -264,13 +264,6 @@ export const ANSWER_CONFIG = [
     placeholder: 'Введіть текст відповіді на питання'
   }
 
-  // {
-  //   type: 'input_file',
-  //   label: 'Вкладення',
-  //   name: 'attachment',
-  //   options: ['1', '2'],
-  //   placeholder: 'Select an option'
-  // }
 ];
 export const TESTS_CONFIG = [
   {
