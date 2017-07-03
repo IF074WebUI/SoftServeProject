@@ -8,7 +8,7 @@ table {
   thead {
     tr {
       th{
-        text-align: left;
+        text-align: center;
         font-weight: $table-header-font-weight;
         color: $table-header-font-color;
         vertical-align: top;
@@ -24,7 +24,7 @@ table {
     }
     tr {
       td{
-        text-align: left;
+        text-align: center;
         padding: 1.6rem;
         vertical-align: top;
         border-top: 0;
@@ -40,6 +40,7 @@ table {
   tbody {
     tr:hover {
       background-color: $table-bg-hover;
+      font-size: 105%;
     }
   }
 }

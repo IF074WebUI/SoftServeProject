@@ -1,7 +1,7 @@
 <h3 class="text-center">{{HEADER}}</h3>
 
-<div class="header-group" role="alert">
-  <button class="btn btn-primary" (click)="add()">{{MODAL_ADD}}</button>
+<div class="top-panel" role="alert">
+  <div class="btn-add" (click)="add()">+</div>
   <dtester-items-per-page [numberOfRecords]="count"
                           (recordsPerPageChanged)="changeCountPerPage($event)">
   </dtester-items-per-page>

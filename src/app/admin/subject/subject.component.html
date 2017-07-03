@@ -1,9 +1,8 @@
 <h3 class="text-center">Предмети</h3>
-<div class="header-group" role="alert">
-  <button (click)="add()"
-          type="button"
-          class="btn btn-primary"
-          data-dismiss="modal">Створити предмет</button>
+<div class="top-panel" role="alert">
+  <div (click)="add()"
+          class="btn-add"
+          data-dismiss="modal">+</div>
   <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
   <dtester-items-per-page [numberOfRecords]="numberOfRecords"
                           (recordsPerPageChanged)="changeNumberOfRecordsPerPage($event)">

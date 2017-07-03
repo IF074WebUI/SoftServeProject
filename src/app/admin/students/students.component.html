@@ -1,7 +1,7 @@
 <h3 class="text-center">{{MAIN_HEADER}}</h3>
 
 <div class="top-panel" role="alert">
-  <div class="btn btn-add" (click)="add()">+</div>
+  <div class="btn-add" (click)="add()">+</div>
   <dtester-search (searchCriteria)="searchStudent($event)">
   </dtester-search>
   <dtester-items-per-page [numberOfRecords]="count"
