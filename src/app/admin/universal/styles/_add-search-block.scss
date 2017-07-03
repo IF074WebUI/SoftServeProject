@@ -2,5 +2,8 @@
 $violet: #533687 ;
 .top-panel {
   background-color: $violet;
+  div {
+    display: inline;
+  }
 
 }

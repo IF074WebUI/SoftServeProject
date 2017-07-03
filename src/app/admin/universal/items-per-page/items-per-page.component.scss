@@ -1,13 +1,42 @@
+@import "../styles/const";
 :host {
   margin-left: auto;
   margin-right: 5px;
 }
-select {
-  border: none;
-  border-bottom: 1px solid lightgray;
 
+
+select {
+  font-family: inherit;
+  background-color: white;
+  width: 100%;
+  padding: $select-padding 0;
+  font-size: $select-font-size;
+  color: $table-header-font-color;
+  border: none;
+  border-bottom: 1px solid $select-border-color;
 }
 
-option {
-  padding: 3em;
+select:focus {
+
+
+ .mdl-selectfield select {
+    appearance: none
+  }
+  .mdl-selectfield {
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    position: relative;
+    &:after {
+      position: absolute;
+      top: 0.75em;
+      right: 0.5em;
+      width: 0;
+      height: 0;
+      padding: 0;
+      content: '';
+      border-left: .25em solid transparent;
+      border-right: .25em solid transparent;
+      border-top: .375em solid $select-border-color;
+      pointer-events: none;
+    }
+  }
 }

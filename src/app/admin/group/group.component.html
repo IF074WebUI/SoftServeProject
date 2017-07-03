@@ -4,7 +4,7 @@
       <h3 class="text-center">Групи</h3>
 
     <div class="header-group">
-     <button (click)="add()" type="button" class="btn btn-primary" data-dismiss="modal">+</button>
+     <div (click)="add()"  class="btn-add" data-dismiss="modal">+</div>
       <dtester-search (searchCriteria)="startSearch($event)"></dtester-search>
      <dtester-items-per-page [numberOfRecords]="countRecords" (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
     </div>

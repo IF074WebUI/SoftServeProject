@@ -1,5 +1,7 @@
-<select #s  (change)="getNumberRecords(s.value)">
-  <option  disabled>К-сть</option>
-  <option  *ngFor="let i of numberOfRecordsOnPage" >{{i}}</option>
-  <option  value="{{numberOfRecords}}">Всі</option>
-</select>
+<div class="mdl-selectfield">
+  <select #s class="form-select"(change)="getNumberRecords(s.value)">
+    <option  disabled>К-сть</option>
+    <option  *ngFor="let i of numberOfRecordsOnPage" >{{i}}</option>
+    <option  value="{{numberOfRecords}}">Всі</option>
+  </select>
+</div>
