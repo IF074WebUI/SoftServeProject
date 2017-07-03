@@ -11,6 +11,8 @@ import {
   keyframes,
   group
 } from '@angular/animations';
+import {LoginService} from "../login/login.service";
+import {Router} from "@angular/router";
 
 @Component({
   templateUrl: './admin.component.html',
@@ -35,7 +37,9 @@ export class AdminComponent implements OnInit {
 
   constructor(private spinner: SpinnerService,
               private toastr: ToastsManager,
-              public  vRef: ViewContainerRef) {
+              public  vRef: ViewContainerRef,
+              private loginService: LoginService,
+              private router: Router) {
     this.objLoaderStatus = false;
     this.toastr.setRootViewContainerRef(vRef);
   }
@@ -45,8 +49,15 @@ export class AdminComponent implements OnInit {
       this.objLoaderStatus = val;
     });
   }
+
   toggleMove() {
     this.menuMove = (this.menuMove === 'left') ? 'right' : 'left';
+  }
+
+  logout() {
+    this.loginService.logout().subscribe(response => {
+      this.router.navigate(['/login']);
+    });
   }
 }
 

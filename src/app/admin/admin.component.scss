@@ -1,5 +1,9 @@
 @import "./universal/styles/const";
+@import "./universal/styles/button";
 
+:host{
+  color: #fff;
+}
 .wrapper-admin .header-top{
   background-color: $primary-violet-color;
 }
@@ -9,5 +13,31 @@
   font-size:28px;
   background-color: $primary-violet-color;
   border: none;
-  color: #fff
+  color: #fff;
+  outline: none;
+}
+.wrapper-admin .logo{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  .logo{
+    font-size:40px;
+    font-weight:800;
+    color:$primary-violet-bright-color;
+  }
+}
+
+.wrapper-logout{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.logout{
+  padding: 10px 20px;
+  height: 70px;
+  background-color: #401e46;
+  color: white;
+  box-shadow: 0 1px 4px #401e46;
+  border-radius: 3px;
+  border: 1px solid #fff;
 }

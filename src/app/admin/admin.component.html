@@ -1,22 +1,26 @@
+
 <div class="wrapper-admin">
 <div class="container-fluid header-top">
   <div class="row">
-    <div class="col-md-4 col-lg-3 menu-admin">
+    <div class="col-xs-3 col-sm-3 col-md-4 col-lg-3 logo">
       <button class="fa fa-bars menu-btn hamburger" (click)="toggleMove()">
       </button>
+      <div class="logo">DTester</div>
     </div>
-    <div class="col-md-8 col-lg-9 menu-admin">
+    <div class="col-xs-9 col-sm-9 col-md-8 col-lg-9 wrapper-logout">
+      <button class="logout btn-exit" (click)="logout()">Вихід</button>
     </div>
   </div>
 </div>
+
 <ngx-loading [show]="objLoaderStatus"></ngx-loading>
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-4 col-lg-3 menu-admin">
+    <div class="col-xs-3 col-sm-3 col-md-4 col-lg-3 menu-admin menu-admin">
       <app-menu [@moveLeftRight]="menuMove"></app-menu>
     </div>
-    <div class="col-md-8 col-lg-9">
+    <div class="col-xs-9 col-sm-9 col-md-8 col-lg-9">
       <router-outlet></router-outlet>
     </div>
   </div>
