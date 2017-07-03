@@ -87,45 +87,6 @@ export class DynamicFormComponent implements OnInit {
     this.photo = this.data1.image;
   }
 
-  //
-  // fileChangeListener($event) {
-  //   let image: any = new Image();
-  //   let file: File = $event.target.files[0];
-  //   let myReader: FileReader = new FileReader();
-  //   let that = this;
-  //   myReader.onloadend = function (loadEvent: any) {
-  //     image.src = loadEvent.target.result;
-  //     that.cropper.setImage(image);
-  //   };
-//    this.photo = this.data1.src;
-  //  console.log(this.photo);
-//this.photo = myReader.result;
-//     myReader.readAsDataURL(file);
-//   }
-  //old mwthods
-
-//   imageChange($event): void {
-//     this.readThis($event.target);
-// //    const preview = document.querySelector('img');
-//   }
-//
-//
-//   readThis(inputValue: any): void {
-//     let file: File = inputValue.files[0];
-//     let myReader: FileReader = new FileReader();
-//     let that = this;
-//     myReader.onloadend = (e) => {
-//        let string = myReader.result;
-//       that.cropper.setImage(string);
-//       );
-//       // that.cropper.setImage(image);
-//       this.photo = string;
-//       console.log(string);
-//     };
-//     myReader.readAsDataURL(file);
-//   }
-
-
   createGroup() {
     const group = this.fb.group({});
     this.config.forEach(control => {
@@ -140,7 +101,6 @@ export class DynamicFormComponent implements OnInit {
       }
       if (control.requiredAsync) {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
-        //   group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
       } else {
         group.addControl(control.name, this.fb.control(''));
       }
@@ -149,13 +109,15 @@ export class DynamicFormComponent implements OnInit {
   }
 
   //  multistep modal
-
+  _Session: any;
   submit() {
     if (this.entity_name === 'Question' || this.entity_name === 'Student' || this.entity_name === 'Answer') {
       this.step2 = true;
       this.step1 = false;
       this.TITLE = this.INPUT_PHOTO;
-      this._SessionService.set('formValue', this.form.value);
+   //   this._SessionService.set('formValue', this.form.value);
+      this._Session = new Map;
+      this._Session.set('formValue', this.form.value);
     } else {
       this.submitted.emit(this.form.value);
     }
@@ -163,23 +125,23 @@ export class DynamicFormComponent implements OnInit {
 
 
   skip() {
-    let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
+    // let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
+    let formValue = Object.assign(this._Session.get('formValue'), {'photo': this.photo});
+
     this.submitted.emit(formValue);
-    // let preview = document.querySelector('#preview');
-    // preview.innerHTML = '';
     this.data1 = {};
-    this._SessionService.remove('formValue');
+    this._Session.delete('formValue');
   }
 
   savePhoto() {
-    let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
+    // let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
+    let formValue = Object.assign(this._Session.get('formValue'), {'photo': this.photo});
+
     this.submitted.emit(formValue);
     this.step1 = true;
     this.step2 = false;
     this.data1 = {};
-    // let preview = document.querySelector('#preview');
-    // preview.innerHTML = '';
-    this._SessionService.remove('formValue');
+   this._Session.delete('formValue');
   }
 
 
@@ -243,7 +205,7 @@ export class DynamicFormComponent implements OnInit {
     this.form.reset();
     this.CONFIRM_QUESTION = '';
     this.data1 = {};
-    this._SessionService.remove('formValue');
+   // this._Session.clear();
     $('#add_edit_deletePopup').modal('hide');
   }
 }
