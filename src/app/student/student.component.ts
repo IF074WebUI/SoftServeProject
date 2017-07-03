@@ -135,7 +135,9 @@ getTestForStudent() {
                         this.checkTestAvailability = true;
                       } else {
                         for (const test of testsRes) {
-                          this.result.tests.push(test);
+                          if (test['enabled'] === '1') {
+                            this.result.tests.push(test);
+                          };
                         }
                       }
                     }
