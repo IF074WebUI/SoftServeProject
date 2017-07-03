@@ -59,7 +59,7 @@ export class StudentComponent implements OnInit {
       this.result = {
         student: [],
         groupId: 0,
-        subjectId: 0,
+        subjectId: [],
         tests: [],
         timeTable: []
       };
@@ -122,28 +122,9 @@ getTests() {
 //     .flatMap(
 //       (res) => {
 //         this.result.student = res[0];
-//         return this.timeTable.getTimeTablesForGroup(this.result.student.group_id); } )
-//           .flatMap((timeTableRes) => {
-//             this.result.subjectId = +timeTableRes['subject_id'];
-//             console.log(this.result);
-//             return this.test.getTestsBySubject(this.result['subjectId']); })
-//               .subscribe(tests => this.result['tests'] = tests );
-//             console.log(this.result);
-//         this.timeTable.getTimeTablesForGroup(res.group_id)
-//           .subscribe( resTimeTable => {
-//             if (resTimeTable.response === this.noRecordsResponce ) {
-//               this.checkTestAvailability = true;
-//               console.log(resTimeTable);
-//               this.spinner.hideSpinner();
-//             } else {
-//               console.log('somesing went wrong :)');
-//               this.spinner.hideSpinner();
-//             }
-//           });
-//       },
-//       err => this.toastr.error(err),
-//       () => {}
-//     );
+//         return this.timeTable.getTimeTablesForGroup(this.result.student.group_id)
+//           .subscribe( resSubjects => { this.result.subjectId = resSubjects; } );
+//     };
 // }
 logout() {
     this.stopClock();

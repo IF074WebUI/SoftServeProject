@@ -19,7 +19,7 @@ header {
   h1 {
     color: white;
   }
-  background-color: #401e46;
+  background-color: $primary-violet-color;
 }
 main {
   div {
@@ -28,14 +28,14 @@ main {
       transition: 400ms;
     }
     .headers:hover {
-      background-color: #826199;
+      background-color: $primary-violet-bright-color;
     }
     .headers {
       color: white;
       background-color: $pink-colo;
     }
     .clock:hover {
-      background-color: #401e46;
+      background-color: $primary-violet-color;
     }
     .clock {
       p {
