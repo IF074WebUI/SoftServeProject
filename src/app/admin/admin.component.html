@@ -1,14 +1,24 @@
-
-  <ngx-loading [show]="objLoaderStatus"></ngx-loading>
+<div class="wrapper-admin">
+<div class="container-fluid header-top">
+  <div class="row">
+    <div class="col-md-4 col-lg-3 menu-admin">
+      <button class="fa fa-bars menu-btn hamburger" (click)="toggleMove()">
+      </button>
+    </div>
+    <div class="col-md-8 col-lg-9 menu-admin">
+    </div>
+  </div>
+</div>
+<ngx-loading [show]="objLoaderStatus"></ngx-loading>
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-4 col-lg-3">
-      <app-menu></app-menu>
+    <div class="col-md-4 col-lg-3 menu-admin">
+      <app-menu [@moveLeftRight]="menuMove"></app-menu>
     </div>
     <div class="col-md-8 col-lg-9">
-      <dtester-breadcrumbs></dtester-breadcrumbs>
       <router-outlet></router-outlet>
     </div>
   </div>
+</div>
 </div>

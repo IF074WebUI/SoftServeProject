@@ -250,19 +250,20 @@ export const ANSWER_CONFIG = [
     required: false
   },
   {
-    type: 'textarea',
-    label: 'Текст відповіді',
-    name: 'answer_text',
-    options: '',
-    placeholder: 'Введіть текст відповіді на питання'
-  },
-  {
     type: 'select_with_options',
     label: 'Правильність відповіді',
     name: 'true_answer',
     options: ['0', '1'],
     placeholder: '  '
   },
+  {
+    type: 'textarea',
+    label: 'Текст відповіді',
+    name: 'answer_text',
+    options: '',
+    placeholder: 'Введіть текст відповіді на питання'
+  }
+
   // {
   //   type: 'input_file',
   //   label: 'Вкладення',

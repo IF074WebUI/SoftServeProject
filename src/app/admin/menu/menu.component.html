@@ -1,32 +1,36 @@
-<ul class="nav flex-column" >
-  <li class="nav-item" routerLinkActive="active">
-    <a class="nav-link" [routerLink]="['students']">Cтуденти</a>
-  </li>
-  <li class="nav-item" routerLinkActive="active">
-    <a class="nav-link" [routerLink]="['subject']">Предмети</a>
-  </li>
-  <li class="nav-item" routerLinkActive="active">
-    <a class="nav-link" [routerLink]="['group']">Групи</a>
-  </li>
-  <li class="nav-item" routerLinkActive="active">
-    <a class="nav-link" [routerLink]="['specialities']">Спеціальності</a>
-  </li>
-  <li class="nav-item" routerLinkActive="active">
-    <a class="nav-link" [routerLink]="['faculties']">Факультети</a>
-  </li>
-  <li class="nav-item" routerLinkActive="active">
-    <a class="nav-link" [routerLink]="['results']">Результати</a>
-  </li>
-  <li class="nav-item" routerLinkActive="active">
-    <a class="nav-link" [routerLink]="['timetable']">Розклад</a>
-  </li>
-  <li class="nav-item" routerLinkActive="active">
-  <a class="nav-link" [routerLink]="['statistics']">Статистика</a>
-  </li>
-  <li class="nav-item" routerLinkActive="active">
-    <a class="nav-link" [routerLink]="['admin-user']">Адміністратори</a>
-  </li>
-  <li class="nav-item logout" (click)="logout()">
-     <span class="nav-link">Вихід</span>
-  </li>
-</ul>
+<div class="wrapper">
+  <div class="menu" [@moveLeftRight]="menuMove">
+    <ul class="nav flex-column">
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['students']">Cтуденти</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['subject']">Предмети</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['group']">Групи</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['specialities']">Спеціальності</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['faculties']">Факультети</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['results']">Результати</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['timetable']">Розклад</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['statistics']">Статистика</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['admin-user']">Адміністратори</a>
+      </li>
+      <li class="nav-item logout" (click)="logout()">
+        <span class="nav-link">Вихід</span>
+      </li>
+    </ul>
+  </div>
+</div>
