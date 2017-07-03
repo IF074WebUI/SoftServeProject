@@ -1,9 +1,4 @@
-/*
-ul{
-  border: 1px solid lightblue;
-  height: 100%;
-}
-*/
+@import "../universal/styles/const";
 
 li:hover{
   background-color: lightblue;
@@ -59,14 +54,18 @@ li.active a{
 .wrapper li{
   position: relative;
   width: 100%;
-  background-color: #5cab22;
+  background-color: $primary-violet-bright-color;
   // background-color: #aafc6f;
   color: #fff;
 }
 .wrapper li a{
   color: #fff;
 }
+.wrapper li a:hover{
+  background-color: rgba(64,30,70, 0.5);
+  color: #fff;
+}
 .wrapper li.active a{
-  background-color: #fff;
-  color: #5cab22;
+  background-color: $primary-violet-color;
+  color: #fff;
 }
