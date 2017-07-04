@@ -35,7 +35,7 @@ export class TestPlayerComponent implements OnInit {
   question: Question;
   start: boolean;
 //  i: number;
-  student_id: string;
+  user_id: number;
   test_details: TestDetail[] = [];
   answers: Answer[];
   ticks: number;
@@ -58,10 +58,10 @@ export class TestPlayerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.test_id = this.route.snapshot.queryParams['testId'] || 1;
-    this.student_id = this.route.snapshot.queryParams['user_id'];
+    this.test_id = +this.route.snapshot.queryParams['testId'] || 1;
+    this.user_id = +this.route.snapshot.queryParams['user_id'];
     this.testDuRation = +this.route.snapshot.queryParams['test_duration'];
-    console.log(this.testDuRation)
+    console.log(this.testDuRation);
     this.getTestDetails();
   }
 
@@ -73,20 +73,25 @@ export class TestPlayerComponent implements OnInit {
 
 
   startTest() {
-    //  this.startTimer();
-    //   this.test_player.getCurrentTime()
-    //     .subscribe(res => this.currentUnixTime = +res['unix_timestamp']);
+    // this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => this.start = resp['isTrusted']);
     this.start = true;
-    const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
-      this.questions = resp;
-      this.question = resp[0];
-    })
-      .switchMap(resp => this.test_player.getAnswers(resp));
+    if (this.start) {
+      //  this.startTimer();
+      //   this.test_player.getCurrentTime()
+      //     .subscribe(res => this.currentUnixTime = +res['unix_timestamp']);
+      const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
+        this.questions = resp;
+        this.question = resp[0];
+      })
+        .switchMap(resp => this.test_player.getAnswers(resp));
 
-    answers$.subscribe(response => {
-      this.questions['answers'] = response;
-      console.log(this.questions)
-    });
+      answers$.subscribe(response => {
+        this.questions['answers'] = response;
+        console.log(this.questions);
+      });
+    } else {
+      console.log('prohibited')
+    }
   }
 
   previous() {
@@ -101,7 +106,7 @@ export class TestPlayerComponent implements OnInit {
     this.question = this.questions[newIndex];
   }
 
-  goToAnswers(number: number){
+  goToAnswers(number: number) {
     this.question = this.questions[number - 1];
   }
 

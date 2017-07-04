@@ -23,7 +23,6 @@ export class FacultiesComponent implements OnInit {
   id: number;
 
   ignoreProperties: string[];
-  // text: string;
   headers: string[];
   sortProperties: string[];
   displayPropertiesOrder: string[];
@@ -33,8 +32,6 @@ export class FacultiesComponent implements OnInit {
   FACULTIES_HEADERS: string[] = ['№', 'назва факультету', 'детальніше про факультет'];
   SORT_PROPERTIES: string[] = ['faculty_name'];
   DISPLAY_PROPERTIES_ORDER: string[] = ['faculty_name', 'faculty_description'];
-  CREATE_NEW_FACULTY = 'Додати новий факультет';
-  CHOSEN_ACTION: any;
 
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
@@ -43,7 +40,7 @@ export class FacultiesComponent implements OnInit {
 
   constructor(private http: FacultyService,
               private router: Router, private spinner: SpinnerService, private toastr: ToastsManager) {
-  } //  private route: ActivatedRoute,
+  }
 
 
   ngOnInit() {

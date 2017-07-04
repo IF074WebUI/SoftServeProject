@@ -16,8 +16,13 @@
       <li><a href="#"> Marked for review</a></li>
     </ul>
   </div>
+  <div id="button">
+    <ng-container *ngIf="!start">
+      <button type="button" class="btn" (click)="startTest()">Почати тест</button>
+    </ng-container>
+  </div>
   <div class="row">
-    <div class=".col-xs-12 .col-sm-6 .col-md-8 wrapper">
+    <div class=".col-xs-12 .col-sm-6 .col-md-8 wrapper ">
 
       <ng-container *ngIf="question">
         <div class="navigation">
@@ -34,44 +39,41 @@
             </tr>
           </table>
         </div>
-<div class="answers">
-        <ng-container *ngIf="question['type'] == 1">
-          <div *ngIf="question['answers']" class="flex-container">
-            <label *ngFor="let answer of question['answers']" class="flex-box">
-              <input type="radio" name='option' (change)="onValueChanged($event)" [value]="answer['answer_id']">
-              {{answer['answer_text']}}
-              <img [src]="answer['attachment']">
-            </label>
-          </div>
-        </ng-container>
+        <div class="answers">
+          <ng-container *ngIf="question['type'] == 1">
+            <div *ngIf="question['answers']" class="flex-container">
+              <label *ngFor="let answer of question['answers']" class="flex-box">
+                <input type="radio" name='option' (change)="onValueChanged($event)" [value]="answer['answer_id']">
+                {{answer['answer_text']}}
+                <img [src]="answer['attachment']">
+              </label>
+            </div>
+          </ng-container>
 
-        <ng-container *ngIf="question['type'] == 2">
-          <div *ngIf="question['answers']" class="flex-container">
-            <label *ngFor="let answer of question['answers']" class="flex-box">
-              <input type="checkbox" name='answer' (change)="onValueChanged($event)" [value]="answer['answer_id']">
-              {{answer['answer_text']}}
-              <span>  <img [src]="answer['attachment']"></span>
-            </label>
-          </div>
-        </ng-container>
+          <ng-container *ngIf="question['type'] == 2">
+            <div *ngIf="question['answers']" class="flex-container">
+              <label *ngFor="let answer of question['answers']" class="flex-box">
+                <input type="checkbox" name='answer' (change)="onValueChanged($event)" [value]="answer['answer_id']">
+                {{answer['answer_text']}}
+                <span>  <img [src]="answer['attachment']"></span>
+              </label>
+            </div>
+          </ng-container>
 
-        <ng-container *ngIf="question['type'] == 3">
-          <div class="form-input" class="input-field">
-            <label>{{ENTER_ANSWER}}
-              <input
-                type="text"
-                maxlength="100" appFormInput/>
-            </label>
-          </div>
-        </ng-container>
-</div>
+          <ng-container *ngIf="question['type'] == 3">
+            <div class="form-input" class="input-field">
+              <label>{{ENTER_ANSWER}}
+                <input
+                  type="text"
+                  maxlength="100" appFormInput/>
+              </label>
+            </div>
+          </ng-container>
+        </div>
+
+
       </ng-container>
 
-      <div id="button">
-        <ng-container *ngIf="!start">
-          <button type="button" class="btn" (click)="startTest()">Почати тест</button>
-        </ng-container>
-      </div>
     </div>
 
     <div class=".col-xs-6 .col-md-4 sidebar">
