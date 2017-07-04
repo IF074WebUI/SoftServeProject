@@ -8,7 +8,4 @@ export class Question {
   attachment?: any;
   answers: Answer[];
   true_answer: boolean;
-  // constructor(text: string) {
-  //   this.question_text = text;
-  // }
 }

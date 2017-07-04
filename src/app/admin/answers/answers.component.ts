@@ -16,19 +16,19 @@ import {Question} from "../questions/question";
   styleUrls: ['./answers.component.scss']
 })
 export class AnswersComponent implements OnInit {
+  HEADING_ANSWERS = 'Відповіді';
   answersOnPage: Answer[];
   pageNumber = 1;
   recordsPerPage = 10;
   countRecords: number;
   headers: string[];
   ignoreProperties: string[];
-  CREATING_NEW_ANSWER = 'Додати нову відповідь';
   question_id: number;
   questionIdQueryParam: number;
   imageForm: FormGroup;
   questionNameQueryParam: string;
-  answerEdit: Answer;
   sortProperties: string[];
+
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = ANSWER_CONFIG;
@@ -42,7 +42,6 @@ export class AnswersComponent implements OnInit {
 
   ngOnInit() {
     this.getQueryParams();
-    // this.getAnswers();
     this.headers = ['№', 'Відповідь', 'Правильність', 'Вкладення'];
     this.ignoreProperties = ['question_id', 'answer_id'];
     this.imageForm = new FormGroup({});
@@ -51,9 +50,11 @@ export class AnswersComponent implements OnInit {
     this.route.queryParams.subscribe((params: Params) => {
       this.questionIdQueryParam = params['question_id'];
       this.questionNameQueryParam = params['question_text'];
-      if (this.questionIdQueryParam) this.getAnswersForOneQuestion();
-      else
+      if (this.questionIdQueryParam) {
+        this.getAnswersForOneQuestion();
+      } else {
         this.getAnswers();
+      }
     });
   }
   getAnswersForOneQuestion() {
@@ -68,20 +69,17 @@ export class AnswersComponent implements OnInit {
   setNameOfQuestion(answer: Answer) {
     this.getRecordsByIdService.getRecordsById('question', answer.question_id).subscribe((resp) => {
       answer.question_id = resp[0].question_id;
-     // answer.question_text = resp[0].question_text;
     });
   }
-  // PARAMS
 
   getAnswers(): void {
     this.spinner.showSpinner();
     this.getCountRecords();
-    /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.countRecords <= (this.pageNumber - 1) * this.recordsPerPage) {
       --this.pageNumber;
     }
     this.answersService.getPaginatedPage(this.pageNumber, this.recordsPerPage).delay(301)
-      .subscribe(resp => { this.answersOnPage = <Answer[]>resp, err => this.router.navigate(['/bad_request']);
+      .subscribe(resp => { this.answersOnPage = <Answer[]>resp, error => this.router.navigate(['/bad_request']);
         this.spinner.hideSpinner();
       });
   }
@@ -91,9 +89,9 @@ export class AnswersComponent implements OnInit {
       .subscribe(resp => this.countRecords = resp );
   }
 
-  changePage(page: number) {              /* callback method for change page pagination output event */
+  changePage(page: number) {
     this.pageNumber = page;
-    this.getAnswersForOneQuestion();               /* request new groups for new page */
+    this.getAnswersForOneQuestion();
   }
   changeNumberOfRecordsOnPage(numberOfRecords: number) {
     this.recordsPerPage = numberOfRecords;
@@ -101,14 +99,14 @@ export class AnswersComponent implements OnInit {
     this.getAnswersForOneQuestion();
   }
 
-  startSearch(criteria: string) {   /* callback method for output in search component */
+  startSearch(criteria: string) {
     this.spinner.showSpinner();
     if (criteria === '' || +criteria <= 0 ) {
       this.getAnswersForOneQuestion();
     } else {
       this.answersService.searchByName(criteria)
         .subscribe(resp => {
-            if (resp['response'] === 'no records') {    /* check condition: if no records presented for search criteria */
+            if (resp['response'] === 'no records') {
               this.answersOnPage = [];
               this.countRecords = this.answersOnPage.length;
               this.spinner.hideSpinner();
@@ -119,11 +117,9 @@ export class AnswersComponent implements OnInit {
               this.spinner.hideSpinner();
             }
           },
-          err => this.router.navigate(['/bad_request']));
+          error => this.router.navigate(['/bad_request']));
     }
   }
-
-// Method for opening editing and deleting commo modal window
 
   add() {
     this.popup.sendItem({answer_id: '', question_id:  '', true_answer: '', answer_text: ''}, 'Answer');
@@ -138,7 +134,6 @@ export class AnswersComponent implements OnInit {
   del(answer: Answer) {
     this.popup.deleteEntity(answer);
   }
-  // Method for  add/edit, delete form submiting
 
   formSubmitted(value) {
     value['question_id'] = this.question_id;
@@ -146,7 +141,7 @@ export class AnswersComponent implements OnInit {
     if (value['answer_id']) {
       this.answersService.editAnswer(value['answer_id'], value['question_id'], value['answer_text'],
         value['true_answer'], value['photo'])
-        .subscribe(response => {
+        .subscribe(resp => {
             this.getAnswersForOneQuestion();
             this.popup.cancel();
           },
@@ -157,7 +152,7 @@ export class AnswersComponent implements OnInit {
       console.log(value['question_id']);
       this.answersService.createAnswer(this.questionIdQueryParam, value['answer_text'],
         value['true_answer'], value['photo'])
-        .subscribe(response => {
+        .subscribe(resp => {
             this.getAnswersForOneQuestion();
             this.popup.cancel();
           },
@@ -168,7 +163,7 @@ export class AnswersComponent implements OnInit {
   }
 
   deleteAnswer(answer: Answer) {
-    this.answersService.deleteAnswer(answer['answer_id']).subscribe(response => this.getAnswers(),
+    this.answersService.deleteAnswer(answer['answer_id']).subscribe(resp => this.getAnswers(),
       error => this.router.navigate(['/bad_request'])
     );
   }

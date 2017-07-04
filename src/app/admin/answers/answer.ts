@@ -4,5 +4,4 @@ export class Answer {
   true_answer: any;
   answer_text: string;
   attachment: any;
-  // question_text?: string;
 }
