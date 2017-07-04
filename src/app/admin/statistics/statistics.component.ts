@@ -127,6 +127,15 @@ export class StatisticsComponent implements OnInit {
       this.data.datasets[0].data[i] = this.graphData[i].value;
     }
     this.chart.reinit();
+
+    let series = [];
+    for (const dataValue of this.data.datasets[0].data){
+      series.push({
+        name: 'students',
+        data: dataValue
+      });
+    }
+    console.log(series);
     $('#container').highcharts({
       chart: {
         type: 'bar'
@@ -139,7 +148,7 @@ export class StatisticsComponent implements OnInit {
         categories: this.data.labels
       },
 
-      series: this.data.labels
+      series: series
     });
   }
   checkAndReverseData(criteria: string) {

@@ -26,6 +26,7 @@ export class Question {
   providers: [GetTestsBySubjectService],
 })
 export class TestPlayerComponent implements OnInit {
+  testDuRation: number;
   test_id: number;
   test: Test;
   questions: Question[] = [];
@@ -46,7 +47,9 @@ export class TestPlayerComponent implements OnInit {
   ngOnInit() {
     this.test_id = this.route.snapshot.queryParams['testId'] || 1;
     this.student_id = this.route.snapshot.queryParams['user_id'];
-    this.getTestDetails();
+    this.testDuRation = +this.route.snapshot.queryParams['test_duration'];
+    console.log(this.testDuRation)
+        this.getTestDetails();
   }
   getTestDetails() {
     this.test_player.getTestDetail(this.test_id).subscribe(resp => {
@@ -78,5 +81,9 @@ export class TestPlayerComponent implements OnInit {
     console.log($event.target.value);
   }
 
+
+  timer () {
+
+  }
 
 }
