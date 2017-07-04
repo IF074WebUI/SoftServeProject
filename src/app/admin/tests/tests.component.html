@@ -1,6 +1,6 @@
 <h3 class="text-center">Тести з :{{subjectNameQueryParam}}</h3>
-<div class="header-group" role="alert">
-  <button type="button" class="btn btn-primary" (click)="openModalAddTest()">Додати тест</button>
+<div class="top-panel" role="alert">
+  <div class="btn-add" (click)="openModalAddTest()">+</div>
 </div>
 <dtester-entities-table [entities]="tests"
                         [headers]="headers"

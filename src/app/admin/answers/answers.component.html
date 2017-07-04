@@ -1,11 +1,8 @@
   <h3 class="text-center">Відповіді</h3>
-<div class="header-group" role="alert">
+<div class="top-panel" role="alert">
+  <div (click)="add()" class="btn-add" data-dismiss="modal">+</div>
 <dtester-items-per-page [numberOfRecords]="countRecords"
                         (recordsPerPageChanged)="changeNumberOfRecordsOnPage($event)"></dtester-items-per-page>
-  <button (click)="add()"
-          type="button"
-          class="btn btn-primary"
-          data-dismiss="modal">{{CREATING_NEW_ANSWER}}</button>
 </div>
 <dtester-entities-table class="table"
                         [entities]="answersOnPage"
