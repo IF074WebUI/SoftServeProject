@@ -9,6 +9,7 @@ import { GraphData } from './graph-data';
 import { UIChart } from 'primeng/primeng';
 import { FacultyService } from '../services/faculty.service';
 import {ToastsManager} from 'ng2-toastr';
+declare let $: any;
 
 @Component({
   selector: 'dtester-statistics',
@@ -126,6 +127,20 @@ export class StatisticsComponent implements OnInit {
       this.data.datasets[0].data[i] = this.graphData[i].value;
     }
     this.chart.reinit();
+    $('#container').highcharts({
+      chart: {
+        type: 'bar'
+      },
+
+      title: {
+        text: 'Графік успішності по тестах'
+      },
+      xAxis: {
+        categories: this.data.labels
+      },
+
+      series: this.data.labels
+    });
   }
   checkAndReverseData(criteria: string) {
     if (criteria === 'valueDec' || criteria === 'nameDec') {
