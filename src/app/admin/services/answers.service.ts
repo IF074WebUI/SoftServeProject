@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, RequestOptions, Response} from '@angular/http';
+import {Http, Response} from '@angular/http';
 import {ANSWER_URI, HOST} from '../../constants';
 import {Observable} from 'rxjs/Observable';
 import {Answer} from '../answers/answer';
@@ -14,7 +14,6 @@ export class AnswersService {
   answers: Answer[] = [];
 
   private handleError (error: Response | any) {
-    // In a real world app, you might use a remote logging infrastructure
     let errMsg: string;
     if (error instanceof Response) {
       const body = error.json() || '';
@@ -26,7 +25,7 @@ export class AnswersService {
     return Observable.throw(errMsg);
   }
 
-  constructor(private http: Http, private router: Router,  private activatedRoute: ActivatedRoute) {
+  constructor(private http: Http) {
     const headers: Headers = new Headers({'Content-Type': 'application/json'});
   }
 

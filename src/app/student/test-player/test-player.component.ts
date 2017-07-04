@@ -98,6 +98,9 @@ export class TestPlayerComponent implements OnInit {
   onValueChanged($event) {
     console.log($event.target.value);
   }
+  // viewQuestionsByTest(){
+  //   this.test_player.getQuestions()
+  // }
 
   getTime() {
     this.test_player.getCurrentTime()
