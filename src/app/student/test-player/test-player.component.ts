@@ -7,6 +7,8 @@ import {Answer} from '../../admin/answers/answer';
 import {TestDetail} from '../../admin/test-detail/testDetail';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
+import {current} from "codelyzer/util/syntaxKind";
+import { Observable, Subscription } from 'rxjs/Rx';
 
 export class Question {
   question_id: number;
@@ -36,12 +38,22 @@ export class TestPlayerComponent implements OnInit {
   student_id: string;
   test_details: TestDetail[] = [];
   answers: Answer[];
+  ticks: number;
+  currentUnixTime: number;
+  minutesDisplay: number;
+  secondsDisplay: number;
+  sub: Subscription;
+  secondsInMinute: number;
 
-  NEXT_QUESTION = 'Наступне питання';
+    NEXT_QUESTION = 'Наступне питання';
   PREV_QUESTION = 'Попереднє питання';
 
   constructor(private test_player: TestPlayerService,  private route: ActivatedRoute) {
   //  this.i = 0;
+    this.ticks = 0;
+    this.minutesDisplay = 0;
+    this.secondsDisplay = 0;
+    this.secondsInMinute = 60;
   }
 
   ngOnInit() {
@@ -59,6 +71,9 @@ export class TestPlayerComponent implements OnInit {
 
 
   startTest() {
+    this.startTimer();
+    this.test_player.getCurrentTime()
+      .subscribe(res => this.currentUnixTime = +res['unix_timestamp'])
     this.start = true;
     const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {this.questions = resp; this.question = resp[0]; })
       .switchMap(resp => this.test_player.getAnswers(resp));
@@ -81,9 +96,14 @@ export class TestPlayerComponent implements OnInit {
     console.log($event.target.value);
   }
 
-
-  timer () {
-
+  startTimer () {
+    let secondsCount = this.testDuRation * this.secondsInMinute;
+    let timer = setInterval(() => {
+      if (secondsCount > 0) {
+        console.log(secondsCount);
+      }
+    }, 1);
   }
+
 
 }
