@@ -33,7 +33,7 @@ export class TestPlayerService {
     return this.http.get('http://' + HOST + '/SAnswer/getAnswersByQuestion/' + id).map(resp => resp.json());
   }
 
-  getQuestions = (testDetails: any[]) => {
+  getQuestions(testDetails: any[]) {
     this.questions = [];
     let forkJoinBatch: Observable<any>[] = testDetails.map(item => {
       return this.getQuestionsByLevelRandom(item.test_id, item.level, item.tasks);
@@ -61,7 +61,7 @@ export class TestPlayerService {
     return tempArr.map((question: Question) =>  {return question;})
   }
 
-  getAnswers = (questions: Question[]) => {
+  getAnswers(questions: Question[]) {
     let forkJoinBatch: Observable<any>[] = questions.map(question => {
       return this.getAnswersById(question['question_id']);
     });
@@ -71,7 +71,7 @@ export class TestPlayerService {
           return item['response'];
         });
         if (error) {
-          throw new Error("test data are absent");
+          throw new Error('test data are absent');
         }
         answers.forEach((answer, i) => {questions[i]['answers'] = answer; })
       });
