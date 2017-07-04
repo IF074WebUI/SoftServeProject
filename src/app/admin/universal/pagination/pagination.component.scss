@@ -1,0 +1,27 @@
+@import "../../universal/styles/const";
+
+a {
+  cursor: pointer;
+}
+.wrapper-pagination{
+  .page-item{
+    background-color: $primary-violet-bright-color;
+    border: 3px solid $primary-violet-color;
+    color: #fff;
+    margin-right: 10px;
+    .page-link{
+      background-color: $primary-violet-bright-color;
+      color: #fff;
+      margin-left: 0;
+      border: none;
+      &:hover{
+        background-color: rgba(64, 30, 70, 0.5);
+        color: #fff;
+        transition: 0.5s;
+      }
+    }
+  }
+}
+div.wrapper-pagination .page-item.active .page-link{
+  background-color: $primary-violet-color;
+}
