@@ -28,7 +28,7 @@ export class Question {
   providers: [GetTestsBySubjectService],
 })
 export class TestPlayerComponent implements OnInit {
-  testDuRation: number;
+  testDuration: number;
   test_id: number;
   test: Test;
   questions: Question[] = [];
@@ -40,10 +40,15 @@ export class TestPlayerComponent implements OnInit {
   answers: Answer[];
   ticks: number;
   currentUnixTime: number;
-  minutesDisplay: number;
-  secondsDisplay: number;
-  sub: Subscription;
-  secondsInMinute: number;
+  minutesDisplay: string;
+  secondsDisplay: string;
+  SECONDS_IN_MINUTE: number;
+  startunixTime: number;
+  endUnixTime: number;
+  unixTimeLeft: number;
+  MILLISECONDS_IN_MINUTE: number;
+  timer: any;
+  timerForDisplay: any;
 
   NEXT_QUESTION = 'Наступне питання';
   PREV_QUESTION = 'Попереднє питання';
@@ -52,16 +57,16 @@ export class TestPlayerComponent implements OnInit {
   constructor(private test_player: TestPlayerService, private route: ActivatedRoute) {
     //  this.i = 0;
     this.ticks = 0;
-    this.minutesDisplay = 0;
-    this.secondsDisplay = 0;
-    this.secondsInMinute = 60;
+    this.minutesDisplay = '99';
+    this.secondsDisplay = '59';
+    this.SECONDS_IN_MINUTE = 60;
+    this.MILLISECONDS_IN_MINUTE = 1000;
   }
 
   ngOnInit() {
-    this.test_id = +this.route.snapshot.queryParams['testId'] || 1;
-    this.user_id = +this.route.snapshot.queryParams['user_id'];
-    this.testDuRation = +this.route.snapshot.queryParams['test_duration'];
-    console.log(this.testDuRation);
+    this.test_id = this.route.snapshot.queryParams['testId'] || 1;
+    this.user_id = this.route.snapshot.queryParams['user_id'];
+    this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE;
     this.getTestDetails();
   }
 
@@ -74,11 +79,12 @@ export class TestPlayerComponent implements OnInit {
 
   startTest() {
     // this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => this.start = resp['isTrusted']);
-    this.start = true;
+    this.getTime();
+    this.start = true; // temporary
     if (this.start) {
-      //  this.startTimer();
-      //   this.test_player.getCurrentTime()
-      //     .subscribe(res => this.currentUnixTime = +res['unix_timestamp']);
+      this.startTimer();
+      this.test_player.getCurrentTime()
+        .subscribe(res => this.currentUnixTime = +res['unix_timestamp']);
       const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
         this.questions = resp;
         this.question = resp[0];
@@ -114,13 +120,26 @@ export class TestPlayerComponent implements OnInit {
     console.log($event.target.value);
   }
 
-  startTimer() {
-    let secondsCount = this.testDuRation * this.secondsInMinute;
-    let timer = setInterval(() => {
-      if (secondsCount > 0) {
-        console.log(secondsCount);
+  getTime() {
+    this.test_player.getCurrentTime()
+      .subscribe(res => {
+        this.startunixTime = +res['unix_timestamp'];
+        this.endUnixTime = this.startunixTime + this.testDuration;
+        this.unixTimeLeft = this.testDuration;
+        this.startTimer();
+      });
+  }
+
+
+  startTimer () {
+    this.timer = setInterval(() => {
+      if (this.unixTimeLeft > 0) {
+        this.unixTimeLeft--;
+      } else {
+        this.stopTimer();
       }
-    }, 1);
+    }, this.MILLISECONDS_IN_MINUTE);
+    this.showTimer();
   }
 
   getArrayOfNumbers(array: Question[]) {
@@ -131,4 +150,19 @@ export class TestPlayerComponent implements OnInit {
     return ArrayOfNumbers;
   }
 
+  stopTimer() {
+    clearInterval(this.timer);
+    clearInterval(this.timerForDisplay);
+  }
+  showTimer() {
+    this.timerForDisplay = setInterval(
+      () => {
+        this.minutesDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft / 60)).toString();
+        this.secondsDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft % 60)).toString();
+      }, this.MILLISECONDS_IN_MINUTE
+    );
+  }
+  digitizeTime(value: any) {
+    return value <= 9 ? '0' + value : value;
+  }
 }

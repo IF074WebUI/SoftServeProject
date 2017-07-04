@@ -14,32 +14,13 @@ import {
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
-  /*,
-  animations: [
-    trigger('moveLeftRight', [
-      state('left', style({
-        transform: 'translateX(-110%)'
-      })),
-      state('right', style({
-        transform: 'translateX(5%)',
-        background: 'purple'
-      })),
-      transition('left => right', [animate('0.3s')]),
-      transition('right => left', [animate('0.3s')])
-    ])
-  ]
-  */
 })
 export class MenuComponent implements OnInit {
-  menuMove: string = 'left';
 
   constructor(private loginService: LoginService, private router: Router) {
   }
 
   ngOnInit() {
-  }
-  toggleMove() {
-    this.menuMove = (this.menuMove === 'left') ? 'right' : 'left';
   }
   logout() {
     this.loginService.logout().subscribe(response => {

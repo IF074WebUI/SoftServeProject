@@ -6,18 +6,14 @@ import {Question} from '../questions/question';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import {Test} from '../tests/test';
-import {ActivatedRoute, Router} from '@angular/router';
 import {AnswersService} from "./answers.service";
 import {Answer} from "../answers/answer";
 
 @Injectable()
 export class QuestionsService {
   questions: Question[] = [];
-  // private successResponse = (response: Response) => response.json();
 
-  constructor(private http: Http, private router: Router,  private activatedRoute: ActivatedRoute,
-  private answersService: AnswersService) {}
+  constructor(private http: Http, private answersService: AnswersService) {}
 
   getQuestionById(id: number): Observable<any> {
     return this.http.get('http://' + HOST + '/question/getRecords/' + id).map(resp => resp.json());
@@ -78,15 +74,6 @@ export class QuestionsService {
     return this.http.get( 'http://' + HOST + '/question/countRecords')
       .map((resp: Response) => resp.json()['numberOfRecords']);
   }
-  // !!!getQuestionsByTest(test_id: number) {
-  //   return this.http.get('http://' + HOST + + '/question/getRecordsRangeByTest/' + test_id)
-  //     .map((resp: Response) => resp.json());
-  // }
-
-  // getQuestionsByLevel(level: number) {
-  //   return this.http.get('http://' + HOST + '/question/getQuestionsByLevelRand/' + level)
-  //     .map((resp: Response) => resp.json());
-  // }
 
   searchByName(criteria: string): Observable<Question[]> {
     return this.http.get('http://' + HOST + '/question/getRecordsBySearch/' + criteria).map((resp: Response) => resp.json());

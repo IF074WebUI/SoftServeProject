@@ -14,6 +14,7 @@ import {GetRecordsByIdService} from "../services/get-records-by-id.service";
   styleUrls: ['./questions.component.scss']
 })
 export class QuestionsComponent implements OnInit {
+  HEADING_QUESTIONS = 'Питання';
   questionsOnPage: Question[];
   pageNumber = 1;
   recordsPerPage = 10;
@@ -21,10 +22,7 @@ export class QuestionsComponent implements OnInit {
   headers: string[];
   ignoreProperties: string[];
   btnClass = 'fa fa-question';
-  imgAttach = 'question.attachment';
-  CREATING_NEW_QUESTION = 'Додати нове питання';
   test_id: number;
-  title = 'Питання';
   testIdQueryParam: number;
   limit: number;
   offset: number;
@@ -43,9 +41,7 @@ export class QuestionsComponent implements OnInit {
   ngOnInit() {
     this.headers = ['№', 'Питання', 'Рівень', 'Тип', 'Вкладення'];
     this.ignoreProperties = ['test_id', 'question_id'];
-
     this.test_id = this.route.snapshot.queryParams['test_id'];
-    console.log(this.test_id);
     const level = this.route.snapshot.queryParams['level'];
     const number = this.route.snapshot.queryParams['number'];
 
@@ -78,13 +74,12 @@ export class QuestionsComponent implements OnInit {
   getQuestions(): void {
     this.spinner.showSpinner();
     this.getCountRecords();
-    /* if count of records less or equal than can contain current number of pages, than decrease page */
     if (this.countRecords <= (this.pageNumber - 1) * this.recordsPerPage) {
       --this.pageNumber;
     }
     this.questionsService.getPaginatedPage(this.pageNumber, this.recordsPerPage).delay(301)
       .subscribe(resp => { this.questionsOnPage = <Question[]>resp,
-        err => this.router.navigate(['/bad_request']);
+        error => this.router.navigate(['/bad_request']);
         this.spinner.hideSpinner();
       });
   }
@@ -94,9 +89,9 @@ export class QuestionsComponent implements OnInit {
       .subscribe(resp => this.countRecords = resp );
   }
 
-  changePage(page: number) {              /* callback method for change page pagination output event */
+  changePage(page: number) {
     this.pageNumber = page;
-    this.getQuestionsByTest();               /* request new groups for new page */
+    this.getQuestionsByTest();
   }
   changeNumberOfRecordsOnPage(numberOfRecords: number) {
     this.recordsPerPage = numberOfRecords;
@@ -104,14 +99,14 @@ export class QuestionsComponent implements OnInit {
     this.getQuestionsByTest();
   }
 
-  startSearch(criteria: string) {   /* callback method for output in search component */
+  startSearch(criteria: string) {
     this.spinner.showSpinner();
     if (criteria === '' || +criteria <= 0 ) {
       this.getQuestions();
     } else {
       this.questionsService.searchByName(criteria)
         .subscribe(resp => {
-            if (resp['response'] === 'no records') {    /* check condition: if no records presented for search criteria */
+            if (resp['response'] === 'no records') {
               this.questionsOnPage = [];
               this.countRecords = this.questionsOnPage.length;
               this.spinner.hideSpinner();
@@ -122,11 +117,9 @@ export class QuestionsComponent implements OnInit {
               this.spinner.hideSpinner();
             }
           },
-          err => this.router.navigate(['/bad_request']));
+          error => this.router.navigate(['/bad_request']));
     }
   }
-
-// Method for opening editing and deleting commo modal window
 
   add() {
     this.popup.sendItem({question_id: '', test_id:  this.test_id, question_text: '', level: '', type: ''}, 'Question');
@@ -141,15 +134,13 @@ export class QuestionsComponent implements OnInit {
   del(question: Question) {
     this.popup.deleteEntity(question);
   }
-  // Method for  add/edit, delete form submiting
 
   formSubmitted(value) {
-    console.log(value);
     value['test_id'] = this.test_id;
     if (value['question_id']) {
       this.questionsService.editQuestion(value['question_id'], value['question_text'],
         value['test_id'], value['level'], value['type'], value['photo'])
-        .subscribe(response => {
+        .subscribe(resp => {
             this.getQuestionsByTest();
             this.popup.cancel();
             this.toastr.success('Edited');
@@ -159,7 +150,7 @@ export class QuestionsComponent implements OnInit {
     } else {
       this.questionsService.createQuestion(value['question_text'], value['test_id'], value['level'],
         value['type'], value['photo'])
-        .subscribe(response => {
+        .subscribe(resp => {
             this.getQuestionsByTest();
             this.popup.cancel();
             this.toastr.success('Created');
@@ -170,7 +161,7 @@ export class QuestionsComponent implements OnInit {
   }
 
   deleteQuestion(question: Question) {
-    this.questionsService.deleteQuestion(question['question_id']).subscribe(response => {
+    this.questionsService.deleteQuestion(question['question_id']).subscribe(resp => {
       this.getQuestionsByTest();
     this.toastr.success('Deleted');
     },

@@ -51,7 +51,7 @@ export class AdminComponent implements OnInit {
   }
 
   toggleMove() {
-    this.menuMove = (this.menuMove === 'left') ? 'right' : 'left';
+    this.menuMove = this.menuMove === 'left' ? 'right' : 'left';
   }
 
   logout() {
