@@ -7,10 +7,6 @@
 .header {
   height: 100px;
   background-color: $primary-violet-color;
-  margin-bottom: 20px;
-  .timer {
-    float: left;
-  }
   .finish {
     float: right;
   }
@@ -19,6 +15,12 @@
     right: 20px;
     top: 50px;
   }
+}
+#timer {
+  background-color: $timer-progress-color;
+}
+#timer-background {
+    background-color: $line-color;
 }
 
 .wrapper {

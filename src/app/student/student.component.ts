@@ -9,7 +9,6 @@ import 'rxjs/add/operator/map';
 import {ToastsManager} from 'ng2-toastr';
 import {SpinnerService} from '../admin/universal/spinner/spinner.service';
 import {TimetableService} from '../admin/timetable/timetable.service';
-import { StudentParameters } from './StudentParameters';
 import {SubjectService} from '../admin/subject/subject.service';
 import {TestsService} from '../admin/services/tests.service';
 import {QuestionsService} from '../admin/services/questions.service';
@@ -17,7 +16,6 @@ import {AnswersService} from '../admin/services/answers.service';
 import {TestDetailService} from '../admin/test-detail/test-detail.service';
 import {DeleteRecordByIdService} from '../admin/services/delete-record-by-id.service';
 import {TestPlayerService} from './test-player/test-player.service';
-import {subscribeToResult} from "rxjs/util/subscribeToResult";
 @Component({
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.scss']
@@ -146,7 +144,6 @@ getTestForStudent() {
               };
             };
           }); });
-  console.log(this.result);
 }
 logout() {
     this.stopClock();
