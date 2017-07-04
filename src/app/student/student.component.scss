@@ -23,6 +23,9 @@ header {
 }
 main {
   div {
+    div {
+      border: 3px solid transparent;
+    }
     div:hover {
       border: $hover-border-transition;
       transition: 400ms;

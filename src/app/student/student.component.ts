@@ -67,6 +67,7 @@ export class StudentComponent implements OnInit {
     }
 
 ngOnInit() {
+      this.testPlayer.getCurrentTime().subscribe(res => console.log(res))
       this.getTestForStudent();
   this.spinner.loaderStatus.subscribe((val: boolean) => {
     this.objLoaderStatus = val;
@@ -153,12 +154,13 @@ logout() {
     this.router.navigate(['/login']);
   });
 }
-  openTestPlayer(testId) {
+  openTestPlayer(testId, testDuration) {
     this.stopClock();
     this.router.navigate(['./test-player'],
       {
         queryParams: {'testId': testId,
-          'user_id': this.result.student['user_id']
+          'user_id': this.result.student['user_id'],
+          'test_duration': testDuration
         },
       relativeTo: this.route.parent});
   }
