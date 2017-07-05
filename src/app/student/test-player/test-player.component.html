@@ -1,9 +1,11 @@
-<div class="container-fluid header">
-  <div class="header">
-    <div class="finish" >
-      <button type="button" class="btn" (click)="finishTest()"> {{FINISH}}</button>
-     </div>
-    <div class="time">{{currentTime}}</div>
+<div id="container">
+  <div class="row">
+    <div class="col-md-10">
+      <h3>{{testName}}.</h3>
+    </div>
+    <div class="col-md-2 exit">
+      <button class=" btn btn-exit btn-close-test" (click)="finishTest()"> {{FINISH}}</button>
+    </div>
   </div>
 </div>
 <div id="timer-background">

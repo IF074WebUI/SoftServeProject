@@ -25,6 +25,9 @@
   transition: 400ms;
   background-color: $primary-violet-bright-color;
 }
+.btn-close-test {
+  background-color: red;
+}
 
 .btn:hover, .btn:focus {
   cursor: pointer;
