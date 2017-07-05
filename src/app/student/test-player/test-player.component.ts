@@ -55,6 +55,11 @@ export class TestPlayerComponent implements OnInit {
   timer: any;
   timerForDisplay: any;
   currentAnswer: Array<string> = [];
+  statusTimer: string;
+  PERSENT: number;
+  DANGER_COLOR: string;
+  STATUS_COLOR: string;
+  DANGER_STATUS: number;
 
   NEXT_QUESTION = 'Наступне питання';
   ENTER_ANSWER = 'Ввести відповідь';
@@ -68,10 +73,14 @@ export class TestPlayerComponent implements OnInit {
 
   constructor(private test_player: TestPlayerService, private route: ActivatedRoute) {
     this.ticks = 0;
-    this.minutesDisplay = '99';
-    this.secondsDisplay = '59';
+    this.minutesDisplay = '00';
+    this.secondsDisplay = '00';
     this.SECONDS_IN_MINUTE = 60;
     this.MILLISECONDS_IN_MINUTE = 1000;
+    this.PERSENT = 100;
+    this.STATUS_COLOR = '#51E000';
+    this.DANGER_COLOR = '#FD040E';
+    this.DANGER_STATUS = 15;
   }
 
   ngOnInit() {
@@ -146,7 +155,7 @@ export class TestPlayerComponent implements OnInit {
   startTimer() {
     this.timer = setInterval(() => {
       if (this.unixTimeLeft > 0) {
-        this.unixTimeLeft--;
+        --this.unixTimeLeft;
       } else {
         this.stopTimer();
       }
@@ -170,8 +179,9 @@ export class TestPlayerComponent implements OnInit {
   showTimer() {
     this.timerForDisplay = setInterval(
       () => {
-        this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / 60)).toString();
-        this.secondsDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft % 60)).toString();
+        this.minutesDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft / 60)).toString();
+        this.secondsDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft % 60)).toString();
+        this.statusTimer = Math.floor(this.unixTimeLeft / (this.testDuration / this.PERSENT)) + '%';
       }, this.MILLISECONDS_IN_MINUTE
     );
   }
@@ -183,4 +193,12 @@ export class TestPlayerComponent implements OnInit {
   saveResult(value) {
 
   }
+  checkProgresColor() {
+    if (parseInt(this.statusTimer) > this.DANGER_STATUS) {
+      return this.STATUS_COLOR;
+    } else {
+      return this.DANGER_COLOR;
+    }
+  }
+
 }

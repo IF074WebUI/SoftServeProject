@@ -1,7 +1,3 @@
-<h1>
-  {{(minutesDisplay) && (minutesDisplay <= 59) ? minutesDisplay : '00'}} : {{(secondsDisplay) && (secondsDisplay <= 59)
-  ? secondsDisplay : '00'}} <br/>
-</h1>
 <div class="container-fluid header">
   <div class="header">
     <div class="timer">{{minutesDisplay}}:{{secondsDisplay}}</div>
@@ -11,7 +7,11 @@
     <div class="time">{{currentTime}}</div>
   </div>
 </div>
-
+<div id="timer-background">
+  <div id="timer" [ngStyle]="{'width': statusTimer, 'background-color': checkProgresColor()}">
+    <p>{{minutesDisplay}}:{{secondsDisplay}}</p>
+  </div>
+</div>
 <div class="container">
   <div class="navbar">
     <ul class="nav navbar-nav navbar-toggler-right">
