@@ -14,7 +14,6 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
-import {isEmpty} from "rxjs/operator/isEmpty";
 
 
 export class Question {
@@ -62,6 +61,7 @@ export class TestPlayerComponent implements OnInit {
   DANGER_COLOR: string;
   STATUS_COLOR: string;
   DANGER_STATUS: number;
+  availability: any;
 
   NEXT_QUESTION = 'Наступне питання';
   ENTER_ANSWER = 'Ввести відповідь';
@@ -100,12 +100,11 @@ export class TestPlayerComponent implements OnInit {
 
 
   startTest() {
-    // this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => this.start = resp['isTrusted']);
-    this.getTime();
-    this.start = true; // temporary
+     this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => console.log(resp));
+     this.getTime();
+     this.start = true; // temporary
     if (this.start) {
       this.startTimer();
-
 
 // Olena
 
@@ -138,7 +137,6 @@ export class TestPlayerComponent implements OnInit {
     console.log('test finished');
 
   }
-
 
   // Mykola
 

@@ -14,7 +14,6 @@ error: string;
 
   ngOnInit() {
     this.error = this.route.snapshot.queryParams['error'];
-    console.log('add this' + this.error);
   }
 
 
