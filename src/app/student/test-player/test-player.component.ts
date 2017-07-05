@@ -100,25 +100,25 @@ export class TestPlayerComponent implements OnInit {
 
 
   startTest() {
-     this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => console.log(resp));
-     this.getTime();
-     this.start = true; // temporary
+    this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => console.log(resp));
+    this.getTime();
+    this.start = true; // temporary
     if (this.start) {
       this.startTimer();
 
 // Olena
 
-        const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
-          this.questions = resp;
-          this.question = resp[0];
-        })
-          .switchMap(resp => this.test_player.getAnswers(resp));
+      const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
+        this.questions = resp;
+        this.question = resp[0];
+      })
+        .switchMap(resp => this.test_player.getAnswers(resp));
 
       answers$.subscribe(response => {
         this.questions['answers'] = response;
       }, error => console.log(error));
     } else {
-      console.log('prohibited');
+     console.log('prohibited');
     }
   }
 
@@ -133,9 +133,8 @@ export class TestPlayerComponent implements OnInit {
   }
 
   finishTest() {
-    this.finish = true;
     console.log('test finished');
-
+    this.test_player.resetSessionData().subscribe(resp => console.log(resp));
   }
 
   // Mykola
@@ -158,8 +157,8 @@ export class TestPlayerComponent implements OnInit {
         this.timer = setInterval(() => {
           if (this.unixTimeLeft > 0) {
             --this.unixTimeLeft;
-            this.minutesDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft / 60)).toString();
-            this.secondsDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft % 60)).toString();
+            this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / 60)).toString();
+            this.secondsDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft % 60)).toString();
             this.statusTimer = Math.floor(this.unixTimeLeft / (this.testDuration / this.PERSENT)) + '%';
           } else {
             this.stopTimer();
@@ -178,6 +177,7 @@ export class TestPlayerComponent implements OnInit {
         }
       });
   }
+
   getArrayOfNumbers(array: Question[]) {
     let ArrayOfNumbers = [];
     for (let j = 1; j <= array.length; j++) {
