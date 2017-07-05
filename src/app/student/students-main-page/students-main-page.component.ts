@@ -3,9 +3,6 @@ import {LoginService} from '../../login/login.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {StudentsService} from '../../admin/students/students.service';
 import {ResultsService} from '../../admin/services/results.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/map';
 import {ToastsManager} from 'ng2-toastr';
 import {SpinnerService} from '../../admin/universal/spinner/spinner.service';
 import {TimetableService} from '../../admin/timetable/timetable.service';
@@ -33,7 +30,7 @@ export class StudentsMainPageComponent implements OnInit {
   unixTime: number;
   date: any;
   currentTime: string;
-  clock:any;
+  clock: any;
   constructor(private loginService: LoginService,
               private router: Router,
               private studentService: StudentsService,
@@ -66,7 +63,7 @@ export class StudentsMainPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.testPlayer.getCurrentTime().subscribe(res => console.log(res))
+    this.testPlayer.getCurrentTime().subscribe(res => console.log(res));
     this.getTestForStudent();
     this.spinner.loaderStatus.subscribe((val: boolean) => {
       this.objLoaderStatus = val;
