@@ -33,6 +33,9 @@ main {
         margin-right: -50%;
         transform: translate(-50%, -50%)
       }
+      .icon:hover {
+        cursor: pointer;
+      }
       position: relative;
       background-color: rgba(64, 30, 70, 0.75);
       color: white;
