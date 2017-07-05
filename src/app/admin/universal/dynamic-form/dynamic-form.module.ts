@@ -13,12 +13,7 @@ import { FormSelectWithOptionsComponent } from './components/form-select-with-op
 import { FormSelectTestDetailByIdComponent } from './components/form-select-test-detail-by-id/form-select-test-detail-by-id.component';
 import { FormNumberComponent } from './components/form-number/form-number.component';
 import { FormRadioButtonComponent } from './components/form-radio-button/form-radio-button.component';
-import { FormHiddenComponent } from './components/form-hidden/form-hidden.component';
-import { ConfirmDeleteDirective } from './styles/directives/confirm-delete.directive';
-import { FormInputDirective } from './styles/directives/form-input.directive';
-import { SessionService } from './container/dynamic-form/session.service';
-import {ImageCropperComponent} from "ng2-img-cropper";
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ImageCropperComponent } from 'ng2-img-cropper';
 
 @NgModule({
   imports: [
@@ -37,9 +32,6 @@ import {ImageCropperComponent} from "ng2-img-cropper";
     FormSelectTestDetailByIdComponent,
     FormNumberComponent,
     FormRadioButtonComponent,
-    FormHiddenComponent,
-    ConfirmDeleteDirective,
-    FormInputDirective,
     ImageCropperComponent
 
   ],
@@ -53,10 +45,9 @@ import {ImageCropperComponent} from "ng2-img-cropper";
     FormSelectWithOptionsComponent,
     FormSelectTestDetailByIdComponent,
     FormNumberComponent,
-    FormRadioButtonComponent,
-    FormHiddenComponent
+    FormRadioButtonComponent
   ],
-  providers: [SessionService]
+  providers: []
 
 })
 export class DynamicFormModule {}

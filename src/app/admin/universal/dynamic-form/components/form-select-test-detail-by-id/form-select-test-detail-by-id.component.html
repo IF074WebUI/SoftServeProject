@@ -3,7 +3,7 @@
   class="dynamic-field form-select"
   [formGroup]="group">
   <label>{{ config.label }}</label>
-  <select appFormInput [formControlName]="config.name" class="form-control"
+  <select  [formControlName]="config.name" class="form-control"
           (change)="onValueChanged($event)">
     <option value="">{{ config.placeholder }}</option>
     <option [value]="item" *ngFor="let item of entities">

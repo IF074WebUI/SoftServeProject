@@ -4,7 +4,7 @@
   border-radius: 2px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
 
-  background-color: $yellow-color;
+  background-color: $red-color;
   color: $line-color;
 
   transition: background-color .3s;
@@ -33,7 +33,7 @@
     justify-content: space-between;
     width: 35px;
     height: 35px;
-    background-color: #c10000;
+    background-color: $red-color;
     border-radius: 50%;
     box-shadow: 0 2px 2px 0 #666;
     display: inline-block;
@@ -48,3 +48,23 @@
     box-shadow: 0 6px 4px 0 #666;
     transform: scale(1.05);
   }
+
+.btn-test-player {
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+
+  background-color: white;
+  color: $primary-violet-color;
+
+  transition: background-color .3s;
+  &:hover {
+    cursor: pointer;
+    background-color:  $primary-violet-bright-color;
+    color: $primary-viole-super-bright;
+
+  }
+  &:disabled {
+    cursor: not-allowed;
+
+  }
+}

@@ -1,10 +1,13 @@
-@import "const";
+@import "../../../universal/styles/const";
 @import "form-control";
 
 .form-select {
-  @extend .form-control;
+  //@extend .form-control;
   select{
     color: $line-color;
+    &:hover{
+      color: $primary-violet-color;
+    }
   }
 }
 

@@ -5,10 +5,15 @@ import {Test} from '../../admin/tests/test';
 import {GetTestsBySubjectService} from '../../admin/services/get-tests-by-subject.service';
 import {Answer} from '../../admin/answers/answer';
 import {TestDetail} from '../../admin/test-detail/testDetail';
+
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
-import {current} from "codelyzer/util/syntaxKind";
-import {Observable, Subscription} from 'rxjs/Rx';
+import 'rxjs/add/operator/filter';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/catch';
+
 
 export class Question {
   question_id: number;
@@ -34,7 +39,7 @@ export class TestPlayerComponent implements OnInit {
   questions: Question[] = [];
   question: Question;
   start: boolean;
-//  i: number;
+  finish: boolean;
   user_id: number;
   test_details: TestDetail[] = [];
   answers: Answer[];
@@ -49,6 +54,7 @@ export class TestPlayerComponent implements OnInit {
   MILLISECONDS_IN_MINUTE: number;
   timer: any;
   timerForDisplay: any;
+  currentAnswer: Array<string> = [];
   statusTimer: string;
   PERSENT: number;
   DANGER_COLOR: string;
@@ -56,11 +62,16 @@ export class TestPlayerComponent implements OnInit {
   DANGER_STATUS: number;
 
   NEXT_QUESTION = 'Наступне питання';
-  PREV_QUESTION = 'Попереднє питання';
   ENTER_ANSWER = 'Ввести відповідь';
+  MARKED = 'Marked for review';
+  FINISH = 'Завершити тест';
+  START = 'Почати тест';
+  QUESTION = 'Питання №';
+  SAVE_ANSWER = 'Зберети відповідь';
+  RESULTS = 'Зверегти результати';
+  FINISH_DIALOG = 'Тест завершено';
 
   constructor(private test_player: TestPlayerService, private route: ActivatedRoute) {
-    //  this.i = 0;
     this.ticks = 0;
     this.minutesDisplay = '00';
     this.secondsDisplay = '00';
@@ -94,25 +105,22 @@ export class TestPlayerComponent implements OnInit {
       this.startTimer();
       this.test_player.getCurrentTime()
         .subscribe(res => this.currentUnixTime = +res['unix_timestamp']);
-      const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
-        this.questions = resp;
-        this.question = resp[0];
-      })
-        .switchMap(resp => this.test_player.getAnswers(resp));
+
+// Olena
+
+        const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
+          this.questions = resp;
+          this.question = resp[0];
+        })
+          .switchMap(resp => this.test_player.getAnswers(resp)).catch(error => Observable.of(error));
 
       answers$.subscribe(response => {
         this.questions['answers'] = response;
         console.log(this.questions);
       });
     } else {
-      console.log('prohibited')
+      console.log('prohibited');
     }
-  }
-
-  previous() {
-    let currentIndex = this.questions.indexOf(this.question);
-    let newIndex = currentIndex === 0 ? this.questions.length - 1 : currentIndex - 1;
-    this.question = this.questions[newIndex];
   }
 
   next() {
@@ -125,9 +133,13 @@ export class TestPlayerComponent implements OnInit {
     this.question = this.questions[number - 1];
   }
 
-  onValueChanged($event) {
-    console.log($event.target.value);
+  finishTest(){
+    this.finish = true;
+
   }
+
+
+  // Mykola
 
   getTime() {
     this.test_player.getCurrentTime()
@@ -140,7 +152,7 @@ export class TestPlayerComponent implements OnInit {
   }
 
 
-  startTimer () {
+  startTimer() {
     this.timer = setInterval(() => {
       if (this.unixTimeLeft > 0) {
         --this.unixTimeLeft;
@@ -163,6 +175,7 @@ export class TestPlayerComponent implements OnInit {
     clearInterval(this.timer);
     clearInterval(this.timerForDisplay);
   }
+
   showTimer() {
     this.timerForDisplay = setInterval(
       () => {
@@ -172,8 +185,13 @@ export class TestPlayerComponent implements OnInit {
       }, this.MILLISECONDS_IN_MINUTE
     );
   }
+
   digitizeTime(value: any) {
     return value <= 9 ? '0' + value : value;
+  }
+
+  saveResult(value) {
+
   }
   checkProgresColor() {
     if (parseInt(this.statusTimer) > this.DANGER_STATUS) {

@@ -1,5 +1,6 @@
 $primary-violet-color: #401e46;
 $primary-violet-bright-color: #826199;
+$primary-viole-super-bright: #fff;
 $font-stack: Helvetica, sans-serif;
 $primary-blue-color: #7e8bfe;
 $button-hover: #eff5f5;
@@ -8,6 +9,7 @@ $pink-colo: #9f77b9;
 $mint-color: #77ebf3;
 $orange-color: #ff886a;
 $yellow-color: #ffd384;
+$red-color: #c10000;
 
 $table-header-font-weight: 400;
 $table-header-font-color: #757575;
@@ -26,3 +28,5 @@ $select-border-color: unquote("rgba(#{$color-black}, 0.12)") !default;
 $select-font-size: 16px;
 $select-color: unquote("rgba(#{$color-black}, 0.26)") !default;
 $select-padding: 4px;
+
+$timer-progress-color: #51E000;

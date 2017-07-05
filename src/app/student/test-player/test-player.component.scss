@@ -1,16 +1,13 @@
 @import "../../admin/universal/styles/const";
 @import "../../admin/universal/styles/table";
-@import "../../admin/universal/styles/btn-start";
+@import "../../admin/universal/styles/button";
 @import "../../admin/universal/styles/const";
 @import "../../admin/universal/dynamic-form/styles/form-control";
 
 .header {
+  color: $primary-viole-super-bright;
   height: 100px;
-  background-color: $primary-blue-color;
-  margin-bottom: 20px;
-  .timer {
-    float: left;
-  }
+  background-color: $primary-violet-color;
   .finish {
     float: right;
   }
@@ -19,6 +16,12 @@
     right: 20px;
     top: 50px;
   }
+}
+#timer {
+  background-color: $timer-progress-color;
+}
+#timer-background {
+    background-color: $line-color;
 }
 
 .wrapper {
@@ -34,26 +37,12 @@
 
 }
 
-//#sidebar {
-//  background-color: $pink-colo !important;
-//  position: absolute;
-//  right: 0px;
-//  top: 100px;
-//  bottom: 0px;
-//  width: 500px;
-//  margin-left: -200px;
-//  background-color: #FFA;
-//  z-index: -100;
-//}
-
 table {
   caption {
     caption-side: top;
   }
   font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
-  margin-top: 20px;
-  margin-left: 100px;
-  width: 400px;
+  margin: auto;
   font-size: large;
   color: black;
   td {
@@ -71,7 +60,7 @@ table {
 }
 
 #footer {
-  background-color: $mint-color;
+  background-color: $primary-violet-color;
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -88,7 +77,6 @@ table {
   }
   label {
     padding: 10px;
-    display: block;
     margin-top: 50px;
     height: 50px;
     img {
@@ -97,3 +85,51 @@ table {
     }
   }
 }
+
+.answers {
+  margin-top: 50px;
+}
+
+.navigation {
+
+    float: right;
+
+}
+
+.flex-container {
+  @extend .wrapper;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .flex-box {
+    height: 100px;
+    width: 70px;
+    border-color: black;
+    margin: auto;
+    &:hover {
+      background-color: $table-bg-hover;
+    }
+    img {
+      max-height: 70px;
+    }
+  }
+}
+
+.input-field {
+  @extend .wrapper;
+  color: $line-color;
+  padding: 20px;
+}
+
+.number-container {
+
+}
+
+.sidebar {
+  font-size: large;
+
+  margin: auto;
+  cursor: pointer;
+}
+

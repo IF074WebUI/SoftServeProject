@@ -1,21 +1,22 @@
-@import "const";
+@import "../../../universal/styles/const";
+
 .btn {
   border-radius: 2px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
 
   background-color: white;
-  color: black;
+  color: $primary-violet-color;
 
   transition: background-color .3s;
-  &:hover, &:focus {
+  &:hover {
     cursor: pointer;
-    background-color:  $orange-color;
+    background-color:  $primary-violet-bright-color;
+    color: $primary-viole-super-bright;
+
   }
   &:disabled {
     cursor: not-allowed;
-  }
-  & .btn-succes{
-    background-color:  $primary-color;
+
   }
 }
 

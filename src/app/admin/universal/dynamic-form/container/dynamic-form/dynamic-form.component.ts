@@ -1,8 +1,7 @@
-import {Component, Input, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
-import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
-import {GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
-import {SessionService} from './session.service';
-import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { GetRecordsBySearchService} from '../../../../services/get-records-by-search.service';
+import { ImageCropperComponent, CropperSettings, Bounds } from 'ng2-img-cropper';
 
 declare var $: any;
 
@@ -41,8 +40,8 @@ export class DynamicFormComponent implements OnInit {
   INPUT_PHOTO = 'Завантажити фотографію';
   SKIP = 'Пропустити';
 
-  step1: boolean;
-  step2: boolean;
+  stepOne: boolean;
+  stepTwo: boolean;
   photo: string;
   validateEmail: Function;
   data: any;
@@ -51,10 +50,12 @@ export class DynamicFormComponent implements OnInit {
   cropperSettings1: CropperSettings;
   croppedWidth: number;
   croppedHeight: number;
+  session: any;
+
 
   @ViewChild('cropper', undefined) cropper: ImageCropperComponent;
 
-  constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService, private _SessionService: SessionService) {
+  constructor(private fb: FormBuilder, private get_records_by_search: GetRecordsBySearchService) {
     this.cropperSettings1 = new CropperSettings();
     this.cropperSettings1.width = 200;
     this.cropperSettings1.height = 200;
@@ -109,39 +110,33 @@ export class DynamicFormComponent implements OnInit {
   }
 
   //  multistep modal
-  _Session: any;
+
   submit() {
     if (this.entity_name === 'Question' || this.entity_name === 'Student' || this.entity_name === 'Answer') {
-      this.step2 = true;
-      this.step1 = false;
+      this.stepTwo = true;
+      this.stepOne = false;
       this.TITLE = this.INPUT_PHOTO;
-   //   this._SessionService.set('formValue', this.form.value);
-      this._Session = new Map;
-      this._Session.set('formValue', this.form.value);
+      this.session = new Map;
+      this.session.set('formValue', this.form.value);
     } else {
       this.submitted.emit(this.form.value);
     }
   }
 
-
   skip() {
-    // let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
-    let formValue = Object.assign(this._Session.get('formValue'), {'photo': this.photo});
-
+    let formValue = Object.assign(this.session.get('formValue'), {'photo': this.photo});
     this.submitted.emit(formValue);
     this.data1 = {};
-    this._Session.delete('formValue');
+    this.session.delete('formValue');
   }
 
   savePhoto() {
-    // let formValue = Object.assign(this._SessionService.get('formValue'), {'photo': this.photo});
-    let formValue = Object.assign(this._Session.get('formValue'), {'photo': this.photo});
-
+    let formValue = Object.assign(this.session.get('formValue'), {'photo': this.photo});
     this.submitted.emit(formValue);
-    this.step1 = true;
-    this.step2 = false;
+    this.stepOne = true;
+    this.stepTwo = false;
     this.data1 = {};
-   this._Session.delete('formValue');
+   this.session.delete('formValue');
   }
 
 
@@ -158,13 +153,13 @@ export class DynamicFormComponent implements OnInit {
 
 
   sendItem(entity: any, entity_name?: string, test_id?: number, photo?: string) {
-    this.step1 = true;
-    this.step2 = false;
+    this.stepOne = true;
+    this.stepTwo = false;
     this.test_id = test_id;
     this.action = 'add_edit';
     this.entity = entity;
     this.entity_name = entity_name;
-    this.photo = this.data1.image = photo || '';
+    this.data1.image = photo || '';
     let InputEntityNames = Object.getOwnPropertyNames(entity);
     let FormNames = Object.getOwnPropertyNames(this.form.controls);
     for (let i = 0; i < InputEntityNames.length; i++) {
@@ -196,6 +191,7 @@ export class DynamicFormComponent implements OnInit {
       this.uniq_name = this.entityForDelete[Properties[1]];
     }
     this.CONFIRM_QUESTION = this.CONFIRM_QUESTION_TEXT + ' ' + this.uniq_name;
+    console.log(this.CONFIRM_QUESTION);
     $('#add_edit_deletePopup').modal('show');
   }
 
@@ -205,29 +201,24 @@ export class DynamicFormComponent implements OnInit {
     this.form.reset();
     this.CONFIRM_QUESTION = '';
     this.data1 = {};
-   // this._Session.clear();
     $('#add_edit_deletePopup').modal('hide');
   }
 }
 
 // Email and Async validators
 
-interface Validator<T extends FormControl> {
-  (c: T): { [error: string]: any };
-}
-
-export function validateEmail(c: FormControl) {
+export function validateEmail(email: FormControl) {
   let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
 
-  return EMAIL_REGEXP.test(c.value) ? null : {
+  return EMAIL_REGEXP.test(email.value) ? null : {
     validateEmail: {
       valid: false
     }
   };
 }
 
-export function validateName(c: FormControl) {
-  let name = c.value;
+export function validateName(value: FormControl) {
+  let name = value.value;
   if (this.entity_name) {
     return this.get_records_by_search.getRecordsBySearch(this.entity_name, name).map((resp) => {
         for (let key of resp) {
