@@ -27,7 +27,7 @@
     </ng-container>
   </div>
   <div class="row">
-    <div class=".col-xs-12 .col-sm-6 .col-md-8 wrapper ">
+    <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8 wrapper">
 
       <ng-container *ngIf="question">
         <div class="navigation">
@@ -84,7 +84,7 @@
 
     </div>
 
-    <div class=".col-xs-6 .col-md-4 sidebar">
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 sidebar">
       <div>
         <ul *ngIf="questions" class="number-container">
           <li class="number-box" *ngFor="let number of getArrayOfNumbers(questions)" (click)="goToAnswers(number)">

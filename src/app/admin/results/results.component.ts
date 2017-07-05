@@ -35,7 +35,7 @@ export class ResultsComponent implements OnInit {
   sortProperties: string[];
   tests: Test[];
   count: number;
-  countPerPage = 10;
+  countPerPage = 5;
   page = 1;
 
   searchByGroupTestForm: FormGroup;

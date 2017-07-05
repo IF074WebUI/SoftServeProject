@@ -1,8 +1,7 @@
 @import "const";
 
-
 table {
-  color: $line-color;
+  color: $primary-violet-color;
   border-collapse: separate;
   border-spacing: 0px 11px;
   thead {
@@ -10,7 +9,7 @@ table {
       th{
         text-align: center;
         font-weight: $table-header-font-weight;
-        color: $table-header-font-color;
+        color: $primary-violet-color;
         vertical-align: top;
         border-bottom: 1px solid rgba(0,0,0,.12);
         font-size: larger;

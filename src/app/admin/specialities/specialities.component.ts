@@ -24,7 +24,7 @@ export class SpecialitiesComponent implements OnInit {
   specialities: Speciality[];
   page = 1;
   count: number;
-  countPerPage = 10;
+  countPerPage = 5;
   headers: string[];
   sortProperties: string[];
   ignoreProperties: string[];

@@ -17,7 +17,7 @@ export class QuestionsComponent implements OnInit {
   HEADING_QUESTIONS = 'Питання';
   questionsOnPage: Question[];
   pageNumber = 1;
-  recordsPerPage = 10;
+  recordsPerPage = 5;
   countRecords: number;
   headers: string[];
   ignoreProperties: string[];
@@ -62,6 +62,7 @@ export class QuestionsComponent implements OnInit {
   }
 
   getQuestionsByTest() {
+    this.spinner.showSpinner();
     this.questionsService.getRecordsRangeByTest(this.test_id, this.recordsPerPage,
       (this.pageNumber - 1) * this.recordsPerPage).subscribe(resp => {
       if (resp['response'] === 'no records') {
@@ -69,6 +70,7 @@ export class QuestionsComponent implements OnInit {
       } else {
         this.questionsOnPage = resp, error => this.router.navigate(['/bad_request']);
       }
+      this.spinner.hideSpinner();
     });
   }
   getQuestions(): void {

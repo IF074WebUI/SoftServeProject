@@ -19,7 +19,7 @@ export class AnswersComponent implements OnInit {
   HEADING_ANSWERS = 'Відповіді';
   answersOnPage: Answer[];
   pageNumber = 1;
-  recordsPerPage = 10;
+  recordsPerPage = 5;
   countRecords: number;
   headers: string[];
   ignoreProperties: string[];
@@ -58,12 +58,14 @@ export class AnswersComponent implements OnInit {
     });
   }
   getAnswersForOneQuestion() {
+    this.spinner.showSpinner();
     this.answersService.getAnswersByQuestion(this.questionIdQueryParam).subscribe(resp => {
       this.answersOnPage = resp;
       this.countRecords = 0;
       for (const answer of this.answersOnPage) {
         this.setNameOfQuestion(answer);
       }
+      this.spinner.hideSpinner();
     });
   }
   setNameOfQuestion(answer: Answer) {
