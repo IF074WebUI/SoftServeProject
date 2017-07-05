@@ -35,7 +35,7 @@ export class StudentProfileComponent implements OnInit {
           this.student = response[0];
           this.groupService.getGroupById(this.student.group_id)
             .subscribe(
-              groupResponce => { this.group = groupResponce[0]; console.log(this.student); },
+              groupResponce => { this.group = groupResponce[0]; },
               error => this.toastr.error(error)
             );
         }, error => this.toastr.error(error)

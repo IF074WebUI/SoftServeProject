@@ -33,7 +33,7 @@ export class StudentsMainPageComponent implements OnInit {
   unixTime: number;
   date: any;
   currentTime: string;
-  clock:any;
+  clock: any;
   GREATINGS: string;
   OPEN_TESTS: string;
   PROFILE: string;
@@ -72,7 +72,6 @@ export class StudentsMainPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.testPlayer.getCurrentTime().subscribe(res => console.log(res))
     this.getTestForStudent();
     this.spinner.loaderStatus.subscribe((val: boolean) => {
       this.objLoaderStatus = val;
