@@ -72,6 +72,7 @@ export class StudentsMainPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getStudentId();
     this.getTestForStudent();
     this.spinner.loaderStatus.subscribe((val: boolean) => {
       this.objLoaderStatus = val;
@@ -82,7 +83,7 @@ export class StudentsMainPageComponent implements OnInit {
     this.spinner.showSpinner();
     this.loginService.checkLogged()
       .subscribe(
-        res => {},
+        res => {this.studentId = res[0]; this.spinner.hideSpinner()},
         err => this.toastr.error(err)
       );
   }
@@ -123,17 +124,18 @@ export class StudentsMainPageComponent implements OnInit {
                           };
                         }
                       }
-                    }
+                    }, error => this.toastr.error(error)
                   );
               };
             };
-          }); });
+          }, error => this.toastr.error(error)); }, error => this.toastr.error(error));
   }
   logout() {
     this.stopClock();
     this.loginService.logout().subscribe(() => {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login'], error => this.toastr.error(error));
     });
+    window.sessionStorage.setItem('studentId', 'false');
   }
   openTestPlayer(testId, testDuration) {
     this.stopClock();
