@@ -12,7 +12,6 @@
           <form *ngIf="action == 'add_edit'" class="form-group"
                 class="dynamic-form"
                 [formGroup]="form">
-            <!--(ngSubmit)="submitted.emit(form.value)"-->
             <ng-container
               *ngFor="let field of config"
               dynamicField

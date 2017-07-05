@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Http, RequestOptions, Response, Headers} from '@angular/http';
 import {
-  HOST, TEST_PLAYER_GET_ANSWER_BY_QUESTION, TEST_PLAYER_GET_QUESTIONS_BY_LEVEL_RAND,
+  HOST, HOST_PROTOCOL, TEST_PLAYER_GET_ANSWER_BY_QUESTION, TEST_PLAYER_GET_QUESTIONS_BY_LEVEL_RAND,
   TEST_PLAYER_GET_TEST_DETAILS_BY_TEST,
-  TEST_PLAYER_GET_TIME_STAMP, TEST_PLAYER_SANSWER
+  TEST_PLAYER_GET_TIME_STAMP, TEST_PLAYER_RESET_SESSION_DATA, TEST_PLAYER_SANSWER, TEST_PLAYER_START_TEST
 } from '../../constants';
 import {Question} from './test-player.component';
 import {Answer} from '../../admin/answers/answer';
@@ -27,19 +27,19 @@ export class TestPlayerService {
   }
 
   getCurrentTime() {
-    return this.http.get('http://' + HOST + TEST_PLAYER_GET_TIME_STAMP).map(resp => resp.json());
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_TIME_STAMP).map(resp => resp.json());
   }
 
   getQuestionsByLevelRandom(test_id: number, level: number, number: number) {
-    return this.http.get('http://' + HOST + TEST_PLAYER_GET_QUESTIONS_BY_LEVEL_RAND + test_id + '/' + level + '/' + number).map(resp => resp.json());
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_QUESTIONS_BY_LEVEL_RAND + test_id + '/' + level + '/' + number).map(resp => resp.json());
   }
 
   getTestDetail(test_id: number) {
-    return this.http.get('http://' + HOST + TEST_PLAYER_GET_TEST_DETAILS_BY_TEST + test_id).map(resp => resp.json());
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_TEST_DETAILS_BY_TEST + test_id).map(resp => resp.json());
   }
 
   getAnswersById(id: number): Observable<any> {
-    return this.http.get('http://' + HOST + TEST_PLAYER_SANSWER + TEST_PLAYER_GET_ANSWER_BY_QUESTION + id).map(resp => resp.json());
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_SANSWER + TEST_PLAYER_GET_ANSWER_BY_QUESTION + id).map(resp => resp.json());
   }
 
   getQuestions(testDetails: any[]) {
@@ -80,10 +80,15 @@ export class TestPlayerService {
       });
   }
 
+  resetSessionData(){
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_RESET_SESSION_DATA).map(resp => resp.json());
+  }
+
   checkSecurity(user_id: number, test_id: number) {
     let body = JSON.stringify({'user_id': user_id, 'test_id': test_id});
-    return this.http.post('http://' + HOST + '/Log/startTest/' + user_id + '/' + test_id, JSON.stringify(body), this.options).map((resp: Response) => resp.json());
+    return this.http.post(HOST_PROTOCOL + HOST + TEST_PLAYER_START_TEST + user_id + '/' + test_id, JSON.stringify(body), this.options).map((resp: Response) => resp.json());
   }
+
 }
 
 

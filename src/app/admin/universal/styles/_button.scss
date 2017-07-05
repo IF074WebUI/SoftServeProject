@@ -68,3 +68,22 @@
 
   }
 }
+.btn-success, .btn-danger, .btn-warning{
+  background: $primary-violet-bright-color;
+  padding: .5rem .75rem;
+  margin-right: 10px;
+  border-radius: 0;
+  box-sizing: border-box;
+  border: 2px solid #401e46;
+  box-shadow: 0;
+  color: #fff;
+  outline: none;
+  &:hover{
+    background: $primary-violet-color;
+    transition: 0.3s;
+  }
+}
+
+h3 .text-center {
+  color: $primary-violet-color;
+}

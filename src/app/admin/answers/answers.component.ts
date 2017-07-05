@@ -19,7 +19,7 @@ export class AnswersComponent implements OnInit {
   HEADING_ANSWERS = 'Відповіді';
   answersOnPage: Answer[];
   pageNumber = 1;
-  recordsPerPage = 10;
+  recordsPerPage = 5;
   countRecords: number;
   headers: string[];
   ignoreProperties: string[];
@@ -42,7 +42,7 @@ export class AnswersComponent implements OnInit {
 
   ngOnInit() {
     this.getQueryParams();
-    this.headers = ['№', 'Відповідь', 'Правильність', 'Вкладення'];
+    this.headers = ['№', 'Правильність', 'Відповідь', 'Вкладення'];
     this.ignoreProperties = ['question_id', 'answer_id'];
     this.imageForm = new FormGroup({});
   }
@@ -58,12 +58,14 @@ export class AnswersComponent implements OnInit {
     });
   }
   getAnswersForOneQuestion() {
+    this.spinner.showSpinner();
     this.answersService.getAnswersByQuestion(this.questionIdQueryParam).subscribe(resp => {
       this.answersOnPage = resp;
       this.countRecords = 0;
       for (const answer of this.answersOnPage) {
         this.setNameOfQuestion(answer);
       }
+      this.spinner.hideSpinner();
     });
   }
   setNameOfQuestion(answer: Answer) {
@@ -137,7 +139,6 @@ export class AnswersComponent implements OnInit {
 
   formSubmitted(value) {
     value['question_id'] = this.question_id;
-    console.log(value);
     if (value['answer_id']) {
       this.answersService.editAnswer(value['answer_id'], value['question_id'], value['answer_text'],
         value['true_answer'], value['photo'])

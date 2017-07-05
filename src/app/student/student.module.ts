@@ -23,6 +23,8 @@ import {CommonModule} from '@angular/common';
 import {StudentsService} from '../admin/students/students.service';
 import {ResultsService} from '../admin/services/results.service';
 import {StudentsMainPageComponent} from './students-main-page/students-main-page.component';
+import {ToastModule} from 'ng2-toastr';
+
 
 @NgModule({
 
@@ -30,7 +32,8 @@ import {StudentsMainPageComponent} from './students-main-page/students-main-page
   imports: [
     CommonModule,
     RouterModule.forChild(studentRoutes),
-    LoadingModule
+    LoadingModule,
+    ToastModule.forRoot()
   ],
   providers: [
     TestPlayerService,

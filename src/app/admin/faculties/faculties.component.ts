@@ -19,7 +19,7 @@ export class FacultiesComponent implements OnInit {
   faculties: Faculty[] = [];
   page: number = 1; // current number of page
   count: number; // count all faculties
-  countPerPage: number = 10;
+  countPerPage: number = 5;
   id: number;
 
   ignoreProperties: string[];
