@@ -42,7 +42,7 @@ export class AnswersComponent implements OnInit {
 
   ngOnInit() {
     this.getQueryParams();
-    this.headers = ['№', 'Відповідь', 'Правильність', 'Вкладення'];
+    this.headers = ['№', 'Правильність', 'Відповідь', 'Вкладення'];
     this.ignoreProperties = ['question_id', 'answer_id'];
     this.imageForm = new FormGroup({});
   }
@@ -139,7 +139,6 @@ export class AnswersComponent implements OnInit {
 
   formSubmitted(value) {
     value['question_id'] = this.question_id;
-    console.log(value);
     if (value['answer_id']) {
       this.answersService.editAnswer(value['answer_id'], value['question_id'], value['answer_text'],
         value['true_answer'], value['photo'])
