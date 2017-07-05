@@ -1,9 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginService} from '../login/login.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {StudentsService} from '../admin/students/students.service';
-import {ResultsService} from '../admin/services/results.service';
-import { Observable } from 'rxjs/Observable';
+import {Router} from '@angular/router';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
 import {ToastsManager} from 'ng2-toastr';
