@@ -101,14 +101,14 @@ export class TestPlayerComponent implements OnInit {
     this.testService.getTestById(this.test_id)
       .subscribe(
         resp => this.testName = resp[0]['test_name'],
-        error => console.log(error)
+        error => this.toastr.error(error)
       );
   }
 
   getTestDetails() {
     this.test_player.getTestDetail(this.test_id).subscribe(resp => {
-      this.test_details = resp,  error => this.toastr.error(error);
-    });
+      this.test_details = resp;
+    }, error => this.toastr.error(error));
   }
 
 
@@ -132,7 +132,7 @@ export class TestPlayerComponent implements OnInit {
         this.questions['answers'] = response;
       }, error => this.toastr.error(error));
     } else {
-     this.toastr.error('Progibited');
+     this.toastr.error('Prohibited');
     }
   }
 
@@ -148,7 +148,7 @@ export class TestPlayerComponent implements OnInit {
 
   finishTest() {
     this.toastr.success('Test Finished');
-    this.test_player.resetSessionData().subscribe(resp => console.log(resp));
+    this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
   }
 
 

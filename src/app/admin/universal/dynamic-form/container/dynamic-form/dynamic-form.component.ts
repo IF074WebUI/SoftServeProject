@@ -30,7 +30,7 @@ export class DynamicFormComponent implements OnInit {
 
   MODAL = {ADD_TITLE: 'Створити', EDIT_TITLE:  'Редагувати', DELETE_TITLE: 'Видалення'};
   TITLE: string;
-  CONFIRM_QUESTION_TEXT: 'Ви підтверджуєте видалення';
+  CONFIRM_QUESTION_TEXT = 'Ви підтверджуєте видалення';
   CONFIRM_QUESTION: string;
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';

@@ -43,7 +43,6 @@ export class AnswersService {
   getAnswersByQuestion(question_id: number) {
     return this.http.get('http://' + HOST + '/answer/getAnswersByQuestion/' + question_id)
       .map((resp: Response) => resp.json());  }
-
   getPaginatedPage(pageNumber: number, recordsPerPage: number) {
     return this.http.get('http://' + HOST + '/answer/getRecordsRange/' + recordsPerPage + '/' + (pageNumber - 1) * recordsPerPage )
       .map((resp: Response) => resp.json());

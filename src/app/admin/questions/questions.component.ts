@@ -15,6 +15,7 @@ import {GetRecordsByIdService} from "../services/get-records-by-id.service";
 })
 export class QuestionsComponent implements OnInit {
   HEADING_QUESTIONS = 'Питання';
+  title = 'Питання';
   questionsOnPage: Question[];
   pageNumber = 1;
   recordsPerPage = 5;
