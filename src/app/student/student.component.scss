@@ -21,48 +21,6 @@ header {
   }
   background-color: $primary-violet-color;
 }
-main {
-  div {
-    div {
-      border: 3px solid transparent;
-    }
-    div:hover {
-      border: $hover-border-transition;
-      transition: 400ms;
-    }
-    .headers:hover {
-      background-color: $primary-violet-bright-color;
-    }
-    .headers {
-      color: white;
-      background-color: $pink-colo;
-    }
-    .clock:hover {
-      background-color: $primary-violet-color;
-    }
-    .clock {
-      p {
-        display: block;
-      }
-      span {
-        display: block;
-      }
-      background-color: rgba(64, 30, 70, 0.75);
-      color: white;
-      font-size: larger;
-    }
-  }
-}
-.exit {
-  margin: auto auto;
-}
-button {
-  align-items: center;
-}
-.table-row {
-  margin: 50px;
-}
-
 
 
 

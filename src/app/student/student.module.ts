@@ -22,10 +22,11 @@ import {GetTestsBySubjectService} from '../admin/services/get-tests-by-subject.s
 import {CommonModule} from '@angular/common';
 import {StudentsService} from '../admin/students/students.service';
 import {ResultsService} from '../admin/services/results.service';
+import {StudentsMainPageComponent} from './students-main-page/students-main-page.component';
 
 @NgModule({
 
-  declarations: [StudentComponent, TestPlayerComponent],
+  declarations: [StudentComponent, TestPlayerComponent, StudentsMainPageComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(studentRoutes),

@@ -199,7 +199,7 @@ export class TestPlayerComponent implements OnInit {
   };
 
   checkProgresColor() {
-    let status  = parseInt(this.statusTimer);
+    let status  = parseInt(this.statusTimer, 0);
     if (status > this.DANGER_STATUS) {
       return this.STATUS_COLOR;
     } else if (status <= this.DANGER_STATUS) {
