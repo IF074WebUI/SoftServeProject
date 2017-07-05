@@ -2,7 +2,6 @@
 @import "form-control";
 
 .form-select {
-  //@extend .form-control;
   select{
     color: $line-color;
     &:hover{

@@ -26,20 +26,35 @@ export class TestPlayerService {
     this.options = new RequestOptions({headers: headers});
   }
 
+
+
+  private handleError(error: Response | any) {
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    return Observable.throw(errMsg);
+  }
+
+
   getCurrentTime() {
-    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_TIME_STAMP).map(resp => resp.json());
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_TIME_STAMP).map(resp => resp.json()).catch(this.handleError);
   }
 
   getQuestionsByLevelRandom(test_id: number, level: number, number: number) {
-    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_QUESTIONS_BY_LEVEL_RAND + test_id + '/' + level + '/' + number).map(resp => resp.json());
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_QUESTIONS_BY_LEVEL_RAND + test_id + '/' + level + '/' + number).map(resp => resp.json()).catch(this.handleError);
   }
 
   getTestDetail(test_id: number) {
-    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_TEST_DETAILS_BY_TEST + test_id).map(resp => resp.json());
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_TEST_DETAILS_BY_TEST + test_id).map(resp => resp.json()).catch(this.handleError);
   }
 
   getAnswersById(id: number): Observable<any> {
-    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_SANSWER + TEST_PLAYER_GET_ANSWER_BY_QUESTION + id).map(resp => resp.json());
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_SANSWER + TEST_PLAYER_GET_ANSWER_BY_QUESTION + id).map(resp => resp.json()).catch(this.handleError);
   }
 
   getQuestions(testDetails: any[]) {
@@ -51,7 +66,7 @@ export class TestPlayerService {
       .map((questions: Question[][] | any) => {
         this.questions = this.prepareQuestionForTest(<Question[][]>questions);
         return this.questions;
-      });
+      }).catch(this.handleError);
 
   };
 
@@ -77,16 +92,16 @@ export class TestPlayerService {
         answers.map((answer, i) => {
           questions[i]['answers'] = answer;
         });
-      });
+      }).catch(this.handleError);
   }
 
   resetSessionData(){
-    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_RESET_SESSION_DATA).map(resp => resp.json());
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_RESET_SESSION_DATA).map(resp => resp.json()).catch(this.handleError);
   }
 
   checkSecurity(user_id: number, test_id: number) {
     let body = JSON.stringify({'user_id': user_id, 'test_id': test_id});
-    return this.http.post(HOST_PROTOCOL + HOST + TEST_PLAYER_START_TEST + user_id + '/' + test_id, JSON.stringify(body), this.options).map((resp: Response) => resp.json());
+    return this.http.post(HOST_PROTOCOL + HOST + TEST_PLAYER_START_TEST + user_id + '/' + test_id, JSON.stringify(body), this.options).map((resp: Response) => resp.json()).catch(this.handleError);
   }
 
 }

@@ -94,13 +94,13 @@ export class TestPlayerComponent implements OnInit {
 
   getTestDetails() {
     this.test_player.getTestDetail(this.test_id).subscribe(resp => {
-      this.test_details = resp;
+      this.test_details = resp,  error => this.toastr.error(error);
     });
   }
 
 
   startTest() {
-    this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => console.log(resp));
+   this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => console.log(resp), error => this.toastr.error(error));
     this.getTime();
     this.start = true; // temporary
     if (this.start) {
@@ -117,9 +117,9 @@ export class TestPlayerComponent implements OnInit {
 
       answers$.subscribe(response => {
         this.questions['answers'] = response;
-      }, error => console.log(error));
+      }, error => this.toastr.error(error));
     } else {
-     console.log('prohibited');
+     this.toastr.error('Progibited');
     }
   }
 
@@ -134,7 +134,7 @@ export class TestPlayerComponent implements OnInit {
   }
 
   finishTest() {
-    console.log('test finished');
+    this.toastr.success('Test Finished');
     this.test_player.resetSessionData().subscribe(resp => console.log(resp));
   }
 

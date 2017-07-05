@@ -16,7 +16,6 @@ export const FACULTY_CONFIG =
     },
     {
       type: 'textarea',
-      //  text: '',
       label: 'Введіть опис факультету',
       name: 'faculty_description',
       placeholder: 'Введіть опис факультету',

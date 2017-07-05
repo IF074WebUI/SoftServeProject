@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {LoginService} from '../login/login.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {StudentsService} from '../admin/students/students.service';
@@ -48,6 +48,7 @@ export class StudentComponent implements OnInit {
                 private deleteRecords: DeleteRecordByIdService,
                 private testPlayer: TestPlayerService,
                 private route: ActivatedRoute,
+                public  vRef: ViewContainerRef,
     ) {
       this.objLoaderStatus = false;
       this.noTests = 'Немає доступних тестів';
@@ -62,6 +63,7 @@ export class StudentComponent implements OnInit {
         tests: [],
         timeTable: []
       };
+      this.toastr.setRootViewContainerRef(vRef);
     }
 
 ngOnInit() {
