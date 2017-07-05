@@ -105,8 +105,7 @@ export class TestPlayerComponent implements OnInit {
     this.start = true; // temporary
     if (this.start) {
       this.startTimer();
-      this.test_player.getCurrentTime()
-        .subscribe(res => this.currentUnixTime = +res['unix_timestamp']);
+
 
 // Olena
 
@@ -134,8 +133,9 @@ export class TestPlayerComponent implements OnInit {
     this.question = this.questions[number - 1];
   }
 
-  finishTest(){
+  finishTest() {
     this.finish = true;
+    console.log('test finished');
 
   }
 
@@ -154,16 +154,32 @@ export class TestPlayerComponent implements OnInit {
 
 
   startTimer() {
-    this.timer = setInterval(() => {
-      if (this.unixTimeLeft > 0) {
-        --this.unixTimeLeft;
-      } else {
-        this.stopTimer();
-      }
-    }, this.MILLISECONDS_IN_MINUTE);
-    this.showTimer();
+    this.test_player.getCurrentTime()
+      .subscribe(res => {
+        this.currentUnixTime = +res['unix_timestamp'];
+        this.timer = setInterval(() => {
+          if (this.unixTimeLeft > 0) {
+            --this.unixTimeLeft;
+            this.minutesDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft / 60)).toString();
+            this.secondsDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft % 60)).toString();
+            this.statusTimer = Math.floor(this.unixTimeLeft / (this.testDuration / this.PERSENT)) + '%';
+          } else {
+            this.stopTimer();
+          }
+        }, this.MILLISECONDS_IN_MINUTE);
+      });
   }
 
+  checkUnixTime() {
+    this.test_player.getCurrentTime()
+      .subscribe(res => {
+        if (+res['unix_timestamp'] < this.endUnixTime) {
+          this.unixTimeLeft = this.endUnixTime - +res['unix_timestamp'];
+        } else if (+res['unix_timestamp'] > this.endUnixTime) {
+          this.finishTest();
+        }
+      });
+  }
   getArrayOfNumbers(array: Question[]) {
     let ArrayOfNumbers = [];
     for (let j = 1; j <= array.length; j++) {
@@ -174,32 +190,18 @@ export class TestPlayerComponent implements OnInit {
 
   stopTimer() {
     clearInterval(this.timer);
-    clearInterval(this.timerForDisplay);
-  }
-
-  showTimer() {
-    this.timerForDisplay = setInterval(
-      () => {
-        this.minutesDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft / 60)).toString();
-        this.secondsDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft % 60)).toString();
-        this.statusTimer = Math.floor(this.unixTimeLeft / (this.testDuration / this.PERSENT)) + '%';
-      }, this.MILLISECONDS_IN_MINUTE
-    );
-  }
+  };
 
   digitizeTime(value: any) {
     return value <= 9 ? '0' + value : value;
-  }
+  };
 
-  saveResult(value) {
-
-  }
   checkProgresColor() {
     if (parseInt(this.statusTimer) > this.DANGER_STATUS) {
       return this.STATUS_COLOR;
     } else {
       return this.DANGER_COLOR;
     }
-  }
+  };
 
 }
