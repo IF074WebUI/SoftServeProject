@@ -1,21 +1,20 @@
-import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
-import { Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { HOST } from '../../constants';
-import {Router} from '@angular/router';
+import {Response} from '@angular/http';
+import {Observable} from 'rxjs/Observable';
+import {HOST} from '../../constants';
 import {GroupService} from '../group/group.service';
 import {Group} from '../group/group';
 
 @Injectable()
 export class FacultyService {
 
-  constructor(private http: Http, private groupsService: GroupService, private router: Router) {
+  constructor(private http: Http, private groupsService: GroupService) {
   }
 
 
-  private handleError (error: Response | any) {
+  private handleError(error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {
       const body = error.json() || '';
@@ -23,7 +22,7 @@ export class FacultyService {
       errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
     } else {
       errMsg = error.message ? error.message : error.toString();
-   }
+    }
     return Observable.throw(errMsg);
   }
 
@@ -37,7 +36,7 @@ export class FacultyService {
   }
 
   getPaginatedPage(perpage: number, position: number) {
-    return this.http.get('http://' + HOST + '/Faculty/getRecordsRange/' +  perpage + '/'+ position).map((resp: Response) => resp.json()).catch(this.handleError);
+    return this.http.get('http://' + HOST + '/Faculty/getRecordsRange/' + perpage + '/' + position).map((resp: Response) => resp.json()).catch(this.handleError);
   }
 
   deleteItem(id: number) {

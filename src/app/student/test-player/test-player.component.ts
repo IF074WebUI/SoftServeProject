@@ -5,6 +5,7 @@ import {Test} from '../../admin/tests/test';
 import {GetTestsBySubjectService} from '../../admin/services/get-tests-by-subject.service';
 import {Answer} from '../../admin/answers/answer';
 import {TestDetail} from '../../admin/test-detail/testDetail';
+import {ToastsManager} from 'ng2-toastr';
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
@@ -13,6 +14,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
+import {isEmpty} from "rxjs/operator/isEmpty";
 
 
 export class Question {
@@ -71,7 +73,7 @@ export class TestPlayerComponent implements OnInit {
   RESULTS = 'Зверегти результати';
   FINISH_DIALOG = 'Тест завершено';
 
-  constructor(private test_player: TestPlayerService, private route: ActivatedRoute) {
+  constructor(private test_player: TestPlayerService, private route: ActivatedRoute, private toastr: ToastsManager) {
     this.ticks = 0;
     this.minutesDisplay = '00';
     this.secondsDisplay = '00';
@@ -112,12 +114,11 @@ export class TestPlayerComponent implements OnInit {
           this.questions = resp;
           this.question = resp[0];
         })
-          .switchMap(resp => this.test_player.getAnswers(resp)).catch(error => Observable.of(error));
+          .switchMap(resp => this.test_player.getAnswers(resp));
 
       answers$.subscribe(response => {
         this.questions['answers'] = response;
-        console.log(this.questions);
-      });
+      }, error => console.log(error));
     } else {
       console.log('prohibited');
     }
