@@ -159,7 +159,7 @@ export class DynamicFormComponent implements OnInit {
     this.action = 'add_edit';
     this.entity = entity;
     this.entity_name = entity_name;
-    this.data1.image = photo || '';
+    this.photo = this.data1.image = photo || '';
     let InputEntityNames = Object.getOwnPropertyNames(entity);
     let FormNames = Object.getOwnPropertyNames(this.form.controls);
     for (let i = 0; i < InputEntityNames.length; i++) {

@@ -82,7 +82,7 @@ export class TestPlayerComponent implements OnInit {
     this.PERSENT = 100;
     this.STATUS_COLOR = '#51E000';
     this.DANGER_COLOR = '#FD040E';
-    this.DANGER_STATUS = 15;
+    this.DANGER_STATUS = 18;
   }
 
   ngOnInit() {
@@ -100,7 +100,7 @@ export class TestPlayerComponent implements OnInit {
 
 
   startTest() {
-    // this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => this.start = resp['isTrusted']);
+    this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => this.start = resp['isTrusted']);
     this.getTime();
     this.start = true; // temporary
     if (this.start) {
@@ -174,8 +174,10 @@ export class TestPlayerComponent implements OnInit {
     this.test_player.getCurrentTime()
       .subscribe(res => {
         if (+res['unix_timestamp'] < this.endUnixTime) {
-          this.unixTimeLeft = this.endUnixTime - +res['unix_timestamp'];
+          console.log('time unougtht')
+          this.unixTimeLeft = (this.endUnixTime - +res['unix_timestamp']) - 1;
         } else if (+res['unix_timestamp'] > this.endUnixTime) {
+          console.log('time end')
           this.finishTest();
         }
       });
@@ -197,10 +199,12 @@ export class TestPlayerComponent implements OnInit {
   };
 
   checkProgresColor() {
-    if (parseInt(this.statusTimer) > this.DANGER_STATUS) {
+    let status  = parseInt(this.statusTimer);
+    if (status > this.DANGER_STATUS) {
       return this.STATUS_COLOR;
-    } else {
+    } else if (status <= this.DANGER_STATUS) {
       return this.DANGER_COLOR;
+
     }
   };
 
