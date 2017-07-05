@@ -2,11 +2,9 @@
 ///export const HOST = '185.69.55.15';
 
 export const HOST = 'api1.lena.limit.com.ua';
-
-export const NEWFACULTY = 'Створення нового факультету';
-export const DELETERESULT = 'Факультет було успішно видалено';
-export const EDITFACULTY = 'Редагування факультету';
-export const EDITRESULT = 'Факультет було успішно відредаговано';
+export const HOST_PROTOCOL = 'http://';
+export const INSERT_DATA = '/insertData';
+export const DEL = '/del/';
 export const SPECIALITY = 'speciality';
 export const RESULT = 'result';
 export const LOGIN = 'login';
@@ -24,3 +22,9 @@ export const SECONDS_MINUTES = 60;
 export const HOURS = 24;
 export const ORDER_ASC = 'asc';
 export const ORDER_DESC = 'desc';
+export const TEST_PLAYER_GET_TIME_STAMP = '/TestPlayer/getTimeStamp';
+export const TEST_PLAYER_GET_QUESTIONS_BY_LEVEL_RAND = '/question/getQuestionsByLevelRand/';
+export const TEST_PLAYER_GET_TEST_DETAILS_BY_TEST = '/testDetail/getTestDetailsByTest/';
+export const TEST_PLAYER_SANSWER = '/SAnswer/';
+export const TEST_PLAYER_GET_ANSWER_BY_QUESTION = 'getAnswersByQuestion/';
+

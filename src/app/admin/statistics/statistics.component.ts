@@ -135,7 +135,6 @@ export class StatisticsComponent implements OnInit {
         data: dataValue
       });
     }
-    console.log(series);
     $('#container').highcharts({
       chart: {
         type: 'bar'

@@ -5,6 +5,7 @@ import {Test} from '../../admin/tests/test';
 import {GetTestsBySubjectService} from '../../admin/services/get-tests-by-subject.service';
 import {Answer} from '../../admin/answers/answer';
 import {TestDetail} from '../../admin/test-detail/testDetail';
+import {ToastsManager} from 'ng2-toastr';
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
@@ -13,6 +14,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
+import {isEmpty} from "rxjs/operator/isEmpty";
 
 
 export class Question {
@@ -71,7 +73,7 @@ export class TestPlayerComponent implements OnInit {
   RESULTS = 'Зверегти результати';
   FINISH_DIALOG = 'Тест завершено';
 
-  constructor(private test_player: TestPlayerService, private route: ActivatedRoute) {
+  constructor(private test_player: TestPlayerService, private route: ActivatedRoute, private toastr: ToastsManager) {
     this.ticks = 0;
     this.minutesDisplay = '00';
     this.secondsDisplay = '00';
@@ -103,8 +105,7 @@ export class TestPlayerComponent implements OnInit {
     this.start = true; // temporary
     if (this.start) {
       this.startTimer();
-      this.test_player.getCurrentTime()
-        .subscribe(res => this.currentUnixTime = +res['unix_timestamp']);
+
 
 // Olena
 
@@ -112,12 +113,11 @@ export class TestPlayerComponent implements OnInit {
           this.questions = resp;
           this.question = resp[0];
         })
-          .switchMap(resp => this.test_player.getAnswers(resp)).catch(error => Observable.of(error));
+          .switchMap(resp => this.test_player.getAnswers(resp));
 
       answers$.subscribe(response => {
         this.questions['answers'] = response;
-        console.log(this.questions);
-      });
+      }, error => console.log(error));
     } else {
       console.log('prohibited');
     }
@@ -133,8 +133,9 @@ export class TestPlayerComponent implements OnInit {
     this.question = this.questions[number - 1];
   }
 
-  finishTest(){
+  finishTest() {
     this.finish = true;
+    console.log('test finished');
 
   }
 
@@ -153,16 +154,32 @@ export class TestPlayerComponent implements OnInit {
 
 
   startTimer() {
-    this.timer = setInterval(() => {
-      if (this.unixTimeLeft > 0) {
-        --this.unixTimeLeft;
-      } else {
-        this.stopTimer();
-      }
-    }, this.MILLISECONDS_IN_MINUTE);
-    this.showTimer();
+    this.test_player.getCurrentTime()
+      .subscribe(res => {
+        this.currentUnixTime = +res['unix_timestamp'];
+        this.timer = setInterval(() => {
+          if (this.unixTimeLeft > 0) {
+            --this.unixTimeLeft;
+            this.minutesDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft / 60)).toString();
+            this.secondsDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft % 60)).toString();
+            this.statusTimer = Math.floor(this.unixTimeLeft / (this.testDuration / this.PERSENT)) + '%';
+          } else {
+            this.stopTimer();
+          }
+        }, this.MILLISECONDS_IN_MINUTE);
+      });
   }
 
+  checkUnixTime() {
+    this.test_player.getCurrentTime()
+      .subscribe(res => {
+        if (+res['unix_timestamp'] < this.endUnixTime) {
+          this.unixTimeLeft = this.endUnixTime - +res['unix_timestamp'];
+        } else if (+res['unix_timestamp'] > this.endUnixTime) {
+          this.finishTest();
+        }
+      });
+  }
   getArrayOfNumbers(array: Question[]) {
     let ArrayOfNumbers = [];
     for (let j = 1; j <= array.length; j++) {
@@ -173,32 +190,18 @@ export class TestPlayerComponent implements OnInit {
 
   stopTimer() {
     clearInterval(this.timer);
-    clearInterval(this.timerForDisplay);
-  }
-
-  showTimer() {
-    this.timerForDisplay = setInterval(
-      () => {
-        this.minutesDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft / 60)).toString();
-        this.secondsDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft % 60)).toString();
-        this.statusTimer = Math.floor(this.unixTimeLeft / (this.testDuration / this.PERSENT)) + '%';
-      }, this.MILLISECONDS_IN_MINUTE
-    );
-  }
+  };
 
   digitizeTime(value: any) {
     return value <= 9 ? '0' + value : value;
-  }
+  };
 
-  saveResult(value) {
-
-  }
   checkProgresColor() {
     if (parseInt(this.statusTimer) > this.DANGER_STATUS) {
       return this.STATUS_COLOR;
     } else {
       return this.DANGER_COLOR;
     }
-  }
+  };
 
 }

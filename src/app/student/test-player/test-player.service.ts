@@ -1,7 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Http, RequestOptions, Response, Headers} from '@angular/http';
-import {HOST} from '../../constants';
-import {GetTestsBySubjectService} from 'app/admin/services/get-tests-by-subject.service';
+import {
+  HOST, TEST_PLAYER_GET_ANSWER_BY_QUESTION, TEST_PLAYER_GET_QUESTIONS_BY_LEVEL_RAND,
+  TEST_PLAYER_GET_TEST_DETAILS_BY_TEST,
+  TEST_PLAYER_GET_TIME_STAMP, TEST_PLAYER_SANSWER
+} from '../../constants';
 import {Question} from './test-player.component';
 import {Answer} from '../../admin/answers/answer';
 
@@ -12,36 +15,31 @@ import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/switchMap';
 
 
-
 @Injectable()
 export class TestPlayerService {
   questions: Question[] = [];
   answers: Answer[] = [];
   options: RequestOptions;
 
-  constructor(private http: Http, private getTestBySubjectService: GetTestsBySubjectService) {
+  constructor(private http: Http) {
     const headers: Headers = new Headers({'Content-Type': 'application/json'});
     this.options = new RequestOptions({headers: headers});
   }
 
-  getTestDetatilBuTest(id: number) {
-    return this.getTestBySubjectService.getTestsBySubject(id);
-  }
-
   getCurrentTime() {
-    return this.http.get('http://' + HOST + '/TestPlayer/getTimeStamp').map(resp => resp.json());
+    return this.http.get('http://' + HOST + TEST_PLAYER_GET_TIME_STAMP).map(resp => resp.json());
   }
 
   getQuestionsByLevelRandom(test_id: number, level: number, number: number) {
-    return this.http.get('http://' + HOST + '/question/getQuestionsByLevelRand/' + test_id + '/' + level + '/' + number).map(resp => resp.json());
+    return this.http.get('http://' + HOST + TEST_PLAYER_GET_QUESTIONS_BY_LEVEL_RAND + test_id + '/' + level + '/' + number).map(resp => resp.json());
   }
 
   getTestDetail(test_id: number) {
-    return this.http.get('http://' + HOST + '/testDetail/getTestDetailsByTest/' + test_id).map(resp => resp.json());
+    return this.http.get('http://' + HOST + TEST_PLAYER_GET_TEST_DETAILS_BY_TEST + test_id).map(resp => resp.json());
   }
 
   getAnswersById(id: number): Observable<any> {
-    return this.http.get('http://' + HOST + '/SAnswer/getAnswersByQuestion/' + id).map(resp => resp.json());
+    return this.http.get('http://' + HOST + TEST_PLAYER_SANSWER + TEST_PLAYER_GET_ANSWER_BY_QUESTION + id).map(resp => resp.json());
   }
 
   getQuestions(testDetails: any[]) {
@@ -51,19 +49,13 @@ export class TestPlayerService {
     });
     return Observable.forkJoin(forkJoinBatch)
       .map((questions: Question[][] | any) => {
-        // let error = questions.some((item) => {
-        //  return item.response;
-        // });
-        // if (error) {
-        //   throw new Error("test data are absent");
-        // }
-        this.questions = this.prepareQuestionForTest(<Question[][]>questions, testDetails);
+        this.questions = this.prepareQuestionForTest(<Question[][]>questions);
         return this.questions;
       });
 
   };
 
-  prepareQuestionForTest(questions: Question[][], testDetails): Question[] {
+  prepareQuestionForTest(questions: Question[][]): Question[] {
     let tempArr: Question[] = [];
 
     questions.forEach((elem: Question[]) => {
@@ -71,28 +63,21 @@ export class TestPlayerService {
     });
     return tempArr.map((question: Question) => {
       return question;
-    })
+    });
   }
 
   getAnswers(questions: Question[]) {
-    let forkJoinBatch: Observable<any>[] = questions.
-    map(question => {
+    let forkJoinBatch: Observable<any>[] = questions.filter(item => item['type'].toString() !== '3')
+      .map(question => {
         return this.getAnswersById(question['question_id']);
-    });
+      });
 
     return Observable.forkJoin(forkJoinBatch)
       .do((answers: Answer[][] | any) => {
-        let error = questions.some((item) => {
-          return item['response'];
-        });
-        if (error) {
-          throw new Error('no aswrers for this question');
-        }
         answers.map((answer, i) => {
           questions[i]['answers'] = answer;
         });
       });
-
   }
 
   checkSecurity(user_id: number, test_id: number) {
