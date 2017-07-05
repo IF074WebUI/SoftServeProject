@@ -35,7 +35,7 @@ export class StudentsComponent implements OnInit {
   groups: Group[];
   page = 1;
   count: number;
-  countPerPage = 10;
+  countPerPage = 5;
 
 
   constructor(private studentsService: StudentsService,

@@ -24,13 +24,6 @@
     background-color: $line-color;
 }
 
-.wrapper {
-  background-color: white;
-  margin-top: 5%;
-  margin-left: 10%;
-  width: 70%;
-}
-
 .content {
   float: right;
   width: 100%;
@@ -125,11 +118,40 @@ table {
 .number-container {
 
 }
-
+.wrapper {
+  background-color: white;
+}
 .sidebar {
   font-size: large;
 
   margin: auto;
   cursor: pointer;
+
+  .number-container{
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-around;
+    justify-content: center;
+    background: #fff;
+    padding-left: 0;
+    margin-bottom: 0;
+    .number-box{
+      width: 50px;
+      height: 50px;
+      background-color: $primary-violet-bright-color;
+      margin: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      border: 2px solid $primary-violet-color;
+      &:hover{
+        background-color: $primary-violet-color;
+        transition: .3s;
+      }
+
+    }
+  }
 }
 
