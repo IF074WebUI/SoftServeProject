@@ -8,7 +8,7 @@ import {TestDetail} from '../../admin/test-detail/testDetail';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
 import {current} from "codelyzer/util/syntaxKind";
-import { Observable, Subscription } from 'rxjs/Rx';
+import {Observable, Subscription} from 'rxjs/Rx';
 
 export class Question {
   question_id: number;
@@ -28,41 +28,57 @@ export class Question {
   providers: [GetTestsBySubjectService],
 })
 export class TestPlayerComponent implements OnInit {
-  testDuRation: number;
+  testDuration: number;
   test_id: number;
   test: Test;
   questions: Question[] = [];
   question: Question;
   start: boolean;
 //  i: number;
-  student_id: string;
+  user_id: number;
   test_details: TestDetail[] = [];
   answers: Answer[];
   ticks: number;
   currentUnixTime: number;
-  minutesDisplay: number;
-  secondsDisplay: number;
-  sub: Subscription;
-  secondsInMinute: number;
+  minutesDisplay: string;
+  secondsDisplay: string;
+  SECONDS_IN_MINUTE: number;
+  startunixTime: number;
+  endUnixTime: number;
+  unixTimeLeft: number;
+  MILLISECONDS_IN_MINUTE: number;
+  timer: any;
+  timerForDisplay: any;
+  statusTimer: string;
+  PERSENT: number;
+  DANGER_COLOR: string;
+  STATUS_COLOR: string;
+  DANGER_STATUS: number;
 
-    NEXT_QUESTION = 'Наступне питання';
+  NEXT_QUESTION = 'Наступне питання';
   PREV_QUESTION = 'Попереднє питання';
+  ENTER_ANSWER = 'Ввести відповідь';
 
-  constructor(private test_player: TestPlayerService,  private route: ActivatedRoute) {
-  //  this.i = 0;
+  constructor(private test_player: TestPlayerService, private route: ActivatedRoute) {
+    //  this.i = 0;
     this.ticks = 0;
-    this.minutesDisplay = 0;
-    this.secondsDisplay = 0;
-    this.secondsInMinute = 60;
+    this.minutesDisplay = '00';
+    this.secondsDisplay = '00';
+    this.SECONDS_IN_MINUTE = 60;
+    this.MILLISECONDS_IN_MINUTE = 1000;
+    this.PERSENT = 100;
+    this.STATUS_COLOR = '#51E000';
+    this.DANGER_COLOR = '#FD040E';
+    this.DANGER_STATUS = 15;
   }
 
   ngOnInit() {
     this.test_id = this.route.snapshot.queryParams['testId'] || 1;
-    this.student_id = this.route.snapshot.queryParams['user_id'];
-    this.testDuRation = +this.route.snapshot.queryParams['test_duration'];
-    console.log(this.testDuRation)
-        this.getTestDetails();
+    this.user_id = this.route.snapshot.queryParams['user_id'];
+    this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE;
+    this.getTestDetails();
   }
+
   getTestDetails() {
     this.test_player.getTestDetail(this.test_id).subscribe(resp => {
       this.test_details = resp;
@@ -71,14 +87,26 @@ export class TestPlayerComponent implements OnInit {
 
 
   startTest() {
-    this.startTimer();
-    this.test_player.getCurrentTime()
-      .subscribe(res => this.currentUnixTime = +res['unix_timestamp'])
-    this.start = true;
-    const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {this.questions = resp; this.question = resp[0]; })
-      .switchMap(resp => this.test_player.getAnswers(resp));
+    // this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => this.start = resp['isTrusted']);
+    this.getTime();
+    this.start = true; // temporary
+    if (this.start) {
+      this.startTimer();
+      this.test_player.getCurrentTime()
+        .subscribe(res => this.currentUnixTime = +res['unix_timestamp']);
+      const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
+        this.questions = resp;
+        this.question = resp[0];
+      })
+        .switchMap(resp => this.test_player.getAnswers(resp));
 
-    answers$.subscribe(response => {this.questions['answers'] = response; console.log(this.questions)});
+      answers$.subscribe(response => {
+        this.questions['answers'] = response;
+        console.log(this.questions);
+      });
+    } else {
+      console.log('prohibited')
+    }
   }
 
   previous() {
@@ -92,21 +120,67 @@ export class TestPlayerComponent implements OnInit {
     let newIndex = currentIndex === this.questions.length - 1 ? 0 : currentIndex + 1;
     this.question = this.questions[newIndex];
   }
+
+  goToAnswers(number: number) {
+    this.question = this.questions[number - 1];
+  }
+
   onValueChanged($event) {
     console.log($event.target.value);
   }
-  // viewQuestionsByTest(){
-  //   this.test_player.getQuestions()
-  // }
 
-  startTimer () {
-    let secondsCount = this.testDuRation * this.secondsInMinute;
-    let timer = setInterval(() => {
-      if (secondsCount > 0) {
-        console.log(secondsCount);
-      }
-    }, 1);
+  getTime() {
+    this.test_player.getCurrentTime()
+      .subscribe(res => {
+        this.startunixTime = +res['unix_timestamp'];
+        this.endUnixTime = this.startunixTime + this.testDuration;
+        this.unixTimeLeft = this.testDuration;
+        this.startTimer();
+      });
   }
 
+
+  startTimer () {
+    this.timer = setInterval(() => {
+      if (this.unixTimeLeft > 0) {
+        --this.unixTimeLeft;
+      } else {
+        this.stopTimer();
+      }
+    }, this.MILLISECONDS_IN_MINUTE);
+    this.showTimer();
+  }
+
+  getArrayOfNumbers(array: Question[]) {
+    let ArrayOfNumbers = [];
+    for (let j = 1; j <= array.length; j++) {
+      ArrayOfNumbers.push(j);
+    }
+    return ArrayOfNumbers;
+  }
+
+  stopTimer() {
+    clearInterval(this.timer);
+    clearInterval(this.timerForDisplay);
+  }
+  showTimer() {
+    this.timerForDisplay = setInterval(
+      () => {
+        this.minutesDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft / 60)).toString();
+        this.secondsDisplay = this.digitizeTime( Math.floor(this.unixTimeLeft % 60)).toString();
+        this.statusTimer = Math.floor(this.unixTimeLeft / (this.testDuration / this.PERSENT)) + '%';
+      }, this.MILLISECONDS_IN_MINUTE
+    );
+  }
+  digitizeTime(value: any) {
+    return value <= 9 ? '0' + value : value;
+  }
+  checkProgresColor() {
+    if (parseInt(this.statusTimer) > this.DANGER_STATUS) {
+      return this.STATUS_COLOR;
+    } else {
+      return this.DANGER_COLOR;
+    }
+  }
 
 }

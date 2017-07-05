@@ -1,24 +1,34 @@
-<h1>
- {{(minutesDisplay) && (minutesDisplay <= 59) ? minutesDisplay : '00'}} : {{(secondsDisplay) && (secondsDisplay <= 59) ? secondsDisplay : '00'}} <br/>
-</h1>
 <div class="container-fluid header">
   <div class="header">
-    <div class="timer">Таймер</div>
     <div class="finish">Завершити тест</div>
     <div class="time">{{currentTime}}</div>
   </div>
 </div>
-
+<div id="timer-background">
+  <div id="timer" [ngStyle]="{'width': statusTimer, 'background-color': checkProgresColor()}">
+    <p>{{minutesDisplay}}:{{secondsDisplay}}</p>
+  </div>
+</div>
 <div class="container">
   <div class="navbar">
     <ul class="nav navbar-nav navbar-toggler-right">
       <li><a href="#"> Marked for review</a></li>
     </ul>
   </div>
+  <div id="button">
+    <ng-container *ngIf="!start">
+      <button type="button" class="btn" (click)="startTest()">Почати тест</button>
+    </ng-container>
+  </div>
+  <div class="row">
+    <div class=".col-xs-12 .col-sm-6 .col-md-8 wrapper ">
 
       <ng-container *ngIf="question">
-        <div class="wrapper">
-          <table>
+        <div class="navigation">
+          <a class="next" (click)="next()">{{NEXT_QUESTION}}</a>
+        </div>
+        <div class="table-responsive ">
+          <table class="table">
             <caption><h3>Питання №{{questions.indexOf(question)+1}}</h3></caption>
             <tr>
               <td>{{question['question_text']}}</td>
@@ -28,57 +38,55 @@
             </tr>
           </table>
         </div>
+        <div class="answers">
           <ng-container *ngIf="question['type'] == 1">
-            <div *ngIf="question['answers']" class="form-radio">
-
-              <label appFormInput *ngFor="let answer of question['answers']">
+            <div *ngIf="question['answers']" class="flex-container">
+              <label *ngFor="let answer of question['answers']" class="flex-box">
                 <input type="radio" name='option' (change)="onValueChanged($event)" [value]="answer['answer_id']">
                 {{answer['answer_text']}}
-                 <img height="100px" [src]="answer['attachment']">
+                <img [src]="answer['attachment']">
               </label>
             </div>
           </ng-container>
 
           <ng-container *ngIf="question['type'] == 2">
-            <div *ngIf="question['answers']" class="form-radio">
-              <label appFormInput *ngFor="let answer of question['answers']">
+            <div *ngIf="question['answers']" class="flex-container">
+              <label *ngFor="let answer of question['answers']" class="flex-box">
                 <input type="checkbox" name='answer' (change)="onValueChanged($event)" [value]="answer['answer_id']">
                 {{answer['answer_text']}}
-               <img height="70" [src]="answer['attachment']">
+                <span>  <img [src]="answer['attachment']"></span>
               </label>
             </div>
           </ng-container>
 
-
           <ng-container *ngIf="question['type'] == 3">
-            <div
-              class="form-input" class="form-group">
-              <label>Ввести відповідь</label>
-              <input class="form-control"
-                     type="text"
-                     maxlength="100" appFormInput/>
+            <div class="form-input" class="input-field">
+              <label>{{ENTER_ANSWER}}
+                <input
+                  type="text"
+                  maxlength="100" appFormInput/>
+              </label>
             </div>
           </ng-container>
-
-
-          <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-              <li class="page-item">
-                <a class="page-link" id="prev" (click)="previous()" tabindex="-1">{{PREV_QUESTION}}</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" id="next" (click)="next()">{{NEXT_QUESTION}}</a>
-              </li>
-            </ul>
-          </nav>
-        </ng-container>
-
-
-        <div id="button">
-          <ng-container *ngIf="!start">
-            <button type="button" class="btn" (click)="startTest()">Почати тест</button>
-          </ng-container>
         </div>
+
+
+      </ng-container>
+
+    </div>
+
+    <div class=".col-xs-6 .col-md-4 sidebar">
+      <div>
+        <ul *ngIf="questions" class="number-container">
+          <li class="number-box" *ngFor="let number of getArrayOfNumbers(questions)" (click)="goToAnswers(number)">
+            {{number}}
+          </li>
+        </ul>
       </div>
+    </div>
+  </div>
+</div>
+
+
 <div id="footer">
 </div>
