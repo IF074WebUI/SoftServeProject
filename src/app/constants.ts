@@ -2,7 +2,9 @@
 ///export const HOST = '185.69.55.15';
 
 export const HOST = 'api1.lena.limit.com.ua';
-
+export const HOST_PROTOCOL = 'http://';
+export const INSERT_DATA = '/insertData';
+export const DEL = '/del/';
 export const NEWFACULTY = 'Створення нового факультету';
 export const DELETERESULT = 'Факультет було успішно видалено';
 export const EDITFACULTY = 'Редагування факультету';

@@ -4,13 +4,14 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import {Observable} from 'rxjs/Observable';
-import {HOST} from '../../constants';
-import {Group} from './group';
-import {GROUP_ENITY} from './groupConstants';
-import {StudentsService} from '../students/students.service';
-import {TimetableService} from '../timetable/timetable.service';
-import {DeleteRecordByIdService} from "../services/delete-record-by-id.service";
-import {Timetable} from "../timetable/timetable";
+import {HOST, INSERT_DATA, DEL} from '../../constants';
+import { Group } from './group';
+import { GROUP_ENTITY } from './groupConstants';
+import { StudentsService } from '../students/students.service';
+import { TimetableService } from '../timetable/timetable.service';
+import { DeleteRecordByIdService } from '../services/delete-record-by-id.service';
+import { HOST_PROTOCOL} from '../../constants';
+
 
 
 @Injectable()
@@ -22,41 +23,41 @@ export class GroupService {
   }
 
   getGroups() {
-    return this.http.get('http://' + HOST + GROUP_ENITY + '/getRecords')
+    return this.http.get(HOST_PROTOCOL + HOST + GROUP_ENTITY + '/getRecords')
       .map((resp: Response) => resp.json());
   }
 
   getGroupById(id: number): Observable<Group> {
-    return this.http.get('http://' + HOST + GROUP_ENITY + '/getRecords/' + id).map((resp: Response) => resp.json());
+    return this.http.get(HOST_PROTOCOL + HOST + GROUP_ENTITY + '/getRecords/' + id).map((resp: Response) => resp.json());
   }
 
   getPaginatedPage(pageNumber: number, offset: number) {
-    return this.http.get('http://' + HOST + GROUP_ENITY + '/getRecordsRange/' + offset + '/' + (pageNumber - 1) * offset)
+    return this.http.get(HOST_PROTOCOL + HOST + GROUP_ENTITY + '/getRecordsRange/' + offset + '/' + (pageNumber - 1) * offset)
       .map((resp: Response) => resp.json());
   }
 
   getFaculties() {
-    return this.http.get('http://' + HOST + '/Faculty/getRecords')
+    return this.http.get(HOST_PROTOCOL + HOST + '/Faculty/getRecords')
       .map((resp: Response) => resp.json());
   }
 
   getSpeciality() {
-    return this.http.get('http://' + HOST + '/Speciality/getRecords')
+    return this.http.get(HOST_PROTOCOL + HOST + '/Speciality/getRecords')
       .map((resp: Response) => resp.json());
   }
 
   createCroup(groupname: string, specialytyId: number, facultyId: number): Observable<Response> {
-    const bodyForSendingNewGroups = JSON.stringify({
+    let bodyForSendingNewGroups = JSON.stringify({
       group_name: groupname,
       faculty_id: facultyId,
       speciality_id: specialytyId
     });
-    return this.http.post('http://' + HOST + GROUP_ENITY + '/insertData', bodyForSendingNewGroups)
+    return this.http.post(HOST_PROTOCOL + HOST + GROUP_ENTITY + INSERT_DATA, bodyForSendingNewGroups)
       .map((resp: Response) => resp.json());
   }
 
   deleteGroup(id: number) {
-    return this.http.delete('http://' + HOST + GROUP_ENITY + '/del/' + id)
+    return this.http.delete(HOST_PROTOCOL + HOST + GROUP_ENTITY + DEL + id)
       .map((resp: Response) => resp.json());
   }
 
@@ -81,31 +82,31 @@ export class GroupService {
   }
 
   editGroup(id: number, groupname: string, specialytyId: number, facultyId: number) {
-    const bodyForSendingEditedGroups = JSON.stringify({
+    let bodyForSendingEditedGroups = JSON.stringify({
       group_name: groupname,
       faculty_id: facultyId,
       speciality_id: specialytyId
     });
-    return this.http.post('http://' + HOST + GROUP_ENITY + '/update/' + id, bodyForSendingEditedGroups)
+    return this.http.post(HOST_PROTOCOL + HOST + GROUP_ENTITY + '/update/' + id, bodyForSendingEditedGroups)
       .map((resp) => resp.json());
   }
 
   getCountGroups() {
-    return this.http.get('http://' + HOST + GROUP_ENITY + '/countRecords')
+    return this.http.get(HOST_PROTOCOL + HOST + GROUP_ENTITY + '/countRecords')
       .map((resp: Response) => resp.json()['numberOfRecords']);
   }
 
   getGroupsBySpeciality(specialytyId: number): Observable < [Group] > {
-    return this.http.get('http://' + HOST + GROUP_ENITY + '/getGroupsBySpeciality/' + specialytyId)
+    return this.http.get(HOST_PROTOCOL + HOST + GROUP_ENTITY + '/getGroupsBySpeciality/' + specialytyId)
       .map((resp: Response) => resp.json());
   }
 
   getGroupsByFaculty(facultyId: number) {
-    return this.http.get('http://' + HOST + GROUP_ENITY + '/getGroupsByFaculty/' + facultyId)
+    return this.http.get(HOST_PROTOCOL + HOST + GROUP_ENTITY + '/getGroupsByFaculty/' + facultyId)
       .map((resp: Response) => resp.json());
   }
 
   searchByName(criteria: string): Observable < Group[] > {
-    return this.http.get('http://' + HOST + GROUP_ENITY + '/getRecordsBySearch/' + criteria).map((resp: Response) => resp.json());
+    return this.http.get(HOST_PROTOCOL + HOST + GROUP_ENTITY + '/getRecordsBySearch/' + criteria).map((resp: Response) => resp.json());
   }
 }

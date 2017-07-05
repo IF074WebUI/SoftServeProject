@@ -3,5 +3,5 @@
  */
 export const GROUPS_HEADERS: string[] = ['#', 'Назва групи', 'Адміністрування'];
 export const IGNORE_PROPERTIES: string[] = ['group_id', 'faculty_id', 'speciality_id' ];
-export const GROUP_ENITY: string = '/Group';
+export const GROUP_ENTITY: string = '/Group';
 
