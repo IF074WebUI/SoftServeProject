@@ -28,11 +28,9 @@ export class DynamicFormComponent implements OnInit {
   entity_name: string;
   uniq_name: string;
 
-  MODAL_ADD_TITLE = 'Створити';
-  MODAL_EDIT_TITLE = 'Редагувати';
-  MODAL_DELETE_TITLE = 'Видалення';
+  MODAL = {ADD_TITLE: 'Створити', EDIT_TITLE:  'Редагувати', DELETE_TITLE: 'Видалення'};
   TITLE: string;
-  CONFIRM_QUESTION_TEXT = 'Ви підтверджуєте видалення';
+  CONFIRM: {QUESTION_TEXT: 'Ви підтверджуєте видалення'};
   CONFIRM_QUESTION: string;
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';
@@ -159,7 +157,7 @@ export class DynamicFormComponent implements OnInit {
     this.action = 'add_edit';
     this.entity = entity;
     this.entity_name = entity_name;
-    this.data1.image = photo || '';
+    this.photo = photo || '';
     let InputEntityNames = Object.getOwnPropertyNames(entity);
     let FormNames = Object.getOwnPropertyNames(this.form.controls);
     for (let i = 0; i < InputEntityNames.length; i++) {
@@ -167,9 +165,9 @@ export class DynamicFormComponent implements OnInit {
     }
     this.uniq_name = this.entity[InputEntityNames[0]];
     if (this.uniq_name) {
-      this.TITLE = this.MODAL_EDIT_TITLE;
+      this.TITLE = this.MODAL.EDIT_TITLE;
     } else {
-      this.TITLE = this.MODAL_ADD_TITLE;
+      this.TITLE = this.MODAL['ADD_TITLE'];
     }
   }
 
@@ -177,7 +175,7 @@ export class DynamicFormComponent implements OnInit {
     this.action = 'delete';
     this.entityForDelete = entity;
     this.Properties = Object.getOwnPropertyNames(this.entityForDelete);
-    this.TITLE = this.MODAL_DELETE_TITLE;
+    this.TITLE = this.MODAL.DELETE_TITLE;
     let Properties = Object.getOwnPropertyNames(entity);
     if (Properties[0] === 'speciality_id' || Properties[0] === 'test_id' || Properties[0] === 'id' || Properties[0] === 'question_id') {
       this.uniq_name = this.entityForDelete[Properties[2]];
@@ -190,8 +188,7 @@ export class DynamicFormComponent implements OnInit {
     else {
       this.uniq_name = this.entityForDelete[Properties[1]];
     }
-    this.CONFIRM_QUESTION = this.CONFIRM_QUESTION_TEXT + ' ' + this.uniq_name;
-    console.log(this.CONFIRM_QUESTION);
+    this.CONFIRM_QUESTION = this.CONFIRM.QUESTION_TEXT + ' ' + this.uniq_name;
     $('#add_edit_deletePopup').modal('show');
   }
 

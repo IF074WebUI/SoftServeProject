@@ -27,4 +27,6 @@ export const TEST_PLAYER_GET_QUESTIONS_BY_LEVEL_RAND = '/question/getQuestionsBy
 export const TEST_PLAYER_GET_TEST_DETAILS_BY_TEST = '/testDetail/getTestDetailsByTest/';
 export const TEST_PLAYER_SANSWER = '/SAnswer/';
 export const TEST_PLAYER_GET_ANSWER_BY_QUESTION = 'getAnswersByQuestion/';
+export const TEST_PLAYER_START_TEST  = '/Log/startTest/';
+export const TEST_PLAYER_RESET_SESSION_DATA = '/TestPlayer/resetSessionData';
 

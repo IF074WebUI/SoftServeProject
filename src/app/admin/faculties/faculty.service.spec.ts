@@ -41,7 +41,7 @@ describe('FacultyService', () => {
     });
   });
   describe('getFaculties()', () => {
-    it('Сервіс виводить список всіх факультетів',
+    it('This service should show all faculties',
       inject([FacultyService, XHRBackend], (FacultyService, mockBackend) => {
 
         const mockResponse = {id: 2, faculty_name: 'olena', faculty_description: 'olenatest'};
@@ -61,7 +61,7 @@ describe('FacultyService', () => {
       }));
   });
   describe('deleteCascade()', () => {
-    it('Видаляє факультет, навіть якщо в ньому є групи зі студентами',
+    it('it should delete faculties',
       inject([FacultyService, XHRBackend], (FacultyService, mockBackend) => {
 
         const mockResponse = {id: 2, faculty_name: 'olena', faculty_description: 'olenatest'};

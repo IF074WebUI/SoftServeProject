@@ -102,7 +102,6 @@ export class TestDetailComponent implements OnInit {
   // Method for  add/edit, delete form submiting
   formSubmitted(testDetail: TestDetail) {
     if (testDetail['id']) {
-      console.log(testDetail);
       this.testDetailService.editTestDetail(
         testDetail['id'],
         this.curenntTestId,

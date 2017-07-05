@@ -36,7 +36,6 @@ export class FormSelectTestDetailByIdComponent implements OnInit, AfterContentIn
   }
 
   ngAfterContentChecked() {
-//    console.log(this.group.controls['test_id'].value);
     if (this.group.controls['test_id'].value == '') {
       this.entities = this.entitiesForAdd;
     } else {

@@ -22,6 +22,8 @@ import {GetTestsBySubjectService} from '../admin/services/get-tests-by-subject.s
 import {CommonModule} from '@angular/common';
 import {StudentsService} from '../admin/students/students.service';
 import {ResultsService} from '../admin/services/results.service';
+import {ToastModule} from 'ng2-toastr';
+
 
 @NgModule({
 
@@ -29,7 +31,8 @@ import {ResultsService} from '../admin/services/results.service';
   imports: [
     CommonModule,
     RouterModule.forChild(studentRoutes),
-    LoadingModule
+    LoadingModule,
+    ToastModule.forRoot()
   ],
   providers: [
     TestPlayerService,
