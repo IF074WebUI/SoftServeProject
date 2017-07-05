@@ -127,14 +127,11 @@ export class FacultiesComponent implements OnInit {
 // Methods for opening editing and deleting common modal window
 
   add() {
-   // this.configs[1]['action'] = 'add';
-  //  this.CHOSEN_ACTION = TEST;
     this.popup.sendItem(new Faculty('', '', ''), 'Faculty');
     this.popup.showModal();
   }
 
   edit(faculty: Faculty) {
-    // this.configs[1]['action'] = 'edit';
     this.popup.sendItem(faculty);
     this.popup.showModal();
   }
@@ -152,7 +149,7 @@ export class FacultiesComponent implements OnInit {
           this.uploadAllPages(this.page);
           this.toastr.success(`Факультет ${value['faculty_name']} успішно відредагований`);
         },
-        error => {this.toastr.error(error);}
+        error => {this.toastr.error(error); }
       );
     } else {
       this.http.addItem(value['faculty_name'], value['faculty_description']).subscribe(response => {
@@ -162,7 +159,7 @@ export class FacultiesComponent implements OnInit {
           this.uploadAllPages(this.page);
           this.toastr.success(`Факультет ${value['faculty_name']} успішно збережений`);
         },
-         error => {this.toastr.error(error);}
+         error => {this.toastr.error(error); }
       );
     }
   }
@@ -174,7 +171,7 @@ export class FacultiesComponent implements OnInit {
         this.uploadAllPages(this.page);
         this.toastr.success(`Факультет ${faculty['faculty_name']} успішно видалений`);
       },
-      error => {this.toastr.error(error);}
+      error => {this.toastr.error(error); }
     );
   }
 }

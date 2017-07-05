@@ -30,7 +30,7 @@ export class DynamicFormComponent implements OnInit {
 
   MODAL = {ADD_TITLE: 'Створити', EDIT_TITLE:  'Редагувати', DELETE_TITLE: 'Видалення'};
   TITLE: string;
-  CONFIRM: {QUESTION_TEXT: 'Ви підтверджуєте видалення'};
+  CONFIRM_QUESTION_TEXT = 'Ви підтверджуєте видалення';
   CONFIRM_QUESTION: string;
   CONFIRM_DELETE = 'Видалити';
   CLOSE = 'Закрити';
@@ -165,7 +165,7 @@ export class DynamicFormComponent implements OnInit {
     }
     this.uniq_name = this.entity[InputEntityNames[0]];
     if (this.uniq_name) {
-      this.TITLE = this.MODAL.EDIT_TITLE;
+      this.TITLE = this.MODAL['EDIT_TITLE'];
     } else {
       this.TITLE = this.MODAL['ADD_TITLE'];
     }
@@ -188,7 +188,7 @@ export class DynamicFormComponent implements OnInit {
     else {
       this.uniq_name = this.entityForDelete[Properties[1]];
     }
-    this.CONFIRM_QUESTION = this.CONFIRM.QUESTION_TEXT + ' ' + this.uniq_name;
+    this.CONFIRM_QUESTION = this.CONFIRM_QUESTION_TEXT + ' ' + this.uniq_name;
     $('#add_edit_deletePopup').modal('show');
   }
 
