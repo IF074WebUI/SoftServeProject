@@ -2,12 +2,15 @@ import {Injectable} from '@angular/core';
 import {Http, RequestOptions, Response, Headers} from '@angular/http';
 import {HOST} from '../../constants';
 import {GetTestsBySubjectService} from 'app/admin/services/get-tests-by-subject.service';
+import {Question} from './test-player.component';
+import {Answer} from '../../admin/answers/answer';
+
+
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/switchMap';
 
-import {Question} from './test-player.component';
-import {Answer} from '../../admin/answers/answer';
 
 
 @Injectable()
@@ -49,7 +52,7 @@ export class TestPlayerService {
     return Observable.forkJoin(forkJoinBatch)
       .map((questions: Question[][] | any) => {
         // let error = questions.some((item) => {
-        //   return item.response;
+        //  return item.response;
         // });
         // if (error) {
         //   throw new Error("test data are absent");
@@ -60,7 +63,7 @@ export class TestPlayerService {
 
   };
 
-  prepareQuestionForTest(questions: Question[][], testDetails: any[]): Question[] {
+  prepareQuestionForTest(questions: Question[][], testDetails): Question[] {
     let tempArr: Question[] = [];
 
     questions.forEach((elem: Question[]) => {
@@ -72,20 +75,22 @@ export class TestPlayerService {
   }
 
   getAnswers(questions: Question[]) {
-    let forkJoinBatch: Observable<any>[] = questions.map(question => {
-      return this.getAnswersById(question['question_id']);
+    let forkJoinBatch: Observable<any>[] = questions.
+    map(question => {
+        return this.getAnswersById(question['question_id']);
     });
+
     return Observable.forkJoin(forkJoinBatch)
       .do((answers: Answer[][] | any) => {
         let error = questions.some((item) => {
           return item['response'];
         });
         if (error) {
-          throw new Error('test data are absent');
+          throw new Error('no aswrers for this question');
         }
-        answers.forEach((answer, i) => {
+        answers.map((answer, i) => {
           questions[i]['answers'] = answer;
-        })
+        });
       });
 
   }

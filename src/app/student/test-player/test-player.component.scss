@@ -1,10 +1,11 @@
 @import "../../admin/universal/styles/const";
 @import "../../admin/universal/styles/table";
-@import "../../admin/universal/styles/btn-start";
+@import "../../admin/universal/styles/button";
 @import "../../admin/universal/styles/const";
 @import "../../admin/universal/dynamic-form/styles/form-control";
 
 .header {
+  color: $primary-viole-super-bright;
   height: 100px;
   background-color: $primary-violet-color;
   margin-bottom: 20px;
@@ -39,9 +40,6 @@ table {
     caption-side: top;
   }
   font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
-  //margin-top: 20px;
-  //margin-left: 100px;
-//  width: 400px;
   margin: auto;
   font-size: large;
   color: black;
@@ -85,17 +83,15 @@ table {
     }
   }
 }
-.answers{
+
+.answers {
   margin-top: 50px;
 }
 
 .navigation {
-  prev {
-    float: left;
-  }
-  .next {
+
     float: right;
-  }
+
 }
 
 .flex-container {

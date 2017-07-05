@@ -5,7 +5,9 @@
 <div class="container-fluid header">
   <div class="header">
     <div class="timer">{{minutesDisplay}}:{{secondsDisplay}}</div>
-    <div class="finish">Завершити тест</div>
+    <div class="finish" >
+      <button type="button" class="btn" (click)="finishTest()"> {{FINISH}}</button>
+     </div>
     <div class="time">{{currentTime}}</div>
   </div>
 </div>
@@ -13,12 +15,16 @@
 <div class="container">
   <div class="navbar">
     <ul class="nav navbar-nav navbar-toggler-right">
-      <li><a href="#"> Marked for review</a></li>
+      <li><a href="#"> {{MARKED}}</a></li>
     </ul>
   </div>
   <div id="button">
     <ng-container *ngIf="!start">
-      <button type="button" class="btn" (click)="startTest()">Почати тест</button>
+      <button type="button" class="btn-test-player" (click)="startTest()">{{START}}</button>
+    </ng-container>
+    <ng-container *ngIf="finish">
+      {{FINISH_DIALOG}}
+      <button type="button" class="btn-test-player" (click)="startTest()">{{RESULTS}}</button>
     </ng-container>
   </div>
   <div class="row">
@@ -26,11 +32,11 @@
 
       <ng-container *ngIf="question">
         <div class="navigation">
-          <a class="next" (click)="next()">{{NEXT_QUESTION}}</a>
+          <button class="btn-test-player" (click)="next()">{{NEXT_QUESTION}}</button>
         </div>
         <div class="table-responsive ">
           <table class="table">
-            <caption><h3>Питання №{{questions.indexOf(question)+1}}</h3></caption>
+            <caption><h3>{{QUESTION}}{{questions.indexOf(question)+1}}</h3></caption>
             <tr>
               <td>{{question['question_text']}}</td>
             </tr>
@@ -42,18 +48,20 @@
         <div class="answers">
           <ng-container *ngIf="question['type'] == 1">
             <div *ngIf="question['answers']" class="flex-container">
+              <!--<form [formGroup]="singlechoise">-->
               <label *ngFor="let answer of question['answers']" class="flex-box">
-                <input type="radio" name='option' (change)="onValueChanged($event)" [value]="answer['answer_id']">
+                <input type="radio" name='singlechoise' (change)="getAnswer($event)" [value]="answer['answer_id']">
                 {{answer['answer_text']}}
                 <img [src]="answer['attachment']">
               </label>
+              <!--</form>-->
             </div>
           </ng-container>
 
           <ng-container *ngIf="question['type'] == 2">
             <div *ngIf="question['answers']" class="flex-container">
               <label *ngFor="let answer of question['answers']" class="flex-box">
-                <input type="checkbox" name='answer' (change)="onValueChanged($event)" [value]="answer['answer_id']">
+                <input type="checkbox" name='answer' (change)="getAnswer($event)" [value]="answer['answer_id']">
                 {{answer['answer_text']}}
                 <span>  <img [src]="answer['attachment']"></span>
               </label>
@@ -63,15 +71,16 @@
           <ng-container *ngIf="question['type'] == 3">
             <div class="form-input" class="input-field">
               <label>{{ENTER_ANSWER}}
-                <input
-                  type="text"
-                  maxlength="100" appFormInput/>
+                <input (keyup)="getAnswer($event)"
+                       type="text"
+                       maxlength="100"/>
               </label>
             </div>
           </ng-container>
         </div>
-
-
+        <div class="navigation">
+          <button type="submit" class="btn-test-player">{{SAVE_ANSWER}}</button>
+        </div>
       </ng-container>
 
     </div>
