@@ -34,6 +34,9 @@ export class StudentsMainPageComponent implements OnInit {
   date: any;
   currentTime: string;
   clock:any;
+  GREATINGS: string;
+  OPEN_TESTS: string;
+  PROFILE: string;
   constructor(private loginService: LoginService,
               private router: Router,
               private studentService: StudentsService,
@@ -51,6 +54,9 @@ export class StudentsMainPageComponent implements OnInit {
               private route: ActivatedRoute,
   ) {
     this.objLoaderStatus = false;
+    this.GREATINGS = 'Доброго дня';
+    this.OPEN_TESTS = 'Доступні';
+    this.PROFILE = 'Профіль';
     this.noTests = 'Немає доступних тестів';
     this.noRecordsResponce = 'no records';
     this.checkTestAvailability = false;

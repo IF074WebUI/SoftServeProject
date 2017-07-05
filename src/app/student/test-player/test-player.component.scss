@@ -159,9 +159,9 @@ table {
 }
 #container {
   background-color: $primary-violet-bright-color;
+  padding-left: 20px;
   .row{
     h3 {
-      margin-left: 20px;
     }
     .col-md-2, .col-md-10 {
       display: flex;
