@@ -146,5 +146,11 @@ export class StudentsMainPageComponent implements OnInit {
         },
         relativeTo: this.route.parent});
   }
+  goToTheProfile() {
+    this.router.navigate(['./studentProfile'], {
+      queryParams: {'user_id': this.result.student['user_id']},
+      relativeTo: this.route.parent
+    });
+  }
 
 }
