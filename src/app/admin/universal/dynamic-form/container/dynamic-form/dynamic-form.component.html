@@ -8,7 +8,7 @@
       </div>
       <div class="modal-body">
 
-        <div class='step-1' [hidden]='!stepOne'>
+        <div  [hidden]='!stepOne'>
           <form *ngIf="action == 'add_edit'" class="form-group"
                 class="dynamic-form"
                 [formGroup]="form">
@@ -31,7 +31,7 @@
           </form>
         </div>
 
-        <div class='step-2' *ngIf="action == 'add_edit'" [hidden]='!stepTwo'>
+        <div  *ngIf="action == 'add_edit'" [hidden]='!stepTwo'>
           <div>
 
             <img-cropper [image]="data1" [settings]="cropperSettings1" (onCrop)="cropped($event)"></img-cropper>
