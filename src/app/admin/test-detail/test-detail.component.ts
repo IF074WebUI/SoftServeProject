@@ -7,6 +7,7 @@ import { SpinnerService } from '../universal/spinner/spinner.service';
 import 'rxjs/add/operator/delay';
 import {DynamicFormComponent} from '../universal/dynamic-form/container/dynamic-form/dynamic-form.component';
 import {TEST_DETAIL_CONFIG} from '../universal/dynamic-form/config';
+import {ToastsManager} from 'ng2-toastr';
 
 @Component({
   selector: 'dtester-test-detail',
@@ -36,6 +37,7 @@ export class TestDetailComponent implements OnInit {
 
   constructor(private testDetailService: TestDetailService,
               private route: ActivatedRoute,
+              private toastr: ToastsManager,
               private spinner: SpinnerService,
               private router: Router) {
     this.CREATE_NEW_DETAIL = 'Додати нову деталь';
@@ -64,7 +66,7 @@ export class TestDetailComponent implements OnInit {
             this.getCountOfTestDetails();
             this.spinner.hideSpinner();
           }
-        });
+        }, error => this.toastr.error(error));
     }
   }
 
@@ -73,7 +75,7 @@ export class TestDetailComponent implements OnInit {
     this.testDetailService.getTestDetails(this.curenntTestId)
       .subscribe(res => {
         this.testDetails = <TestDetail[]>res, this.getCountOfTestDetails(), this.spinner.hideSpinner(); },
-          err => this.router.navigate(['/bad_request']));
+        error => this.toastr.error(error));
 
   }
 
@@ -111,8 +113,9 @@ export class TestDetailComponent implements OnInit {
         .subscribe(response => {
             this.uploadPage();
             this.popup.cancel();
+            this.toastr.success(`Деталь успішно відредагована`);
           },
-          error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': testDetail['level']}, relativeTo: this.route.parent})
+          error => this.toastr.error(error)
         );
     } else {
       this.testDetailService.createTestDetail(
@@ -123,13 +126,15 @@ export class TestDetailComponent implements OnInit {
         .subscribe(response => {
             this.uploadPage();
             this.popup.cancel();
+            this.toastr.success(`Деталь успішно додана`);
           },
-          error => this.router.navigate(['/bad_request'], {queryParams: {'bad_name': testDetail['level']}, relativeTo: this.route.parent})
+          error => this.toastr.error(error)
         );
     }
   }
   submitDelete(testDetail: TestDetail) {
-    this.testDetailService.deleteDetail(testDetail['id']).subscribe(response => this.uploadPage());
+    this.testDetailService.deleteDetail(testDetail['id'])
+      .subscribe(response => { this.uploadPage(); this.toastr.success(`Деталь успішно видалена`); });
    }
 }
 

@@ -25,6 +25,7 @@ import {ResultsService} from '../admin/services/results.service';
 import {StudentsMainPageComponent} from './students-main-page/students-main-page.component';
 import {ToastModule} from 'ng2-toastr';
 import { StudentProfileComponent } from './student-profile/student-profile.component';
+import {GroupService} from '../admin/group/group.service';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { StudentProfileComponent } from './student-profile/student-profile.compo
     AnswersService,
     TestDetailService,
     DeleteRecordByIdService,
-    GetTestsBySubjectService
+    GetTestsBySubjectService,
+    GroupService
   ]
 })
 

@@ -33,7 +33,10 @@ export class StudentsMainPageComponent implements OnInit {
   unixTime: number;
   date: any;
   currentTime: string;
-  clock:any;
+  clock: any;
+  GREATINGS: string;
+  OPEN_TESTS: string;
+  PROFILE: string;
   constructor(private loginService: LoginService,
               private router: Router,
               private studentService: StudentsService,
@@ -51,6 +54,9 @@ export class StudentsMainPageComponent implements OnInit {
               private route: ActivatedRoute,
   ) {
     this.objLoaderStatus = false;
+    this.GREATINGS = 'Доброго дня';
+    this.OPEN_TESTS = 'Доступні';
+    this.PROFILE = 'Профіль';
     this.noTests = 'Немає доступних тестів';
     this.noRecordsResponce = 'no records';
     this.checkTestAvailability = false;
@@ -66,7 +72,7 @@ export class StudentsMainPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.testPlayer.getCurrentTime().subscribe(res => console.log(res))
+    this.getStudentId();
     this.getTestForStudent();
     this.spinner.loaderStatus.subscribe((val: boolean) => {
       this.objLoaderStatus = val;
@@ -77,7 +83,7 @@ export class StudentsMainPageComponent implements OnInit {
     this.spinner.showSpinner();
     this.loginService.checkLogged()
       .subscribe(
-        res => {},
+        res => {this.studentId = res[0]; this.spinner.hideSpinner()},
         err => this.toastr.error(err)
       );
   }
@@ -118,17 +124,18 @@ export class StudentsMainPageComponent implements OnInit {
                           };
                         }
                       }
-                    }
+                    }, error => this.toastr.error(error)
                   );
               };
             };
-          }); });
+          }, error => this.toastr.error(error)); }, error => this.toastr.error(error));
   }
   logout() {
     this.stopClock();
     this.loginService.logout().subscribe(() => {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login'], error => this.toastr.error(error));
     });
+    window.sessionStorage.setItem('studentId', 'false');
   }
   openTestPlayer(testId, testDuration) {
     this.stopClock();
@@ -139,6 +146,12 @@ export class StudentsMainPageComponent implements OnInit {
           'test_duration': testDuration
         },
         relativeTo: this.route.parent});
+  }
+  goToTheProfile() {
+    this.router.navigate(['./studentProfile'], {
+      queryParams: {'user_id': this.result.student['user_id']},
+      relativeTo: this.route.parent
+    });
   }
 
 }

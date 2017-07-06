@@ -169,28 +169,32 @@ export class TestPlayerComponent implements OnInit {
     this.test_player.getCurrentTime()
       .subscribe(res => {
         this.currentUnixTime = +res['unix_timestamp'];
-        this.timer = setInterval(() => {
-          if (this.unixTimeLeft > 0) {
-            --this.unixTimeLeft;
-            this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / 60)).toString();
-            this.secondsDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft % 60)).toString();
-            this.statusTimer = Math.floor(this.unixTimeLeft / (this.testDuration / this.PERSENT)) + '%';
-          } else {
-            this.stopTimer();
-          }
-        }, this.MILLISECONDS_IN_MINUTE);
-      });
+        this.showTimer();
+      },
+        error => this.toastr.error(error));
   }
 
+  showTimer() {
+    let timer = setInterval(() => {
+      if (this.unixTimeLeft > 0) {
+        this.secondsDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft % 60)).toString();
+        this.statusTimer = Math.floor(this.unixTimeLeft / (this.testDuration / this.PERSENT)) + '%';
+        this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / 60)).toString();
+        this.unixTimeLeft--;
+      } else {
+        this.toastr.error('Час закінчився');
+        clearInterval(timer);
+        this.finishTest();
+        this.stopTimer();
+      }
+    }, this.MILLISECONDS_IN_MINUTE);
+  }
   checkUnixTime() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
         if (+res['unix_timestamp'] < this.endUnixTime) {
-          console.log('time unougtht');
-          this.unixTimeLeft = (this.endUnixTime - +res['unix_timestamp']) - 1;
+          this.unixTimeLeft = (this.endUnixTime - +res['unix_timestamp']);
         } else if (+res['unix_timestamp'] > this.endUnixTime) {
-          console.log('time end');
-          this.finishTest();
         }
       });
   }
@@ -217,7 +221,6 @@ export class TestPlayerComponent implements OnInit {
       return this.STATUS_COLOR;
     } else if (status <= this.DANGER_STATUS) {
       return this.DANGER_COLOR;
-
     }
   };
 
