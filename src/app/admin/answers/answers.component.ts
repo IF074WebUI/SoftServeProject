@@ -17,6 +17,7 @@ import {Question} from "../questions/question";
 })
 export class AnswersComponent implements OnInit {
   HEADING_ANSWERS = 'Відповіді';
+  title = 'Відповіді';
   answersOnPage: Answer[];
   pageNumber = 1;
   recordsPerPage = 5;
@@ -81,7 +82,8 @@ export class AnswersComponent implements OnInit {
       --this.pageNumber;
     }
     this.answersService.getPaginatedPage(this.pageNumber, this.recordsPerPage).delay(301)
-      .subscribe(resp => { this.answersOnPage = <Answer[]>resp, error => this.router.navigate(['/bad_request']);
+      .subscribe(resp => { this.answersOnPage = <Answer[]>resp,
+        error => this.router.navigate(['/bad_request']);
         this.spinner.hideSpinner();
       });
   }
@@ -164,7 +166,7 @@ export class AnswersComponent implements OnInit {
   }
 
   deleteAnswer(answer: Answer) {
-    this.answersService.deleteAnswer(answer['answer_id']).subscribe(resp => this.getAnswers(),
+    this.answersService.deleteAnswer(answer['answer_id']).subscribe(resp => this.getAnswersForOneQuestion(),
       error => this.router.navigate(['/bad_request'])
     );
   }

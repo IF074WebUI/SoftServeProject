@@ -14,6 +14,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
+import { TestsService } from '../../admin/services/tests.service';
 
 
 export class Question {
@@ -28,7 +29,7 @@ export class Question {
 }
 
 @Component({
-  selector: 'app-test-player',
+  selector: 'dtester-test-player',
   templateUrl: './test-player.component.html',
   styleUrls: ['./test-player.component.scss'],
   providers: [GetTestsBySubjectService],
@@ -62,6 +63,7 @@ export class TestPlayerComponent implements OnInit {
   STATUS_COLOR: string;
   DANGER_STATUS: number;
   availability: any;
+  testName: string;
 
   NEXT_QUESTION = 'Наступне питання';
   ENTER_ANSWER = 'Ввести відповідь';
@@ -73,7 +75,12 @@ export class TestPlayerComponent implements OnInit {
   RESULTS = 'Зверегти результати';
   FINISH_DIALOG = 'Тест завершено';
 
-  constructor(private test_player: TestPlayerService, private route: ActivatedRoute, private toastr: ToastsManager) {
+  constructor(
+    private test_player: TestPlayerService,
+    private route: ActivatedRoute,
+    private toastr: ToastsManager,
+    private testService: TestsService,
+  ) {
     this.ticks = 0;
     this.minutesDisplay = '00';
     this.secondsDisplay = '00';
@@ -83,6 +90,7 @@ export class TestPlayerComponent implements OnInit {
     this.STATUS_COLOR = '#51E000';
     this.DANGER_COLOR = '#FD040E';
     this.DANGER_STATUS = 18;
+
   }
 
   ngOnInit() {
@@ -90,19 +98,24 @@ export class TestPlayerComponent implements OnInit {
     this.user_id = this.route.snapshot.queryParams['user_id'];
     this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE;
     this.getTestDetails();
+    this.testService.getTestById(this.test_id)
+      .subscribe(
+        resp => this.testName = resp[0]['test_name'],
+        error => this.toastr.error(error)
+      );
   }
 
   getTestDetails() {
     this.test_player.getTestDetail(this.test_id).subscribe(resp => {
       this.test_details = resp;
-    });
+    }, error => this.toastr.error(error));
   }
 
 
   startTest() {
-    this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => console.log(resp));
+   this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => console.log(resp), error => this.toastr.error(error));
     this.getTime();
-    this.start = true; // temporary
+    this.start = true;
     if (this.start) {
       this.startTimer();
 
@@ -117,9 +130,9 @@ export class TestPlayerComponent implements OnInit {
 
       answers$.subscribe(response => {
         this.questions['answers'] = response;
-      }, error => console.log(error));
+      }, error => this.toastr.error(error));
     } else {
-     console.log('prohibited');
+     this.toastr.error('Prohibited');
     }
   }
 
@@ -134,8 +147,8 @@ export class TestPlayerComponent implements OnInit {
   }
 
   finishTest() {
-    console.log('test finished');
-    this.test_player.resetSessionData().subscribe(resp => console.log(resp));
+    this.toastr.success('Test Finished');
+    this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
   }
 
 
@@ -173,10 +186,10 @@ export class TestPlayerComponent implements OnInit {
     this.test_player.getCurrentTime()
       .subscribe(res => {
         if (+res['unix_timestamp'] < this.endUnixTime) {
-          console.log('time unougtht')
+          console.log('time unougtht');
           this.unixTimeLeft = (this.endUnixTime - +res['unix_timestamp']) - 1;
         } else if (+res['unix_timestamp'] > this.endUnixTime) {
-          console.log('time end')
+          console.log('time end');
           this.finishTest();
         }
       });

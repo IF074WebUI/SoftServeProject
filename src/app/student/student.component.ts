@@ -11,28 +11,28 @@ import {ViewContainerRef} from '@angular/core';
 export class StudentComponent implements OnInit {
   objLoaderStatus: boolean;
 
-    constructor(private loginService: LoginService,
-                private router: Router,
-                private spinner: SpinnerService,
-                public  vRef: ViewContainerRef,
-                private toastr: ToastsManager,
+  constructor(private loginService: LoginService,
+              private router: Router,
+              private spinner: SpinnerService,
+              public  vRef: ViewContainerRef,
+              private toastr: ToastsManager,
 
 
-    ) {
-      this.toastr.setRootViewContainerRef(vRef);
+  ) {
+    this.toastr.setRootViewContainerRef(vRef);
 
-    }
+  }
 
-ngOnInit() {
-  this.spinner.loaderStatus.subscribe((val: boolean) => {
-    this.objLoaderStatus = val;
-  });
+  ngOnInit() {
+    this.spinner.loaderStatus.subscribe((val: boolean) => {
+      this.objLoaderStatus = val;
+    });
 
-}
-logout() {
-  this.loginService.logout().subscribe(() => {
-    this.router.navigate(['/login']);
-  });
-}
+  }
+  logout() {
+    this.loginService.logout().subscribe(() => {
+      this.router.navigate(['/login']);
+    });
+  }
 
 }
