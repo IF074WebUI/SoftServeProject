@@ -6,6 +6,9 @@
     <div class="col-md-2 exit">
       <button class=" btn btn-exit btn-close-test" (click)="finishTest()"> {{FINISH}}</button>
     </div>
+    <div class="col-md-2 exit">
+      <button class=" btn btn-exit btn-close-test" (click)=" saveResults()"> Save data</button>
+    </div>
   </div>
 </div>
 <div id="timer-background">
@@ -33,7 +36,7 @@
 
       <ng-container *ngIf="question">
         <div class="navigation">
-          <button class="btn-test-player" (click)="next()">{{NEXT_QUESTION}}</button>
+          <button class="btn-test-player" (click)="next(question['type'])">{{NEXT_QUESTION}}</button>
         </div>
         <div class="table-responsive ">
           <table class="table">
@@ -47,7 +50,7 @@
           </table>
         </div>
         <div class="answers">
-          <form  [formGroup]="answersFrom" (ngSubmit)="next(question['type'])">
+          <form  [formGroup]="answersFrom">
           <ng-container *ngIf="question['type'] == 1">
             <div *ngIf="question['answers']" class="flex-container">
               <label *ngFor="let answer of question['answers']" class="flex-box">

@@ -18,6 +18,14 @@ import {TestsService} from '../../admin/services/tests.service';
 import {FormGroup} from "@angular/forms/src/model";
 import {FormBuilder, FormControl} from "@angular/forms";
 
+export class CheckAnswers {
+  private numberOfQuestion: number;
+  private answerId: string;
+  constructor(numberOfQuestion, answerId ) {
+    this.numberOfQuestion = numberOfQuestion;
+      this.answerId = answerId
+  }
+}
 
 export class Question {
   question_id: number;
@@ -42,6 +50,7 @@ export class TestPlayerComponent implements OnInit {
   test: Test;
   questions: Question[] = [];
   question: Question;
+  allAnswers: CheckAnswers[] = [];
   start: boolean;
   finish: boolean;
   user_id: number;
@@ -67,8 +76,6 @@ export class TestPlayerComponent implements OnInit {
   availability: any;
   testName: string;
   answersFrom: FormGroup;
-  map: any;
-  typeOfAnswer: string;
 
   NEXT_QUESTION = 'Наступне питання';
   ENTER_ANSWER = 'Ввести відповідь';
@@ -80,7 +87,14 @@ export class TestPlayerComponent implements OnInit {
   RESULTS = 'Зверегти результати';
   FINISH_DIALOG = 'Тест завершено';
 
-  constructor(private test_player: TestPlayerService,
+
+  TypeOfAnswers = {
+  '1': 'singlechoise',
+  '2': 'multichoise',
+  '3': 'inputfield'
+};
+
+constructor(private test_player: TestPlayerService,
               private route: ActivatedRoute,
               private toastr: ToastsManager,
               private testService: TestsService,
@@ -126,12 +140,11 @@ export class TestPlayerComponent implements OnInit {
 
 
   startTest() {
-    this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => console.log(resp), error => this.toastr.error(error));
+    this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => {console.log(resp); }, error => this.toastr.error(error));
     this.getTime();
     this.start = true;
     if (this.start) {
       this.startTimer();
-      this.map = new Map;
 
 
 // Olena
@@ -151,12 +164,10 @@ export class TestPlayerComponent implements OnInit {
   }
 
   next(type: string) {
-    if (type === '1'){
-      this.typeOfAnswer = 'singlechoise'
-    }
     let currentIndex = this.questions.indexOf(this.question);
-    console.log(currentIndex + 1, this.answersFrom.value);
-    this.map.set(currentIndex + 1, this.answersFrom.value[this.typeOfAnswer]);
+    let current = new CheckAnswers(String(currentIndex + 1), this.answersFrom.controls[this.TypeOfAnswers[type]].value);
+     this.allAnswers.push(current);
+   this.test_player.saveData(this.allAnswers).subscribe(resp => this.toastr.success(resp));
     let newIndex = currentIndex === this.questions.length - 1 ? 0 : currentIndex + 1;
     this.question = this.questions[newIndex];
   }
@@ -168,6 +179,16 @@ export class TestPlayerComponent implements OnInit {
   finishTest() {
     this.toastr.success('Test Finished');
     this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
+  }
+
+  saveResults(){
+    this.test_player.getData().do(resp =>
+    // {let Answers = [];
+    // resp.forEach((obj) =>
+    // Answers.push({obj['numberOfQuestion']})
+    // }
+      console.log(resp)
+    ).flatMap(resp => this.test_player.checkResults(resp)).subscribe(resp => console.log(resp));
   }
 
 
