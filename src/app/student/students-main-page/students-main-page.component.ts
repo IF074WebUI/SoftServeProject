@@ -61,7 +61,7 @@ export class StudentsMainPageComponent implements OnInit {
     this.noRecordsResponce = 'no records';
     this.checkTestAvailability = false;
     this.tableHeaders = ['#', 'Назва тесту', 'Кількість завданнь', 'Тривалість', ''];
-    this.studentId = +window.sessionStorage.getItem('studentId');
+    // this.studentId = +window.sessionStorage.getItem('studentId');
     this.result = {
       student: [],
       groupId: [],
@@ -102,34 +102,36 @@ export class StudentsMainPageComponent implements OnInit {
     this.testPlayer.getCurrentTime().subscribe(res => { this.unixTime = res['curtime']; } );
   }
   getTestForStudent() {
-    // this.spinner.showSpinner();
-    this.studentService.getStudentById(this.studentId)
-      .subscribe(res => {
-        this.result.student = res[0];
-        this.timeTable.getTimeTablesForGroup(this.result.student.group_id)
-          .subscribe(timeTableRes => {
-            if (timeTableRes['response'] === this.noRecordsResponce) {
-              this.checkTestAvailability = true;
-            } else {
-              this.result.timeTable = timeTableRes;
-              for (const timeTable of this.result.timeTable) {
-                this.test.getTestsBySubject(timeTable['subject_id'])
-                  .subscribe(testsRes => {
-                      if (testsRes['response'] === this.noRecordsResponce) {
-                        this.checkTestAvailability = true;
-                      } else {
-                        for (const test of testsRes) {
-                          if (test['enabled'] === '1') {
-                            this.result.tests.push(test);
-                          };
-                        }
-                      }
-                    }, error => this.toastr.error(error)
-                  );
-              };
-            };
-          }, error => this.toastr.error(error)); }, error => this.toastr.error(error));
-  }
+    this.loginService.checkLogged()
+      .flatMap(loginResponse => this.studentId = loginResponse['id'])
+        return this.loginService.checkLogged()
+          .subscribe(result => { this.studentService.getStudentById(+result['id'])
+            .subscribe(res => {
+              this.result.student = res[0];
+              this.timeTable.getTimeTablesForGroup(this.result.student.group_id)
+                .subscribe(timeTableRes => {
+                  if (timeTableRes['response'] === this.noRecordsResponce) {
+                    this.checkTestAvailability = true;
+                  } else {
+                    this.result.timeTable = timeTableRes;
+                    for (const timeTable of this.result.timeTable) {
+                      this.test.getTestsBySubject(timeTable['subject_id'])
+                        .subscribe(testsRes => {
+                            if (testsRes['response'] === this.noRecordsResponce) {
+                              this.checkTestAvailability = true;
+                            } else {
+                              for (const test of testsRes) {
+                                if (test['enabled'] === '1') {
+                                  this.result.tests.push(test);
+                                };
+                              }
+                            }
+                          }, error => this.toastr.error(error)
+                        );
+                    };
+                  };
+                }, error => this.toastr.error(error)); }, error => this.toastr.error(error)); });
+}
   logout() {
     this.stopClock();
     this.loginService.logout().subscribe(() => {
