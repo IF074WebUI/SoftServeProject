@@ -18,7 +18,10 @@ import {isUndefined} from "util";
   styleUrls: ['./students.component.scss'],
   providers: [StudentsService]
 })
+
 export class StudentsComponent implements OnInit {
+  show: boolean = true;
+
 
   headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові', 'Група'];
   ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];

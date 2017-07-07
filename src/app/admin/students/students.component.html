@@ -8,7 +8,10 @@
                           (recordsPerPageChanged)="changeCountPerPage($event)">
   </dtester-items-per-page>
 </div>
-
+<button (click)="show = !show">{{show ? 'hide' : 'show'}}</button>
+show = {{show}}
+<div *ngIf ="show; else dragdrop"><dtester-student-profile></dtester-student-profile></div>
+<ng-template #dragdrop>
 <dtester-entities-table [entities]="students"
                         [headers]="headers"
                         [page]="page"
@@ -22,7 +25,7 @@
                         [canDelete]="true"
                         [sortProperties]="sortProperties">
 </dtester-entities-table>
-
+</ng-template>
 <div class="app">
   <dynamic-form [config]="configs"
                 (submitted)="formSubmitted($event)">
