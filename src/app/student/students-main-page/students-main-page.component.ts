@@ -144,7 +144,6 @@ export class StudentsMainPageComponent implements OnInit {
     this.router.navigate(['./test-player'],
       {
         queryParams: {'testId': testId,
-          'user_id': this.result.student['user_id'],
           'test_duration': testDuration
         },
         relativeTo: this.route.parent});

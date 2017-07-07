@@ -17,6 +17,7 @@ import 'rxjs/add/operator/catch';
 import {TestsService} from '../../admin/services/tests.service';
 import {FormGroup} from "@angular/forms/src/model";
 import {FormBuilder, FormControl} from "@angular/forms";
+import {LoginService} from "../../login/login.service";
 
 export class CheckAnswers {
   private numberOfQuestion: number;
@@ -94,11 +95,14 @@ export class TestPlayerComponent implements OnInit {
   '3': 'inputfield'
 };
 
-constructor(private test_player: TestPlayerService,
+constructor(
+              private test_player: TestPlayerService,
               private route: ActivatedRoute,
               private toastr: ToastsManager,
               private testService: TestsService,
-              private fb: FormBuilder,) {
+              private fb: FormBuilder,
+              private loginService: LoginService
+) {
     this.ticks = 0;
     this.minutesDisplay = '00';
     this.secondsDisplay = '00';
@@ -113,7 +117,6 @@ constructor(private test_player: TestPlayerService,
 
   ngOnInit() {
     this.test_id = this.route.snapshot.queryParams['testId'];
-    this.user_id = this.route.snapshot.queryParams['user_id'];
     this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE;
     this.getTestDetails();
     this.testService.getTestById(this.test_id)
@@ -140,27 +143,32 @@ constructor(private test_player: TestPlayerService,
 
 
   startTest() {
-    this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => {console.log(resp); }, error => this.toastr.error(error));
-    this.getTime();
-    this.start = true;
-    if (this.start) {
-      this.startTimer();
+    this.loginService.checkLogged()
+      .flatMap(response => this.user_id = response['id'] )
+        return this.loginService.checkLogged()
+          .subscribe(res => { this.test_player.checkSecurity(+res['id'], this.test_id)
+            .subscribe(resp => {console.log(resp); }, error => this.toastr.error(error));
+            this.getTime();
+            this.start = true;
+            if (this.start) {
+              this.startTimer();
 
 
 // Olena
 
-      const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
-        this.questions = resp;
-        this.question = resp[0];
-      })
-        .switchMap(resp => this.test_player.getAnswers(resp));
+              const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
+                this.questions = resp;
+                this.question = resp[0];
+              })
+                .switchMap(resp => this.test_player.getAnswers(resp));
 
-      answers$.subscribe(response => {
-        this.questions['answers'] = response;
-      }, error => this.toastr.error(error));
-    } else {
-      this.toastr.error('Prohibited');
-    }
+              answers$.subscribe(response => {
+                this.questions['answers'] = response;
+              }, error => this.toastr.error(error));
+            } else {
+              this.toastr.error('Prohibited');
+            } })
+
   }
 
   next(type: string) {
@@ -181,7 +189,7 @@ constructor(private test_player: TestPlayerService,
     this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
   }
 
-  saveResults(){
+  saveResults() {
     this.test_player.getData().do(resp =>
     // {let Answers = [];
     // resp.forEach((obj) =>
