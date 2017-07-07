@@ -11,6 +11,13 @@
 <button (click)="show = !show">{{show ? 'hide' : 'show'}}</button>
 show = {{show}}
 <div *ngIf ="show; else dragdrop"><dtester-student-profile></dtester-student-profile></div>
+<!--studArr = student.concat(student +1)-->
+<!--let stud = 'student.profile';-->
+<!--var studArr = stud.split(', ');-->
+<!--<div *ngFor="let student of studArr"></div>-->
+<!--for (var i = 0; i < studArr.length; i++) {-->
+<!--alert( 'Вам сообщение ' + arr[i] );-->
+<!--}-->
 <ng-template #dragdrop>
 <dtester-entities-table [entities]="students"
                         [headers]="headers"
