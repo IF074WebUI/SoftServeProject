@@ -47,22 +47,22 @@
           </table>
         </div>
         <div class="answers">
+          <form  [formGroup]="answersFrom" (ngSubmit)="next(question['type'])">
           <ng-container *ngIf="question['type'] == 1">
             <div *ngIf="question['answers']" class="flex-container">
-              <!--<form [formGroup]="singlechoise">-->
               <label *ngFor="let answer of question['answers']" class="flex-box">
-                <input type="radio" name='singlechoise' [value]="answer['answer_id']">
+                <input type="radio" formControlName='singlechoise' [value]="answer['answer_id']">
                 {{answer['answer_text']}}
                 <img [src]="answer['attachment']">
               </label>
-              <!--</form>-->
+
             </div>
           </ng-container>
 
           <ng-container *ngIf="question['type'] == 2">
             <div *ngIf="question['answers']" class="flex-container">
               <label *ngFor="let answer of question['answers']" class="flex-box">
-                <input type="checkbox" name='answer'  [value]="answer['answer_id']">
+                <input type="checkbox" formControlName='multichoise'  [value]="answer['answer_id']">
                 {{answer['answer_text']}}
                 <span>  <img [src]="answer['attachment']"></span>
               </label>
@@ -72,12 +72,15 @@
           <ng-container *ngIf="question['type'] == 3">
             <div class="form-input" class="input-field">
               <label>{{ENTER_ANSWER}}
-                <input
+                <input formControlName="inputfield"
                        type="text"
                        maxlength="100"/>
               </label>
             </div>
           </ng-container>
+          </form>
+
+
         </div>
         <div class="navigation">
           <button type="submit" class="btn-test-player">{{SAVE_ANSWER}}</button>

@@ -14,7 +14,9 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
-import { TestsService } from '../../admin/services/tests.service';
+import {TestsService} from '../../admin/services/tests.service';
+import {FormGroup} from "@angular/forms/src/model";
+import {FormBuilder, FormControl} from "@angular/forms";
 
 
 export class Question {
@@ -64,6 +66,9 @@ export class TestPlayerComponent implements OnInit {
   DANGER_STATUS: number;
   availability: any;
   testName: string;
+  answersFrom: FormGroup;
+  map: any;
+  typeOfAnswer: string;
 
   NEXT_QUESTION = 'Наступне питання';
   ENTER_ANSWER = 'Ввести відповідь';
@@ -75,12 +80,11 @@ export class TestPlayerComponent implements OnInit {
   RESULTS = 'Зверегти результати';
   FINISH_DIALOG = 'Тест завершено';
 
-  constructor(
-    private test_player: TestPlayerService,
-    private route: ActivatedRoute,
-    private toastr: ToastsManager,
-    private testService: TestsService,
-  ) {
+  constructor(private test_player: TestPlayerService,
+              private route: ActivatedRoute,
+              private toastr: ToastsManager,
+              private testService: TestsService,
+              private fb: FormBuilder,) {
     this.ticks = 0;
     this.minutesDisplay = '00';
     this.secondsDisplay = '00';
@@ -94,7 +98,7 @@ export class TestPlayerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.test_id = this.route.snapshot.queryParams['testId'] || 1;
+    this.test_id = this.route.snapshot.queryParams['testId'];
     this.user_id = this.route.snapshot.queryParams['user_id'];
     this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE;
     this.getTestDetails();
@@ -103,6 +107,15 @@ export class TestPlayerComponent implements OnInit {
         resp => this.testName = resp[0]['test_name'],
         error => this.toastr.error(error)
       );
+    this.createForm();
+  }
+
+  createForm() {
+    this.answersFrom = this.fb.group({
+      singlechoise: '',
+      multichoise: '',
+      inputfield: ''
+    });
   }
 
   getTestDetails() {
@@ -113,11 +126,12 @@ export class TestPlayerComponent implements OnInit {
 
 
   startTest() {
-   this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => console.log(resp), error => this.toastr.error(error));
+    this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => console.log(resp), error => this.toastr.error(error));
     this.getTime();
     this.start = true;
     if (this.start) {
       this.startTimer();
+      this.map = new Map;
 
 
 // Olena
@@ -132,12 +146,17 @@ export class TestPlayerComponent implements OnInit {
         this.questions['answers'] = response;
       }, error => this.toastr.error(error));
     } else {
-     this.toastr.error('Prohibited');
+      this.toastr.error('Prohibited');
     }
   }
 
-  next() {
+  next(type: string) {
+    if (type === '1'){
+      this.typeOfAnswer = 'singlechoise'
+    }
     let currentIndex = this.questions.indexOf(this.question);
+    console.log(currentIndex + 1, this.answersFrom.value);
+    this.map.set(currentIndex + 1, this.answersFrom.value[this.typeOfAnswer]);
     let newIndex = currentIndex === this.questions.length - 1 ? 0 : currentIndex + 1;
     this.question = this.questions[newIndex];
   }
@@ -168,9 +187,9 @@ export class TestPlayerComponent implements OnInit {
   startTimer() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
-        this.currentUnixTime = +res['unix_timestamp'];
-        this.showTimer();
-      },
+          this.currentUnixTime = +res['unix_timestamp'];
+          this.showTimer();
+        },
         error => this.toastr.error(error));
   }
 
@@ -189,6 +208,7 @@ export class TestPlayerComponent implements OnInit {
       }
     }, this.MILLISECONDS_IN_MINUTE);
   }
+
   checkUnixTime() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
@@ -216,7 +236,7 @@ export class TestPlayerComponent implements OnInit {
   };
 
   checkProgresColor() {
-    let status  = parseInt(this.statusTimer, 0);
+    let status = parseInt(this.statusTimer, 0);
     if (status > this.DANGER_STATUS) {
       return this.STATUS_COLOR;
     } else if (status <= this.DANGER_STATUS) {
