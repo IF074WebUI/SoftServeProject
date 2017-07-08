@@ -152,7 +152,6 @@ export class AnswersComponent implements OnInit {
             relativeTo: this.route.parent})
         );
     } else {
-      console.log(value['question_id']);
       this.answersService.createAnswer(this.questionIdQueryParam, value['answer_text'],
         value['true_answer'], value['photo'])
         .subscribe(resp => {

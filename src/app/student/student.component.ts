@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginService} from '../login/login.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/operator/map';
 import {ToastsManager} from 'ng2-toastr';
 import {SpinnerService} from '../admin/universal/spinner/spinner.service';
 import {ViewContainerRef} from '@angular/core';

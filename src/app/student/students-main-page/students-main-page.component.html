@@ -2,14 +2,13 @@
   <div class="container">
     <div class="row">
       <div class="col-md-9 headers">
-        <h3>Доброго дня {{result.student['student_name'] + ' ' + result.student['student_surname']}}!</h3><br>
-        <h4>Доступні до здачі тести:</h4>
+        <h3>{{GREATINGS}} {{result.student['student_name'] + ' ' + result.student['student_surname']}}!</h3><br>
+        <h4>{{OPEN_TESTS}}:</h4>
       </div>
-      <div class="col-md-3 clock">
-        <p>Час на сервері</p>
-        <span>
-          {{currentTime}}
-        </span>
+      <div class="col-md-3 profile text-center">
+        <div class="icon">
+          <i class="fa fa-user-circle-o fa-5x" aria-hidden="true"></i>
+        </div>
       </div>
     </div>
     <div class="row" *ngIf="checkTestAvailability">
