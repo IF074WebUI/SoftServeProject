@@ -117,7 +117,7 @@ constructor(
 
   ngOnInit() {
     this.test_id = this.route.snapshot.queryParams['testId'];
-    this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE;
+    this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE * this.MILLISECONDS_IN_MINUTE;
     this.getTestDetails();
     this.testService.getTestById(this.test_id)
       .subscribe(
@@ -205,7 +205,7 @@ constructor(
   getTime() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
-        this.startunixTime = +res['unix_timestamp'];
+        this.startunixTime = +res['unix_timestamp'] * this.MILLISECONDS_IN_MINUTE;
         this.endUnixTime = this.startunixTime + this.testDuration;
         this.unixTimeLeft = this.testDuration;
         this.startTimer();
@@ -224,7 +224,7 @@ constructor(
 
   showTimer() {
     let timer = setInterval(() => {
-      if (this.unixTimeLeft > 0) {
+      if (this.unixTimeLeft >= 0) {
         this.secondsDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft % 60)).toString();
         this.statusTimer = Math.floor(this.unixTimeLeft / (this.testDuration / this.PERSENT)) + '%';
         this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / 60)).toString();
@@ -235,14 +235,14 @@ constructor(
         this.finishTest();
         this.stopTimer();
       }
-    }, this.MILLISECONDS_IN_MINUTE);
+    }, 1);
   }
 
   checkUnixTime() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
         if (+res['unix_timestamp'] < this.endUnixTime) {
-          this.unixTimeLeft = (this.endUnixTime - +res['unix_timestamp']);
+          this.unixTimeLeft = (this.endUnixTime - (+res['unix_timestamp']) * this.MILLISECONDS_IN_MINUTE);
         } else if (+res['unix_timestamp'] > this.endUnixTime) {
         }
       });
