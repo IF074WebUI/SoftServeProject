@@ -24,7 +24,7 @@ export class CheckAnswers {
   private answerId: string;
   constructor(numberOfQuestion, answerId ) {
     this.numberOfQuestion = numberOfQuestion;
-      this.answerId = answerId
+      this.answerId = answerId;
   }
 }
 
@@ -144,7 +144,7 @@ constructor(
 
   startTest() {
     this.loginService.checkLogged()
-      .flatMap(response => this.user_id = response['id'] )
+      .flatMap(response => this.user_id = response['id'] );
         return this.loginService.checkLogged()
           .subscribe(res => { this.test_player.checkSecurity(+res['id'], this.test_id)
             .subscribe(resp => {console.log(resp); }, error => this.toastr.error(error));
@@ -167,7 +167,7 @@ constructor(
               }, error => this.toastr.error(error));
             } else {
               this.toastr.error('Prohibited');
-            } })
+            } });
 
   }
 
@@ -185,6 +185,7 @@ constructor(
   }
 
   finishTest() {
+    this.stopTimer();
     this.toastr.success('Test Finished');
     this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
   }
@@ -225,15 +226,14 @@ constructor(
   showTimer() {
     let timer = setInterval(() => {
       if (this.unixTimeLeft >= 0) {
-        this.secondsDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft % 60)).toString();
-        this.statusTimer = Math.floor(this.unixTimeLeft / (this.testDuration / this.PERSENT)) + '%';
-        this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / 60)).toString();
+        this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / this.MILLISECONDS_IN_MINUTE) % 60)).toString();
+        this.statusTimer = (this.unixTimeLeft / (this.testDuration / this.PERSENT)).toFixed(2) + '%';
+        this.minutesDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / this.MILLISECONDS_IN_MINUTE) / 60)).toString();
         this.unixTimeLeft--;
       } else {
         this.toastr.error('Час закінчився');
         clearInterval(timer);
         this.finishTest();
-        this.stopTimer();
       }
     }, 1);
   }
@@ -244,6 +244,7 @@ constructor(
         if (+res['unix_timestamp'] < this.endUnixTime) {
           this.unixTimeLeft = (this.endUnixTime - (+res['unix_timestamp']) * this.MILLISECONDS_IN_MINUTE);
         } else if (+res['unix_timestamp'] > this.endUnixTime) {
+          this.finishTest();
         }
       });
   }
