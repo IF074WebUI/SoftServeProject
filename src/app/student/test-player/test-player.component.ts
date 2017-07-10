@@ -109,8 +109,6 @@ constructor(
     this.SECONDS_IN_MINUTE = 60;
     this.MILLISECONDS_IN_SECOND = 100;
     this.PERSENT = 100;
-    this.STATUS_COLOR = '#51E000';
-    this.DANGER_COLOR = '#FD040E';
     this.DANGER_STATUS = 18;
 
   }
@@ -241,9 +239,9 @@ constructor(
   checkUnixTime() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
-        if (+res['unix_timestamp'] < this.endUnixTime) {
-          this.unixTimeLeft = (this.endUnixTime - (+res['unix_timestamp']));
-        } else if (+res['unix_timestamp'] > this.endUnixTime) {
+        if (+res['unix_timestamp'] * 10 < this.endUnixTime) {
+          this.unixTimeLeft = (this.endUnixTime - (+res['unix_timestamp'] * 10));
+        } else if (+res['unix_timestamp']* 10 > this.endUnixTime) {
           this.finishTest();
         }
       });
@@ -267,11 +265,7 @@ constructor(
 
   checkProgresColor() {
     let status = parseInt(this.statusTimer, 0);
-    if (status > this.DANGER_STATUS) {
-      return this.STATUS_COLOR;
-    } else if (status <= this.DANGER_STATUS) {
-      return this.DANGER_COLOR;
-    }
+   return 'hsl(' + status + ',100%, 50%)';
   };
 
 }
