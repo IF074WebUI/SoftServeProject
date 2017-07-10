@@ -68,16 +68,15 @@ export class TestPlayerComponent implements OnInit {
   unixTimeLeft: number;
   MILLISECONDS_IN_SECOND: number;
   timer: any;
-  timerForDisplay: any;
+  testPlayerStartData: any;
   currentAnswer: Array<string> = [];
   statusTimer: string;
   PERSENT: number;
-  DANGER_COLOR: string;
-  STATUS_COLOR: string;
   DANGER_STATUS: number;
   availability: any;
   testName: string;
   answersFrom: FormGroup;
+
 
   NEXT_QUESTION = 'Наступне питання';
   ENTER_ANSWER = 'Ввести відповідь';
@@ -111,14 +110,25 @@ constructor(
     this.MILLISECONDS_IN_SECOND = 100;
     this.PERSENT = 100;
     this.DANGER_STATUS = 18;
+    this.testPlayerStartData = {
+      studentId: 0 ,
+      testId: 0,
+      testDuration: 0
+    };
 
   }
 
   ngOnInit() {
-    this.test_id = this.route.snapshot.queryParams['testId'];
-    this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE * 3;
+    this.test_player.testPlayerIdData
+      .subscribe(data => {
+        this.testPlayerStartData.studentId = data.studentId;
+        this.testPlayerStartData.testId = +data.testId;
+        this.testPlayerStartData.testDuration = data.testDuration;
+      });
+    this.testDuration = (+this.testPlayerStartData.testDuration) * this.SECONDS_IN_MINUTE * 10;
+    this.test_id = this.testPlayerStartData.testId;
     this.getTestDetails();
-    this.testService.getTestById(this.test_id)
+    this.testService.getTestById(this.testPlayerStartData.testId)
       .subscribe(
         resp => this.testName = resp[0]['test_name'],
         error => this.toastr.error(error)
@@ -135,7 +145,7 @@ constructor(
   }
 
   getTestDetails() {
-    this.test_player.getTestDetail(this.test_id).subscribe(resp => {
+    this.test_player.getTestDetail(this.testPlayerStartData.testId).subscribe(resp => {
       this.test_details = resp;
     }, error => this.toastr.error(error));
   }
@@ -145,7 +155,7 @@ constructor(
     this.loginService.checkLogged()
       .flatMap(response => this.user_id = response['id'] );
         return this.loginService.checkLogged()
-          .subscribe(res => { this.test_player.checkSecurity(+res['id'], this.test_id)
+          .subscribe(res => { this.test_player.checkSecurity(+res['id'], this.testPlayerStartData.testId)
             .subscribe(resp => {console.log(resp); }, error => this.toastr.error(error));
             this.getTime();
             this.start = true;
