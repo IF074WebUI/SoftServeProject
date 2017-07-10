@@ -15,11 +15,16 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import {TestsService} from '../../admin/services/tests.service';
-import {FormGroup} from "@angular/forms/src/model";
-import {FormBuilder, FormControl} from "@angular/forms";
-import {LoginService} from "../../login/login.service";
+import {FormGroup} from '@angular/forms/src/model';
+import {FormBuilder} from '@angular/forms';
+import {LoginService} from '../../login/login.service';
 
 // [{question_id: 10, answer_ids: [1,2,3,4]}, {question_id: 18, answer_ids:[10]}, ...]
+
+export class GetMarks {
+  'full_mark': number;
+  'number_of_true_answers': number;
+}
 
 export class CheckAnswers {
   private question_id: number;
@@ -79,6 +84,7 @@ export class TestPlayerComponent implements OnInit {
   testName: string;
   answersFrom: FormGroup;
   selectedAnswers: any[] = [];
+  marks: GetMarks[] = [];
 
 
   NEXT_QUESTION = 'Наступне питання';
@@ -167,8 +173,6 @@ export class TestPlayerComponent implements OnInit {
           this.startTimer();
 
 
-// Olena
-
           const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
             this.questions = resp;
             this.question = resp[0];
@@ -185,7 +189,6 @@ export class TestPlayerComponent implements OnInit {
 
   }
 
-
   toggleMultiSelect(event, val) {
     event.preventDefault();
 
@@ -195,18 +198,19 @@ export class TestPlayerComponent implements OnInit {
       this.selectedAnswers = this.selectedAnswers.filter((elem) =>
       elem !== val);
     }
-    this.answersFrom.controls['multichoise'].setValue(this.selectedAnswers);
   }
 
 
   next(type: string) {
-    let answers = this.answersFrom.controls[this.TypeOfAnswers[type]].value;
+    let answers = (this.selectedAnswers) ? this.selectedAnswers :
+      new Array(this.answersFrom.controls[this.TypeOfAnswers[type]].value);
     let currentIndex = +this.questions.indexOf(this.question);
     let current = new CheckAnswers(String(currentIndex + 1), answers);
     this.allAnswers.push(current);
     this.test_player.saveData(this.allAnswers).subscribe(resp => this.toastr.success(resp));
     let newIndex = currentIndex === this.questions.length - 1 ? 0 : currentIndex + 1;
     this.question = this.questions[newIndex];
+   // this.selectedAnswers = [];
   }
 
   goToAnswers(number: number) {
@@ -214,19 +218,20 @@ export class TestPlayerComponent implements OnInit {
   }
 
   finishTest() {
+  console.log(this.marks);
     this.stopTimer();
     this.toastr.success('Test Finished');
     this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
   }
 
   saveResults() {
-    this.test_player.getData().do(resp => {JSON.parse(resp);
-      console.log(resp)}
-    ).flatMap(resp => this.test_player.checkResults(resp)).subscribe(resp => console.log(resp));
+    this.test_player.getData().do(resp => {
+        JSON.parse(resp);
+        console.log(resp);
+      }
+    ).flatMap(resp => this.test_player.checkResults(resp)).subscribe(resp => this.marks = resp);
   }
 
-
-  // Mykola
 
   getTime() {
     this.test_player.getCurrentTime()
@@ -234,7 +239,6 @@ export class TestPlayerComponent implements OnInit {
         this.startunixTime = +res['unix_timestamp'] * 10;
         this.endUnixTime = this.startunixTime + this.testDuration;
         this.unixTimeLeft = this.testDuration;
-        // this.startTimer();
       });
   }
 
@@ -293,6 +297,8 @@ export class TestPlayerComponent implements OnInit {
   checkProgresColor() {
     let status = parseInt(this.statusTimer, 0);
     return 'hsl(' + status + ',100%, 50%)';
+    // let status = Math.floor(parseInt(this.statusTimer, 0) * 2.55);
+    // return 'rgb(' + '188, 0, ' + status;
   };
 
 }

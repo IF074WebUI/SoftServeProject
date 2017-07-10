@@ -3,9 +3,18 @@
 @import "../admin/universal/entities-table/entities-table.component";
 $hover-border-transition: 3px solid white;
 :host {
+  position: relative;
   font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
-header {
+.main {
+  min-height:100%;
+  position:relative;
+}
+.body {
+  padding:10px;
+  padding-bottom:60px;
+}
+.header {
   margin-bottom: 20px;
   .container {
     .row{
@@ -25,5 +34,19 @@ header {
   background-color: $primary-violet-color;
 }
 
+.footer {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  height:40px;
+  background: $primary-violet-color;
+  color: white;
+  display: flex;
+  justify-content: center;
+
+  div {
+
+  }
+}
 
 
