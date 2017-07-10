@@ -19,14 +19,7 @@ import {FormGroup} from "@angular/forms/src/model";
 import {FormBuilder, FormControl} from "@angular/forms";
 import {LoginService} from "../../login/login.service";
 
-export class CheckAnswers {
-  private numberOfQuestion: number;
-  private answerId: string;
-  constructor(numberOfQuestion, answerId ) {
-    this.numberOfQuestion = numberOfQuestion;
-      this.answerId = answerId;
-  }
-}
+
 export class CheckAnswers {
   private numberOfQuestion: number;
   private answerId: string;
@@ -123,7 +116,7 @@ constructor(
 
   ngOnInit() {
     this.test_id = this.route.snapshot.queryParams['testId'];
-    this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE;
+    this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE * 10;
     this.getTestDetails();
     this.testService.getTestById(this.test_id)
       .subscribe(
