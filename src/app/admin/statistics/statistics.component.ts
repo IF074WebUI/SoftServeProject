@@ -209,7 +209,7 @@ export class StatisticsComponent implements OnInit {
               }
             }
           });
-        } this.spinner.hideSpinner(); },
+        } },
       err => this.toastr.error(err)
     );
   }

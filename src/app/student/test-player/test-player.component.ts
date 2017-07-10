@@ -14,8 +14,19 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
-import { TestsService } from '../../admin/services/tests.service';
+import {TestsService} from '../../admin/services/tests.service';
+import {FormGroup} from "@angular/forms/src/model";
+import {FormBuilder, FormControl} from "@angular/forms";
+import {LoginService} from "../../login/login.service";
 
+export class CheckAnswers {
+  private numberOfQuestion: number;
+  private answerId: string;
+  constructor(numberOfQuestion, answerId ) {
+    this.numberOfQuestion = numberOfQuestion;
+      this.answerId = answerId;
+  }
+}
 
 export class Question {
   question_id: number;
@@ -40,6 +51,7 @@ export class TestPlayerComponent implements OnInit {
   test: Test;
   questions: Question[] = [];
   question: Question;
+  allAnswers: CheckAnswers[] = [];
   start: boolean;
   finish: boolean;
   user_id: number;
@@ -64,6 +76,7 @@ export class TestPlayerComponent implements OnInit {
   DANGER_STATUS: number;
   availability: any;
   testName: string;
+  answersFrom: FormGroup;
 
   NEXT_QUESTION = 'Наступне питання';
   ENTER_ANSWER = 'Ввести відповідь';
@@ -75,12 +88,21 @@ export class TestPlayerComponent implements OnInit {
   RESULTS = 'Зверегти результати';
   FINISH_DIALOG = 'Тест завершено';
 
-  constructor(
-    private test_player: TestPlayerService,
-    private route: ActivatedRoute,
-    private toastr: ToastsManager,
-    private testService: TestsService,
-  ) {
+
+  TypeOfAnswers = {
+  '1': 'singlechoise',
+  '2': 'multichoise',
+  '3': 'inputfield'
+};
+
+constructor(
+              private test_player: TestPlayerService,
+              private route: ActivatedRoute,
+              private toastr: ToastsManager,
+              private testService: TestsService,
+              private fb: FormBuilder,
+              private loginService: LoginService
+) {
     this.ticks = 0;
     this.minutesDisplay = '00';
     this.secondsDisplay = '00';
@@ -94,15 +116,23 @@ export class TestPlayerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.test_id = this.route.snapshot.queryParams['testId'] || 1;
-    this.user_id = this.route.snapshot.queryParams['user_id'];
-    this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE;
+    this.test_id = this.route.snapshot.queryParams['testId'];
+    this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE * this.MILLISECONDS_IN_MINUTE;
     this.getTestDetails();
     this.testService.getTestById(this.test_id)
       .subscribe(
         resp => this.testName = resp[0]['test_name'],
         error => this.toastr.error(error)
       );
+    this.createForm();
+  }
+
+  createForm() {
+    this.answersFrom = this.fb.group({
+      singlechoise: '',
+      multichoise: '',
+      inputfield: ''
+    });
   }
 
   getTestDetails() {
@@ -113,31 +143,39 @@ export class TestPlayerComponent implements OnInit {
 
 
   startTest() {
-   this.test_player.checkSecurity(this.user_id, this.test_id).subscribe(resp => console.log(resp), error => this.toastr.error(error));
-    this.getTime();
-    this.start = true;
-    if (this.start) {
-      this.startTimer();
+    this.loginService.checkLogged()
+      .flatMap(response => this.user_id = response['id'] );
+        return this.loginService.checkLogged()
+          .subscribe(res => { this.test_player.checkSecurity(+res['id'], this.test_id)
+            .subscribe(resp => {console.log(resp); }, error => this.toastr.error(error));
+            this.getTime();
+            this.start = true;
+            if (this.start) {
+              this.startTimer();
 
 
 // Olena
 
-      const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
-        this.questions = resp;
-        this.question = resp[0];
-      })
-        .switchMap(resp => this.test_player.getAnswers(resp));
+              const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
+                this.questions = resp;
+                this.question = resp[0];
+              })
+                .switchMap(resp => this.test_player.getAnswers(resp));
 
-      answers$.subscribe(response => {
-        this.questions['answers'] = response;
-      }, error => this.toastr.error(error));
-    } else {
-     this.toastr.error('Prohibited');
-    }
+              answers$.subscribe(response => {
+                this.questions['answers'] = response;
+              }, error => this.toastr.error(error));
+            } else {
+              this.toastr.error('Prohibited');
+            } });
+
   }
 
-  next() {
+  next(type: string) {
     let currentIndex = this.questions.indexOf(this.question);
+    let current = new CheckAnswers(String(currentIndex + 1), this.answersFrom.controls[this.TypeOfAnswers[type]].value);
+     this.allAnswers.push(current);
+   this.test_player.saveData(this.allAnswers).subscribe(resp => this.toastr.success(resp));
     let newIndex = currentIndex === this.questions.length - 1 ? 0 : currentIndex + 1;
     this.question = this.questions[newIndex];
   }
@@ -147,8 +185,19 @@ export class TestPlayerComponent implements OnInit {
   }
 
   finishTest() {
+    this.stopTimer();
     this.toastr.success('Test Finished');
     this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
+  }
+
+  saveResults() {
+    this.test_player.getData().do(resp =>
+    // {let Answers = [];
+    // resp.forEach((obj) =>
+    // Answers.push({obj['numberOfQuestion']})
+    // }
+      console.log(resp)
+    ).flatMap(resp => this.test_player.checkResults(resp)).subscribe(resp => console.log(resp));
   }
 
 
@@ -157,7 +206,7 @@ export class TestPlayerComponent implements OnInit {
   getTime() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
-        this.startunixTime = +res['unix_timestamp'];
+        this.startunixTime = +res['unix_timestamp'] * this.MILLISECONDS_IN_MINUTE;
         this.endUnixTime = this.startunixTime + this.testDuration;
         this.unixTimeLeft = this.testDuration;
         this.startTimer();
@@ -168,33 +217,34 @@ export class TestPlayerComponent implements OnInit {
   startTimer() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
-        this.currentUnixTime = +res['unix_timestamp'];
-        this.showTimer();
-      },
+          this.currentUnixTime = +res['unix_timestamp'];
+          this.showTimer();
+        },
         error => this.toastr.error(error));
   }
 
   showTimer() {
     let timer = setInterval(() => {
-      if (this.unixTimeLeft > 0) {
-        this.secondsDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft % 60)).toString();
-        this.statusTimer = Math.floor(this.unixTimeLeft / (this.testDuration / this.PERSENT)) + '%';
-        this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / 60)).toString();
+      if (this.unixTimeLeft >= 0) {
+        this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / this.MILLISECONDS_IN_MINUTE) % 60)).toString();
+        this.statusTimer = (this.unixTimeLeft / (this.testDuration / this.PERSENT)).toFixed(2) + '%';
+        this.minutesDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / this.MILLISECONDS_IN_MINUTE) / 60)).toString();
         this.unixTimeLeft--;
       } else {
         this.toastr.error('Час закінчився');
         clearInterval(timer);
         this.finishTest();
-        this.stopTimer();
       }
-    }, this.MILLISECONDS_IN_MINUTE);
+    }, 1);
   }
+
   checkUnixTime() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
         if (+res['unix_timestamp'] < this.endUnixTime) {
-          this.unixTimeLeft = (this.endUnixTime - +res['unix_timestamp']);
+          this.unixTimeLeft = (this.endUnixTime - (+res['unix_timestamp']) * this.MILLISECONDS_IN_MINUTE);
         } else if (+res['unix_timestamp'] > this.endUnixTime) {
+          this.finishTest();
         }
       });
   }
@@ -216,7 +266,7 @@ export class TestPlayerComponent implements OnInit {
   };
 
   checkProgresColor() {
-    let status  = parseInt(this.statusTimer, 0);
+    let status = parseInt(this.statusTimer, 0);
     if (status > this.DANGER_STATUS) {
       return this.STATUS_COLOR;
     } else if (status <= this.DANGER_STATUS) {
