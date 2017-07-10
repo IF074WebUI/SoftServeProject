@@ -116,7 +116,7 @@ constructor(
 
   ngOnInit() {
     this.test_id = this.route.snapshot.queryParams['testId'];
-    this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE * 10;
+    this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE * 3;
     this.getTestDetails();
     this.testService.getTestById(this.test_id)
       .subscribe(
