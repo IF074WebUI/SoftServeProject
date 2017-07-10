@@ -10,16 +10,50 @@
 </div>
 <button (click)="show = !show">{{show ? 'hide' : 'show'}}</button>
 show = {{show}}
-<div *ngIf ="show; else dragdrop"><dtester-student-profile></dtester-student-profile></div>
-<!--studArr = student.concat(student +1)-->
-<!--let stud = 'student.profile';-->
-<!--var studArr = stud.split(', ');-->
-<!--<div *ngFor="let student of studArr"></div>-->
-<!--for (var i = 0; i < studArr.length; i++) {-->
-<!--alert( 'Вам сообщение ' + arr[i] );-->
-<!--}-->
+<div *ngIf ="show; else dragdrop">
+  <table  *ngFor = "let student of students">
+    <div class="container">
+      <div class="row">
+
+        <div class="col">
+          <table>
+            <tr>
+              <td>Студент:</td>
+              <td>{{student?.student_surname}} {{student?.student_name}} {{student?.student_fname}}</td>
+            </tr>
+            <tr>
+              <td>№ заліковки:</td>
+              <td>{{student?.gradebook_id}}</td>
+            </tr>
+            <tr>
+              <td>Група:</td>
+              <td>{{student?.group_name}}</td>
+            </tr>
+            <tr>
+              <td>E-mail:</td>
+              <td>{{AdminUser?.email}}</td>
+            </tr>
+            <tr>
+              <td>Логін:</td>
+              <td>{{AdminUser?.username}}</td>
+            </tr>
+            <tr>
+              <td>Пароль:</td>
+              <td>{{student?.plain_password}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="col">
+          <img class="img-thumbnail photo" *ngIf="!student?.photo" src="../../../assets/default-avatar.png">
+          <img class="img-thumbnail photo" *ngIf="student?.photo" [src]="student?.photo"></div>
+      </div>
+    </div>
+  </table>
+</div>
 <ng-template #dragdrop>
-<dtester-entities-table [entities]="students"
+<dtester-entities-table *ngIf ="!show"
+
+                        [entities]="students"
                         [headers]="headers"
                         [page]="page"
                         [itemsPerPage]="countPerPage"
