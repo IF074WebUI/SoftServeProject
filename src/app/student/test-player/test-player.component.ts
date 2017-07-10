@@ -65,7 +65,7 @@ export class TestPlayerComponent implements OnInit {
   startunixTime: number;
   endUnixTime: number;
   unixTimeLeft: number;
-  MILLISECONDS_IN_MINUTE: number;
+  MILLISECONDS_IN_SECOND: number;
   timer: any;
   timerForDisplay: any;
   currentAnswer: Array<string> = [];
@@ -107,7 +107,7 @@ constructor(
     this.minutesDisplay = '00';
     this.secondsDisplay = '00';
     this.SECONDS_IN_MINUTE = 60;
-    this.MILLISECONDS_IN_MINUTE = 1000;
+    this.MILLISECONDS_IN_SECOND = 100;
     this.PERSENT = 100;
     this.STATUS_COLOR = '#51E000';
     this.DANGER_COLOR = '#FD040E';
@@ -117,7 +117,7 @@ constructor(
 
   ngOnInit() {
     this.test_id = this.route.snapshot.queryParams['testId'];
-    this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE * this.MILLISECONDS_IN_MINUTE;
+    this.testDuration = +this.route.snapshot.queryParams['test_duration'] * this.SECONDS_IN_MINUTE * 10;
     this.getTestDetails();
     this.testService.getTestById(this.test_id)
       .subscribe(
@@ -206,10 +206,10 @@ constructor(
   getTime() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
-        this.startunixTime = +res['unix_timestamp'] * this.MILLISECONDS_IN_MINUTE;
+        this.startunixTime = +res['unix_timestamp'] * 10;
         this.endUnixTime = this.startunixTime + this.testDuration;
         this.unixTimeLeft = this.testDuration;
-        this.startTimer();
+        // this.startTimer();
       });
   }
 
@@ -217,7 +217,7 @@ constructor(
   startTimer() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
-          this.currentUnixTime = +res['unix_timestamp'];
+          this.currentUnixTime = +res['unix_timestamp'] * 10;
           this.showTimer();
         },
         error => this.toastr.error(error));
@@ -226,23 +226,23 @@ constructor(
   showTimer() {
     let timer = setInterval(() => {
       if (this.unixTimeLeft >= 0) {
-        this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / this.MILLISECONDS_IN_MINUTE) % 60)).toString();
+        this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / 10) % 60));
         this.statusTimer = (this.unixTimeLeft / (this.testDuration / this.PERSENT)).toFixed(2) + '%';
-        this.minutesDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / this.MILLISECONDS_IN_MINUTE) / 60)).toString();
-        this.unixTimeLeft--;
+        this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / 600 ));
+        this.unixTimeLeft = this.unixTimeLeft - 1;
       } else {
         this.toastr.error('Час закінчився');
         clearInterval(timer);
         this.finishTest();
       }
-    }, 1);
+    }, 100);
   }
 
   checkUnixTime() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
         if (+res['unix_timestamp'] < this.endUnixTime) {
-          this.unixTimeLeft = (this.endUnixTime - (+res['unix_timestamp']) * this.MILLISECONDS_IN_MINUTE);
+          this.unixTimeLeft = (this.endUnixTime - (+res['unix_timestamp']));
         } else if (+res['unix_timestamp'] > this.endUnixTime) {
           this.finishTest();
         }
