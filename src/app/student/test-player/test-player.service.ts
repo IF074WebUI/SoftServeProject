@@ -15,13 +15,19 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/switchMap';
-
+import { Subject } from 'rxjs/Subject';
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class TestPlayerService {
   questions: Question[] = [];
   answers: Answer[] = [];
   options: RequestOptions;
+  public testPlayerIdData = new BehaviorSubject<any>({
+    studentId: 0 ,
+    testId: 0,
+    testDuration: 0
+  })
 
   constructor(private http: Http) {
     const headers: Headers = new Headers({'Content-Type': 'application/json'});
@@ -117,6 +123,10 @@ export class TestPlayerService {
   checkResults(allAnswers: any){
     // [{question_id: 10, answer_ids: [1,2,3,4]}, {question_id: 18, answer_ids:[10]}, ...]
 return this.http.post(HOST_PROTOCOL + HOST + TEST_PLAYER_CHECK_ANSWERS, allAnswers,  this.options).map((resp: Response) => resp.json()).catch(this.handleError);
+  }
+
+  addIdData(data: any) {
+    this.testPlayerIdData.next(data);
   }
 }
 

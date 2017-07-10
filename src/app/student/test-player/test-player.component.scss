@@ -20,11 +20,12 @@
 #timer {
   p {
     font-size: 25px;
+    color: white;
   }
   background-color: $timer-progress-color;
 }
 #timer-background {
-    background-color: $line-color;
+    background-color: $timer-background-color;
 }
 
 .content {

@@ -37,6 +37,7 @@ export class StudentsMainPageComponent implements OnInit {
   GREATINGS: string;
   OPEN_TESTS: string;
   PROFILE: string;
+  testIdData: any;
   constructor(private loginService: LoginService,
               private router: Router,
               private studentService: StudentsService,
@@ -68,6 +69,11 @@ export class StudentsMainPageComponent implements OnInit {
       subjectId: [],
       tests: [],
       timeTable: []
+    };
+    this.testIdData = {
+      studentId: 0 ,
+      testId: 0,
+      testDuration: 0
     };
   }
 
@@ -138,6 +144,20 @@ export class StudentsMainPageComponent implements OnInit {
       this.router.navigate(['/login'], error => this.toastr.error(error));
     });
     window.sessionStorage.setItem('studentId', 'false');
+  }
+
+  getTestIdData(testID: number, testDuration: number) {
+    this.testIdData.studentId = this.result.student.user_id;
+    this.testIdData.testId = testID;
+    this.testIdData.testDuration = testDuration;
+    this.testPlayer.addIdData(this.testIdData);
+    this.router.navigate(['./test-player'],
+      {
+        queryParams: {
+          'testId': 5,
+          'test_duration': 6
+        },
+        relativeTo: this.route.parent});
   }
   openTestPlayer(testId, testDuration) {
     this.stopClock();
