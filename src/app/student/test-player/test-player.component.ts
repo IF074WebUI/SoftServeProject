@@ -19,21 +19,23 @@ import {FormGroup} from "@angular/forms/src/model";
 import {FormBuilder, FormControl} from "@angular/forms";
 import {LoginService} from "../../login/login.service";
 
+// [{question_id: 10, answer_ids: [1,2,3,4]}, {question_id: 18, answer_ids:[10]}, ...]
 
 export class CheckAnswers {
-  private numberOfQuestion: number;
-  private answerId: string;
-  constructor(numberOfQuestion, answerId ) {
-    this.numberOfQuestion = numberOfQuestion;
-      this.answerId = answerId;
+  private question_id: number;
+  private answer_ids: Array<number>;
+
+  constructor(question_id, answer_ids) {
+    this.question_id = question_id;
+    this.answer_ids = answer_ids;
   }
 }
 
 export class Question {
   question_id: number;
-  test_id: number;
+  test_id: string;
   question_text: string;
-  level: number;
+  level: string;
   type: string;
   attachment?: any;
   answers: Answer[];
@@ -76,6 +78,7 @@ export class TestPlayerComponent implements OnInit {
   availability: any;
   testName: string;
   answersFrom: FormGroup;
+  selectedAnswers: any[] = [];
 
 
   NEXT_QUESTION = 'Наступне питання';
@@ -90,19 +93,17 @@ export class TestPlayerComponent implements OnInit {
 
 
   TypeOfAnswers = {
-  '1': 'singlechoise',
-  '2': 'multichoise',
-  '3': 'inputfield'
-};
+    '1': 'singlechoise',
+    '2': 'multichoise',
+    '3': 'inputfield'
+  };
 
-constructor(
-              private test_player: TestPlayerService,
+  constructor(private test_player: TestPlayerService,
               private route: ActivatedRoute,
               private toastr: ToastsManager,
               private testService: TestsService,
               private fb: FormBuilder,
-              private loginService: LoginService
-) {
+              private loginService: LoginService) {
     this.ticks = 0;
     this.minutesDisplay = '00';
     this.secondsDisplay = '00';
@@ -111,7 +112,7 @@ constructor(
     this.PERSENT = 100;
     this.DANGER_STATUS = 18;
     this.testPlayerStartData = {
-      studentId: 0 ,
+      studentId: 0,
       testId: 0,
       testDuration: 0
     };
@@ -153,38 +154,57 @@ constructor(
 
   startTest() {
     this.loginService.checkLogged()
-      .flatMap(response => this.user_id = response['id'] );
-        return this.loginService.checkLogged()
-          .subscribe(res => { this.test_player.checkSecurity(+res['id'], this.testPlayerStartData.testId)
-            .subscribe(resp => {console.log(resp); }, error => this.toastr.error(error));
-            this.getTime();
-            this.start = true;
-            if (this.start) {
-              this.startTimer();
+      .flatMap(response => this.user_id = response['id']);
+    return this.loginService.checkLogged()
+      .subscribe(res => {
+        this.test_player.checkSecurity(+res['id'], this.testPlayerStartData.testId)
+          .subscribe(resp => {
+            console.log(resp);
+          }, error => this.toastr.error(error));
+        this.getTime();
+        this.start = true;
+        if (this.start) {
+          this.startTimer();
 
 
 // Olena
 
-              const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
-                this.questions = resp;
-                this.question = resp[0];
-              })
-                .switchMap(resp => this.test_player.getAnswers(resp));
+          const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
+            this.questions = resp;
+            this.question = resp[0];
+          })
+            .switchMap(resp => this.test_player.getAnswers(resp));
 
-              answers$.subscribe(response => {
-                this.questions['answers'] = response;
-              }, error => this.toastr.error(error));
-            } else {
-              this.toastr.error('Prohibited');
-            } })
+          answers$.subscribe(response => {
+            this.questions['answers'] = response;
+          }, error => this.toastr.error(error));
+        } else {
+          this.toastr.error('Prohibited');
+        }
+      });
 
   }
 
+
+  toggleMultiSelect(event, val) {
+    event.preventDefault();
+
+    if (this.selectedAnswers.indexOf(val) == -1) {
+      this.selectedAnswers = [...this.selectedAnswers, +val];
+    } else {
+      this.selectedAnswers = this.selectedAnswers.filter((elem) =>
+      elem !== val);
+    }
+    this.answersFrom.controls['multichoise'].setValue(this.selectedAnswers);
+  }
+
+
   next(type: string) {
-    let currentIndex = this.questions.indexOf(this.question);
-    let current = new CheckAnswers(String(currentIndex + 1), this.answersFrom.controls[this.TypeOfAnswers[type]].value);
-     this.allAnswers.push(current);
-   this.test_player.saveData(this.allAnswers).subscribe(resp => this.toastr.success(resp));
+    let answers = this.answersFrom.controls[this.TypeOfAnswers[type]].value;
+    let currentIndex = +this.questions.indexOf(this.question);
+    let current = new CheckAnswers(String(currentIndex + 1), answers);
+    this.allAnswers.push(current);
+    this.test_player.saveData(this.allAnswers).subscribe(resp => this.toastr.success(resp));
     let newIndex = currentIndex === this.questions.length - 1 ? 0 : currentIndex + 1;
     this.question = this.questions[newIndex];
   }
@@ -200,12 +220,8 @@ constructor(
   }
 
   saveResults() {
-    this.test_player.getData().do(resp =>
-    // {let Answers = [];
-    // resp.forEach((obj) =>
-    // Answers.push({obj['numberOfQuestion']})
-    // }
-      console.log(resp)
+    this.test_player.getData().do(resp => {JSON.parse(resp);
+      console.log(resp)}
     ).flatMap(resp => this.test_player.checkResults(resp)).subscribe(resp => console.log(resp));
   }
 
@@ -237,7 +253,7 @@ constructor(
       if (this.unixTimeLeft >= 0) {
         this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / 10) % 60));
         this.statusTimer = (this.unixTimeLeft / (this.testDuration / this.PERSENT)).toFixed(2) + '%';
-        this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / 600 ));
+        this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / 600));
         this.unixTimeLeft = this.unixTimeLeft - 1;
       } else {
         this.toastr.error('Час закінчився');
@@ -252,7 +268,7 @@ constructor(
       .subscribe(res => {
         if (+res['unix_timestamp'] * 10 < this.endUnixTime) {
           this.unixTimeLeft = (this.endUnixTime - (+res['unix_timestamp'] * 10));
-        } else if (+res['unix_timestamp']* 10 > this.endUnixTime) {
+        } else if (+res['unix_timestamp'] * 10 > this.endUnixTime) {
           this.finishTest();
         }
       });
@@ -276,7 +292,7 @@ constructor(
 
   checkProgresColor() {
     let status = parseInt(this.statusTimer, 0);
-   return 'hsl(' + status + ',100%, 50%)';
+    return 'hsl(' + status + ',100%, 50%)';
   };
 
 }

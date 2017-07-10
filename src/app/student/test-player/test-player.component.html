@@ -50,11 +50,11 @@
           </table>
         </div>
         <div class="answers">
-          <form  [formGroup]="answersFrom">
-          <ng-container *ngIf="question['type'] == 1">
+          <form novalidate [formGroup]="answersFrom">
+            <ng-container *ngIf="question['type'] == 1">
             <div *ngIf="question['answers']" class="flex-container">
               <label *ngFor="let answer of question['answers']" class="flex-box">
-                <input type="radio" formControlName='singlechoise' [value]="answer['answer_id']">
+                <input type="radio" formControlName='singlechoise' [value]="answer['answer_id']" >
                 {{answer['answer_text']}}
                 <img [src]="answer['attachment']">
               </label>
@@ -65,10 +65,11 @@
           <ng-container *ngIf="question['type'] == 2">
             <div *ngIf="question['answers']" class="flex-container">
               <label *ngFor="let answer of question['answers']" class="flex-box">
-                <input type="checkbox" formControlName='multichoise'  [value]="answer['answer_id']">
+                <input type="checkbox" formControlName='multichoise'  [value]="answer['answer_id']"   (click)="toggleMultiSelect($event, answer['answer_id'])">
                 {{answer['answer_text']}}
                 <span>  <img [src]="answer['attachment']"></span>
               </label>
+              <!--<h3>{{selected|json}}</h3>-->
             </div>
           </ng-container>
 
