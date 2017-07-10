@@ -82,7 +82,7 @@ export class TestPlayerService {
   }
 
   getAnswers(questions: Question[]) {
-    let forkJoinBatch: Observable<any>[] = questions.filter(item => item['type'].toString() !== '3')
+    let forkJoinBatch: Observable<any>[] = questions.filter(item => item['type'] !== '3')
       .map(question => {
         return this.getAnswersById(question['question_id']);
       });

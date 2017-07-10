@@ -22,7 +22,7 @@ export class Question {
   test_id: number;
   question_text: string;
   level: number;
-  type: number;
+  type: string;
   attachment?: any;
   answers: Answer[];
   true_answer: boolean;
