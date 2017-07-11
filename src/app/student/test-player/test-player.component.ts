@@ -19,7 +19,8 @@ import {FormGroup} from '@angular/forms/src/model';
 import {FormBuilder} from '@angular/forms';
 import {LoginService} from '../../login/login.service';
 
-// [{question_id: 10, answer_ids: [1,2,3,4]}, {question_id: 18, answer_ids:[10]}, ...]
+declare var $: any;
+
 
 export class GetMarks {
   'full_mark': number;
@@ -80,11 +81,12 @@ export class TestPlayerComponent implements OnInit {
   statusTimer: string;
   PERSENT: number;
   DANGER_STATUS: number;
-  availability: any;
+  msg: string;
   testName: string;
   answersFrom: FormGroup;
   selectedAnswers: any[] = [];
   marks: GetMarks[] = [];
+  timeFinish: boolean;
 
 
   NEXT_QUESTION = 'Наступне питання';
@@ -95,7 +97,10 @@ export class TestPlayerComponent implements OnInit {
   QUESTION = 'Питання №';
   SAVE_ANSWER = 'Зберети відповідь';
   RESULTS = 'Зверегти результати';
-  FINISH_DIALOG = 'Тест завершено';
+  CONFIRM_FINISH = 'Завершення тесту';
+  SAVE: string;
+  CONFIRMATION_DIALOG = 'Зберегти результати і завершити тест?';
+  BACK = 'Повернутися до тесту';
 
 
   TypeOfAnswers = {
@@ -160,19 +165,24 @@ export class TestPlayerComponent implements OnInit {
 
   startTest() {
     this.test_player.checkSecurity(+this.testPlayerStartData.studentId, this.testPlayerStartData.testId)
-      .subscribe(resp => console.log(resp));
+      .subscribe(resp => {
+        if (resp['response'] === 'ok') {
+          this.start = true;
+          const answers$ = this.test_player.getQuestions(this.test_details).do(respon => {
+            this.questions = respon;
+            this.question = respon[0];
+          })
+            .switchMap(response => this.test_player.getAnswers(response));
 
+          answers$.subscribe(response => {
+            this.questions['answers'] = response;
+          }, error => this.toastr.error(error));
 
-    this.start = true;
-    const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
-      this.questions = resp;
-      this.question = resp[0];
-    })
-      .switchMap(resp => this.test_player.getAnswers(resp));
+        } else {
+          this.msg = resp['response']; }
+      },
+      error => this.toastr.error(error));
 
-    answers$.subscribe(response => {
-      this.questions['answers'] = response;
-    }, error => this.toastr.error(error));
   };
 
 
@@ -195,15 +205,12 @@ export class TestPlayerComponent implements OnInit {
       this.selectedAnswers = [];
       this.selectedAnswers.push(this.answersFrom.controls[this.TypeOfAnswers[type]].value);
     }
-    // let answers = (this.selectedAnswers) ? this.selectedAnswers :
-    console.log('array of answers' + this.selectedAnswers);
     let currentIndex = +this.questions.indexOf(this.question);
     let current = new CheckAnswers(String(currentIndex + 1), this.selectedAnswers);
     this.allAnswers.push(current);
-    this.test_player.saveData(this.allAnswers).subscribe(resp => this.toastr.success(resp));
+    this.test_player.saveData(this.allAnswers).subscribe(resp => this.toastr.success(resp['response']));
     let newIndex = currentIndex === this.questions.length - 1 ? 0 : currentIndex + 1;
     this.question = this.questions[newIndex];
-    this.selectedAnswers = [];
   }
 
   goToAnswers(number: number) {
@@ -211,9 +218,9 @@ export class TestPlayerComponent implements OnInit {
   }
 
   finishTest() {
-    console.log(this.marks);
     this.stopTimer();
     this.toastr.success('Test Finished');
+    console.log(this.marks);
     this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
     this.answersFrom.reset();
   }
@@ -224,7 +231,15 @@ export class TestPlayerComponent implements OnInit {
         console.log(resp);
       }
     ).flatMap(resp => this.test_player.checkResults(resp)).subscribe(resp => this.marks = resp);
+    this.finish = true;
   }
+
+  backToTest(){
+    this.timeFinish = this.unixTimeLeft >= 0 ? true : false;
+    this.finish = false;
+
+  }
+
 
 
   getTime() {

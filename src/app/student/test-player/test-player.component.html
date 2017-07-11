@@ -4,11 +4,9 @@
       <h3>{{testName}}.</h3>
     </div>
     <div class="col-md-2 exit">
-      <button class=" btn btn-exit btn-close-test" (click)="finishTest()"> {{FINISH}}</button>
+      <button class=" btn btn-exit btn-close-test" (click)="saveResults()"> {{FINISH}}</button>
     </div>
-    <div class="col-md-2 exit">
-      <button class=" btn btn-exit btn-close-test" (click)=" saveResults()"> Save data</button>
-    </div>
+
   </div>
 </div>
 <div id="timer-background">
@@ -17,27 +15,30 @@
   </div>
 </div>
 <div class="container" (click)="checkUnixTime()">
-  <div class="navbar">
-    <ul class="nav navbar-nav navbar-toggler-right">
-      <li><a href="#"> {{MARKED}}</a></li>
-    </ul>
-  </div>
+
   <div id="button">
     <ng-container *ngIf="!start">
       <button type="button" class="btn-test-player" (click)="startTest()">{{START}}</button>
     </ng-container>
-    <ng-container *ngIf="finish">
-      {{FINISH_DIALOG}}
-      <button type="button" class="btn-test-player">{{RESULTS}}</button>
+    <ng-container *ngIf="start && finish">
+      <button type="button" class="btn btn-test-player" (click)="finishTest()">{{FINISH}}</button>
+      <button type="button" class="btn btn-test-player" [disabled]="!timeFinish" (click)="backToTest()">{{BACK}}</button>
+
     </ng-container>
   </div>
   <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8 wrapper">
-
-      <ng-container *ngIf="question">
-        <div class="navigation">
-          <button class="btn-test-player" (click)="next(question['type'])">{{NEXT_QUESTION}}</button>
+      {{msg}}
+      <ng-container *ngIf="question && start && !finish">
+        <!--<div class="navigation">-->
+        <div class="navbar">
+          <ul class="nav navbar-nav navbar-toggler-right">
+            <li><a > {{MARKED}}</a></li>
+            <li><a (click)="next(question['type'])">{{NEXT_QUESTION}}</a></li>
+          </ul>
         </div>
+        <!--</div>-->
+
         <div class="table-responsive ">
           <table class="table">
             <caption><h3>{{QUESTION}}{{questions.indexOf(question)+1}}</h3></caption>
@@ -52,44 +53,46 @@
         <div class="answers">
           <form novalidate [formGroup]="answersFrom">
             <ng-container *ngIf="question['type'] == 1">
-            <div *ngIf="question['answers']" class="flex-container">
-              <label *ngFor="let answer of question['answers']" class="flex-box">
-                <input type="radio" formControlName='singlechoise' [value]="answer['answer_id']" >
-                {{answer['answer_text']}}
-                <img [src]="answer['attachment']">
-              </label>
+              <div *ngIf="question['answers']" class="flex-container">
+                <label *ngFor="let answer of question['answers']" class="flex-box">
+                  <input type="radio" formControlName='singlechoise' [value]="answer['answer_id']">
+                  {{answer['answer_text']}}
+                  <img [src]="answer['attachment']">
+                </label>
 
-            </div>
-          </ng-container>
+              </div>
+            </ng-container>
 
-          <ng-container *ngIf="question['type'] == 2">
-            <div *ngIf="question['answers']" class="flex-container">
-              <label *ngFor="let answer of question['answers']" class="flex-box">
-                <input type="checkbox" formControlName='multichoise'  [value]="answer['answer_id']"   (change)="toggleMultiSelect($event, answer['answer_id'])">
-                {{answer['answer_text']}}
-                <span>  <img [src]="answer['attachment']"></span>
-              </label>
-            </div>
-          </ng-container>
+            <ng-container *ngIf="question['type'] == 2">
+              <div *ngIf="question['answers']" class="flex-container">
+                <label *ngFor="let answer of question['answers']" class="flex-box">
+                  <input type="checkbox" formControlName='multichoise' [value]="answer['answer_id']"
+                         (change)="toggleMultiSelect($event, answer['answer_id'])">
+                  {{answer['answer_text']}}
+                  <span>  <img [src]="answer['attachment']"></span>
+                </label>
+              </div>
+            </ng-container>
 
-          <ng-container *ngIf="question['type'] == 3">
-            <div class="form-input" class="input-field">
-              <label>{{ENTER_ANSWER}}
-                <input formControlName="inputfield"
-                       type="text"
-                       maxlength="100"/>
-              </label>
-            </div>
-          </ng-container>
+            <ng-container *ngIf="question['type'] == 3">
+              <div class="form-input" class="input-field">
+                <label>{{ENTER_ANSWER}}
+                  <input formControlName="inputfield"
+                         type="text"
+                         maxlength="100"/>
+                </label>
+              </div>
+            </ng-container>
           </form>
 
 
         </div>
-        <div class="navigation">
-          <button type="submit" class="btn-test-player">{{SAVE_ANSWER}}</button>
-        </div>
       </ng-container>
-
+<ng-container *ngIf="start && finish">
+  <div>
+    {{CONFIRMATION_DIALOG}}
+  </div>
+</ng-container>
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 sidebar">
@@ -103,4 +106,5 @@
     </div>
   </div>
 </div>
+
 
