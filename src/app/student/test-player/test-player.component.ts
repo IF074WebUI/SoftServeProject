@@ -159,58 +159,51 @@ export class TestPlayerComponent implements OnInit {
 
 
   startTest() {
-    this.loginService.checkLogged()
-      .flatMap(response => this.user_id = response['id']);
-    return this.loginService.checkLogged()
-      .subscribe(res => {
-        this.test_player.checkSecurity(+res['id'], this.testPlayerStartData.testId)
-          .subscribe(resp => {
-            console.log(resp);
-          }, error => this.toastr.error(error));
-        this.getTime();
-        this.start = true;
-        if (this.start) {
-          this.startTimer();
+    this.test_player.checkSecurity(+this.testPlayerStartData.studentId, this.testPlayerStartData.testId)
+      .subscribe(resp => console.log(resp));
 
 
-          const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
-            this.questions = resp;
-            this.question = resp[0];
-          })
-            .switchMap(resp => this.test_player.getAnswers(resp));
+    this.start = true;
+    const answers$ = this.test_player.getQuestions(this.test_details).do(resp => {
+      this.questions = resp;
+      this.question = resp[0];
+    })
+      .switchMap(resp => this.test_player.getAnswers(resp));
 
-          answers$.subscribe(response => {
-            this.questions['answers'] = response;
-          }, error => this.toastr.error(error));
-        } else {
-          this.toastr.error('Prohibited');
-        }
-      });
+    answers$.subscribe(response => {
+      this.questions['answers'] = response;
+    }, error => this.toastr.error(error));
+  };
 
-  }
 
   toggleMultiSelect(event, val) {
     event.preventDefault();
-
     if (this.selectedAnswers.indexOf(val) == -1) {
       this.selectedAnswers = [...this.selectedAnswers, +val];
     } else {
       this.selectedAnswers = this.selectedAnswers.filter((elem) =>
       elem !== val);
     }
+
   }
 
 
   next(type: string) {
-    let answers = (this.selectedAnswers) ? this.selectedAnswers :
-      new Array(this.answersFrom.controls[this.TypeOfAnswers[type]].value);
+    if (
+      type !== '2'
+    ) {
+      this.selectedAnswers = [];
+      this.selectedAnswers.push(this.answersFrom.controls[this.TypeOfAnswers[type]].value);
+    }
+    // let answers = (this.selectedAnswers) ? this.selectedAnswers :
+    console.log('array of answers' + this.selectedAnswers);
     let currentIndex = +this.questions.indexOf(this.question);
-    let current = new CheckAnswers(String(currentIndex + 1), answers);
+    let current = new CheckAnswers(String(currentIndex + 1), this.selectedAnswers);
     this.allAnswers.push(current);
     this.test_player.saveData(this.allAnswers).subscribe(resp => this.toastr.success(resp));
     let newIndex = currentIndex === this.questions.length - 1 ? 0 : currentIndex + 1;
     this.question = this.questions[newIndex];
-   // this.selectedAnswers = [];
+    this.selectedAnswers = [];
   }
 
   goToAnswers(number: number) {
@@ -218,10 +211,11 @@ export class TestPlayerComponent implements OnInit {
   }
 
   finishTest() {
-  console.log(this.marks);
+    console.log(this.marks);
     this.stopTimer();
     this.toastr.success('Test Finished');
     this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
+    this.answersFrom.reset();
   }
 
   saveResults() {
