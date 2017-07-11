@@ -19,7 +19,6 @@ import {FormGroup} from '@angular/forms/src/model';
 import {FormBuilder} from '@angular/forms';
 import {LoginService} from '../../login/login.service';
 
-declare var $: any;
 
 
 export class GetMarks {
