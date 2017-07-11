@@ -2,16 +2,36 @@
 
 <div class="top-panel" role="alert">
   <div class="btn-add" (click)="add()">+</div>
+  <button class="btn-toggle" (click)="show = !show">Перемикач</button>
+  <!--{{show ? 'hide' : 'show'}}-->
+  <!--show = {{show}}-->
   <dtester-search (searchCriteria)="searchStudent($event)">
   </dtester-search>
+
   <dtester-items-per-page [numberOfRecords]="count"
                           (recordsPerPageChanged)="changeCountPerPage($event)">
   </dtester-items-per-page>
 </div>
-<button (click)="show = !show">{{show ? 'hide' : 'show'}}</button>
-show = {{show}}
-<div *ngIf ="show; else dragdrop">
-  <table  *ngFor = "let student of students">
+<div>
+  <div>
+    <div class="panel panel-default box-for-del-stud">
+      <div class="panel-body" dnd-sortable-container [dropZones]="['delete-dropZone']" [sortableData]="listRecycled">
+        <i class="fa fa-trash-o" aria-hidden="true"></i>
+
+        Recycle bin: Drag into me to delete it<br/>
+      </div>
+    </div>
+    <div *ngIf="listRecycled.length">
+      <div>
+        <b>You have just deleted:</b> <span>{{listRecycled.toString()}} </span></div>
+    </div>
+  </div>
+
+
+<div *ngIf ="show; else dragdrop" class="panel-body wrapper-student-profile" dnd-sortable-container [sortableData]="students" [dropZones]="['delete-dropZone']">
+
+  <table  *ngFor = "let student of students; let i = index" class="list-group-item"
+          dnd-sortable [sortableIndex]="i">
     <div class="container">
       <div class="row">
 
@@ -49,8 +69,11 @@ show = {{show}}
       </div>
     </div>
   </table>
+
+
 </div>
-<ng-template #dragdrop>
+  </div>
+ <ng-template #dragdrop>
 <dtester-entities-table *ngIf ="!show"
 
                         [entities]="students"
@@ -72,6 +95,8 @@ show = {{show}}
                 (submitted)="formSubmitted($event)">
   </dynamic-form>
 </div>
+
+
 
 <div class="text-center">
   <dtester-pagination [countRecords]="count"

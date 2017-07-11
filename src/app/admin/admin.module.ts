@@ -60,6 +60,7 @@ import { ModalImgComponent } from './modal-img/modal-img.component';
 import { FacultyService } from './services/faculty.service';
 import { RadioButtonModule } from 'primeng/primeng';
 import { ButtonsDirective } from './universal/directives/buttons.directive';
+import { DndModule } from 'ng2-dnd';
 
 
 @NgModule({
@@ -106,7 +107,8 @@ import { ButtonsDirective } from './universal/directives/buttons.directive';
     DynamicFormModule,
     LoadingModule,
     ChartModule,
-    RadioButtonModule
+    RadioButtonModule,
+    DndModule.forRoot()
 
   ],
   providers: [

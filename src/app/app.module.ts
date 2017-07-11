@@ -17,6 +17,7 @@ import { LoginGuard } from './guards/login.guard';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastModule } from 'ng2-toastr';
 import { LoadingModule } from 'ngx-loading';
+import { DndModule } from 'ng2-dnd';
 
 
 
@@ -36,7 +37,8 @@ import { LoadingModule } from 'ngx-loading';
     RouterModule.forRoot(routes),
     NgbModule.forRoot(),
     BrowserAnimationsModule,
-    LoadingModule
+    LoadingModule,
+    DndModule.forRoot()
   ],
   providers: [LoginService, AdminGuard, StudentGuard, LoginGuard],
   bootstrap: [AppComponent]

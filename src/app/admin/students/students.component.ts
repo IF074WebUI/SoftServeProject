@@ -21,6 +21,7 @@ import {isUndefined} from "util";
 
 export class StudentsComponent implements OnInit {
   show: boolean = true;
+  listRecycled: Array<string> = [];
 
 
   headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові', 'Група'];
@@ -31,7 +32,6 @@ export class StudentsComponent implements OnInit {
   configs = STUDENT_CONFIG;
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
-
   MAIN_HEADER = 'Студенти';
   MODAL_ADD = 'Додати студента';
   students: Student[];

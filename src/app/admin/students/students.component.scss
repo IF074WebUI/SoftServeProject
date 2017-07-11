@@ -10,3 +10,46 @@
 .studProf{
   background: #f0f;
 }
+.panel{
+  border: 1px solid #f0f;
+  box-sizing: border-box;
+  text-align: center;
+}
+.top-list{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.wrapper-student-profile{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.list-group-item{
+  width: 50%;
+  // width: 48%;
+  // height: 1%;
+}
+.fa-trash-o{
+  font-size: 40px;
+  color: #f0f;
+}
+.btn-add{
+  margin-right: 10px;
+}
+.btn-toggle{
+  background-color: #c10000;
+  box-shadow: 0 2px 2px 0 #666;
+  display: inline-block;
+  line-height: 35px;
+  color: white;
+  text-align: center;
+  transition: all 0.1s ease-in-out;
+  border: none;
+  &:hover{
+    cursor: pointer;
+    box-shadow: 0 6px 4px 0 #666;
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+  }
+}
