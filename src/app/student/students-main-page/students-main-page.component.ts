@@ -175,4 +175,9 @@ export class StudentsMainPageComponent implements OnInit {
     });
   }
 
+  checkUfinishedTest() {
+    this.testPlayer.getLogs(this.result.student['user_id'])
+      .subscribe(responce => console.log(responce));
+  }
+
 }
