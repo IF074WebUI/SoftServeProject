@@ -295,10 +295,9 @@ export class TestPlayerComponent implements OnInit {
   };
 
   checkProgresColor() {
-    let status = parseInt(this.statusTimer, 0);
-    return 'hsl(' + status + ',100%, 50%)';
-    // let status = Math.floor(parseInt(this.statusTimer, 0) * 2.55);
-    // return 'rgb(' + '188, 0, ' + status;
+    let status = Math.floor(parseInt(this.statusTimer, 0) * 2.55);
+    return 'rgb(' + '188, 0, ' + status;
   };
 
 }
+
