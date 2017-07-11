@@ -38,6 +38,10 @@ export class StudentsMainPageComponent implements OnInit {
   OPEN_TESTS: string;
   PROFILE: string;
   testIdData: any;
+  unfinishedTests: any;
+  SECONDS_IN_HOUR = 3600;
+  SECONDS_IN_MINUTE = 60;
+  MILISECONDS_IN_SECOND = 1000;
   constructor(private loginService: LoginService,
               private router: Router,
               private studentService: StudentsService,
@@ -74,6 +78,10 @@ export class StudentsMainPageComponent implements OnInit {
       studentId: 0 ,
       testId: 0,
       testDuration: 0
+    };
+    this.unfinishedTests = {
+      test: [],
+      startingTime: 0
     };
   }
 
@@ -177,7 +185,18 @@ export class StudentsMainPageComponent implements OnInit {
 
   checkUfinishedTest() {
     this.testPlayer.getLogs(this.result.student['user_id'])
-      .subscribe(responce => console.log(responce));
+      .subscribe(
+        LogResponse => {
+          for (let log of LogResponse) {
+            let logTime = log['log_time'].split(':');
+            let logtStartTimeValue = (parseInt(logTime[0]) * this.SECONDS_IN_HOUR + parseInt(logTime[1]) * this.SECONDS_IN_MINUTE + parseInt(logTime[2])) * 1000  + Date.parse(log['log_date']);
+            this.test.getTestById(log['test_id'])
+              .subscribe(
+                responce => {
+                  this.unfinishedTests.test.push(responce[0], logtStartTimeValue);
+                }, error => this.toastr.error(error));
+          }
+          console.log(this.unfinishedTests); }, error => this.toastr.error(error));
   }
 
 }
