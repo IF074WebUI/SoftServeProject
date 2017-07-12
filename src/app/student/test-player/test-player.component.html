@@ -28,8 +28,8 @@
 <div class="testplayer-container">
   <div class="sidebar">
     <div>
-      <ul *ngIf="questions" class="number-container">
-        <li class="number-box" *ngFor="let number of getArrayOfNumbers(questions)" (click)="goToAnswers(number)">
+      <ul *ngIf="questionsIds" class="number-container">
+        <li class="number-box" *ngFor="let number of getArrayOfNumbers(questionsIds)" (click)="goToQuestion(number)">
           {{number}}
         </li>
       </ul>
@@ -38,10 +38,11 @@
 
   <div class="questionsField">
     {{msg}}
+    <button (click)="showQuestions()">Show question</button>
     <ng-container *ngIf="question && start && !finish">
       <div class="table-responsive  wrapper">
         <table class="table">
-          <caption><h3>{{QUESTION}}{{questions.indexOf(question)+1}}</h3></caption>
+          <caption><h3>{{QUESTION}}{{questionsIds.indexOf(question)+1}}</h3></caption>
           <tr>
             <td>{{question['question_text']}}</td>
           </tr>
