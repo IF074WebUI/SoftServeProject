@@ -198,7 +198,7 @@ export class StudentsMainPageComponent implements OnInit {
                   testResponce => {
                     this.testPlayer.getCurrentTime()
                       .subscribe(response => {
-                        if (Math.floor((+response['unix_timestamp'] - logtStartTimeValue) / this.SECONDS_IN_MINUTE) > +testResponce[0]['time_for_test']) {
+                        if (Math.floor((+response['unix_timestamp'] - logtStartTimeValue) / this.SECONDS_IN_MINUTE) < +testResponce[0]['time_for_test']) {
                           console.log(log);
                         }
                       }, error => this.toastr.error(error));
