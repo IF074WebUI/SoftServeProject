@@ -109,16 +109,17 @@ export class TestPlayerService {
 
   checkSecurity(user_id: number, test_id: number) {
     let body = JSON.stringify({'user_id': user_id, 'test_id': test_id});
-    return this.http.post(HOST_PROTOCOL + HOST + TEST_PLAYER_START_TEST + user_id + '/' + test_id, JSON.stringify(body), this.options).map((resp: Response) => resp.json()).catch(this.handleError);
+    return this.http.post(HOST_PROTOCOL + HOST + TEST_PLAYER_START_TEST + user_id + '/' + test_id, JSON.stringify(body), this.options).map(resp => resp.json())
+//      .catch(this.handleError);
   }
 
   saveData(allAnswers: any){
     let body = JSON.stringify(allAnswers);
-    return this.http.post(HOST_PROTOCOL + HOST + TEST_PLAYER_SAVE_DATA, JSON.stringify(body), this.options).map((resp: Response) => resp.json()).catch(this.handleError);
+    return this.http.post(HOST_PROTOCOL + HOST + TEST_PLAYER_SAVE_DATA, JSON.stringify(body), this.options).map(resp => resp.json()).catch(this.handleError);
   }
 
   getData() {
-    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_DATA).map((resp: Response) => resp.json()).catch(this.handleError);
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_DATA).map(resp => resp.json()).catch(this.handleError);
   }
   checkResults(allAnswers: any){
     // [{question_id: 10, answer_ids: [1,2,3,4]}, {question_id: 18, answer_ids:[10]}, ...]
