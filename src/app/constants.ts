@@ -32,7 +32,7 @@ export const TEST_PLAYER_RESET_SESSION_DATA = '/TestPlayer/resetSessionData';
 export const TEST_PLAYER_SAVE_DATA = '/TestPlayer/saveData';
 export const TEST_PLAYER_GET_DATA = '/TestPlayer/getData';
 export const TEST_PLAYER_CHECK_ANSWERS = '/SAnswer/checkAnswers';
-export const TEST_PLAYER_GET_ANSWER_BY_ID = 'SAnswer/getAnswersByQuestion/';
+export const TEST_PLAYER_GET_ANSWER_BY_ID = '/SAnswer/getAnswersByQuestion/';
 export const TEST_PLAYER_GET_QUESTION_BY_ID = '/Question/getRecords/';
 
 

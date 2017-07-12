@@ -56,7 +56,7 @@ export class TestPlayerComponent implements OnInit {
   testDuration: number;
   test_id: number;
   test: Test;
-  questions: Question[] = [];
+//  questions: Question[] = [];
   question: Question;
   allAnswers: CheckAnswers[] = [];
   start: boolean;
@@ -75,7 +75,7 @@ export class TestPlayerComponent implements OnInit {
   MILLISECONDS_IN_SECOND: number;
   timer: any;
   testPlayerStartData: any;
-  currentAnswer: Array<string> = [];
+ // currentAnswer: Array<string> = [];
   statusTimer: string;
   PERSENT: number;
   DANGER_STATUS: number;
@@ -86,7 +86,7 @@ export class TestPlayerComponent implements OnInit {
   marks: GetMarks[] = [];
   timeFinish: boolean;
   questionsIds: Array<number> = [];
-  currentQuestionId: number;
+  // currentQuestionId: number;
 
 
   NEXT_QUESTION = 'Наступне питання';
@@ -181,12 +181,11 @@ export class TestPlayerComponent implements OnInit {
             this.test_player.getQuestions(this.test_details)
               .do((questions: Array<number> | any) => {
                 this.questionsIds = this.prepareQuestionForTest(questions);
-                return this.questions;
+                return this.questionsIds;
               })
               .subscribe(respon => {
                 this.showQuestions(0);
                 localStorage.setItem('questionsId', 'this.questionsIds');
-                // this.questionsIds = respon;
               });
 
           } else {
@@ -198,16 +197,14 @@ export class TestPlayerComponent implements OnInit {
   };
 
   showQuestions(numberOfQuestion: number) {
-    console.log(this.questionsIds);
 
-    this.test_player.getQuestionById(this.questionsIds[numberOfQuestion]).map(resp => resp[0]).do(resp => {
+    this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
+      .map(resp => resp[0]).do(resp => {
       this.question = resp;
-      console.log(resp);
-    })
-      .flatMap(respo => this.test_player.getAnswersById(respo['question_id']))
-      .subscribe(response => {
-        this.currentQuestionId = response['question_id'];
-        this.question['answers'] = response;
+    }).filter(question => question['type'] !== '3')
+      .flatMap(resp => this.test_player.getAnswersById(resp['question_id']))
+      .subscribe(resp => {
+        this.question['answers'] = resp;
         console.log(this.question['answers']);
       }, error => this.toastr.error(error));
   }
@@ -224,41 +221,40 @@ export class TestPlayerComponent implements OnInit {
   }
 
 
-  next(type: string) {
+  next(prevQuestion: Question) {
     if (
-      type !== '2'
+      prevQuestion['type'] !== '2'
     ) {
       this.selectedAnswers = [];
-      this.selectedAnswers.push(this.answersFrom.controls[this.TypeOfAnswers[type]].value);
+      this.selectedAnswers.push(this.answersFrom.controls[this.TypeOfAnswers[prevQuestion['type']]].value);
     }
-    let currentIndex = +this.questionsIds.indexOf(this.question['question_id']);
-    let current = new CheckAnswers(String(currentIndex + 1), this.selectedAnswers);
+    let currentQuestionId = +(prevQuestion['question_id']);
+    let current = new CheckAnswers(String(currentQuestionId), this.selectedAnswers);
     this.allAnswers.push(current);
     this.test_player.saveData(this.allAnswers).subscribe(resp => this.toastr.success(resp['response']));
-    let newIndex = currentIndex === this.questionsIds.length - 1 ? 0 : currentIndex + 1;
-    this.question['question_id'] = this.questionsIds[newIndex];
-    this.goToQuestion(this.question['question_id']);
+    let newIndex = this.questionsIds.indexOf(currentQuestionId) === this.questionsIds.length - 1 ? 0 : this.questionsIds.indexOf(currentQuestionId) + 1;
+    this.goToQuestion(newIndex);
   }
 
   goToQuestion(number: number) {
     this.showQuestions(number);
- //   this.question = this.questions[number - 1];
   }
 
   finishTest() {
     this.stopTimer();
     this.toastr.success('Test Finished');
+    this.test_player.getData().do(resp => {
+        JSON.parse(resp);
+        console.log(resp);
+      }
+    ).flatMap(resp => this.test_player.checkResults(resp))
+      .subscribe(resp => this.marks = resp);
     console.log(this.marks);
     this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
     this.answersFrom.reset();
   }
 
   saveResults() {
-    this.test_player.getData().do(resp => {
-        JSON.parse(resp);
-        console.log(resp);
-      }
-    ).flatMap(resp => this.test_player.checkResults(resp)).subscribe(resp => this.marks = resp);
     this.finish = true;
   }
 
