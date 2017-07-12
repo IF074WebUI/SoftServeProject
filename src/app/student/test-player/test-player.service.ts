@@ -27,7 +27,8 @@ export class TestPlayerService {
     studentId: 0,
     testId: 0,
     testDuration: 0,
-    startLogTime: 0
+    startLogTime: 0,
+    testLogId: 0
   })
 
   constructor(private http: Http) {

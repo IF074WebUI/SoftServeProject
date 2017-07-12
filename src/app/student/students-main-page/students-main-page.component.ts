@@ -82,6 +82,7 @@ export class StudentsMainPageComponent implements OnInit {
       testId: 0,
       testDuration: 0,
       startLogTime: 0,
+      testLogId: 0
     };
     this.unfinishedTests = {
       test: [],
@@ -148,6 +149,7 @@ export class StudentsMainPageComponent implements OnInit {
     this.testIdData.testId = testID;
     this.testIdData.testDuration = testDuration;
     this.testIdData.startLogTime = this.logTime;
+    this.testIdData.testLogId = this.logTest
     this.testPlayer.addIdData(this.testIdData);
     this.router.navigate(['./test-player'],
       {
