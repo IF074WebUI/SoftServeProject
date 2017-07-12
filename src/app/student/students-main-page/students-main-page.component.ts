@@ -39,7 +39,8 @@ export class StudentsMainPageComponent implements OnInit {
   PROFILE: string;
   testIdData: any;
   unfinishedTests: any;
-  logInfo: any;
+  logTime: number;
+  logTest: number;
   SECONDS_IN_HOUR = 3600;
   SECONDS_IN_MINUTE = 60;
   MILISECONDS_IN_SECOND = 1000;
@@ -68,7 +69,8 @@ export class StudentsMainPageComponent implements OnInit {
     this.checkTestAvailability = false;
     this.tableHeaders = ['#', 'Назва тесту', 'Кількість завданнь', 'Тривалість', ''];
     // this.studentId = +window.sessionStorage.getItem('studentId');
-    this.logInfo =
+    this.logTime = 0;
+    this.logTest = 0;
     this.result = {
       student: [],
       groupId: [],
@@ -193,19 +195,15 @@ export class StudentsMainPageComponent implements OnInit {
             if (+log['user_id'] === this.studentId) {
               let logTime = log['log_time'].split(':');
               let logtStartTimeValue = (parseInt(logTime[0]) * this.SECONDS_IN_HOUR + parseInt(logTime[1]) * this.SECONDS_IN_MINUTE + parseInt(logTime[2]))  + Math.floor(Date.parse(log['log_date']) / this.MILISECONDS_IN_SECOND);
-              this.test.getTestById(log['test_id'])
-                .subscribe(
-                  testResponce => {
-                    this.testPlayer.getCurrentTime()
-                      .subscribe(response => {
-                        if (Math.floor((+response['unix_timestamp'] - logtStartTimeValue) / this.SECONDS_IN_MINUTE) < +testResponce[0]['time_for_test']) {
-                          console.log(log);
-                        }
-                      }, error => this.toastr.error(error));
-                  }, error => this.toastr.error(error));
+              if (this.logTime < logtStartTimeValue ) {
+                this.logTime = logtStartTimeValue;
+                this.logTest = +log['test_id'];
+                console.log(this.logTime);
               }
-          }
-         }, error => this.toastr.error(error));
+
+            }
+         }
+       }, error => this.toastr.error(error));
   }
 
 }
