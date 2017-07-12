@@ -133,6 +133,12 @@ export class TestPlayerService {
   addIdData(data: any) {
     this.testPlayerIdData.next(data);
   }
+
+  getLogs(userId: number) {
+    return this.http.get(HOST_PROTOCOL + HOST + '/Log/getLogsByUser/' + userId)
+      .map((resp: Response) => resp.json())
+      .catch(this.handleError);
+  }
 }
 
 

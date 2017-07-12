@@ -173,6 +173,7 @@ export class TestPlayerComponent implements OnInit {
   }
 
   startTest() {
+    this.startTimer();
     this.test_player.checkSecurity(+this.testPlayerStartData.studentId, this.testPlayerStartData.testId)
       .subscribe(resp => {
           if (resp['response'] === 'ok') {
@@ -268,20 +269,12 @@ export class TestPlayerComponent implements OnInit {
   }
 
 
-  getTime() {
-    this.test_player.getCurrentTime()
-      .subscribe(res => {
-        this.startunixTime = +res['unix_timestamp'] * 10;
-        this.endUnixTime = this.startunixTime + this.testDuration;
-        this.unixTimeLeft = this.testDuration;
-      });
-  }
-
-
   startTimer() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
-          this.currentUnixTime = +res['unix_timestamp'] * 10;
+          this.startunixTime = +res['unix_timestamp'] * 10;
+          this.endUnixTime = this.startunixTime + this.testDuration;
+          this.unixTimeLeft = this.testDuration;
           this.showTimer();
         },
         error => this.toastr.error(error));

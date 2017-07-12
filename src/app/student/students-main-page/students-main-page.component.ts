@@ -38,6 +38,11 @@ export class StudentsMainPageComponent implements OnInit {
   OPEN_TESTS: string;
   PROFILE: string;
   testIdData: any;
+  unfinishedTests: any;
+  logInfo: any;
+  SECONDS_IN_HOUR = 3600;
+  SECONDS_IN_MINUTE = 60;
+  MILISECONDS_IN_SECOND = 1000;
   constructor(private loginService: LoginService,
               private router: Router,
               private studentService: StudentsService,
@@ -63,6 +68,7 @@ export class StudentsMainPageComponent implements OnInit {
     this.checkTestAvailability = false;
     this.tableHeaders = ['#', 'Назва тесту', 'Кількість завданнь', 'Тривалість', ''];
     // this.studentId = +window.sessionStorage.getItem('studentId');
+    this.logInfo =
     this.result = {
       student: [],
       groupId: [],
@@ -75,10 +81,13 @@ export class StudentsMainPageComponent implements OnInit {
       testId: 0,
       testDuration: 0
     };
+    this.unfinishedTests = {
+      test: [],
+      startingTime: 0
+    };
   }
 
   ngOnInit() {
-    this.testPlayer.getCurrentTime().subscribe(res => console.log(res))
     this.getTestForStudent();
     this.spinner.loaderStatus.subscribe((val: boolean) => {
       this.objLoaderStatus = val;
@@ -111,7 +120,7 @@ export class StudentsMainPageComponent implements OnInit {
     this.loginService.checkLogged()
       .flatMap(loginResponse => this.studentId = loginResponse['id'])
         return this.loginService.checkLogged()
-          .subscribe(result => { this.studentService.getStudentById(+result['id'])
+          .subscribe(result => {this.studentId = +result['id']; this.studentService.getStudentById(+result['id'])
             .subscribe(res => {
               this.result.student = res[0];
               this.timeTable.getTimeTablesForGroup(this.result.student.group_id)
@@ -173,6 +182,30 @@ export class StudentsMainPageComponent implements OnInit {
       queryParams: {'user_id': this.result.student['user_id']},
       relativeTo: this.route.parent
     });
+  }
+
+  checkUfinishedTest() {
+    this.testPlayer.getLogs(this.result.student['user_id'])
+      .subscribe(
+        LogResponse => {
+          console.log(LogResponse)
+          for (let log of LogResponse) {
+            if (+log['user_id'] === this.studentId) {
+              let logTime = log['log_time'].split(':');
+              let logtStartTimeValue = (parseInt(logTime[0]) * this.SECONDS_IN_HOUR + parseInt(logTime[1]) * this.SECONDS_IN_MINUTE + parseInt(logTime[2]))  + Math.floor(Date.parse(log['log_date']) / this.MILISECONDS_IN_SECOND);
+              this.test.getTestById(log['test_id'])
+                .subscribe(
+                  testResponce => {
+                    this.testPlayer.getCurrentTime()
+                      .subscribe(response => {
+                        if (Math.floor((+response['unix_timestamp'] - logtStartTimeValue) / this.SECONDS_IN_MINUTE) > +testResponce[0]['time_for_test']) {
+                          console.log(log);
+                        }
+                      }, error => this.toastr.error(error));
+                  }, error => this.toastr.error(error));
+              }
+          }
+         }, error => this.toastr.error(error));
   }
 
 }
