@@ -75,7 +75,7 @@ export class TestPlayerComponent implements OnInit {
   MILLISECONDS_IN_SECOND: number;
   timer: any;
   testPlayerStartData: any;
- // currentAnswer: Array<string> = [];
+  // currentAnswer: Array<string> = [];
   statusTimer: string;
   PERSENT: number;
   DANGER_STATUS: number;
@@ -163,15 +163,6 @@ export class TestPlayerComponent implements OnInit {
   }
 
 
-  prepareQuestionForTest(questions: Array<number[]>): Array<number> {
-    let tempArr: Array<number> = [];
-
-    questions.forEach((elem: any) => {
-      elem.forEach(item => tempArr.push(+item['question_id']));
-    });
-    return tempArr;
-  }
-
   startTest() {
     this.startTimer();
     this.test_player.checkSecurity(+this.testPlayerStartData.studentId, this.testPlayerStartData.testId)
@@ -184,17 +175,28 @@ export class TestPlayerComponent implements OnInit {
                 return this.questionsIds;
               })
               .subscribe(respon => {
-                this.showQuestions(0);
-                localStorage.setItem('questionsId', 'this.questionsIds');
-              });
+                  this.showQuestions(0);
+                },
+                error => {
+                this.msg = error;
+                console.log(this.msg);
+                this.toastr.error(error);});
 
           } else {
             this.msg = resp['response'];
           }
         },
         error => this.toastr.error(error));
-    console.log(this.questionsIds);
   };
+
+  prepareQuestionForTest(questions: Array<number[]>): Array<number> {
+    let tempArr: Array<number> = [];
+
+    questions.forEach((elem: any) => {
+      elem.forEach(item => tempArr.push(+item['question_id']));
+    });
+    return tempArr;
+  }
 
   showQuestions(numberOfQuestion: number) {
 
@@ -220,19 +222,25 @@ export class TestPlayerComponent implements OnInit {
 
   }
 
-
-  next(prevQuestion: Question) {
+  saveCurrentAnswer(question?: Question, questionId?: number) {
+    let currentQuestion = questionId ? this.test_player.getQuestionById(questionId).subscribe(resp => question = resp) : question;
     if (
-      prevQuestion['type'] !== '2'
+      currentQuestion['type'] !== '2'
     ) {
       this.selectedAnswers = [];
-      this.selectedAnswers.push(this.answersFrom.controls[this.TypeOfAnswers[prevQuestion['type']]].value);
+      this.selectedAnswers.push(this.answersFrom.controls[this.TypeOfAnswers[currentQuestion['type']]].value);
     }
-    let currentQuestionId = +(prevQuestion['question_id']);
+    let currentQuestionId = +(currentQuestion['question_id']);
     let current = new CheckAnswers(String(currentQuestionId), this.selectedAnswers);
     this.allAnswers.push(current);
+    console.log(this.allAnswers);
     this.test_player.saveData(this.allAnswers).subscribe(resp => this.toastr.success(resp['response']));
-    let newIndex = this.questionsIds.indexOf(currentQuestionId) === this.questionsIds.length - 1 ? 0 : this.questionsIds.indexOf(currentQuestionId) + 1;
+  }
+
+  next(prevQuestion: Question) {
+
+    this.saveCurrentAnswer(prevQuestion);
+    let newIndex = this.questionsIds.indexOf(+prevQuestion['question_id']) === this.questionsIds.length - 1 ? 0 : this.questionsIds.indexOf(+prevQuestion['question_id']) + 1;
     this.goToQuestion(newIndex);
   }
 
@@ -242,13 +250,8 @@ export class TestPlayerComponent implements OnInit {
 
   finishTest() {
     this.stopTimer();
-    this.toastr.success('Test Finished');
-    this.test_player.getData().do(resp => {
-        JSON.parse(resp);
-        console.log(resp);
-      }
-    ).flatMap(resp => this.test_player.checkResults(resp))
-      .subscribe(resp => this.marks = resp);
+    // this.toastr.success('Test Finished');
+
     console.log(this.marks);
     this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
     this.answersFrom.reset();
@@ -256,6 +259,12 @@ export class TestPlayerComponent implements OnInit {
 
   saveResults() {
     this.finish = true;
+    this.test_player.getData().do(resp => {
+        JSON.parse(resp);
+        console.log(resp);
+      }
+    ).flatMap(resp => this.test_player.checkResults(resp))
+      .subscribe(resp => this.marks = resp);
   }
 
   backToTest() {
