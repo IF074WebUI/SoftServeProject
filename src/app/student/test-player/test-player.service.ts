@@ -27,7 +27,7 @@ export class TestPlayerService {
     studentId: 0,
     testId: 0,
     testDuration: 0,
-    startTime: 0
+    startLogTime: 0
   })
 
   constructor(private http: Http) {
@@ -135,7 +135,7 @@ export class TestPlayerService {
     this.testPlayerIdData.next(data);
   }
 
-  getLogs(userId: number) {
+  getLogs(userId: number): Observable<any> {
     return this.http.get(HOST_PROTOCOL + HOST + '/Log/getLogsByUser/' + userId)
       .map((resp: Response) => resp.json())
       .catch(this.handleError);
