@@ -20,7 +20,6 @@ import {FormBuilder} from '@angular/forms';
 import {LoginService} from '../../login/login.service';
 
 
-
 export class GetMarks {
   'full_mark': number;
   'number_of_true_answers': number;
@@ -86,6 +85,8 @@ export class TestPlayerComponent implements OnInit {
   selectedAnswers: any[] = [];
   marks: GetMarks[] = [];
   timeFinish: boolean;
+  questionsIds: Array<number> = [];
+  currentQuestionId: number;
 
 
   NEXT_QUESTION = 'Наступне питання';
@@ -162,29 +163,54 @@ export class TestPlayerComponent implements OnInit {
   }
 
 
+  prepareQuestionForTest(questions: Array<number[]>): Array<number> {
+    let tempArr: Array<number> = [];
+
+    questions.forEach((elem: any) => {
+      elem.forEach(item => tempArr.push(+item['question_id']));
+    });
+    return tempArr;
+  }
+
   startTest() {
     this.startTimer();
     this.test_player.checkSecurity(+this.testPlayerStartData.studentId, this.testPlayerStartData.testId)
       .subscribe(resp => {
-        if (resp['response'] === 'ok') {
-          this.start = true;
-          const answers$ = this.test_player.getQuestions(this.test_details).do(respon => {
-            this.questions = respon;
-            this.question = respon[0];
-          })
-            .switchMap(response => this.test_player.getAnswers(response));
+          if (resp['response'] === 'ok') {
+            this.start = true;
+            this.test_player.getQuestions(this.test_details)
+              .do((questions: Array<number> | any) => {
+                this.questionsIds = this.prepareQuestionForTest(questions);
+                return this.questions;
+              })
+              .subscribe(respon => {
+                this.showQuestions(0);
+                localStorage.setItem('questionsId', 'this.questionsIds')
+                // this.questionsIds = respon;
+              });
 
-          answers$.subscribe(response => {
-            this.questions['answers'] = response;
-          }, error => this.toastr.error(error));
-
-        } else {
-          this.msg = resp['response']; }
-      },
-      error => this.toastr.error(error));
-
+          } else {
+            this.msg = resp['response'];
+          }
+        },
+        error => this.toastr.error(error));
+    console.log(this.questionsIds);
   };
 
+  showQuestions(numberOfQuestion: number) {
+    console.log(this.questionsIds);
+
+    this.test_player.getQuestionById(this.questionsIds[numberOfQuestion]).map(resp => resp[0]).do(resp => {
+      this.question = resp;
+      console.log(resp);
+    })
+      .flatMap(respo => this.test_player.getAnswersById(respo['question_id']))
+      .subscribe(response => {
+        this.currentQuestionId = response['question_id'];
+        this.question['answers'] = response;
+        console.log(this.question['answers']);
+      }, error => this.toastr.error(error));
+  }
 
   toggleMultiSelect(event, val) {
     event.preventDefault();
@@ -205,16 +231,18 @@ export class TestPlayerComponent implements OnInit {
       this.selectedAnswers = [];
       this.selectedAnswers.push(this.answersFrom.controls[this.TypeOfAnswers[type]].value);
     }
-    let currentIndex = +this.questions.indexOf(this.question);
+    let currentIndex = +this.questionsIds.indexOf(this.question['question_id']);
     let current = new CheckAnswers(String(currentIndex + 1), this.selectedAnswers);
     this.allAnswers.push(current);
     this.test_player.saveData(this.allAnswers).subscribe(resp => this.toastr.success(resp['response']));
-    let newIndex = currentIndex === this.questions.length - 1 ? 0 : currentIndex + 1;
-    this.question = this.questions[newIndex];
+    let newIndex = currentIndex === this.questionsIds.length - 1 ? 0 : currentIndex + 1;
+    this.question['question_id'] = this.questionsIds[newIndex];
+    this.goToQuestion(this.question['question_id']);
   }
 
-  goToAnswers(number: number) {
-    this.question = this.questions[number - 1];
+  goToQuestion(number: number) {
+    this.showQuestions(number);
+ //   this.question = this.questions[number - 1];
   }
 
   finishTest() {
@@ -234,11 +262,13 @@ export class TestPlayerComponent implements OnInit {
     this.finish = true;
   }
 
-  backToTest(){
+  backToTest() {
     this.timeFinish = this.unixTimeLeft >= 0 ? true : false;
     this.finish = false;
 
   }
+
+
   startTimer() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
