@@ -91,6 +91,7 @@ export class StudentsMainPageComponent implements OnInit {
 
   ngOnInit() {
     this.getTestForStudent();
+    this.checkUfinishedTest();
     this.spinner.loaderStatus.subscribe((val: boolean) => {
       this.objLoaderStatus = val;
     });
@@ -170,15 +171,7 @@ export class StudentsMainPageComponent implements OnInit {
         },
         relativeTo: this.route.parent});
   }
-  openTestPlayer(testId, testDuration) {
-    this.stopClock();
-    this.router.navigate(['./test-player'],
-      {
-        queryParams: {'testId': testId,
-          'test_duration': testDuration
-        },
-        relativeTo: this.route.parent});
-  }
+
   goToTheProfile() {
     this.router.navigate(['./studentProfile'], {
       queryParams: {'user_id': this.result.student['user_id']},
@@ -192,17 +185,15 @@ export class StudentsMainPageComponent implements OnInit {
         LogResponse => {
           console.log(LogResponse)
           for (let log of LogResponse) {
-            if (+log['user_id'] === this.studentId) {
+            // if (+log['user_id'] === this.studentId) {
               let logTime = log['log_time'].split(':');
               let logtStartTimeValue = (parseInt(logTime[0]) * this.SECONDS_IN_HOUR + parseInt(logTime[1]) * this.SECONDS_IN_MINUTE + parseInt(logTime[2]))  + Math.floor(Date.parse(log['log_date']) / this.MILISECONDS_IN_SECOND);
               if (this.logTime < logtStartTimeValue ) {
                 this.logTime = logtStartTimeValue;
                 this.logTest = +log['test_id'];
-                console.log(this.logTime);
               }
-
             }
-         }
+         // }
        }, error => this.toastr.error(error));
   }
 

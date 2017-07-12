@@ -185,7 +185,7 @@ export class TestPlayerComponent implements OnInit {
               })
               .subscribe(respon => {
                 this.showQuestions(0);
-                localStorage.setItem('questionsId', 'this.questionsIds')
+                localStorage.setItem('questionsId', 'this.questionsIds');
                 // this.questionsIds = respon;
               });
 
@@ -268,6 +268,13 @@ export class TestPlayerComponent implements OnInit {
 
   }
 
+  getArrayOfNumbers(array: Question[]) {
+    let ArrayOfNumbers = [];
+    for (let j = 1; j <= array.length; j++) {
+      ArrayOfNumbers.push(j);
+    }
+    return ArrayOfNumbers;
+  }
 
   startTimer() {
     this.test_player.getCurrentTime()
@@ -304,14 +311,6 @@ export class TestPlayerComponent implements OnInit {
           this.finishTest();
         }
       });
-  }
-
-  getArrayOfNumbers(array: Question[]) {
-    let ArrayOfNumbers = [];
-    for (let j = 1; j <= array.length; j++) {
-      ArrayOfNumbers.push(j);
-    }
-    return ArrayOfNumbers;
   }
 
   stopTimer() {

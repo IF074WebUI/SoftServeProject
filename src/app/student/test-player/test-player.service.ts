@@ -26,7 +26,8 @@ export class TestPlayerService {
   public testPlayerIdData = new BehaviorSubject<any>({
     studentId: 0,
     testId: 0,
-    testDuration: 0
+    testDuration: 0,
+    startTime: 0
   })
 
   constructor(private http: Http) {
