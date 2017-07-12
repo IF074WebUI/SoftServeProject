@@ -10,6 +10,8 @@ import {ToastsManager} from 'ng2-toastr';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/debounceTime';
+
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
@@ -213,9 +215,15 @@ export class TestPlayerComponent implements OnInit {
 
   toggleMultiSelect(event, val) {
     event.preventDefault();
+    console.log(val);
     if (this.selectedAnswers.indexOf(val) == -1) {
-      this.selectedAnswers = [...this.selectedAnswers, +val];
+      this.selectedAnswers = [...this.selectedAnswers, val];
+      console.log('not found in selected answers');
+      console.log(this.selectedAnswers);
     } else {
+      console.log('found in selected answers');
+      console.log(this.selectedAnswers);
+
       this.selectedAnswers = this.selectedAnswers.filter((elem) =>
       elem !== val);
     }
@@ -245,6 +253,9 @@ export class TestPlayerComponent implements OnInit {
   }
 
   goToQuestion(number: number) {
+ //   this.answersFrom.valueChanges.debounceTime(500).subscribe(resp => {this.saveCurrentAnswer(this.question); });
+//   if (this.answersFrom[''].touched === true) {this.saveCurrentAnswer(this.question)};
+    this.saveCurrentAnswer(this.question);
     this.showQuestions(number);
   }
 
