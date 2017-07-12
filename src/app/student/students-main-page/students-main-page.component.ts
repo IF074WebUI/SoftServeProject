@@ -90,6 +90,7 @@ export class StudentsMainPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getTime();
     this.getTestForStudent();
     this.checkUfinishedTest();
     this.spinner.loaderStatus.subscribe((val: boolean) => {
@@ -97,22 +98,6 @@ export class StudentsMainPageComponent implements OnInit {
     });
   }
 
-  getStudentId() {
-    this.spinner.showSpinner();
-    this.loginService.checkLogged()
-      .subscribe(
-        res => {this.studentId = res[0]; this.spinner.hideSpinner()},
-        err => this.toastr.error(err)
-      );
-  }
-  showTime() {
-    setInterval(() => {
-      this.getTime();
-      this.date = new Date(this.unixTime * 1000);
-      this.currentTime = this.date.getHours() + ':' + this.date.getMinutes() + ':' + this.date.getSeconds();
-    }, 1000);
-    this.spinner.hideSpinner();
-  }
   stopClock() {
     clearInterval(this.clock);
   }
@@ -185,16 +170,24 @@ export class StudentsMainPageComponent implements OnInit {
         LogResponse => {
           console.log(LogResponse)
           for (let log of LogResponse) {
-            // if (+log['user_id'] === this.studentId) {
               let logTime = log['log_time'].split(':');
               let logtStartTimeValue = (parseInt(logTime[0]) * this.SECONDS_IN_HOUR + parseInt(logTime[1]) * this.SECONDS_IN_MINUTE + parseInt(logTime[2]))  + Math.floor(Date.parse(log['log_date']) / this.MILISECONDS_IN_SECOND);
               if (this.logTime < logtStartTimeValue ) {
                 this.logTime = logtStartTimeValue;
                 this.logTest = +log['test_id'];
+                this.checkIsTimeLeft();
+                console.log(this.logTime);
               }
-            }
-         // }
+          }
        }, error => this.toastr.error(error));
+  }
+
+  checkIsTimeLeft() {
+    for (let test of this.result.tests) {
+      if (+test['test_id'] === this.logTest && this.unixTime - this.logTime > test['time_for_test'] * this.SECONDS_IN_MINUTE) {
+        this.logTime = 0;
+      }
+    }
   }
 
 }
