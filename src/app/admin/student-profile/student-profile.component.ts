@@ -106,6 +106,7 @@ export class StudentProfileComponent implements OnInit {
       .subscribe(resp => {
         this.getStudent();
         this.getAdminUser();
+        console.log(this.user_id);
         this.popup.cancel();
         this.toastr.success(`Студент ${this.studentForEdit['student_name']} ${this.studentForEdit['student_surname']}
         ${this.studentForEdit['student_fname']} успішно відредагований`);

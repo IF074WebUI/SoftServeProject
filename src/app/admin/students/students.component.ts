@@ -57,7 +57,7 @@ export class StudentsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(resp => this.user_id = resp['user_id']);
+    // this.activatedRoute.params.subscribe(resp => this.user_id = resp['user_id']);
 
     this.getStudents();
     this.getAdminUser();
@@ -88,6 +88,7 @@ export class StudentsComponent implements OnInit {
     this.studentsService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
       .subscribe(resp => {
           this.getStudentsWithGroupName(resp);
+        this.getStudentsUserData();
           this.spinner.hideSpinner();
         }, err => this.router.navigate(['/bad_request'])
       );
@@ -123,8 +124,22 @@ export class StudentsComponent implements OnInit {
     this.spinner.showSpinner();
     this.studentsService.getAdminUser(this.user_id).subscribe(resp => {
       this.AdminUser = resp[0];
+      console.log(resp);
       this.spinner.hideSpinner();
     });
+  }
+
+  getStudentsUserData() {
+    for (let student of this.students) {
+      this.studentsService.getAdminUser(student.user_id)
+        .subscribe(
+          userResponse => {
+            student.email = userResponse[0]['email'],
+            student.username = userResponse[0]['username']
+            // console.log(userResponse);
+          }
+        );
+    }
   }
 
   getCount(): void {
@@ -166,6 +181,7 @@ export class StudentsComponent implements OnInit {
         student.group_name = StudentData[0].group_name;
       });
     }
+    console.log(this.students);
   }
 
   getGroups() {
@@ -200,10 +216,28 @@ export class StudentsComponent implements OnInit {
     this.popup.sendItem(new Student(), 'Student');
     this.popup.showModal();
   }
-
   del(student: Student) {
     this.popup.deleteEntity(student);
   }
+
+
+
+
+  // edit(student: Student, AdminUser) {
+  //   this.studentForEdit = student;
+  //   this.studentForEdit.username = AdminUser.username;
+  //   this.studentForEdit.email = AdminUser.email;
+  //   this.popup.sendItem({
+  //     'student_name': this.studentForEdit.student_name,
+  //     'student_surname': this.studentForEdit.student_surname,
+  //     'student_fname': this.studentForEdit.student_fname,
+  //     'gradebook': this.studentForEdit.gradebook_id,
+  //     'email': this.studentForEdit.email,
+  //     'group': this.studentForEdit.group_name,
+  //     'group_id': this.studentForEdit.group_id
+  //   }, 'Student', null, this.studentForEdit.photo);
+  //   this.popup.showModal();
+  // }
 
   formSubmitted(value) {
     this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
@@ -233,10 +267,10 @@ export class StudentsComponent implements OnInit {
       'password_confirm' : this.studentForEdit.plain_password,
       'plain_password': this.studentForEdit.plain_password,
     };
-    this.studentsService.update(value, this.studentEditData, this.user_id)
+    this.studentsService.update(value, this.studentEditData, this.studentForEdit.user_id)
       .subscribe(resp => {
-        this.getStudentOne();
-        this.getAdminUser();
+        this.getStudents();
+        // this.getStudentsUserData();
         this.popup.cancel();
         this.toastr.success(`Студент ${this.studentForEdit['student_name']} ${this.studentForEdit['student_surname']}
         ${this.studentForEdit['student_fname']} успішно відредагований`);
@@ -244,4 +278,5 @@ export class StudentsComponent implements OnInit {
         this.toastr.error(error2);
       });
   }
+
 }
