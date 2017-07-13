@@ -129,7 +129,8 @@ export class TestPlayerComponent implements OnInit {
       testId: 0,
       testDuration: 0,
       startLogTime: 0,
-      testLogId: 0
+      testLogId: 0,
+      testLogDuration: 0
     };
 
   }
@@ -150,22 +151,19 @@ export class TestPlayerComponent implements OnInit {
         this.testPlayerStartData.studentId = +data.studentId;
         this.testPlayerStartData.testId = +data.testId;
         this.testPlayerStartData.testDuration = +data.testDuration;
-        this.testPlayerStartData.testId = +data.startLogTime;
-        this.testPlayerStartData.testLogId = +data.testLogId
+        this.testPlayerStartData.logTime = +data.startLogTime;
+        this.testPlayerStartData.testLogId = +data.testLogId;
+
         console.log(data);
       });
 
-    if (this.testPlayerStartData.testId === 0) {
+    if (this.testPlayerStartData.logTime !== 0) {
       this.test_id = this.testPlayerStartData.testLogId;
-      this.testService.getTestById(this.test_id)
-        .subscribe(
-          testResponse => this.testPlayerStartData.testDuration = +testResponse['time_for_test'] * this.SECONDS_IN_MINUTE * 10
-        );
+      this.testDuration = this.testPlayerStartData.testLogDuration * this.SECONDS_IN_MINUTE * 10;
     } else {
       this.test_id = this.testPlayerStartData.testId;
       this.testDuration = (+this.testPlayerStartData.testDuration) * this.SECONDS_IN_MINUTE * 10;
     }
-
   }
 
   createForm() {
@@ -313,7 +311,7 @@ export class TestPlayerComponent implements OnInit {
   startTimer() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
-          if (this.testPlayerStartData.startLogTime == 0) {
+          if (this.testPlayerStartData.startLogTime === 0) {
             this.startunixTime = +res['unix_timestamp'] * 10;
             this.unixTimeLeft = this.testDuration;
             this.endUnixTime = this.startunixTime + this.testDuration;

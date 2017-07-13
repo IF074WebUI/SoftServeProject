@@ -83,7 +83,8 @@ export class StudentsMainPageComponent implements OnInit {
       testId: 0,
       testDuration: 0,
       startLogTime: 0,
-      testLogId: 0
+      testLogId: 0,
+      testLogDuration: 0
     };
     this.unfinishedTests = {
       test: [],
@@ -146,7 +147,7 @@ export class StudentsMainPageComponent implements OnInit {
     this.testIdData.testId = testID;
     this.testIdData.testDuration = testDuration;
     this.testIdData.startLogTime = this.logTime;
-    this.testIdData.testLogId = this.logTest
+    this.testIdData.testLogId = this.logTest;
     this.testPlayer.addIdData(this.testIdData);
     this.router.navigate(['./test-player'],
       {
@@ -174,18 +175,20 @@ export class StudentsMainPageComponent implements OnInit {
               if (this.logTime < logtStartTimeValue ) {
                 this.logTime = logtStartTimeValue;
                 this.logTest = +log['test_id'];
-                this.checkIsTimeLeft();
               }
+            this.checkIsTimeLeft();
           };        console.log(this.logTime);
         }, error => this.toastr.error(error));
   }
 
   checkIsTimeLeft() {
     for (let test of this.result.tests) {
-      console.log(+test['test_id'] === this.logTest , this.unixTime - this.logTime > test['time_for_test'] * this.SECONDS_IN_MINUTE)
       if (+test['test_id'] === this.logTest && this.unixTime - this.logTime > test['time_for_test'] * this.SECONDS_IN_MINUTE) {
         this.logTime = 0;
       } else {
+        this.testIdData.testId = this.logTest;
+        this.testIdData.testLogDuration = test.time_for_test;
+
       }
     }
   }
