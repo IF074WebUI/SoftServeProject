@@ -73,21 +73,7 @@ export class TestPlayerService {
       return this.getQuestionsIdsByLevelRandom(item.test_id, item.level, item.tasks);
     });
     return Observable.forkJoin(forkJoinBatch).catch(this.handleError);
-      // .do((questions: Array<number> | any) => {
-      //   this.questions = this.prepareQuestionForTest(questions);
-      //   return this.questions;
-      // }).catch(this.handleError);
-
   };
-  //
-  // prepareQuestionForTest(questions: Array<number[]>): Array<number> {
-  //   let tempArr: Array<number> = [];
-  //
-  //   questions.forEach((elem: any) => {
-  //     elem.forEach(item => tempArr.push(+item['question_id']));
-  //   });
-  //   return tempArr;
-  // }
 
   getQuestionById(id: number){
     return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_QUESTION_BY_ID + id).map(resp => resp.json()).catch(this.handleError);
