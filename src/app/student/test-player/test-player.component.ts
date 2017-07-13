@@ -28,8 +28,8 @@ export class GetMarks {
 }
 
 export class CheckAnswers {
-  private question_id: number;
-  private answer_ids: Array<number>;
+  question_id: number;
+  answer_ids: Array<number>;
 
   constructor(question_id, answer_ids) {
     this.question_id = question_id;
@@ -60,7 +60,7 @@ export class TestPlayerComponent implements OnInit {
   test: Test;
 //  questions: Question[] = [];
   question: Question;
-  allAnswers: CheckAnswers[] = [];
+  allAnswers: CheckAnswers;
   start: boolean;
   finish: boolean;
   user_id: number;
@@ -77,6 +77,7 @@ export class TestPlayerComponent implements OnInit {
   MILLISECONDS_IN_SECOND: number;
   timer: any;
   testPlayerStartData: any;
+  dataForSave: Array<CheckAnswers> = [];
   // currentAnswer: Array<string> = [];
   statusTimer: string;
   PERSENT: number;
@@ -144,6 +145,7 @@ export class TestPlayerComponent implements OnInit {
         error => this.toastr.error(error)
       );
     this.createForm();
+
   }
   getStartData () {
     this.test_player.testPlayerIdData
@@ -196,9 +198,10 @@ export class TestPlayerComponent implements OnInit {
                   this.showQuestions(0);
                 },
                 error => {
-                this.msg = error;
-                console.log(this.msg);
-                this.toastr.error(error);});
+                  this.msg = error;
+                  console.log(this.msg);
+                  this.toastr.error(error);
+                });
 
           } else {
             this.msg = resp['response'];
@@ -225,21 +228,16 @@ export class TestPlayerComponent implements OnInit {
       .flatMap(resp => this.test_player.getAnswersById(resp['question_id']))
       .subscribe(resp => {
         this.question['answers'] = resp;
-        console.log(this.question['answers']);
       }, error => this.toastr.error(error));
+    this.selectedAnswers = [];
+
   }
 
   toggleMultiSelect(event, val) {
     event.preventDefault();
-    console.log(val);
     if (this.selectedAnswers.indexOf(val) == -1) {
       this.selectedAnswers = [...this.selectedAnswers, val];
-      console.log('not found in selected answers');
-      console.log(this.selectedAnswers);
     } else {
-      console.log('found in selected answers');
-      console.log(this.selectedAnswers);
-
       this.selectedAnswers = this.selectedAnswers.filter((elem) =>
       elem !== val);
     }
@@ -255,21 +253,21 @@ export class TestPlayerComponent implements OnInit {
       this.selectedAnswers.push(this.answersFrom.controls[this.TypeOfAnswers[currentQuestion['type']]].value);
     }
     let currentQuestionId = +(currentQuestion['question_id']);
-    let current = new CheckAnswers(String(currentQuestionId), this.selectedAnswers);
-    this.allAnswers.push(current);
-    console.log(this.allAnswers);
-    this.test_player.saveData(this.allAnswers).subscribe(resp => this.toastr.success(resp['response']));
+    this.allAnswers = new CheckAnswers(currentQuestionId, this.selectedAnswers);
+    this.dataForSave[this.questionsIds.indexOf(currentQuestionId)] = this.allAnswers;
+    this.test_player.saveData(this.dataForSave).subscribe(resp => this.toastr.success(resp['response']));
   }
 
   next(prevQuestion: Question) {
-
     this.saveCurrentAnswer(prevQuestion);
     let newIndex = this.questionsIds.indexOf(+prevQuestion['question_id']) === this.questionsIds.length - 1 ? 0 : this.questionsIds.indexOf(+prevQuestion['question_id']) + 1;
+    console.log(newIndex);
     this.goToQuestion(newIndex);
+
   }
 
   goToQuestion(number: number) {
- //   this.answersFrom.valueChanges.debounceTime(500).subscribe(resp => {this.saveCurrentAnswer(this.question); });
+    //   this.answersFrom.valueChanges.debounceTime(500).subscribe(resp => {this.saveCurrentAnswer(this.question); });
 //   if (this.answersFrom[''].touched === true) {this.saveCurrentAnswer(this.question)};
     this.saveCurrentAnswer(this.question);
     this.showQuestions(number);
@@ -277,18 +275,18 @@ export class TestPlayerComponent implements OnInit {
 
   finishTest() {
     this.stopTimer();
+    this.answersFrom.reset();
+
     // this.toastr.success('Test Finished');
 
     console.log(this.marks);
     this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
-    this.answersFrom.reset();
   }
 
   saveResults() {
     this.finish = true;
     this.test_player.getData().do(resp => {
         JSON.parse(resp);
-        console.log(resp);
       }
     ).flatMap(resp => this.test_player.checkResults(resp))
       .subscribe(resp => this.marks = resp);
@@ -367,4 +365,3 @@ export class TestPlayerComponent implements OnInit {
   };
 
 }
-
