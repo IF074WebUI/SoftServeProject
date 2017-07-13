@@ -30,7 +30,7 @@
 
 <div *ngIf ="show; else dragdrop" class="panel-body wrapper-student-profile" dnd-sortable-container [sortableData]="students" [dropZones]="['delete-dropZone']">
 
-  <table  *ngFor = "let student of students; let i = index" class="list-group-item"
+  <table  *ngFor = "let AdminUser of students; let student of students; let i = index" class="list-group-item"
           dnd-sortable [sortableIndex]="i">
     <div class="container">
       <div class="row">
@@ -68,11 +68,24 @@
           <img class="img-thumbnail photo" *ngIf="student?.photo" [src]="student?.photo"></div>
       </div>
     </div>
+    <div class="buttons">
+      <button class="btn btn-danger" data-toggle="modal" (click)="selectedStudent(student, AdminUser)"
+              data-target="#modalEdit" data-whatever="@mdo" >Редагувати
+      </button>
+    </div>
   </table>
 
-
+  <div class="app">
+    <dynamic-form
+      [config]="configs"
+      (submitted)="formSubmitt($event)"
+      (youCanDelete)="submitDelete($event)">
+    </dynamic-form>
+  </div>
 </div>
   </div>
+
+
  <ng-template #dragdrop>
 <dtester-entities-table *ngIf ="!show"
 

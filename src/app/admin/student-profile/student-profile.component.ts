@@ -14,7 +14,7 @@ import {STUDENT_CONFIG} from '../universal/dynamic-form/config';
   selector: 'dtester-student-profile',
   templateUrl: './student-profile.component.html',
   styleUrls: ['./student-profile.component.scss'],
-  providers: [StudentsService, GetRecordsByIdService, GetAllRecordsService]
+  // providers: [StudentsService, GetRecordsByIdService, GetAllRecordsService]
 })
 
 export class StudentProfileComponent implements OnInit {

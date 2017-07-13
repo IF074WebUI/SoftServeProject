@@ -24,14 +24,18 @@ export class StudentsComponent implements OnInit {
   listRecycled: Array<string> = [];
 
 
+  student: Student;
+  AdminUser: Student;
+  studentForEdit: Student;
+  user_id: number;
+  studentEditData = {};
+
+
   headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові', 'Група'];
   ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
   displayProperties = ['student_surname', 'student_name', 'student_fname', 'group_name'];
   sortProperties = ['student_surname', 'student_name', 'student_fname', 'group_name'];
 
-  configs = STUDENT_CONFIG;
-
-  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   MAIN_HEADER = 'Студенти';
   MODAL_ADD = 'Додати студента';
   students: Student[];
@@ -40,6 +44,8 @@ export class StudentsComponent implements OnInit {
   count: number;
   countPerPage = 5;
 
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
+  configs = STUDENT_CONFIG;
 
   constructor(private studentsService: StudentsService,
               private router: Router,
@@ -51,9 +57,13 @@ export class StudentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.activatedRoute.params.subscribe(resp => this.user_id = resp['user_id']);
+
     this.getStudents();
+    this.getAdminUser();
     this.getGroups();
     this.getStudentsForGroup();
+    this.getStudentOne();
   }
 
   getStudentsForGroup() {
@@ -81,6 +91,40 @@ export class StudentsComponent implements OnInit {
           this.spinner.hideSpinner();
         }, err => this.router.navigate(['/bad_request'])
       );
+  }
+
+
+
+  getStudentOne() {
+    this.spinner.showSpinner();
+    this.studentsService.getStudentById(this.user_id).subscribe((resp: Student) => {
+      this.getStudentOneWithGroupName(resp[0]);
+      this.spinner.hideSpinner();
+    });
+  }
+
+  selectedStudent(student: Student, AdminUser) {
+    this.studentForEdit = student;
+    this.studentForEdit.username = AdminUser.username;
+    this.studentForEdit.email = AdminUser.email;
+    this.popup.sendItem({
+      'student_name': this.studentForEdit.student_name,
+      'student_surname': this.studentForEdit.student_surname,
+      'student_fname': this.studentForEdit.student_fname,
+      'gradebook': this.studentForEdit.gradebook_id,
+      'email': this.studentForEdit.email,
+      'group': this.studentForEdit.group_name,
+      'group_id': this.studentForEdit.group_id
+    }, 'Student', null, this.studentForEdit.photo);
+    this.popup.showModal();
+  }
+
+  getAdminUser() {
+    this.spinner.showSpinner();
+    this.studentsService.getAdminUser(this.user_id).subscribe(resp => {
+      this.AdminUser = resp[0];
+      this.spinner.hideSpinner();
+    });
   }
 
   getCount(): void {
@@ -130,7 +174,15 @@ export class StudentsComponent implements OnInit {
     });
   }
 
+  getStudentOneWithGroupName(data) {
+    this.student = data;
+    this.getRecordsByIdService.getRecordsById('group', this.student.group_id).subscribe((StudentData) => {
+      this.student.group_name = StudentData[0].group_name;
+    });
+  }
+
   goToStudentProfile(student: Student) {
+    console.log(student.user_id);
     this.router.navigate(['students', student.user_id], {relativeTo: this.activatedRoute.parent});
   }
 
@@ -170,5 +222,26 @@ export class StudentsComponent implements OnInit {
     }, error => {
       this.toastr.error(error);
     });
+  }
+
+
+
+  formSubmitt(value) {
+    this.studentEditData = {
+      'username': this.studentForEdit.username,
+      'password': this.studentForEdit.plain_password,
+      'password_confirm' : this.studentForEdit.plain_password,
+      'plain_password': this.studentForEdit.plain_password,
+    };
+    this.studentsService.update(value, this.studentEditData, this.user_id)
+      .subscribe(resp => {
+        this.getStudentOne();
+        this.getAdminUser();
+        this.popup.cancel();
+        this.toastr.success(`Студент ${this.studentForEdit['student_name']} ${this.studentForEdit['student_surname']}
+        ${this.studentForEdit['student_fname']} успішно відредагований`);
+      }, error2 => {
+        this.toastr.error(error2);
+      });
   }
 }
