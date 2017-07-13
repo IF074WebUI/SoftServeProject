@@ -16,6 +16,8 @@ import {AnswersService} from '../../admin/services/answers.service';
 import {TestDetailService} from '../../admin/test-detail/test-detail.service';
 import {DeleteRecordByIdService} from '../../admin/services/delete-record-by-id.service';
 import {TestPlayerService} from '../test-player/test-player.service';
+import {Test} from "../../admin/tests/test";
+import {Student} from "../../admin/students/student";
 @Component({
   selector: 'dtester-students-main-page',
   templateUrl: './students-main-page.component.html',
@@ -28,7 +30,13 @@ export class StudentsMainPageComponent implements OnInit {
   noTests: string;
   noRecordsResponce: string;
   checkTestAvailability: boolean;
-  result: any;
+  result = {
+    student: [],
+    groupId: [],
+    subjectId: [],
+    tests: [],
+    timeTable: []
+  };
   tableHeaders: string[];
   unixTime: number;
   date: any;
@@ -70,13 +78,6 @@ export class StudentsMainPageComponent implements OnInit {
     this.tableHeaders = ['#', 'Назва тесту', 'Кількість завданнь', 'Тривалість', ''];
     this.logTime = 0;
     this.logTest = 0;
-    this.result = {
-      student: [],
-      groupId: [],
-      subjectId: [],
-      tests: [],
-      timeTable: []
-    };
     this.testIdData = {
       studentId: 0 ,
       testId: 0,
@@ -111,8 +112,8 @@ export class StudentsMainPageComponent implements OnInit {
           .subscribe(result => {this.studentId = +result['id']; this.studentService.getStudentById(+result['id'])
             .subscribe(res => {
               this.result.student = res[0];
-              this.checkUfinishedTest();
-              this.timeTable.getTimeTablesForGroup(this.result.student.group_id)
+              // this.checkUfinishedTest();
+              this.timeTable.getTimeTablesForGroup(this.result.student['group_id'])
                 .subscribe(timeTableRes => {
                   if (timeTableRes['response'] === this.noRecordsResponce) {
                     this.checkTestAvailability = true;
@@ -124,11 +125,7 @@ export class StudentsMainPageComponent implements OnInit {
                             if (testsRes['response'] === this.noRecordsResponce) {
                               this.checkTestAvailability = true;
                             } else {
-                              for (const test of testsRes) {
-                                if (test['enabled'] === '1') {
-                                  this.result.tests.push(test);
-                                };
-                              }
+                              this.result.tests = testsRes;
                             }
                           }, error => this.toastr.error(error)
                         );
@@ -145,7 +142,7 @@ export class StudentsMainPageComponent implements OnInit {
   }
 
   getTestIdData(testID: number, testDuration: number) {
-    this.testIdData.studentId = this.result.student.user_id;
+    this.testIdData.studentId = this.result.student['user_id'];
     this.testIdData.testId = testID;
     this.testIdData.testDuration = testDuration;
     this.testIdData.startLogTime = this.logTime;
@@ -185,6 +182,7 @@ export class StudentsMainPageComponent implements OnInit {
 
   checkIsTimeLeft() {
     for (let test of this.result.tests) {
+      console.log(+test['test_id'] === this.logTest , this.unixTime - this.logTime > test['time_for_test'] * this.SECONDS_IN_MINUTE)
       if (+test['test_id'] === this.logTest && this.unixTime - this.logTime > test['time_for_test'] * this.SECONDS_IN_MINUTE) {
         this.logTime = 0;
       } else {
