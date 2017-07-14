@@ -197,12 +197,12 @@ h1 {
   width: 70%;
   margin: auto;
   max-height: 60%;
-  //display: grid;
-  //grid-template-columns: [sidebar] 2fr [main] 7fr [last];
-  //grid-template-rows: [main] 8fr [footer] 50px [last];
 }
 
-.answers {
- // margin-top: 50px;
-//  max-width: 200px;
+.modal-header {
+  color: $primary-viole-super-bright;
+  background-color: $primary-violet-bright-color;
+}
+.modal-body{
+  color: $primary-violet-color;
 }

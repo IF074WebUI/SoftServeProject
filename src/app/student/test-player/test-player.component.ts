@@ -1,26 +1,24 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TestPlayerService} from './test-player.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {Test} from '../../admin/tests/test';
 import {GetTestsBySubjectService} from '../../admin/services/get-tests-by-subject.service';
 import {Answer} from '../../admin/answers/answer';
 import {TestDetail} from '../../admin/test-detail/testDetail';
 import {ToastsManager} from 'ng2-toastr';
+import {TestsService} from '../../admin/services/tests.service';
+import {FormGroup} from '@angular/forms/src/model';
+import {FormBuilder} from '@angular/forms';
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
-
-import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
-import {TestsService} from '../../admin/services/tests.service';
-import {FormGroup} from '@angular/forms/src/model';
-import {FormBuilder} from '@angular/forms';
-import {LoginService} from '../../login/login.service';
 
+declare var $: any;
 
 export class GetMarks {
   'full_mark': number;
@@ -36,6 +34,7 @@ export class CheckAnswers {
     this.answer_ids = answer_ids;
   }
 }
+
 export class InitialRezults {
   number_of_true_answers: number;
   number_of_all_answers: number;
@@ -50,7 +49,8 @@ export class InitialRezults {
     this.number_of_all_answers = number_of_all_answers;
     this.test_name = test_name;
   }
-};
+}
+
 
 
 export class Question {
@@ -74,7 +74,6 @@ export class TestPlayerComponent implements OnInit {
   testDuration: number;
   test_id: number;
   test: Test;
-//  questions: Question[] = [];
   question: Question;
   allAnswers: CheckAnswers;
   start: boolean;
@@ -83,7 +82,7 @@ export class TestPlayerComponent implements OnInit {
   test_details: TestDetail[] = [];
   answers: Answer[];
   ticks: number;
-  currentUnixTime: number;
+  //currentUnixTime: number;
   minutesDisplay: string;
   secondsDisplay: string;
   SECONDS_IN_MINUTE: number;
@@ -93,7 +92,7 @@ export class TestPlayerComponent implements OnInit {
   MILLISECONDS_IN_SECOND: number;
   timer: any;
   testPlayerStartData: any;
-  initialRezults: InitialRezults;
+  // initialRezults: InitialRezults;
   dataForSave: Array<CheckAnswers> = [];
   statusTimer: string;
   PERSENT: number;
@@ -102,7 +101,8 @@ export class TestPlayerComponent implements OnInit {
   testName: string;
   answersFrom: FormGroup;
   selectedAnswers: any[] = [];
-  marks: GetMarks[] = [];
+//  marks: GetMarks[] = [];
+  marks: any;
   timeFinish: boolean;
   questionsIds: Array<number> = [];
 
@@ -113,12 +113,13 @@ export class TestPlayerComponent implements OnInit {
   FINISH = 'Завершити тест';
   START = 'Почати тест';
   QUESTION = 'Питання №';
-  SAVE_ANSWER = 'Зберети відповідь';
-  RESULTS = 'Зверегти результати';
-  CONFIRM_FINISH = 'Завершення тесту';
-  SAVE: string;
   CONFIRMATION_DIALOG = 'Зберегти результати і завершити тест?';
   BACK = 'Повернутися до тесту';
+  TEST_NAME = 'Назва тесту';
+  TEST_DURATION = 'Тривалість тесту';
+  HV = 'хвилин';
+  CLOSE_MODAL = 'Закрити';
+  ATTANTION = 'Увага!';
 
 
   TypeOfAnswers = {
@@ -147,8 +148,6 @@ export class TestPlayerComponent implements OnInit {
       testLogId: 0,
       testLogDuration: 0
     };
-
-
   }
 
   ngOnInit() {
@@ -157,7 +156,11 @@ export class TestPlayerComponent implements OnInit {
     this.testService.getTestById(this.testPlayerStartData.testId)
       .subscribe(
         resp => this.testName = resp[0]['test_name'],
-        error => this.toastr.error(error)
+        error => {
+          this.toastr.error(error);
+          this.msg = error;
+          this.openModal();
+        }
       );
     this.createForm();
 
@@ -171,8 +174,6 @@ export class TestPlayerComponent implements OnInit {
         this.testPlayerStartData.testDuration = +data.testDuration;
         this.testPlayerStartData.logTime = +data.startLogTime;
         this.testPlayerStartData.testLogId = +data.testLogId;
-
-        console.log(data);
       });
 
     if (this.testPlayerStartData.logTime !== 0) {
@@ -195,7 +196,11 @@ export class TestPlayerComponent implements OnInit {
   getTestDetails() {
     this.test_player.getTestDetail(this.testPlayerStartData.testId).subscribe(resp => {
       this.test_details = resp;
-    }, error => this.toastr.error(error));
+    }, error => {
+      this.toastr.error(error);
+      this.msg = error;
+      this.openModal();
+    });
   }
 
 
@@ -218,14 +223,20 @@ export class TestPlayerComponent implements OnInit {
                 },
                 error => {
                   this.msg = error;
+                  this.openModal();
                   this.toastr.error(error);
                 });
 
           } else {
             this.msg = resp['response'];
+            this.openModal();
           }
         },
-        error => this.toastr.error(error));
+        error => {
+          this.toastr.error(error);
+          this.msg = error;
+          this.openModal();
+        });
   };
 
   prepareQuestionForTest(questions: Array<number[]>): Array<number> {
@@ -249,8 +260,11 @@ export class TestPlayerComponent implements OnInit {
       .flatMap(resp => this.test_player.getAnswersById(resp['question_id']))
       .subscribe(resp => {
         this.question['answers'] = resp;
-
-      }, error => this.toastr.error(error));
+      }, error => {
+        this.toastr.error(error);
+        this.msg = error;
+        this.openModal();
+      });
     this.selectedAnswers = [];
   }
 
@@ -294,21 +308,21 @@ export class TestPlayerComponent implements OnInit {
     this.stopTimer();
     this.answersFrom.reset();
     localStorage.clear();
-    let data = new InitialRezults(this.marks['full_mark'], this.marks['number_of_true_answers'],  5000, 10000, this.testName);
+    let data = new InitialRezults(this.marks['full_mark'], this.marks['number_of_true_answers'], 5000, 10000, this.testName);
     this.test_player.sendRezults(data);
     this.router.navigate(['student/test-rezults']);
-    //   console.log(this.marks);
-    this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
+    this.test_player.resetSessionData().subscribe(error => {
+      this.toastr.error(error);
+      this.msg = error;
+      this.openModal();
+    });
   }
 
 
   saveResults() {
     this.finish = true;
-    this.test_player.getData().do(resp => {
-        //  JSON.parse(resp);
-        console.log(resp);
-      }
-    ).flatMap(resp => this.test_player.checkResults(resp))
+    this.test_player.getData()
+    .flatMap(resp => this.test_player.checkResults(resp))
       .subscribe(resp => this.marks = resp);
   }
 
@@ -320,10 +334,17 @@ export class TestPlayerComponent implements OnInit {
 
   getArrayOfNumbers(array: Question[]) {
     let ArrayOfNumbers = [];
-    for (let j = 1; j <= array.length; j++) {
+    for (let j = 1; j < array.length; j++) {
       ArrayOfNumbers.push(j);
     }
     return ArrayOfNumbers;
+  }
+
+  openModal() {
+    $('#message').modal('show');
+  }
+  goHome(){
+    this.router.navigate(['./student']);
   }
 
   startTimer() {
@@ -341,7 +362,9 @@ export class TestPlayerComponent implements OnInit {
 
           this.showTimer();
         },
-        error => this.toastr.error(error));
+        error => {
+          this.toastr.error(error);
+        });
   }
 
   showTimer() {

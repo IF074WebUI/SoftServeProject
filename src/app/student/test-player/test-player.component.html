@@ -5,7 +5,6 @@
     </div>
     <div class="col-md-2 exit">
       <ng-container *ngIf="!start">
-        <button type="button" class=" btn btn-exit btn-close-test" (click)="startTest()">{{START}}</button>
       </ng-container>
       <ng-container *ngIf="start && !finish">
         <button class=" btn btn-exit btn-close-test" (click)="saveResults()"> {{FINISH}}</button>
@@ -37,7 +36,24 @@
   </div>
 
   <div class="questionsField">
-    {{msg}}
+
+    <ng-container *ngIf="!start && !finish">
+      {{msg}}
+      <div class="table-responsive">
+        <table class="table">
+          <tr>
+            <td>{{TEST_NAME}}</td>
+            <td>{{testName}}</td>
+          </tr>
+          <tr>
+            <td>{{TEST_DURATION}}</td>
+            <td>{{testPlayerStartData['testDuration']}} {{HV}}</td>
+          </tr>
+        </table>
+        <button type="button" class=" btn btn-lg btn-exit btn-close-test" (click)="startTest()">{{START}}</button>
+      </div>
+    </ng-container>
+
     <ng-container *ngIf="question && start && !finish">
       <div class="table-responsive  wrapper">
         <table class="table">
@@ -66,7 +82,7 @@
           <ng-container *ngIf="question['type'] == 2">
             <div *ngIf="question['answers']" class="grid-container">
               <label *ngFor="let answer of question['answers']" class="grid-box">
-                <input  type="checkbox" formControlName='multichoise' [value]="answer['answer_id']"
+                <input type="checkbox" formControlName='multichoise' [value]="answer['answer_id']"
                        (change)="toggleMultiSelect($event, answer['answer_id'])">
                 {{answer['answer_text']}}
                 <span>  <img [src]="answer['attachment']"></span>
@@ -97,11 +113,12 @@
       </div>
     </ng-container>
     <ng-container *ngIf="start && finish">
-      <div>
+
+      <div class="container">
         {{CONFIRMATION_DIALOG}}
       </div>
 
-      <div id="button">
+      <div class="container">
         <button type="button" class="btn btn-test-player" (click)="finishTest()">{{FINISH}}</button>
         <button type="button" class="btn btn-test-player" [disabled]="timeFinish" (click)="backToTest()">{{BACK}}
         </button>
@@ -112,4 +129,23 @@
 
 </div>
 
+<!-- Modal -->
+<div id="message" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ATTANTION}}</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        {{msg}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="goHome()">{{CLOSE_MODAL}}</button>
+      </div>
+    </div>
+
+  </div>
+</div>

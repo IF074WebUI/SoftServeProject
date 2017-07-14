@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {TestPlayerService} from '../test-player/test-player.service';
 import {InitialRezults} from '../test-player/test-player.component';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-test-rezults',
