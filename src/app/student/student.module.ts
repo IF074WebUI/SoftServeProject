@@ -23,11 +23,12 @@ import {StudentsMainPageComponent} from './students-main-page/students-main-page
 import {ToastModule} from 'ng2-toastr';
 import {StudentProfileComponent} from './student-profile/student-profile.component';
 import {GroupService} from '../admin/group/group.service';
+import { TestRezultsComponent } from './test-rezults/test-rezults.component';
 
 
 @NgModule({
 
-  declarations: [StudentComponent, TestPlayerComponent, StudentsMainPageComponent, StudentProfileComponent],
+  declarations: [StudentComponent, TestPlayerComponent, StudentsMainPageComponent, StudentProfileComponent, TestRezultsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(studentRoutes),

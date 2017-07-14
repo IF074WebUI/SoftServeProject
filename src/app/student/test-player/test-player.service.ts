@@ -7,7 +7,7 @@ import {
   TEST_PLAYER_START_TEST, TEST_PLAYER_CHECK_ANSWERS, TEST_PLAYER_GET_QUESTIONS_IDS_BY_LEVEL_RAND,
   TEST_PLAYER_GET_QUESTION_BY_ID, TEST_PLAYER_GET_ANSWER_BY_ID
 } from '../../constants';
-import {Question} from './test-player.component';
+import {GetMarks, InitialRezults, Question} from './test-player.component';
 import {Answer} from '../../admin/answers/answer';
 
 
@@ -30,7 +30,8 @@ export class TestPlayerService {
     startLogTime: 0,
     testLogId: 0,
     testLogDuration: 0
-  })
+  });
+  private testRezults = new BehaviorSubject<InitialRezults>(new InitialRezults(0, 0, 0, 0, NaN));
 
   constructor(private http: Http) {
     const headers: Headers = new Headers({'Content-Type': 'application/json'});
@@ -50,6 +51,13 @@ export class TestPlayerService {
     return Observable.throw(errMsg);
   }
 
+  sendRezults(rezults: InitialRezults) {
+    this.testRezults.next(rezults);
+  }
+
+  getRezults(): Observable<any> {
+    return this.testRezults.asObservable();
+  }
 
   getCurrentTime() {
     return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_TIME_STAMP).map(resp => resp.json()).catch(this.handleError);

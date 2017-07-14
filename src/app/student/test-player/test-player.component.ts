@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TestPlayerService} from './test-player.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Test} from '../../admin/tests/test';
 import {GetTestsBySubjectService} from '../../admin/services/get-tests-by-subject.service';
 import {Answer} from '../../admin/answers/answer';
@@ -36,6 +36,22 @@ export class CheckAnswers {
     this.answer_ids = answer_ids;
   }
 }
+export class InitialRezults {
+  number_of_true_answers: number;
+  number_of_all_answers: number;
+  full_mark: number;
+  max_mark: number;
+  test_name: string;
+
+  constructor(full_mark, number_of_true_answers, max_mark, number_of_all_answers, test_name) {
+    this.full_mark = full_mark;
+    this.number_of_true_answers = number_of_true_answers;
+    this.max_mark = max_mark;
+    this.number_of_all_answers = number_of_all_answers;
+    this.test_name = test_name;
+  }
+};
+
 
 export class Question {
   question_id: number;
@@ -77,8 +93,8 @@ export class TestPlayerComponent implements OnInit {
   MILLISECONDS_IN_SECOND: number;
   timer: any;
   testPlayerStartData: any;
+  initialRezults: InitialRezults;
   dataForSave: Array<CheckAnswers> = [];
-  // currentAnswer: Array<string> = [];
   statusTimer: string;
   PERSENT: number;
   DANGER_STATUS: number;
@@ -89,7 +105,6 @@ export class TestPlayerComponent implements OnInit {
   marks: GetMarks[] = [];
   timeFinish: boolean;
   questionsIds: Array<number> = [];
-  // currentQuestionId: number;
 
 
   NEXT_QUESTION = 'Наступне питання';
@@ -113,11 +128,10 @@ export class TestPlayerComponent implements OnInit {
   };
 
   constructor(private test_player: TestPlayerService,
-              private route: ActivatedRoute,
               private toastr: ToastsManager,
               private testService: TestsService,
               private fb: FormBuilder,
-              private loginService: LoginService) {
+              private router: Router) {
     this.ticks = 0;
     this.minutesDisplay = '00';
     this.secondsDisplay = '00';
@@ -133,6 +147,7 @@ export class TestPlayerComponent implements OnInit {
       testLogId: 0,
       testLogDuration: 0
     };
+
 
   }
 
@@ -203,7 +218,6 @@ export class TestPlayerComponent implements OnInit {
                 },
                 error => {
                   this.msg = error;
-                  console.log(this.msg);
                   this.toastr.error(error);
                 });
 
@@ -280,9 +294,13 @@ export class TestPlayerComponent implements OnInit {
     this.stopTimer();
     this.answersFrom.reset();
     localStorage.clear();
-    console.log(this.marks);
+    let data = new InitialRezults(this.marks['full_mark'], this.marks['number_of_true_answers'],  5000, 10000, this.testName);
+    this.test_player.sendRezults(data);
+    this.router.navigate(['student/test-rezults']);
+    //   console.log(this.marks);
     this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
   }
+
 
   saveResults() {
     this.finish = true;
