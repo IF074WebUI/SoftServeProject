@@ -113,7 +113,6 @@ export class StudentsMainPageComponent implements OnInit {
           .subscribe(result => {this.studentId = +result['id']; this.studentService.getStudentById(+result['id'])
             .subscribe(res => {
               this.result.student = res[0];
-              // this.checkUfinishedTest();
               this.timeTable.getTimeTablesForGroup(this.result.student['group_id'])
                 .subscribe(timeTableRes => {
                   if (timeTableRes['response'] === this.noRecordsResponce) {

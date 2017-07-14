@@ -153,20 +153,9 @@ export class TestPlayerComponent implements OnInit {
       .subscribe(data => {
         this.testPlayerStartData.studentId = +data.studentId;
         this.testPlayerStartData.testId = +data.testId;
-        this.testPlayerStartData.testDuration = +data.testDuration;
-        this.testPlayerStartData.logTime = +data.startLogTime;
-        this.testPlayerStartData.testLogId = +data.testLogId;
-
-        console.log(data);
+        this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * 10;
+        console.log(this.testDuration);
       });
-
-    if (this.testPlayerStartData.logTime !== 0) {
-      this.test_id = this.testPlayerStartData.testLogId;
-      this.testDuration = this.testPlayerStartData.testLogDuration * this.SECONDS_IN_MINUTE * 10;
-    } else {
-      this.test_id = this.testPlayerStartData.testId;
-      this.testDuration = (+this.testPlayerStartData.testDuration) * this.SECONDS_IN_MINUTE * 10;
-    }
   }
 
   createForm() {
@@ -311,22 +300,16 @@ export class TestPlayerComponent implements OnInit {
   startTimer() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
-          if (this.testPlayerStartData.startLogTime === 0) {
             this.startunixTime = +res['unix_timestamp'] * 10;
             this.unixTimeLeft = this.testDuration;
             this.endUnixTime = this.startunixTime + this.testDuration;
-          } else {
-            this.startunixTime = this.testPlayerStartData.startLogTime;
-            this.endUnixTime = this.startunixTime + this.testDuration;
-            this.unixTimeLeft = this.endUnixTime - (+res['unix_timestamp'] * 10);
-          }
-
-          this.showTimer();
+         this.showTimer();
         },
         error => this.toastr.error(error));
   }
 
   showTimer() {
+    console.log(this.testDuration);
     let timer = setInterval(() => {
       if (this.unixTimeLeft >= 0) {
         this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / 10) % 60));
@@ -343,6 +326,7 @@ export class TestPlayerComponent implements OnInit {
   }
 
   checkUnixTime() {
+    debugger;
     this.test_player.getCurrentTime()
       .subscribe(res => {
         if (+res['unix_timestamp'] * 10 < this.endUnixTime) {
