@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TestPlayerService} from './test-player.service';
 import {ActivatedRoute} from '@angular/router';
 import {Test} from '../../admin/tests/test';
@@ -147,7 +147,8 @@ export class TestPlayerComponent implements OnInit {
     this.createForm();
 
   }
-  getStartData () {
+
+  getStartData() {
     this.test_player.testPlayerIdData
       .subscribe(data => {
         this.testPlayerStartData.studentId = +data.studentId;
@@ -195,6 +196,9 @@ export class TestPlayerComponent implements OnInit {
                 return this.questionsIds;
               })
               .subscribe(respon => {
+                  for (let i in this.questionsIds) {
+                    this.dataForSave[i] = new CheckAnswers(this.questionsIds[i], []);
+                  }
                   this.showQuestions(0);
                 },
                 error => {
@@ -220,17 +224,20 @@ export class TestPlayerComponent implements OnInit {
   }
 
   showQuestions(numberOfQuestion: number) {
+    this.answersFrom.reset();
 
     this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
       .map(resp => resp[0]).do(resp => {
       this.question = resp;
+      let data = localStorage.getItem(String(this.question['question_id']));
+      this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(data);
     }).filter(question => question['type'] !== '3')
       .flatMap(resp => this.test_player.getAnswersById(resp['question_id']))
       .subscribe(resp => {
         this.question['answers'] = resp;
+
       }, error => this.toastr.error(error));
     this.selectedAnswers = [];
-
   }
 
   toggleMultiSelect(event, val) {
@@ -241,7 +248,6 @@ export class TestPlayerComponent implements OnInit {
       this.selectedAnswers = this.selectedAnswers.filter((elem) =>
       elem !== val);
     }
-
   }
 
   saveCurrentAnswer(question?: Question, questionId?: number) {
@@ -253,22 +259,19 @@ export class TestPlayerComponent implements OnInit {
       this.selectedAnswers.push(this.answersFrom.controls[this.TypeOfAnswers[currentQuestion['type']]].value);
     }
     let currentQuestionId = +(currentQuestion['question_id']);
+    let questionIndex = this.questionsIds.indexOf(currentQuestionId);
     this.allAnswers = new CheckAnswers(currentQuestionId, this.selectedAnswers);
-    this.dataForSave[this.questionsIds.indexOf(currentQuestionId)] = this.allAnswers;
+    this.dataForSave[questionIndex] = this.allAnswers;
+    localStorage.setItem(String(currentQuestionId), this.selectedAnswers.toString());
     this.test_player.saveData(this.dataForSave).subscribe(resp => this.toastr.success(resp['response']));
   }
 
   next(prevQuestion: Question) {
-    this.saveCurrentAnswer(prevQuestion);
     let newIndex = this.questionsIds.indexOf(+prevQuestion['question_id']) === this.questionsIds.length - 1 ? 0 : this.questionsIds.indexOf(+prevQuestion['question_id']) + 1;
-    console.log(newIndex);
     this.goToQuestion(newIndex);
-
   }
 
   goToQuestion(number: number) {
-    //   this.answersFrom.valueChanges.debounceTime(500).subscribe(resp => {this.saveCurrentAnswer(this.question); });
-//   if (this.answersFrom[''].touched === true) {this.saveCurrentAnswer(this.question)};
     this.saveCurrentAnswer(this.question);
     this.showQuestions(number);
   }
@@ -276,9 +279,7 @@ export class TestPlayerComponent implements OnInit {
   finishTest() {
     this.stopTimer();
     this.answersFrom.reset();
-
-    // this.toastr.success('Test Finished');
-
+    localStorage.clear();
     console.log(this.marks);
     this.test_player.resetSessionData().subscribe(error => this.toastr.error(error));
   }
@@ -286,7 +287,8 @@ export class TestPlayerComponent implements OnInit {
   saveResults() {
     this.finish = true;
     this.test_player.getData().do(resp => {
-        JSON.parse(resp);
+        //  JSON.parse(resp);
+        console.log(resp);
       }
     ).flatMap(resp => this.test_player.checkResults(resp))
       .subscribe(resp => this.marks = resp);
