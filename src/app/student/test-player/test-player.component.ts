@@ -286,7 +286,6 @@ export class TestPlayerComponent implements OnInit {
   backToTest() {
     this.timeFinish = this.unixTimeLeft >= 0 ? true : false;
     this.finish = false;
-
   }
 
   getArrayOfNumbers(array: Question[]) {
@@ -326,7 +325,7 @@ export class TestPlayerComponent implements OnInit {
   }
 
   checkUnixTime() {
-    debugger;
+    // debugger;
     this.test_player.getCurrentTime()
       .subscribe(res => {
         if (+res['unix_timestamp'] * 10 < this.endUnixTime) {
@@ -349,5 +348,13 @@ export class TestPlayerComponent implements OnInit {
     let status = Math.floor(parseInt(this.statusTimer, 0) * 2.55);
     return 'rgb(' + '188, 0, ' + status;
   };
+  saveEndTime() {
+    this.test_player.saveEndTime(this.testPlayerStartData.studentId, this.endUnixTime)
+      .subscribe(res => console.log(res));
+  }
 
+  getEndTime() {
+    this.test_player.getEndTime()
+      .subscribe(res => console.log(res));
+  }
 }
