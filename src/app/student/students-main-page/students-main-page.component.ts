@@ -148,13 +148,7 @@ export class StudentsMainPageComponent implements OnInit {
     this.testIdData.startLogTime = this.logTime;
     this.testIdData.testLogId = this.logTest;
     this.testPlayer.addIdData(this.testIdData);
-    this.router.navigate(['./test-player'],
-      {
-        queryParams: {
-          'testId': 5,
-          'test_duration': 6
-        },
-        relativeTo: this.route.parent});
+    this.router.navigate(['./student/test-player']);
   }
 
   goToTheProfile() {
