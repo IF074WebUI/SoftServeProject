@@ -107,10 +107,15 @@ export class StudentsMainPageComponent implements OnInit {
     this.testPlayer.getCurrentTime().subscribe(res => { this.unixTime = res['curtime']; } );
   }
   getTestForStudent() {
+    // this.getEndTime();
     this.loginService.checkLogged()
       .flatMap(loginResponse => this.studentId = loginResponse['id'])
         return this.loginService.checkLogged()
-          .subscribe(result => {this.studentId = +result['id']; this.studentService.getStudentById(+result['id'])
+          .subscribe(result => {
+            this.studentId = +result['id'];
+            this.testIdData.studentId = +this.studentId;
+            this.testPlayer.addIdData(this.testIdData)
+            this.studentService.getStudentById(+result['id'])
             .subscribe(res => {
               this.result.student = res[0];
               this.timeTable.getTimeTablesForGroup(this.result.student['group_id'])
@@ -134,7 +139,6 @@ export class StudentsMainPageComponent implements OnInit {
                 }, error => this.toastr.error(error)); }, error => this.toastr.error(error)); });
 }
   logout() {
-    this.stopClock();
     this.loginService.logout().subscribe(() => {
       this.router.navigate(['/login'], error => this.toastr.error(error));
     });
@@ -184,6 +188,17 @@ export class StudentsMainPageComponent implements OnInit {
 
       }
     }
+  }
+  getEndTime() {
+    this.testPlayer.getEndTime()
+      .subscribe(res => {
+        let time = JSON.parse(res);
+        if (+time['endTime'] > 0) {
+          this.router.navigate(['./student/test-player']);
+        } else if (time['response'] === 'Empty set') {
+          console.log(time);
+        }
+      }, err => console.log(err));
   }
 
 }

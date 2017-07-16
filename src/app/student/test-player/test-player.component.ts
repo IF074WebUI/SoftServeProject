@@ -344,6 +344,7 @@ export class TestPlayerComponent implements OnInit {
             this.startunixTime = +res['unix_timestamp'] * 10;
             this.unixTimeLeft = this.testDuration;
             this.endUnixTime = this.startunixTime + this.testDuration;
+            this.saveEndTime();
          this.showTimer();
         },
         error => {
@@ -400,7 +401,6 @@ export class TestPlayerComponent implements OnInit {
   getEndTime() {
     this.test_player.getEndTime()
       .subscribe(res => console.log(res),
-
-      );
+        error => this.toastr.error(error));
   }
 }
