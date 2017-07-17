@@ -52,7 +52,6 @@ export class InitialRezults {
 }
 
 
-
 export class Question {
   question_id: number;
   test_id: string;
@@ -105,6 +104,8 @@ export class TestPlayerComponent implements OnInit {
   marks: any;
   timeFinish: boolean;
   questionsIds: Array<number> = [];
+  arrayOfCell: any;
+  cell: any;
 
 
   NEXT_QUESTION = 'Наступне питання';
@@ -120,7 +121,7 @@ export class TestPlayerComponent implements OnInit {
   HV = 'хвилин';
   CLOSE_MODAL = 'Закрити';
   ATTANTION = 'Увага!';
-
+  isSelected: boolean = false;
 
   TypeOfAnswers = {
     '1': 'singlechoise',
@@ -152,8 +153,8 @@ export class TestPlayerComponent implements OnInit {
 
   ngOnInit() {
     let someCondition = false;
-    if (someCondition){
-      this.test_player.getData().subscribe(resp =>   this.test_details  = resp);
+    if (someCondition) {
+      this.test_player.getData().subscribe(resp => this.test_details = resp);
       this.start = true;
     }
     this.getStartData();
@@ -168,7 +169,10 @@ export class TestPlayerComponent implements OnInit {
         }
       );
     this.createForm();
+  }
 
+  selectItem(i: number){
+         let cell =  document.querySelector('number-box:nth-child(i)');
   }
 
   getStartData() {
@@ -206,7 +210,7 @@ export class TestPlayerComponent implements OnInit {
       .subscribe(resp => {
           if (resp['response'] === 'ok') {
             this.start = true;
-             this.numberOfQuestion = 1;
+            this.numberOfQuestion = 1;
             this.test_player.getQuestions(this.test_details)
               .do((questions: Array<number> | any) => {
                 this.questionsIds = this.prepareQuestionForTest(questions);
@@ -320,9 +324,10 @@ export class TestPlayerComponent implements OnInit {
 
 
   saveResults() {
+    this.saveCurrentAnswer(this.question);
     this.finish = true;
     this.test_player.getData()
-    .flatMap(resp => this.test_player.checkResults(resp))
+      .flatMap(resp => this.test_player.checkResults(resp))
       .subscribe(resp => this.marks = resp);
   }
 
@@ -342,18 +347,20 @@ export class TestPlayerComponent implements OnInit {
   openModal() {
     $('#message').modal('show');
   }
-  goHome(){
+
+  goHome() {
     this.router.navigate(['./student']);
+    location.reload();
   }
 
   startTimer() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
-            this.startunixTime = +res['unix_timestamp'] * 10;
-            this.unixTimeLeft = this.testDuration;
-            this.endUnixTime = this.startunixTime + this.testDuration;
-            this.saveEndTime();
-         this.showTimer();
+          this.startunixTime = +res['unix_timestamp'] * 10;
+          this.unixTimeLeft = this.testDuration;
+          this.endUnixTime = this.startunixTime + this.testDuration;
+          this.saveEndTime();
+          this.showTimer();
         },
         error => {
           this.toastr.error(error);
@@ -401,6 +408,7 @@ export class TestPlayerComponent implements OnInit {
     let status = Math.floor(parseInt(this.statusTimer, 0) * 2.55);
     return 'rgb(' + '188, 0, ' + status;
   };
+
   saveEndTime() {
     this.test_player.saveEndTime(this.endUnixTime)
       .subscribe(res => console.log(res));
