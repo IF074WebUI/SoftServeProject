@@ -101,7 +101,7 @@ export class TestPlayerComponent implements OnInit {
   testName: string;
   answersFrom: FormGroup;
   selectedAnswers: any[] = [];
-//  marks: GetMarks[] = [];
+  numberOfQuestion: number;
   marks: any;
   timeFinish: boolean;
   questionsIds: Array<number> = [];
@@ -151,6 +151,11 @@ export class TestPlayerComponent implements OnInit {
   }
 
   ngOnInit() {
+    let someCondition = false;
+    if (someCondition){
+      this.test_player.getData().subscribe(resp =>   this.test_details  = resp);
+      this.start = true;
+    }
     this.getStartData();
     this.getTestDetails();
     this.testService.getTestById(this.testPlayerStartData.testId)
@@ -201,6 +206,7 @@ export class TestPlayerComponent implements OnInit {
       .subscribe(resp => {
           if (resp['response'] === 'ok') {
             this.start = true;
+             this.numberOfQuestion = 1;
             this.test_player.getQuestions(this.test_details)
               .do((questions: Array<number> | any) => {
                 this.questionsIds = this.prepareQuestionForTest(questions);
@@ -210,6 +216,7 @@ export class TestPlayerComponent implements OnInit {
                   for (let i in this.questionsIds) {
                     this.dataForSave[i] = new CheckAnswers(this.questionsIds[i], []);
                   }
+                  console.log(this.dataForSave); // all questions Ids saved on slot
                   this.showQuestions(0);
                 },
                 error => {
@@ -240,11 +247,12 @@ export class TestPlayerComponent implements OnInit {
   }
 
   showQuestions(numberOfQuestion: number) {
+    this.numberOfQuestion = 0;
     this.answersFrom.reset();
-
     this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
       .map(resp => resp[0]).do(resp => {
       this.question = resp;
+      this.numberOfQuestion = numberOfQuestion;
       let data = localStorage.getItem(String(this.question['question_id']));
       this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(data);
     }).filter(question => question['type'] !== '3')

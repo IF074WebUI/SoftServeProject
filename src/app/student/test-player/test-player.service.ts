@@ -17,6 +17,7 @@ import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/switchMap';
 import {Subject} from 'rxjs/Subject';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Router} from "@angular/router";
 
 @Injectable()
 export class TestPlayerService {
@@ -33,7 +34,7 @@ export class TestPlayerService {
   });
   private testRezults = new BehaviorSubject<InitialRezults>(new InitialRezults(0, 0, 0, 0, NaN));
 
-  constructor(private http: Http) {
+  constructor(private http: Http,  private router: Router) {
     const headers: Headers = new Headers({'Content-Type': 'application/json'});
     this.options = new RequestOptions({headers: headers});
   }
@@ -50,6 +51,15 @@ export class TestPlayerService {
     }
     return Observable.throw(errMsg);
   }
+  //
+  // handleError (error: Response|any) {
+  //   if (error.status == 403) {
+  //     this.router.navigate(['/path_to_login_page']);
+  //     return error.status;
+  //   }
+  //
+  //   return Observable.throw(new Error(error));
+  // }
 
   sendRezults(rezults: InitialRezults) {
     this.testRezults.next(rezults);
