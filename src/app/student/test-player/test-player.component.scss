@@ -175,6 +175,11 @@ table {
   }
 }
 
+.markedQuestion{
+  background-color: red!important;
+
+}
+
 #container {
   background-color: $primary-violet-bright-color;
   padding-left: 20px;
@@ -205,4 +210,9 @@ h1 {
 }
 .modal-body{
   color: $primary-violet-color;
+}
+#testName{
+align-items: center;
+  justify-content: center;
+  color: $primary-viole-super-bright;
 }
