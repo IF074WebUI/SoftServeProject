@@ -84,7 +84,8 @@ export class StudentsMainPageComponent implements OnInit {
       testDuration: 0,
       startLogTime: 0,
       testLogId: 0,
-      testLogDuration: 0
+      testLogDuration: 0,
+      endUnixTime: 0
     };
     this.unfinishedTests = {
       test: [],
@@ -93,11 +94,11 @@ export class StudentsMainPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTime();
-    this.getTestForStudent();
     this.spinner.loaderStatus.subscribe((val: boolean) => {
       this.objLoaderStatus = val;
     });
+    this.getTime();
+    this.getTestForStudent();
   }
 
   stopClock() {
@@ -107,7 +108,7 @@ export class StudentsMainPageComponent implements OnInit {
     this.testPlayer.getCurrentTime().subscribe(res => { this.unixTime = res['curtime']; } );
   }
   getTestForStudent() {
-    // this.getEndTime();
+    this.getEndTime();
     this.loginService.checkLogged()
       .flatMap(loginResponse => this.studentId = loginResponse['id'])
         return this.loginService.checkLogged()
@@ -194,6 +195,9 @@ export class StudentsMainPageComponent implements OnInit {
       .subscribe(res => {
         let time = JSON.parse(res);
         if (+time['endTime'] > 0) {
+          this.testIdData.testId = time['testId'];
+          this.testIdData.endUnixTime = time['endTime'];
+          this.testPlayer.addIdData(this.testIdData)
           this.router.navigate(['./student/test-player']);
         } else if (time['response'] === 'Empty set') {
           console.log(time);

@@ -30,7 +30,9 @@ export class TestPlayerService {
     testDuration: 0,
     startLogTime: 0,
     testLogId: 0,
-    testLogDuration: 0
+    testLogDuration: 0,
+    endUnixTime: 0
+
   });
   private testRezults = new BehaviorSubject<InitialRezults>(new InitialRezults(0, 0, 0, 0, NaN));
 
@@ -147,8 +149,8 @@ export class TestPlayerService {
       .catch(this.handleError);
   }
 
-  saveEndTime(endTime: number) {
-    let body = JSON.stringify({'endTime': endTime});
+  saveEndTime(endTime: number, testId: number, testDuration: number) {
+    let body = JSON.stringify({'endTime': endTime, 'testId': testId, 'testDuration': testDuration});
     return this.http.post(HOST_PROTOCOL + HOST + '/TestPlayer/saveEndTime', JSON.stringify(body))
       .map((resp: Response) => resp.json())
       .catch(this.handleError);

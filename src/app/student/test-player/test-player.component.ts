@@ -146,17 +146,37 @@ export class TestPlayerComponent implements OnInit {
       testDuration: 0,
       startLogTime: 0,
       testLogId: 0,
-      testLogDuration: 0
+      testLogDuration: 0,
+      endUnixTime: 0
     };
   }
 
   ngOnInit() {
-    let someCondition = false;
-    if (someCondition){
-      this.test_player.getData().subscribe(resp =>   this.test_details  = resp);
-      this.start = true;
-    }
     this.getStartData();
+    if (this.testPlayerStartData.endUnixTime > 0) {
+      this.test_player.getData().subscribe(resp =>   this.test_details  = resp);
+      this.startTimer();
+      this.start = true;
+      this.numberOfQuestion = 1;
+      this.test_player.getQuestions(this.test_details)
+        .do((questions: Array<number> | any) => {
+          this.questionsIds = this.prepareQuestionForTest(questions);
+          return this.questionsIds;
+        })
+        .subscribe(respon => {
+            for (let i in this.questionsIds) {
+              this.dataForSave[i] = new CheckAnswers(this.questionsIds[i], []);
+            }
+            console.log(this.dataForSave); // all questions Ids saved on slot
+            this.showQuestions(0);
+          },
+          error => {
+            this.msg = error;
+            this.openModal();
+            this.toastr.error(error);
+          });
+
+    }
     this.getTestDetails();
     this.testService.getTestById(this.testPlayerStartData.testId)
       .subscribe(
@@ -174,10 +194,17 @@ export class TestPlayerComponent implements OnInit {
   getStartData() {
     this.test_player.testPlayerIdData
       .subscribe(data => {
-        this.testPlayerStartData.studentId = +data.studentId;
-        this.testPlayerStartData.testId = +data.testId;
-        this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * 10;
-        console.log(this.testDuration);
+        this.testPlayerStartData.studentId = data['studentId']
+        console.log(this.testPlayerStartData.studentId)
+        if (data['endUnixTime'] > 0) {
+          this.testPlayerStartData.endUnixTime = data['endUnixTime'];
+          this.testPlayerStartData.testId = data['testId'];
+        } else {
+
+          this.testPlayerStartData.studentId = +data.studentId;
+          this.testPlayerStartData.testId = +data.testId;
+          this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * 10;
+        }
       });
   }
 
@@ -311,13 +338,15 @@ export class TestPlayerComponent implements OnInit {
     let data = new InitialRezults(this.marks['full_mark'], this.marks['number_of_true_answers'], 5000, 10000, this.testName);
     this.test_player.sendRezults(data);
     this.router.navigate(['student/test-rezults']);
+    this.resetSessionData();
+  }
+  resetSessionData() {
     this.test_player.resetSessionData().subscribe(error => {
       this.toastr.error(error);
       this.msg = error;
       this.openModal();
     });
   }
-
 
   saveResults() {
     this.finish = true;
@@ -349,11 +378,17 @@ export class TestPlayerComponent implements OnInit {
   startTimer() {
     this.test_player.getCurrentTime()
       .subscribe(res => {
+          if (this.testPlayerStartData.endUnixTime > 0) {
+            this.endUnixTime = this.testPlayerStartData.endUnixTime * this.SECONDS_IN_MINUTE;
+            this.unixTimeLeft = this.testPlayerStartData.endUnixTime - (+res['unix_timestamp'] * 10);
+            this.showTimer();
+          } else {
             this.startunixTime = +res['unix_timestamp'] * 10;
             this.unixTimeLeft = this.testDuration;
             this.endUnixTime = this.startunixTime + this.testDuration;
+            this.showTimer();
             this.saveEndTime();
-         this.showTimer();
+          }
         },
         error => {
           this.toastr.error(error);
@@ -377,7 +412,7 @@ export class TestPlayerComponent implements OnInit {
   }
 
   checkUnixTime() {
-    // debugger;
+
     this.test_player.getCurrentTime()
       .subscribe(res => {
         if (+res['unix_timestamp'] * 10 < this.endUnixTime) {
@@ -401,8 +436,17 @@ export class TestPlayerComponent implements OnInit {
     return 'rgb(' + '188, 0, ' + status;
   };
   saveEndTime() {
-    this.test_player.saveEndTime(this.endUnixTime)
-      .subscribe(res => console.log(res));
+    console.log(this.testPlayerStartData.endUnixTime)
+
+
+    if (this.testPlayerStartData.endUnixTime > 0) {
+      console.log('you have unfinished test');
+    } else {
+
+      this.test_player.saveEndTime(this.endUnixTime, this.testPlayerStartData.testId, this.testDuration)
+        .subscribe(res => console.log(res));
+    }
+
   }
 
   getEndTime() {
