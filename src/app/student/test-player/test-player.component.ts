@@ -150,42 +150,30 @@ export class TestPlayerComponent implements OnInit {
 
   ngOnInit() {
     this.getStartData();
+   // this.testPlayerStartData.endUnixTime = 2; // temporary
+    this.createForm();
+
     if (this.testPlayerStartData.endUnixTime > 0) {
-      this.test_player.getData().subscribe(resp => this.test_details = resp);
-      this.startTimer();
+      this.questionsIds = [];
+      this.test_player.getData().subscribe(resp => {
+        let data = JSON.parse(resp);
+        console.log(data);
+      });
       this.start = true;
-  //    this.numberOfQuestion = 1;
-      this.test_player.getQuestions(this.test_details)
-        .do((questions: Array<number> | any) => {
-          this.questionsIds = this.prepareQuestionForTest(questions);
-          return this.questionsIds;
-        })
-        .subscribe(respon => {
-            for (let i in this.questionsIds) {
-              this.dataForSave[i] = new CheckAnswers(this.questionsIds[i], []);
-            }
-            console.log(this.dataForSave); // all questions Ids were saved in slot
-            this.showQuestions(0);
-          },
+      this.showQuestions(0);
+    } else {
+     // this.getStartData();
+      this.getTestDetails();
+      this.testService.getTestById(this.testPlayerStartData.testId)
+        .subscribe(
+          resp => this.testName = resp[0]['test_name'],
           error => {
+            this.toastr.error(error);
             this.msg = error;
             this.openModal();
-            this.toastr.error(error);
-          });
-
+          }
+        );
     }
-    this.getStartData();
-    this.getTestDetails();
-    this.testService.getTestById(this.testPlayerStartData.testId)
-      .subscribe(
-        resp => this.testName = resp[0]['test_name'],
-        error => {
-          this.toastr.error(error);
-          this.msg = error;
-          this.openModal();
-        }
-      );
-    this.createForm();
   }
 
 
@@ -205,7 +193,6 @@ export class TestPlayerComponent implements OnInit {
     this.test_player.testPlayerIdData
       .subscribe(data => {
         this.testPlayerStartData.studentId = data['studentId'];
-        console.log(this.testPlayerStartData.studentId);
         if (data['endUnixTime'] > 0) {
           this.testPlayerStartData.endUnixTime = data['endUnixTime'];
           this.testPlayerStartData.testId = data['testId'];
@@ -289,8 +276,6 @@ export class TestPlayerComponent implements OnInit {
     this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
       .map(resp => resp[0]).do(resp => {
       this.question = resp;
-      console.log(this.question);
-      console.log(this.questionsIds);
       let data = localStorage.getItem(String(this.question['question_id']));
       this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(data);
     }).filter(question => question['type'] !== '3')
@@ -333,7 +318,7 @@ export class TestPlayerComponent implements OnInit {
   }
 
   next(prevQuestion: Question) {
-    console.log(this.questionsIds.indexOf(+prevQuestion['question_id']) );
+    console.log(this.questionsIds.indexOf(+prevQuestion['question_id']));
     let newIndex = this.questionsIds.indexOf(+prevQuestion['question_id']) === this.questionsIds.length - 1 ? 0 : this.questionsIds.indexOf(+prevQuestion['question_id']) + 1;
     this.goToQuestion(newIndex);
   }
