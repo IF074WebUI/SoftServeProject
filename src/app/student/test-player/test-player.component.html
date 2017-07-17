@@ -59,7 +59,7 @@
     <ng-container *ngIf="question && start && !finish">
       <div class="table-responsive  wrapper">
         <table class="table">
-          <caption><h3>{{QUESTION}}{{questionsIds.indexOf(question['question_id']) + 1}}</h3></caption>
+          <caption><h3>{{QUESTION}}{{numberOfQuestion}}</h3></caption>
           <tr>
             <td>{{question['question_text']}}</td>
           </tr>
