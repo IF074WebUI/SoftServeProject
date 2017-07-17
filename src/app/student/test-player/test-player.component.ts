@@ -366,7 +366,6 @@ export class TestPlayerComponent implements OnInit {
         this.finishTest();
       }
     }, 100);
-    this.checkUnixTime();
   }
 
   checkUnixTime() {
