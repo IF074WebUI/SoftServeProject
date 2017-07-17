@@ -194,6 +194,16 @@ table {
   }
 }
 
+.confirm_container{
+  text-align: center;
+  padding: 100px;
+  font-size: xx-large;
+  color: $primary-violet-color;
+  &>div:last-child {
+    padding: 50px;
+  }
+}
+
 h1 {
   color: white;
 }

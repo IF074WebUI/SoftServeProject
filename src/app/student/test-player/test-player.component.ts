@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ElementRef, AfterViewInit} from '@angular/core';
 import {TestPlayerService} from './test-player.service';
 import {Router} from '@angular/router';
 import {Test} from '../../admin/tests/test';
@@ -52,7 +52,6 @@ export class InitialRezults {
 }
 
 
-
 export class Question {
   question_id: number;
   test_id: string;
@@ -82,7 +81,6 @@ export class TestPlayerComponent implements OnInit {
   test_details: TestDetail[] = [];
   answers: Answer[];
   ticks: number;
-  //currentUnixTime: number;
   minutesDisplay: string;
   secondsDisplay: string;
   SECONDS_IN_MINUTE: number;
@@ -92,7 +90,6 @@ export class TestPlayerComponent implements OnInit {
   MILLISECONDS_IN_SECOND: number;
   timer: any;
   testPlayerStartData: any;
-  // initialRezults: InitialRezults;
   dataForSave: Array<CheckAnswers> = [];
   statusTimer: string;
   PERSENT: number;
@@ -105,8 +102,7 @@ export class TestPlayerComponent implements OnInit {
   marks: any;
   timeFinish: boolean;
   questionsIds: Array<number> = [];
-  arrayOfCell: any;
-  cell: any;
+  marked: Array<boolean> = [];
 
 
   NEXT_QUESTION = 'Наступне питання';
@@ -122,7 +118,6 @@ export class TestPlayerComponent implements OnInit {
   HV = 'хвилин';
   CLOSE_MODAL = 'Закрити';
   ATTANTION = 'Увага!';
-  isSelected: boolean = false;
 
   TypeOfAnswers = {
     '1': 'singlechoise',
@@ -156,10 +151,10 @@ export class TestPlayerComponent implements OnInit {
   ngOnInit() {
     this.getStartData();
     if (this.testPlayerStartData.endUnixTime > 0) {
-      this.test_player.getData().subscribe(resp =>   this.test_details  = resp);
+      this.test_player.getData().subscribe(resp => this.test_details = resp);
       this.startTimer();
       this.start = true;
-      this.numberOfQuestion = 1;
+  //    this.numberOfQuestion = 1;
       this.test_player.getQuestions(this.test_details)
         .do((questions: Array<number> | any) => {
           this.questionsIds = this.prepareQuestionForTest(questions);
@@ -169,7 +164,7 @@ export class TestPlayerComponent implements OnInit {
             for (let i in this.questionsIds) {
               this.dataForSave[i] = new CheckAnswers(this.questionsIds[i], []);
             }
-            console.log(this.dataForSave); // all questions Ids saved on slot
+            console.log(this.dataForSave); // all questions Ids were saved in slot
             this.showQuestions(0);
           },
           error => {
@@ -193,15 +188,24 @@ export class TestPlayerComponent implements OnInit {
     this.createForm();
   }
 
-  selectItem(i: number){
-         let cell =  document.querySelector('number-box:nth-child(i)');
+
+  onSelect() {
+    let n = this.numberOfQuestion - 1;
+    if (this.marked[n]) {
+      this.marked[n] = false;
+      $('.number-box').eq(n).css({'backgroundColor': ''});
+    } else {
+      this.marked[n] = true;
+      $('.number-box').eq(n).css({'backgroundColor': 'red'});
+    }
   }
+
 
   getStartData() {
     this.test_player.testPlayerIdData
       .subscribe(data => {
-        this.testPlayerStartData.studentId = data['studentId']
-        console.log(this.testPlayerStartData.studentId)
+        this.testPlayerStartData.studentId = data['studentId'];
+        console.log(this.testPlayerStartData.studentId);
         if (data['endUnixTime'] > 0) {
           this.testPlayerStartData.endUnixTime = data['endUnixTime'];
           this.testPlayerStartData.testId = data['testId'];
@@ -249,7 +253,6 @@ export class TestPlayerComponent implements OnInit {
                   for (let i in this.questionsIds) {
                     this.dataForSave[i] = new CheckAnswers(this.questionsIds[i], []);
                   }
-                  console.log(this.dataForSave); // all questions Ids saved on slot
                   this.showQuestions(0);
                 },
                 error => {
@@ -268,7 +271,8 @@ export class TestPlayerComponent implements OnInit {
           this.msg = error;
           this.openModal();
         });
-  };
+  }
+  ;
 
   prepareQuestionForTest(questions: Array<number[]>): Array<number> {
     let tempArr: Array<number> = [];
@@ -280,12 +284,13 @@ export class TestPlayerComponent implements OnInit {
   }
 
   showQuestions(numberOfQuestion: number) {
-    this.numberOfQuestion = 0;
+    this.numberOfQuestion = numberOfQuestion + 1;
     this.answersFrom.reset();
     this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
       .map(resp => resp[0]).do(resp => {
       this.question = resp;
-      this.numberOfQuestion = numberOfQuestion;
+      console.log(this.question);
+      console.log(this.questionsIds);
       let data = localStorage.getItem(String(this.question['question_id']));
       this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(data);
     }).filter(question => question['type'] !== '3')
@@ -310,7 +315,7 @@ export class TestPlayerComponent implements OnInit {
     }
   }
 
-  saveCurrentAnswer(question?: Question, questionId?: number) {
+  saveCurrentAnswer(question ?: Question, questionId ?: number) {
     let currentQuestion = questionId ? this.test_player.getQuestionById(questionId).subscribe(resp => question = resp) : question;
     if (
       currentQuestion['type'] !== '2'
@@ -328,6 +333,7 @@ export class TestPlayerComponent implements OnInit {
   }
 
   next(prevQuestion: Question) {
+    console.log(this.questionsIds.indexOf(+prevQuestion['question_id']) );
     let newIndex = this.questionsIds.indexOf(+prevQuestion['question_id']) === this.questionsIds.length - 1 ? 0 : this.questionsIds.indexOf(+prevQuestion['question_id']) + 1;
     this.goToQuestion(newIndex);
   }
@@ -346,6 +352,7 @@ export class TestPlayerComponent implements OnInit {
     this.router.navigate(['student/test-rezults']);
     this.resetSessionData();
   }
+
   resetSessionData() {
     this.test_player.resetSessionData().subscribe(error => {
       this.toastr.error(error);
@@ -369,7 +376,7 @@ export class TestPlayerComponent implements OnInit {
 
   getArrayOfNumbers(array: Question[]) {
     let ArrayOfNumbers = [];
-    for (let j = 1; j < array.length; j++) {
+    for (let j = 1; j <= array.length; j++) {
       ArrayOfNumbers.push(j);
     }
     return ArrayOfNumbers;
@@ -379,9 +386,9 @@ export class TestPlayerComponent implements OnInit {
     $('#message').modal('show');
   }
 
-  goHome() {
-    this.router.navigate(['./student']);
-    location.reload();
+  closeModal() {
+    $('#message').modal('hide');
+
   }
 
   startTimer() {
@@ -434,16 +441,19 @@ export class TestPlayerComponent implements OnInit {
 
   stopTimer() {
     clearInterval(this.timer);
-  };
+  }
+  ;
 
   digitizeTime(value: any) {
     return value <= 9 ? '0' + value : value;
-  };
+  }
+  ;
 
   checkProgresColor() {
     let status = Math.floor(parseInt(this.statusTimer, 0) * 2.55);
     return 'rgb(' + '188, 0, ' + status;
-  };
+  }
+  ;
 
   saveEndTime() {
     console.log(this.testPlayerStartData.endUnixTime)

@@ -4,7 +4,7 @@
 <div id="container">
   <div class="row">
     <div id="testName" class="col-md-10">
-      <h3 >{{testName}}.</h3>
+      <h3>{{testName}}.</h3>
     </div>
     <div class="col-md-2 exit">
       <ng-container *ngIf="!start">
@@ -28,11 +28,11 @@
 
 
 <div class="testplayer-container">
-  <div class="sidebar">
+  <div class="sidebar" *ngIf="start && !finish">
     <div>
       <ul *ngIf="questionsIds" class="number-container">
-        <li class="number-box" *ngFor="let number of getArrayOfNumbers(questionsIds)"  (click)="goToQuestion(number)" >
-          <a (click)="selectItem(i)"> {{number}} </a>
+        <li class="number-box" *ngFor="let number of getArrayOfNumbers(questionsIds)" (click)="goToQuestion(number - 1)">
+          {{number}}
         </li>
       </ul>
     </div>
@@ -108,22 +108,24 @@
       </div>
       <div class="navbar">
         <ul class="nav navbar-nav navbar-toggler-right">
-          <li><a  (click)="onSelect()"> {{MARKED}}</a></li>
+          <li><a (click)="onSelect()"> {{MARKED}}</a></li>
           <li><a (click)="next(question)">{{NEXT_QUESTION}}</a></li>
         </ul>
       </div>
     </ng-container>
     <ng-container *ngIf="start && finish">
 
-      <div class="container">
-        {{CONFIRMATION_DIALOG}}
+      <div class="confirm_container">
+        <div>
+          {{CONFIRMATION_DIALOG}}
+        </div>
+        <div>
+          <button type="button" class="btn btn-test-player" (click)="finishTest()">{{FINISH}}</button>
+          <button type="button" class="btn btn-test-player" [disabled]="timeFinish" (click)="backToTest()">{{BACK}}
+          </button>
+        </div>
       </div>
 
-      <div class="container">
-        <button type="button" class="btn btn-test-player" (click)="finishTest()">{{FINISH}}</button>
-        <button type="button" class="btn btn-test-player" [disabled]="timeFinish" (click)="backToTest()">{{BACK}}
-        </button>
-      </div>
     </ng-container>
   </div>
 
@@ -144,7 +146,7 @@
         {{msg}}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="goHome()">{{CLOSE_MODAL}}</button>
+        <button type="button" class="btn btn-default" (click)="closeModal()">{{CLOSE_MODAL}}</button>
       </div>
     </div>
 
