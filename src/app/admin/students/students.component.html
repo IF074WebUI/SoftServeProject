@@ -72,6 +72,9 @@
       <button class="btn btn-danger" data-toggle="modal" (click)="selectedStudent(student, AdminUser)"
               data-target="#modalEdit" data-whatever="@mdo" >Редагувати
       </button>
+      <button class="btn btn-danger" data-toggle="modal" (click)="selectedStudentForDel(student, AdminUser)"
+              data-target="#modalDelete" data-whatever="@mdo" >Delete
+      </button>
     </div>
   </table>
 
@@ -79,7 +82,7 @@
     <dynamic-form
       [config]="configs"
       (submitted)="formSubmitt($event)"
-      (youCanDelete)="submitDelete($event)">
+      (youCanDelete)="submitDel($event)">
     </dynamic-form>
   </div>
 </div>

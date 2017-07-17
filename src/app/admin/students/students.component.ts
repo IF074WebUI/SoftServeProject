@@ -27,7 +27,9 @@ export class StudentsComponent implements OnInit {
   student: Student;
   AdminUser: Student;
   studentForEdit: Student;
+  studentForDel: Student;
   user_id: number;
+  studentDelData = {};
   studentEditData = {};
 
 
@@ -119,6 +121,25 @@ export class StudentsComponent implements OnInit {
     }, 'Student', null, this.studentForEdit.photo);
     this.popup.showModal();
   }
+
+
+  selectedStudentForDel(student: Student, AdminUser) {
+    this.studentForDel = student;
+    this.studentForDel.username = AdminUser.username;
+    this.studentForDel.email = AdminUser.email;
+    // this.popup.sendItem({
+    //   'student_name': this.studentForDel.student_name,
+    //   'student_surname': this.studentForDel.student_surname,
+    //   'student_fname': this.studentForDel.student_fname,
+    //   'gradebook': this.studentForDel.gradebook_id,
+    //   'email': this.studentForDel.email,
+    //   'group': this.studentForDel.group_name,
+    //   'group_id': this.studentForDel.group_id
+    // }, 'Student', null, this.studentForDel.photo);
+    // this.popup.showModal();
+    this.popup.deleteEntity(this.studentForDel);
+  }
+
 
   getAdminUser() {
     this.spinner.showSpinner();
@@ -221,24 +242,6 @@ export class StudentsComponent implements OnInit {
   }
 
 
-
-
-  // edit(student: Student, AdminUser) {
-  //   this.studentForEdit = student;
-  //   this.studentForEdit.username = AdminUser.username;
-  //   this.studentForEdit.email = AdminUser.email;
-  //   this.popup.sendItem({
-  //     'student_name': this.studentForEdit.student_name,
-  //     'student_surname': this.studentForEdit.student_surname,
-  //     'student_fname': this.studentForEdit.student_fname,
-  //     'gradebook': this.studentForEdit.gradebook_id,
-  //     'email': this.studentForEdit.email,
-  //     'group': this.studentForEdit.group_name,
-  //     'group_id': this.studentForEdit.group_id
-  //   }, 'Student', null, this.studentForEdit.photo);
-  //   this.popup.showModal();
-  // }
-
   formSubmitted(value) {
     this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
       this.getStudents();
@@ -278,5 +281,33 @@ export class StudentsComponent implements OnInit {
         this.toastr.error(error2);
       });
   }
+
+  submitDel(student: Student, AdminUser) {
+  this.studentsService.deleteCascade(student['user_id']).subscribe(response => {
+  this.getStudents();
+  this.toastr.success(`Студент ${student['student_name']} ${student['student_surname']} ${student['student_fname']} успішно видалений`);
+  }, error => {
+  this.toastr.error(error);
+  });
+  }
+
+
+  // submitDel(value) {
+  //   this.studentDelData = {
+  //     'username': this.studentForDel.username,
+  //     'password': this.studentForDel.plain_password,
+  //     'password_confirm' : this.studentForDel.plain_password,
+  //     'plain_password': this.studentForDel.plain_password,
+  //   };
+  //   this.studentsService.delete(value, this.studentDelData, this.studentForDel.user_id)
+  //     .subscribe(resp => {
+  //       this.getStudents();
+  //       this.popup.cancel();
+  //       this.toastr.success(`Студент ${this.studentForDel['student_name']} ${this.studentForDel['student_surname']}
+  //       ${this.studentForDel['student_fname']} успішно deleted`);
+  //     }, error2 => {
+  //       this.toastr.error(error2);
+  //     });
+  // }
 
 }
