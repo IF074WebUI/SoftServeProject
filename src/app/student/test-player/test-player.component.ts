@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterContentChecked, Component, OnInit} from '@angular/core';
 import {TestPlayerService} from './test-player.service';
 import {Router} from '@angular/router';
 import {Test} from '../../admin/tests/test';
@@ -51,7 +51,6 @@ export class InitialRezults {
   }
 }
 
-
 export class Question {
   question_id: number;
   test_id: string;
@@ -69,7 +68,8 @@ export class Question {
   styleUrls: ['./test-player.component.scss'],
   providers: [GetTestsBySubjectService],
 })
-export class TestPlayerComponent implements OnInit {
+
+export class TestPlayerComponent implements OnInit, AfterContentChecked {
   testDuration: number;
   test_id: number;
   test: Test;
@@ -117,6 +117,9 @@ export class TestPlayerComponent implements OnInit {
   HV = 'хвилин';
   CLOSE_MODAL = 'Закрити';
   ATTANTION = 'Увага!';
+  PRIMARY_VIOLET_COLOR = '#7e8bfe';
+ // PRIMARY_VIOLET_BRIGHT_COLOR = '#fff';
+
 
   TypeOfAnswers = {
     '1': 'singlechoise',
@@ -176,7 +179,6 @@ export class TestPlayerComponent implements OnInit {
         .subscribe(
           resp => this.testName = resp[0]['test_name'],
           error => {
-            debugger;
             this.msg = error;
             this.openModal();
           }
@@ -196,6 +198,9 @@ export class TestPlayerComponent implements OnInit {
     }
   }
 
+  ngAfterContentChecked() {
+
+  };
 
   getStartData() {
     this.test_player.testPlayerIdData
@@ -270,7 +275,6 @@ export class TestPlayerComponent implements OnInit {
 
   prepareQuestionForTest(questions: Array<number[]>): Array<number> {
     let tempArr: Array<number> = [];
-
     questions.forEach((elem: any) => {
       elem.forEach(item => tempArr.push(+item['question_id']));
     });
@@ -278,7 +282,6 @@ export class TestPlayerComponent implements OnInit {
   }
 
   showQuestions(numberOfQuestion: number) {
-    console.log(this.questionsIds);
     this.numberOfQuestion = numberOfQuestion + 1;
     this.answersFrom.reset();
     this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
@@ -303,8 +306,6 @@ export class TestPlayerComponent implements OnInit {
       }, error => {
         //    this.toastr.error(error);
         this.msg = error;
-        debugger;
-        console.log(this.msg);
         this.openModal();
       });
     this.selectedAnswers = [];
@@ -317,7 +318,7 @@ export class TestPlayerComponent implements OnInit {
         this.selectedAnswers.splice(this.selectedAnswers.indexOf(val), 1)
       }
     } else {
-      this.selectedAnswers.push(+val)
+      this.selectedAnswers.push(+val);
     }
     ;
   }
@@ -328,14 +329,23 @@ export class TestPlayerComponent implements OnInit {
       currentQuestion['type'] !== '2'
     ) {
       this.selectedAnswers = [];
-      this.selectedAnswers.push(this.answersFrom.controls[this.TypeOfAnswers[currentQuestion['type']]].value);
+      let value = this.answersFrom.controls[this.TypeOfAnswers[currentQuestion['type']]].value;
+      value != null ? this.selectedAnswers.push(value) : this.selectedAnswers = [];
     }
     let currentQuestionId = +(currentQuestion['question_id']);
     let questionIndex = this.questionsIds.indexOf(currentQuestionId);
     this.allAnswers = new CheckAnswers(currentQuestionId, this.selectedAnswers);
     this.dataForSave[questionIndex] = this.allAnswers;
     localStorage.setItem(String(currentQuestionId), this.selectedAnswers.toString());
-    this.test_player.saveData(this.dataForSave).subscribe(resp => this.toastr.success(resp['response']));
+    console.log(this.selectedAnswers);
+    console.log(this.dataForSave[questionIndex]['answer_ids']);
+    if (this.allAnswers['answer_ids'].length === 0) {
+      $('.number-box').eq(questionIndex).css({'backgroundColor': ''});
+    } else {
+      $('.number-box').eq(questionIndex).css({'backgroundColor': this.PRIMARY_VIOLET_COLOR});
+    }
+
+    this.test_player.saveData(this.dataForSave).subscribe(resp => this.toastr.success);
 
   }
 

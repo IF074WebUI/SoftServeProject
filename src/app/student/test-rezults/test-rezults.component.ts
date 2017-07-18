@@ -25,8 +25,9 @@ export class TestRezultsComponent implements OnInit, OnDestroy {
       console.log(resp);
     });
   }
-  goHome(){
-    this.router.navigate(['./student']);
+
+  goHome() {
+    this.router.navigate(['./student/student-main']);
   }
 
   ngOnDestroy() {
