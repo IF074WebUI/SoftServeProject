@@ -92,7 +92,7 @@ export class TestPlayerService {
 
     this.questions = [];
     let forkJoinBatch: Observable<any>[] = testDetails.map(item => {
-      return this.getQuestionsIdsByLevelRandom(item.test_id, item.level, item.tasks).catch(this.handleError);
+      return this.getQuestionsIdsByLevelRandom(item.test_id, item.level, item.tasks);
     });
     return Observable.forkJoin(forkJoinBatch);
   };

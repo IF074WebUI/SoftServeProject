@@ -97,7 +97,7 @@ export class TestPlayerComponent implements OnInit {
   msg: string;
   testName: string;
   answersFrom: FormGroup;
-  selectedAnswers: any[] = [];
+  selectedAnswers: Array<number> = [];
   numberOfQuestion: number;
   marks: any;
   questionsIds: Array<number> = [];
@@ -149,12 +149,11 @@ export class TestPlayerComponent implements OnInit {
 
   ngOnInit() {
     this.getStartData();
-   // this.testPlayerStartData.endUnixTime = 2; // temporary
     this.createForm();
 
     if (this.testPlayerStartData.endUnixTime > 0) {
       this.questionsIds = [];
-      this.test_player.getData().subscribe(resp => {
+      this.test_player.getData().map(resp => {
         let data: Array<any> = JSON.parse(resp);
         this.questionsIds = [];
         data.forEach(obj => {
@@ -162,17 +161,22 @@ export class TestPlayerComponent implements OnInit {
           this.questionsIds.push(a);
         });
         console.log(this.questionsIds);
+        return this.questionsIds;
+      }).subscribe(resp => {
+        for (let i in this.questionsIds) {
+          this.dataForSave[i] = new CheckAnswers(this.questionsIds[i], []);
+        }
+        this.showQuestions(0);
       });
       this.start = true;
-      this.showQuestions(0);
     } else {
-     // this.getStartData();
+      // this.getStartData();
       this.getTestDetails();
       this.testService.getTestById(this.testPlayerStartData.testId)
         .subscribe(
           resp => this.testName = resp[0]['test_name'],
           error => {
-            this.toastr.error(error);
+            debugger;
             this.msg = error;
             this.openModal();
           }
@@ -221,7 +225,7 @@ export class TestPlayerComponent implements OnInit {
     this.test_player.getTestDetail(this.testPlayerStartData.testId).subscribe(resp => {
       this.test_details = resp;
     }, error => {
-      this.toastr.error(error);
+      //  this.toastr.error(error);
       this.msg = error;
       this.openModal();
     });
@@ -250,7 +254,6 @@ export class TestPlayerComponent implements OnInit {
                   this.msg = error;
                   this.openModal();
                   this.resetSessionData();
-                  this.toastr.error(error);
                 });
 
           } else {
@@ -259,7 +262,6 @@ export class TestPlayerComponent implements OnInit {
           }
         },
         error => {
-          this.toastr.error(error);
           this.msg = error;
           this.openModal();
         });
@@ -283,20 +285,26 @@ export class TestPlayerComponent implements OnInit {
       .map(resp => resp[0]).do(resp => {
       this.question = resp;
       let data = localStorage.getItem(String(this.question['question_id']));
-      // if (this.question['type'] == '2'){console.log( data);
-      // let array = data.split(',');
-      // for (let k of array ){
-      //   this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(k);
+      console.log(this.selectedAnswers);
+      // if (this.question['type'] == '2' && data) {
+      //   let array = data.split(',');
+      //   for (let k of array) {
+      //     console.log(k);
+      //     this.answersFrom.controls['multichoise'].setValue(false);
+      //   }
       // }
-      // };
-      this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(data);
+      // this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(data);
+      this.answersFrom.controls[this.TypeOfAnswers['1']].setValue(data); // temporary
+
     }).filter(question => question['type'] !== '3')
       .flatMap(resp => this.test_player.getAnswersById(resp['question_id']))
       .subscribe(resp => {
         this.question['answers'] = resp;
       }, error => {
-        this.toastr.error(error);
+        //    this.toastr.error(error);
         this.msg = error;
+        debugger;
+        console.log(this.msg);
         this.openModal();
       });
     this.selectedAnswers = [];
@@ -304,12 +312,14 @@ export class TestPlayerComponent implements OnInit {
 
   toggleMultiSelect(event, val) {
     event.preventDefault();
-    if (this.selectedAnswers.indexOf(val) == -1) {
-      this.selectedAnswers = [...this.selectedAnswers, val];
+    if (!event.target.checked) {
+      if (this.selectedAnswers.indexOf(val) != -1) {
+        this.selectedAnswers.splice(this.selectedAnswers.indexOf(val), 1)
+      }
     } else {
-      this.selectedAnswers = this.selectedAnswers.filter((elem) =>
-      elem !== val);
+      this.selectedAnswers.push(+val)
     }
+    ;
   }
 
   saveCurrentAnswer(question ?: Question, questionId ?: number) {
@@ -350,10 +360,8 @@ export class TestPlayerComponent implements OnInit {
   }
 
   resetSessionData() {
-    this.test_player.resetSessionData().subscribe(error => {
-      this.toastr.error(error);
-      this.msg = error;
-      this.openModal();
+    this.test_player.resetSessionData().subscribe(res => {
+      console.log(res);
     });
   }
 
@@ -383,6 +391,7 @@ export class TestPlayerComponent implements OnInit {
 
   closeModal() {
     $('#message').modal('hide');
+    this.router.navigate(['./student']);
 
   }
 
@@ -450,9 +459,6 @@ export class TestPlayerComponent implements OnInit {
   };
 
   saveEndTime() {
-    console.log(this.testPlayerStartData.endUnixTime);
-
-
     if (this.testPlayerStartData.endUnixTime > 0) {
       console.log('you have unfinished test');
     } else {
@@ -460,7 +466,6 @@ export class TestPlayerComponent implements OnInit {
       this.test_player.saveEndTime(this.endUnixTime, this.testPlayerStartData.testId, this.testDuration)
         .subscribe(res => console.log(res));
     }
-
   }
 
   getEndTime() {
