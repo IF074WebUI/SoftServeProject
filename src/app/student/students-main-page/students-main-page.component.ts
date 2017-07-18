@@ -110,12 +110,12 @@ export class StudentsMainPageComponent implements OnInit {
   getTestForStudent() {
     this.getEndTime();
     this.loginService.checkLogged()
-      .flatMap(loginResponse => this.studentId = loginResponse['id'])
+      .flatMap(loginResponse => this.studentId = loginResponse['id']);
         return this.loginService.checkLogged()
           .subscribe(result => {
             this.studentId = +result['id'];
             this.testIdData.studentId = +this.studentId;
-            this.testPlayer.addIdData(this.testIdData)
+            this.testPlayer.addIdData(this.testIdData);
             this.studentService.getStudentById(+result['id'])
             .subscribe(res => {
               this.result.student = res[0];
@@ -197,7 +197,7 @@ export class StudentsMainPageComponent implements OnInit {
         if (+time['endTime'] > 0) {
           this.testIdData.testId = time['testId'];
           this.testIdData.endUnixTime = time['endTime'];
-          this.testPlayer.addIdData(this.testIdData)
+          this.testPlayer.addIdData(this.testIdData);
           this.router.navigate(['./student/test-player']);
         } else if (time['response'] === 'Empty set') {
           console.log(time);

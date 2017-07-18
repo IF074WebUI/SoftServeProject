@@ -1,6 +1,11 @@
 @import "./universal/styles/const";
 @import "./universal/styles/button";
 
+
+:host-context(.top-panel)  {
+  background-color: red!important;
+}
+
 .wrapper-admin .header-top{
   background-color: $primary-violet-color;
 }
