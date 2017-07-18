@@ -13,6 +13,7 @@ import {GetRecordsByIdService} from "../services/get-records-by-id.service";
   templateUrl: './questions.component.html',
   styleUrls: ['./questions.component.scss']
 })
+
 export class QuestionsComponent implements OnInit {
   HEADING_QUESTIONS = 'Питання';
   title = 'Питання';
