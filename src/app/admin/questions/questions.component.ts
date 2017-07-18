@@ -18,7 +18,7 @@ export class QuestionsComponent implements OnInit {
   title = 'Питання';
   questionsOnPage: Question[];
   pageNumber = 1;
-  recordsPerPage = 5;
+  offset = 5;
   countRecords: number;
   headers: string[];
   ignoreProperties: string[];
@@ -26,7 +26,6 @@ export class QuestionsComponent implements OnInit {
   test_id: number;
   testIdQueryParam: number;
   limit: number;
-  offset: number;
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = QUESTION_CONFIG;
@@ -43,29 +42,18 @@ export class QuestionsComponent implements OnInit {
     this.headers = ['№', 'Питання', 'Рівень', 'Тип', 'Вкладення'];
     this.ignoreProperties = ['test_id', 'question_id'];
     this.test_id = this.route.snapshot.queryParams['test_id'];
-    const level = this.route.snapshot.queryParams['level'];
-    const number = this.route.snapshot.queryParams['number'];
 
-    if (this.test_id) {
-      this.getQuestionsByTest();
-    } else if (level) {
-      this.questionsService.getQuestionsByLevelRand(this.test_id, level, number).subscribe(resp => {
-        if (resp['response'] === 'no records') {
-          this.questionsOnPage = [];
-        } else {
-          this.questionsOnPage = resp;
-        }
-      });
-    }
-    else {
-      this.getQuestions();
-    }
+       this.getQuestionsByTest();
   }
 
   getQuestionsByTest() {
     this.spinner.showSpinner();
-    this.questionsService.getRecordsRangeByTest(this.test_id, this.recordsPerPage,
-      (this.pageNumber - 1) * this.recordsPerPage).subscribe(resp => {
+    this.getCountRecords();
+    if (this.countRecords <= (this.pageNumber - 1) * this.offset) {
+      --this.pageNumber;
+    }
+    this.questionsService.getRecordsRangeByTest(this.test_id, this.offset,
+      (this.pageNumber - 1) * this.offset).subscribe(resp => {
       if (resp['response'] === 'no records') {
         this.questionsOnPage = [], error => this.router.navigate(['/bad_request']);
       } else {
@@ -74,22 +62,10 @@ export class QuestionsComponent implements OnInit {
       this.spinner.hideSpinner();
     });
   }
-  getQuestions(): void {
-    this.spinner.showSpinner();
-    this.getCountRecords();
-    if (this.countRecords <= (this.pageNumber - 1) * this.recordsPerPage) {
-      --this.pageNumber;
-    }
-    this.questionsService.getPaginatedPage(this.pageNumber, this.recordsPerPage).delay(301)
-      .subscribe(resp => { this.questionsOnPage = <Question[]>resp,
-        error => this.router.navigate(['/bad_request']);
-        this.spinner.hideSpinner();
-      });
-  }
 
   getCountRecords() {
-    this.questionsService.getCountQuestions()
-      .subscribe(resp => this.countRecords = resp );
+    this.questionsService.getCountQuestions(this.test_id)
+      .subscribe(resp => this.countRecords = +resp);
   }
 
   changePage(page: number) {
@@ -97,31 +73,9 @@ export class QuestionsComponent implements OnInit {
     this.getQuestionsByTest();
   }
   changeNumberOfRecordsOnPage(numberOfRecords: number) {
-    this.recordsPerPage = numberOfRecords;
+    this.offset = numberOfRecords;
     this.pageNumber = 1;
     this.getQuestionsByTest();
-  }
-
-  startSearch(criteria: string) {
-    this.spinner.showSpinner();
-    if (criteria === '' || +criteria <= 0 ) {
-      this.getQuestions();
-    } else {
-      this.questionsService.searchByName(criteria)
-        .subscribe(resp => {
-            if (resp['response'] === 'no records') {
-              this.questionsOnPage = [];
-              this.countRecords = this.questionsOnPage.length;
-              this.spinner.hideSpinner();
-            } else {
-              this.countRecords = 0;
-              this.pageNumber = 2;
-              this.questionsOnPage = resp;
-              this.spinner.hideSpinner();
-            }
-          },
-          error => this.router.navigate(['/bad_request']));
-    }
   }
 
   add() {

@@ -107,23 +107,6 @@ export class StudentsComponent implements OnInit {
       this.spinner.hideSpinner();
     });
   }
-  //
-  // selectedStudentForAdd(student: Student, AdminUser) {
-  //   this.studentForAdd = student;
-  //   this.studentForAdd.username = AdminUser.username;
-  //   this.studentForAdd.email = AdminUser.email;
-  //   this.popup.sendItem({
-  //     'student_name': this.studentForAdd.student_name,
-  //     'student_surname': this.studentForAdd.student_surname,
-  //     'student_fname': this.studentForAdd.student_fname,
-  //     'gradebook': this.studentForAdd.gradebook_id,
-  //     'email': this.studentForAdd.email,
-  //     'group': this.studentForAdd.group_name,
-  //     'group_id': this.studentForAdd.group_id
-  //   }, 'Student', null, this.studentForAdd.photo);
-  //   this.popup.showModal();
-  // }
-
   selectedStudent(student: Student, AdminUser) {
     this.studentForEdit = student;
     this.studentForEdit.username = AdminUser.username;
@@ -261,7 +244,7 @@ export class StudentsComponent implements OnInit {
   'email': '',
   'group': '',
   'group_id': ''
-}, 'Student');
+}, 'Student', null, '');
     this.popup.showModal();
   }
 

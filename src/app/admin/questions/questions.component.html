@@ -13,14 +13,14 @@
                         [btnClass]="btnClass"
                         [canAction]="true"
                         [page]="pageNumber"
-                        [itemsPerPage]="recordsPerPage"
+                        [itemsPerPage]="offset"
                         (deleteEntity)="del($event)"
                         (editEntity)="edit($event)"
                         (actionEntity)="goToAnswers($event)">
 </dtester-entities-table>
 <dtester-pagination class="text-center"
                     [countRecords]="countRecords"
-                    [recordsPerPage]="recordsPerPage"
+                    [recordsPerPage]="offset"
                     [currentPage]="pageNumber"
                     (pageChanged)="changePage($event)"></dtester-pagination>
 <dynamic-form [config]="configs"

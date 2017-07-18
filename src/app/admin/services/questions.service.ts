@@ -24,8 +24,8 @@ export class QuestionsService {
       .map((resp: Response) => resp.json());
   }
 
-  getPaginatedPage(pageNumber: number, recordsPerPage: number) {
-    return this.http.get('http://' + HOST + '/question/getRecordsRange/' + recordsPerPage + '/' + (pageNumber - 1) * recordsPerPage )
+  getPaginatedPage(pageNumber: number, offset: number) {
+    return this.http.get('http://' + HOST + '/question/getRecordsRange/' + offset + '/' + (pageNumber - 1) * offset )
       .map((resp: Response) => resp.json());
   }
   getTests() {
@@ -70,8 +70,8 @@ export class QuestionsService {
       .map((resp) => resp.json());
   }
 
-  getCountQuestions() {
-    return this.http.get( 'http://' + HOST + '/question/countRecords')
+  getCountQuestions(test_id: number) {
+    return this.http.get( 'http://' + HOST + '/question/countRecordsByTest/' + test_id)
       .map((resp: Response) => resp.json()['numberOfRecords']);
   }
 

@@ -15,11 +15,6 @@
                         (deleteEntity)="del($event)"
                         (editEntity)="edit($event)">
 </dtester-entities-table>
-<dtester-pagination class="text-center"
-                    [countRecords]="countRecords"
-                    [recordsPerPage]="recordsPerPage"
-                    [currentPage]="pageNumber"
-                    (pageChanged)="changePage($event)"></dtester-pagination>
 <dynamic-form [config]="configs"
               (submitted)="formSubmitted($event)"
               (youCanDelete)="deleteAnswer($event)">

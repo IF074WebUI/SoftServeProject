@@ -66,7 +66,11 @@ export class AnswersComponent implements OnInit {
       for (const answer of this.answersOnPage) {
         this.setNameOfQuestion(answer);
       }
-      this.spinner.hideSpinner();
+      this.getCountRecords();
+      if (this.countRecords <= (this.pageNumber - 1) * this.recordsPerPage) {
+        --this.pageNumber;
+      }
+     this.spinner.hideSpinner();
     });
   }
   setNameOfQuestion(answer: Answer) {
