@@ -28,9 +28,11 @@ export class StudentsComponent implements OnInit {
   AdminUser: Student;
   studentForEdit: Student;
   studentForDel: Student;
+  studentForAdd: Student;
   user_id: number;
   studentDelData = {};
   studentEditData = {};
+  studentData = {};
 
 
   headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові', 'Група'];
@@ -105,6 +107,22 @@ export class StudentsComponent implements OnInit {
       this.spinner.hideSpinner();
     });
   }
+  //
+  // selectedStudentForAdd(student: Student, AdminUser) {
+  //   this.studentForAdd = student;
+  //   this.studentForAdd.username = AdminUser.username;
+  //   this.studentForAdd.email = AdminUser.email;
+  //   this.popup.sendItem({
+  //     'student_name': this.studentForAdd.student_name,
+  //     'student_surname': this.studentForAdd.student_surname,
+  //     'student_fname': this.studentForAdd.student_fname,
+  //     'gradebook': this.studentForAdd.gradebook_id,
+  //     'email': this.studentForAdd.email,
+  //     'group': this.studentForAdd.group_name,
+  //     'group_id': this.studentForAdd.group_id
+  //   }, 'Student', null, this.studentForAdd.photo);
+  //   this.popup.showModal();
+  // }
 
   selectedStudent(student: Student, AdminUser) {
     this.studentForEdit = student;
@@ -233,10 +251,24 @@ export class StudentsComponent implements OnInit {
     };
   }
 
-  add() {
-    this.popup.sendItem(new Student(), 'Student');
+
+  add(){
+  this.popup.sendItem({
+    'student_name': '',
+  'student_surname': '',
+  'student_fname': '',
+  'gradebook': '',
+  'email': '',
+  'group': '',
+  'group_id': ''
+}, 'Student');
     this.popup.showModal();
   }
+
+  // add() {
+  //   this.popup.sendItem(new Student(), 'Student');
+  //   this.popup.showModal();
+  // }
   del(student: Student) {
     this.popup.deleteEntity(student);
   }
@@ -264,6 +296,31 @@ export class StudentsComponent implements OnInit {
 
 
   formSubmitt(value) {
+    // this.studentData = {
+    //   'username': this.studentForAdd.username,
+    //   'password': this.studentForAdd.plain_password,
+    //   'password_confirm': this.studentForAdd.plain_password,
+    //   'plain_password': this.studentForAdd.plain_password,
+    // };
+    // this.studentsService.insert(value, this.studentData, this.studentForAdd.user_id)
+    //   .subscribe(resp => {
+    //     this.getStudents();
+    //     this.popup.cancel();
+    //     this.toastr.success(`Студент ${value['student_name']} ${value['student_surname']} ${value['student_fname']} успішно створений`);
+    //   }, error2 => {
+    //     this.toastr.error(error2);
+    //   });
+    //
+    // єтот метод ниже заменяет вс' что до него и после сабмитта
+    this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
+      this.getStudents();
+      this.popup.cancel();
+      this.toastr.success(`Студент ${value['student_name']} ${value['student_surname']} ${value['student_fname']} успішно створений`);
+    }, error2 => {
+      this.toastr.error(error2);
+    });
+
+
     this.studentEditData = {
       'username': this.studentForEdit.username,
       'password': this.studentForEdit.plain_password,
@@ -282,12 +339,12 @@ export class StudentsComponent implements OnInit {
       });
   }
 
-  submitDel(student: Student, AdminUser) {
+  submitDel(student: Student) {
   this.studentsService.deleteCascade(student['user_id']).subscribe(response => {
   this.getStudents();
   this.toastr.success(`Студент ${student['student_name']} ${student['student_surname']} ${student['student_fname']} успішно видалений`);
-  }, error => {
-  this.toastr.error(error);
+  }, error2 => {
+  this.toastr.error(error2);
   });
   }
 

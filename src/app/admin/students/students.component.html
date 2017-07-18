@@ -29,7 +29,6 @@
 
 
 <div *ngIf ="show; else dragdrop" class="panel-body wrapper-student-profile" dnd-sortable-container [sortableData]="students" [dropZones]="['delete-dropZone']">
-
   <table  *ngFor = "let AdminUser of students; let student of students; let i = index" class="list-group-item"
           dnd-sortable [sortableIndex]="i">
     <div class="container">
