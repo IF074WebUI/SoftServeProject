@@ -28,8 +28,10 @@
 
 
 <div class="testplayer-container">
+  <button (click)="size = size - 1">size</button>
+
   <div class="sidebar">
-    <div>
+    <div [ngStyle]="{'color': color, 'font-size': size + 'px'}">
       <ul *ngIf="questionsIds" class="number-container">
         <li class="number-box" *ngFor="let number of getArrayOfNumbers(questionsIds)"  (click)="goToQuestion(number)" >
           <a (click)="selectItem(i)"> {{number}} </a>
@@ -72,23 +74,23 @@
       <div class="answers">
         <form novalidate [formGroup]="answersFrom">
           <ng-container *ngIf="question['type'] == 1">
-            <div *ngIf="question['answers']" class="grid-container">
-              <label *ngFor="let answer of question['answers']" class="grid-box">
+            <div *ngIf="question['answers']" class="flex-container">
+              <label *ngFor="let answer of question['answers']" class="flex-box">
                 <input type="radio" formControlName='singlechoise' [value]="answer['answer_id']">
                 {{answer['answer_text']}}
-                <img [src]="answer['attachment']">
+                <img  *ngIf="answer['attachment']" class="answers-img" [src]="answer['attachment']">
               </label>
 
             </div>
           </ng-container>
 
           <ng-container *ngIf="question['type'] == 2">
-            <div *ngIf="question['answers']" class="grid-container">
-              <label *ngFor="let answer of question['answers']" class="grid-box">
+            <div *ngIf="question['answers']" class="flex-container">
+              <label *ngFor="let answer of question['answers']" class="flex-box">
                 <input type="checkbox" formControlName='multichoise' [value]="answer['answer_id']"
                        (change)="toggleMultiSelect($event, answer['answer_id'])">
                 {{answer['answer_text']}}
-                <span>  <img [src]="answer['attachment']"></span>
+                <span  *ngIf="answer['attachment']">  <img class="answers-img" [src]="answer['attachment']"></span>
               </label>
             </div>
           </ng-container>
@@ -121,7 +123,7 @@
 
       <div class="container">
         <button type="button" class="btn btn-test-player" (click)="finishTest()">{{FINISH}}</button>
-        <button type="button" class="btn btn-test-player" [disabled]="timeFinish" (click)="backToTest()">{{BACK}}
+        <button type="button" class="btn btn-test-player" [disabled]="!unixTimeLeft" (click)="backToTest()">{{BACK}}
         </button>
       </div>
     </ng-container>

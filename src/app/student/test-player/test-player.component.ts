@@ -52,7 +52,6 @@ export class InitialRezults {
 }
 
 
-
 export class Question {
   question_id: number;
   test_id: string;
@@ -103,10 +102,7 @@ export class TestPlayerComponent implements OnInit {
   selectedAnswers: any[] = [];
   numberOfQuestion: number;
   marks: any;
-  timeFinish: boolean;
   questionsIds: Array<number> = [];
-  arrayOfCell: any;
-  cell: any;
 
 
   NEXT_QUESTION = 'Наступне питання';
@@ -122,13 +118,14 @@ export class TestPlayerComponent implements OnInit {
   HV = 'хвилин';
   CLOSE_MODAL = 'Закрити';
   ATTANTION = 'Увага!';
-  isSelected: boolean = false;
 
   TypeOfAnswers = {
     '1': 'singlechoise',
     '2': 'multichoise',
     '3': 'inputfield'
   };
+  color: string;
+  size: number;
 
   constructor(private test_player: TestPlayerService,
               private toastr: ToastsManager,
@@ -155,29 +152,18 @@ export class TestPlayerComponent implements OnInit {
 
   ngOnInit() {
     this.getStartData();
+    this.createForm();
+    this.color = 'red';
+    this.size = 20;
+
+
     if (this.testPlayerStartData.endUnixTime > 0) {
-      this.test_player.getData().subscribe(resp =>   this.test_details  = resp);
+      this.test_player.getData().subscribe(resp => {
+        console.log((JSON.parse(resp)[0]));
+      });
       this.startTimer();
       this.start = true;
-      this.numberOfQuestion = 1;
-      this.test_player.getQuestions(this.test_details)
-        .do((questions: Array<number> | any) => {
-          this.questionsIds = this.prepareQuestionForTest(questions);
-          return this.questionsIds;
-        })
-        .subscribe(respon => {
-            for (let i in this.questionsIds) {
-              this.dataForSave[i] = new CheckAnswers(this.questionsIds[i], []);
-            }
-            console.log(this.dataForSave); // all questions Ids saved on slot
-            this.showQuestions(0);
-          },
-          error => {
-            this.msg = error;
-            this.openModal();
-            this.toastr.error(error);
-          });
-
+      this.showQuestions(1);
     }
     this.getStartData();
     this.getTestDetails();
@@ -190,18 +176,14 @@ export class TestPlayerComponent implements OnInit {
           this.openModal();
         }
       );
-    this.createForm();
   }
 
-  selectItem(i: number){
-         let cell =  document.querySelector('number-box:nth-child(i)');
-  }
 
   getStartData() {
     this.test_player.testPlayerIdData
       .subscribe(data => {
-        this.testPlayerStartData.studentId = data['studentId']
-        console.log(this.testPlayerStartData.studentId)
+        this.testPlayerStartData.studentId = data['studentId'];
+        console.log(this.testPlayerStartData.studentId);
         if (data['endUnixTime'] > 0) {
           this.testPlayerStartData.endUnixTime = data['endUnixTime'];
           this.testPlayerStartData.testId = data['testId'];
@@ -255,6 +237,7 @@ export class TestPlayerComponent implements OnInit {
                 error => {
                   this.msg = error;
                   this.openModal();
+                  this.resetSessionData();
                   this.toastr.error(error);
                 });
 
@@ -280,13 +263,18 @@ export class TestPlayerComponent implements OnInit {
   }
 
   showQuestions(numberOfQuestion: number) {
-    this.numberOfQuestion = 0;
     this.answersFrom.reset();
     this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
       .map(resp => resp[0]).do(resp => {
       this.question = resp;
       this.numberOfQuestion = numberOfQuestion;
       let data = localStorage.getItem(String(this.question['question_id']));
+      // if (this.question['type'] == '2'){console.log( data);
+      // let array = data.split(',');
+      // for (let k of array ){
+      //   this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(k);
+      // }
+      // };
       this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(data);
     }).filter(question => question['type'] !== '3')
       .flatMap(resp => this.test_player.getAnswersById(resp['question_id']))
@@ -346,6 +334,7 @@ export class TestPlayerComponent implements OnInit {
     this.router.navigate(['student/test-rezults']);
     this.resetSessionData();
   }
+
   resetSessionData() {
     this.test_player.resetSessionData().subscribe(error => {
       this.toastr.error(error);
@@ -363,7 +352,6 @@ export class TestPlayerComponent implements OnInit {
   }
 
   backToTest() {
-    this.timeFinish = this.unixTimeLeft >= 0 ? true : false;
     this.finish = false;
   }
 
@@ -411,6 +399,7 @@ export class TestPlayerComponent implements OnInit {
         this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / 10) % 60));
         this.statusTimer = (this.unixTimeLeft / (this.testDuration / this.PERSENT)).toFixed(2) + '%';
         this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / 600));
+
         this.unixTimeLeft = this.unixTimeLeft - 1;
       } else {
         this.toastr.error('Час закінчився');
@@ -446,7 +435,7 @@ export class TestPlayerComponent implements OnInit {
   };
 
   saveEndTime() {
-    console.log(this.testPlayerStartData.endUnixTime)
+    console.log(this.testPlayerStartData.endUnixTime);
 
 
     if (this.testPlayerStartData.endUnixTime > 0) {
