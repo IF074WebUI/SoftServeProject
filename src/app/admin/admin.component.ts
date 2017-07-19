@@ -13,7 +13,6 @@ import {
 } from '@angular/animations';
 import {LoginService} from "../login/login.service";
 import {Router} from "@angular/router";
-declare var jQuery: any;
 
 @Component({
   templateUrl: './admin.component.html',
@@ -35,7 +34,6 @@ declare var jQuery: any;
 export class AdminComponent implements OnInit {
   menuMove: string = 'left';
   objLoaderStatus: boolean;
-  showColorRange: boolean = true;
 
   constructor(private spinner: SpinnerService,
               private toastr: ToastsManager,
@@ -51,17 +49,7 @@ export class AdminComponent implements OnInit {
     this.spinner.loaderStatus.subscribe((val: boolean) => {
       this.objLoaderStatus = val;
     });
-    jQuery(this.elRef.nativeElement).find('button.btn-green').on('click', function () {
-      jQuery('#wrapper-admin').css('background', '#37af49');
-    });
-    jQuery(this.elRef.nativeElement).find('button.btn-blue').on('click', function () {
-      jQuery('.wrapper-admin').css('background', '#69d2e7');
-    });
-    jQuery(this.elRef.nativeElement).find('button.btn-orange').on('click', function () {
-      jQuery('.wrapper-admin').css('background', '#ff9800');
-    });
   }
-
   toggleMove() {
     this.menuMove = this.menuMove === 'left' ? 'right' : 'left';
   }

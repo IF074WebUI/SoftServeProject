@@ -2,9 +2,7 @@
 @import "./universal/styles/button";
 
 .wrapper-admin .header-top{
-  //background-color: $primary-violet-color;
-  background: inherit;
-  box-shadow:0 0 0 128px rgba(0, 0, 0, 0.33) inset;
+  background-color: $primary-violet-color;
 }
 .wrapper-admin .hamburger{
   width:70px;
@@ -44,19 +42,4 @@
     background-color: $primary-violet-bright-color;
     cursor: pointer;
   }
-}
-.btn-green,
-.btn-blue,
-.btn-orange{
-  width: 25px;
-  height: 25px;
-}
-.btn-blue{
-  background: #69d2e7;
-}
-.btn-green{
-  background: #37af49;
-}
-.btn-orange{
-  background: #ff9800;
 }
