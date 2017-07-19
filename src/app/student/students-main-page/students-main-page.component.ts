@@ -16,6 +16,8 @@ import {AnswersService} from '../../admin/services/answers.service';
 import {TestDetailService} from '../../admin/test-detail/test-detail.service';
 import {DeleteRecordByIdService} from '../../admin/services/delete-record-by-id.service';
 import {TestPlayerService} from '../test-player/test-player.service';
+import {Test} from "../../admin/tests/test";
+import {Student} from "../../admin/students/student";
 @Component({
   selector: 'dtester-students-main-page',
   templateUrl: './students-main-page.component.html',
@@ -28,15 +30,28 @@ export class StudentsMainPageComponent implements OnInit {
   noTests: string;
   noRecordsResponce: string;
   checkTestAvailability: boolean;
-  result: any;
+  result = {
+    student: [],
+    groupId: [],
+    subjectId: [],
+    tests: [],
+    timeTable: []
+  };
   tableHeaders: string[];
   unixTime: number;
   date: any;
-  currentTime: string;
+  currentTime: any;
   clock: any;
   GREATINGS: string;
   OPEN_TESTS: string;
   PROFILE: string;
+  testIdData: any;
+  unfinishedTests: any;
+  logTime: number;
+  logTest: number;
+  SECONDS_IN_HOUR = 3600;
+  SECONDS_IN_MINUTE = 60;
+  MILISECONDS_IN_SECOND = 1000;
   constructor(private loginService: LoginService,
               private router: Router,
               private studentService: StudentsService,
@@ -61,40 +76,31 @@ export class StudentsMainPageComponent implements OnInit {
     this.noRecordsResponce = 'no records';
     this.checkTestAvailability = false;
     this.tableHeaders = ['#', 'Назва тесту', 'Кількість завданнь', 'Тривалість', ''];
-    this.studentId = +window.sessionStorage.getItem('studentId');
-    this.result = {
-      student: [],
-      groupId: [],
-      subjectId: [],
-      tests: [],
-      timeTable: []
+    this.logTime = 0;
+    this.logTest = 0;
+    this.testIdData = {
+      studentId: 0 ,
+      testId: 0,
+      testDuration: 0,
+      startLogTime: 0,
+      testLogId: 0,
+      testLogDuration: 0,
+      endUnixTime: 0
+    };
+    this.unfinishedTests = {
+      test: [],
+      startingTime: 0
     };
   }
 
   ngOnInit() {
-    this.getStudentId();
-    this.getTestForStudent();
     this.spinner.loaderStatus.subscribe((val: boolean) => {
       this.objLoaderStatus = val;
     });
+    this.getTime();
+    this.getTestForStudent();
   }
 
-  getStudentId() {
-    this.spinner.showSpinner();
-    this.loginService.checkLogged()
-      .subscribe(
-        res => {this.studentId = res[0]; this.spinner.hideSpinner()},
-        err => this.toastr.error(err)
-      );
-  }
-  showTime() {
-    setInterval(() => {
-      this.getTime();
-      this.date = new Date(this.unixTime * 1000);
-      this.currentTime = this.date.getHours() + ':' + this.date.getMinutes() + ':' + this.date.getSeconds();
-    }, 1000);
-    this.spinner.hideSpinner();
-  }
   stopClock() {
     clearInterval(this.clock);
   }
@@ -102,56 +108,102 @@ export class StudentsMainPageComponent implements OnInit {
     this.testPlayer.getCurrentTime().subscribe(res => { this.unixTime = res['curtime']; } );
   }
   getTestForStudent() {
-    // this.spinner.showSpinner();
-    this.studentService.getStudentById(this.studentId)
-      .subscribe(res => {
-        this.result.student = res[0];
-        this.timeTable.getTimeTablesForGroup(this.result.student.group_id)
-          .subscribe(timeTableRes => {
-            if (timeTableRes['response'] === this.noRecordsResponce) {
-              this.checkTestAvailability = true;
-            } else {
-              this.result.timeTable = timeTableRes;
-              for (const timeTable of this.result.timeTable) {
-                this.test.getTestsBySubject(timeTable['subject_id'])
-                  .subscribe(testsRes => {
-                      if (testsRes['response'] === this.noRecordsResponce) {
-                        this.checkTestAvailability = true;
-                      } else {
-                        for (const test of testsRes) {
-                          if (test['enabled'] === '1') {
-                            this.result.tests.push(test);
-                          };
-                        }
-                      }
-                    }, error => this.toastr.error(error)
-                  );
-              };
-            };
-          }, error => this.toastr.error(error)); }, error => this.toastr.error(error));
-  }
+    this.getEndTime();
+    this.loginService.checkLogged()
+      .flatMap(loginResponse => this.studentId = loginResponse['id']);
+        return this.loginService.checkLogged()
+          .subscribe(result => {
+            this.studentId = +result['id'];
+            this.testIdData.studentId = +this.studentId;
+            this.testPlayer.addIdData(this.testIdData);
+            this.studentService.getStudentById(+result['id'])
+            .subscribe(res => {
+              this.result.student = res[0];
+              this.timeTable.getTimeTablesForGroup(this.result.student['group_id'])
+                .subscribe(timeTableRes => {
+                  if (timeTableRes['response'] === this.noRecordsResponce) {
+                    this.checkTestAvailability = true;
+                  } else {
+                    this.result.timeTable = timeTableRes;
+                    for (const timeTable of this.result.timeTable) {
+                      this.test.getTestsBySubject(timeTable['subject_id'])
+                        .subscribe(testsRes => {
+                            if (testsRes['response'] === this.noRecordsResponce) {
+                              this.checkTestAvailability = true;
+                            } else {
+                              this.result.tests = testsRes;
+                            }
+                          }, error => this.toastr.error(error)
+                        );
+                    };
+                  };
+                }, error => this.toastr.error(error)); }, error => this.toastr.error(error)); });
+}
   logout() {
-    this.stopClock();
     this.loginService.logout().subscribe(() => {
       this.router.navigate(['/login'], error => this.toastr.error(error));
     });
     window.sessionStorage.setItem('studentId', 'false');
   }
-  openTestPlayer(testId, testDuration) {
-    this.stopClock();
-    this.router.navigate(['./test-player'],
-      {
-        queryParams: {'testId': testId,
-          'user_id': this.result.student['user_id'],
-          'test_duration': testDuration
-        },
-        relativeTo: this.route.parent});
+
+  getTestIdData(testID: number, testDuration: number) {
+    this.testIdData.studentId = this.result.student['user_id'];
+    this.testIdData.testId = testID;
+    this.testIdData.testDuration = testDuration;
+    this.testIdData.startLogTime = this.logTime;
+    this.testIdData.testLogId = this.logTest;
+    this.testPlayer.addIdData(this.testIdData);
+    this.router.navigate(['./student/test-player']);
   }
+
   goToTheProfile() {
     this.router.navigate(['./studentProfile'], {
       queryParams: {'user_id': this.result.student['user_id']},
       relativeTo: this.route.parent
     });
+  }
+
+  checkUfinishedTest() {
+      this.testPlayer.getLogs(this.result.student['user_id'])
+      .subscribe(
+        LogResponse => {
+          for (let log of LogResponse) {
+              let logTime = log['log_time'].split(':');
+              let logtStartTimeValue = (parseInt(logTime[0]) * this.SECONDS_IN_HOUR + parseInt(logTime[1]) * this.SECONDS_IN_MINUTE + parseInt(logTime[2]))  + Math.floor(Date.parse(log['log_date']) / this.MILISECONDS_IN_SECOND);
+              if (this.logTime < logtStartTimeValue ) {
+                this.logTime = logtStartTimeValue;
+                this.logTest = +log['test_id'];
+              }
+            this.checkIsTimeLeft();
+          };        console.log(this.logTime);
+        }, error => this.toastr.error(error));
+  }
+
+  checkIsTimeLeft() {
+    for (let test of this.result.tests) {
+      if (+test['test_id'] === this.logTest && this.unixTime - this.logTime > test['time_for_test'] * this.SECONDS_IN_MINUTE) {
+        this.logTime = 0;
+      } else {
+        this.testIdData.testId = this.logTest;
+        this.testIdData.testLogDuration = test.time_for_test;
+
+      }
+    }
+  }
+  getEndTime() {
+    this.testPlayer.getEndTime()
+      .subscribe(res => {
+        let time = JSON.parse(res);
+        if (+time['endTime'] > 0) {
+          this.testIdData.testId = time['testId'];
+          this.testIdData.endUnixTime = time['endTime'];
+          this.testIdData.testDuration = time['testDuration']
+          this.testPlayer.addIdData(this.testIdData);
+          this.router.navigate(['./student/test-player']);
+        } else if (time['response'] === 'Empty set') {
+          console.log(time);
+        }
+      }, err => console.log(err));
   }
 
 }

@@ -6,7 +6,7 @@
         <h4>{{OPEN_TESTS}}:</h4>
       </div>
       <div class="col-md-3 profile text-center">
-        <div class="icon">
+        <div class="icon" (click)="goToTheProfile()">
           <i class="fa fa-user-circle-o fa-5x" aria-hidden="true"></i>
         </div>
       </div>
@@ -43,10 +43,12 @@
           {{test.time_for_test}}хв
         </td>
         <td>
-          <button class="btn btn-test-list" (click)="openTestPlayer(+test.test_id, test.time_for_test)">Здати тест</button>
+          <button class="btn btn-test-list" (click)="getTestIdData(+test.test_id, +test.time_for_test)">Перейти до здачі тесту</button>
         </td>
       </tr>
       </tbody>
     </table>
+
   </div>
+  <button (click)="checkUfinishedTest()"> check logs</button>
 </main>

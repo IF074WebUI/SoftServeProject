@@ -1,70 +1,93 @@
+<button (click)="saveEndTime()">savetime</button>
+<button (click)="getEndTime()">gettime</button>
+<button (click)="resetSessionData()">reset</button>
 <div id="container">
   <div class="row">
-    <div class="col-md-10">
+    <div id="testName" class="col-md-10">
       <h3>{{testName}}.</h3>
     </div>
     <div class="col-md-2 exit">
-      <button class=" btn btn-exit btn-close-test" (click)="finishTest()"> {{FINISH}}</button>
+      <ng-container *ngIf="!start">
+      </ng-container>
+      <ng-container *ngIf="start && !finish">
+        <button class=" btn btn-exit btn-close-test" (click)="saveResults()"> {{FINISH}}</button>
+      </ng-container>
     </div>
+
   </div>
 </div>
+
 <div id="timer-background">
   <div id="timer" [ngStyle]="{'width': statusTimer, 'background-color': checkProgresColor()}">
     <p>{{minutesDisplay}}:{{secondsDisplay}}</p>
   </div>
 </div>
-<div class="container" (click)="checkUnixTime()">
-  <div class="navbar">
-    <ul class="nav navbar-nav navbar-toggler-right">
-      <li><a href="#"> {{MARKED}}</a></li>
-    </ul>
-  </div>
-  <div id="button">
-    <ng-container *ngIf="!start">
-      <button type="button" class="btn-test-player" (click)="startTest()">{{START}}</button>
-    </ng-container>
-    <ng-container *ngIf="finish">
-      {{FINISH_DIALOG}}
-      <button type="button" class="btn-test-player" (click)="startTest()">{{RESULTS}}</button>
-    </ng-container>
-  </div>
-  <div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8 wrapper">
+<div class="container">
 
-      <ng-container *ngIf="question">
-        <div class="navigation">
-          <button class="btn-test-player" (click)="next()">{{NEXT_QUESTION}}</button>
-        </div>
-        <div class="table-responsive ">
-          <table class="table">
-            <caption><h3>{{QUESTION}}{{questions.indexOf(question)+1}}</h3></caption>
-            <tr>
-              <td>{{question['question_text']}}</td>
-            </tr>
-            <tr *ngIf="question.attachment">
-              <td><img [src]=question.attachment></td>
-            </tr>
-          </table>
-        </div>
-        <div class="answers">
+</div>
+
+
+<div class="testplayer-container">
+  <div class="sidebar" *ngIf="start && !finish">
+    <div>
+      <ul *ngIf="questionsIds" class="number-container">
+        <li class="number-box" *ngFor="let number of getArrayOfNumbers(questionsIds)" (click)="goToQuestion(number - 1)">
+          {{number}}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="questionsField">
+
+    <ng-container *ngIf="!start && !finish">
+      <div class="table-responsive">
+        <table class="table">
+          <tr>
+            <td>{{TEST_NAME}}</td>
+            <td>{{testName}}</td>
+          </tr>
+          <tr>
+            <td>{{TEST_DURATION}}</td>
+            <td>{{testPlayerStartData['testDuration']}} {{HV}}</td>
+          </tr>
+        </table>
+        <button type="button" class=" btn btn-lg btn-exit btn-close-test" (click)="startTest()">{{START}}</button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="question && start && !finish">
+      <div class="table-responsive  wrapper">
+        <table class="table">
+          <caption><h3>{{QUESTION}}{{numberOfQuestion}}</h3></caption>
+          <tr>
+            <td>{{question['question_text']}}</td>
+          </tr>
+          <tr id="image" *ngIf="question.attachment">
+            <td><img [src]=question.attachment></td>
+          </tr>
+        </table>
+      </div>
+      <div class="answers">
+        <form novalidate [formGroup]="answersFrom">
           <ng-container *ngIf="question['type'] == 1">
             <div *ngIf="question['answers']" class="flex-container">
-              <!--<form [formGroup]="singlechoise">-->
               <label *ngFor="let answer of question['answers']" class="flex-box">
-                <input type="radio" name='singlechoise' [value]="answer['answer_id']">
+                <input type="radio" formControlName='singlechoise' [value]="answer['answer_id']">
                 {{answer['answer_text']}}
-                <img [src]="answer['attachment']">
+                <img  *ngIf="answer['attachment']" class="answers-img" [src]="answer['attachment']">
               </label>
-              <!--</form>-->
+
             </div>
           </ng-container>
 
           <ng-container *ngIf="question['type'] == 2">
             <div *ngIf="question['answers']" class="flex-container">
               <label *ngFor="let answer of question['answers']" class="flex-box">
-                <input type="checkbox" name='answer'  [value]="answer['answer_id']">
+                <input type="checkbox" formControlName='multichoise' [value]="answer['answer_id']" [checked]="answer['answer_id']"
+                       (change)="toggleMultiSelect($event, answer['answer_id'])">
                 {{answer['answer_text']}}
-                <span>  <img [src]="answer['attachment']"></span>
+                <span  *ngIf="answer['attachment']">  <img class="answers-img" [src]="answer['attachment']"></span>
               </label>
             </div>
           </ng-container>
@@ -72,29 +95,59 @@
           <ng-container *ngIf="question['type'] == 3">
             <div class="form-input" class="input-field">
               <label>{{ENTER_ANSWER}}
-                <input
+                <input autofocus  id="input"  formControlName="inputfield"
                        type="text"
                        maxlength="100"/>
               </label>
             </div>
           </ng-container>
-        </div>
-        <div class="navigation">
-          <button type="submit" class="btn-test-player">{{SAVE_ANSWER}}</button>
-        </div>
-      </ng-container>
+        </form>
 
-    </div>
 
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 sidebar">
-      <div>
-        <ul *ngIf="questions" class="number-container">
-          <li class="number-box" *ngFor="let number of getArrayOfNumbers(questions)" (click)="goToAnswers(number)">
-            {{number}}
-          </li>
+      </div>
+      <div class="navbar">
+        <ul class="nav navbar-nav navbar-toggler-right">
+          <li><a (click)="onSelect()"> {{MARKED}}</a></li>
+          <li><a (click)="next(question)">{{NEXT_QUESTION}}</a></li>
         </ul>
       </div>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="start && finish">
+
+      <div class="confirm_container">
+        <div>
+          {{CONFIRMATION_DIALOG}}
+        </div>
+        <div>
+          <button type="button" class="btn btn-test-player" (click)="finishTest()">{{FINISH}}</button>
+          <button type="button" class="btn btn-test-player" [disabled]="timeFinish" (click)="backToTest()">{{BACK}}
+          </button>
+        </div>
+      </div>
+
+    </ng-container>
   </div>
+
+
 </div>
 
+<!-- Modal -->
+<div id="message" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ATTANTION}}</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        {{msg}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="closeModal()">{{CLOSE_MODAL}}</button>
+      </div>
+    </div>
+
+  </div>
+</div>

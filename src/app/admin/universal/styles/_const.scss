@@ -1,3 +1,5 @@
+
+
 $primary-violet-color: #401e46;
 $primary-violet-bright-color: #826199;
 $primary-viole-super-bright: #fff;
@@ -10,6 +12,7 @@ $mint-color: #77ebf3;
 $orange-color: #ff886a;
 $yellow-color: #ffd384;
 $red-color: #c10000;
+$background-color: #f5f5f5;
 
 $table-header-font-weight: 400;
 $table-header-font-color: #757575;
@@ -29,4 +32,5 @@ $select-font-size: 16px;
 $select-color: unquote("rgba(#{$color-black}, 0.26)") !default;
 $select-padding: 4px;
 
-$timer-progress-color: #51E000;
+$timer-progress-color:rgb(188, 0, 255) ;
+$timer-background-color:rgb(188, 133, 255);

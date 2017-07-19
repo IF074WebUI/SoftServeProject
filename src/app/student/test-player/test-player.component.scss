@@ -17,14 +17,17 @@
     top: 50px;
   }
 }
+
 #timer {
   p {
     font-size: 25px;
+    color: white;
   }
   background-color: $timer-progress-color;
 }
+
 #timer-background {
-    background-color: $line-color;
+  background-color: $timer-background-color;
 }
 
 .content {
@@ -37,16 +40,23 @@ table {
   caption {
     caption-side: top;
   }
-  font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+  font-family: $font-stack;
   margin: auto;
   font-size: large;
   color: black;
   td {
+  //  box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
     text-align: center;
     img {
       margin: auto;
       max-height: 150px;
     }
+  }
+  #image > td {
+    background-color: $background-color;
+  }
+  tr:first-of-type{
+    box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
   }
   @extend table
 }
@@ -69,7 +79,6 @@ table {
   top: 15px;
   input {
     margin-right: 50px;
-
   }
   label {
     padding: 10px;
@@ -77,38 +86,34 @@ table {
     height: 50px;
     img {
       margin-left: 100px;
-      max-height: 70px;
+      max-height: 50px;
     }
   }
 }
 
-.answers {
-  margin-top: 50px;
-}
-
 .navigation {
-
-    float: right;
-
+  float: right;
 }
 
 .flex-container {
   @extend .wrapper;
-  padding: 5px;
+  width: 100px;
+  // max-height: 200px;
+  flex-wrap: wrap;
+  align-content: center;
+  font-size: large;
+  padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+
   .flex-box {
-    height: 100px;
-    width: 70px;
-    border-color: black;
-    margin: auto;
-    &:hover {
-      background-color: $table-bg-hover;
-    }
-    img {
-      max-height: 70px;
-    }
+    margin: 10px;
+    width: auto;
+    height: auto;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
   }
 }
 
@@ -118,49 +123,54 @@ table {
   padding: 20px;
 }
 
-.number-container {
-
-}
 .wrapper {
-  background-color: white;
+  margin: auto;
+  width: 80%;
 }
-.sidebar {
-  font-size: large;
 
+.sidebar {
+  float: left;
+  width: 20%;
+  font-size: large;
   margin: auto;
   cursor: pointer;
 
-  .number-container{
+  .number-container {
     list-style-type: none;
     display: flex;
     flex-wrap: wrap;
     align-content: space-around;
     justify-content: center;
-    background: #fff;
+    background: $primary-viole-super-bright;
     padding-left: 0;
     margin-bottom: 0;
-    .number-box{
+    .number-box {
       width: 50px;
       height: 50px;
       background-color: $primary-violet-bright-color;
-      margin: 25px;
+      margin: 5px;
       display: flex;
       justify-content: center;
       align-items: center;
       color: #fff;
       border: 2px solid $primary-violet-color;
-      &:hover{
+      &:hover {
         background-color: $primary-violet-color;
         transition: .3s;
       }
-
     }
   }
 }
+
+.markedQuestion {
+  background-color: red !important;
+
+}
+
 #container {
   background-color: $primary-violet-bright-color;
   padding-left: 20px;
-  .row{
+  .row {
     h3 {
     }
     .col-md-2, .col-md-10 {
@@ -170,8 +180,47 @@ table {
     }
   }
 }
+
+.confirm_container {
+  text-align: center;
+  padding: 100px;
+  font-size: xx-large;
+  color: $primary-violet-color;
+  & > div:last-child {
+    padding: 50px;
+  }
+}
+
 h1 {
   color: white;
 }
 
+.testplayer-container > .questionsField {
+  width: 70%;
+  margin: auto;
+  max-height: 60%;
+}
+
+.modal-header {
+  color: $primary-viole-super-bright;
+  background-color: $primary-violet-bright-color;
+}
+
+.modal-body {
+  color: $primary-violet-color;
+}
+
+#testName {
+  align-items: center;
+  justify-content: center;
+  color: $primary-viole-super-bright;
+}
+
+.answers-img {
+  width: 150px;
+}
+
+#input{
+    box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
+  }
 
