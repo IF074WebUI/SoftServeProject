@@ -70,7 +70,7 @@ export class StudentsMainPageComponent implements OnInit {
   ) {
     this.objLoaderStatus = false;
     this.GREATINGS = 'Доброго дня';
-    this.OPEN_TESTS = 'Доступні';
+    this.OPEN_TESTS = 'Доступні до здачі тести';
     this.PROFILE = 'Профіль';
     this.noTests = 'Немає доступних тестів';
     this.noRecordsResponce = 'no records';
@@ -157,10 +157,7 @@ export class StudentsMainPageComponent implements OnInit {
   }
 
   goToTheProfile() {
-    this.router.navigate(['./studentProfile'], {
-      queryParams: {'user_id': this.result.student['user_id']},
-      relativeTo: this.route.parent
-    });
+    this.router.navigate(['./student/studentProfile']);
   }
 
   checkUfinishedTest() {
