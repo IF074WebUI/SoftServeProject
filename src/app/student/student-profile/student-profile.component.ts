@@ -39,7 +39,6 @@ this.getStudentId();
       .subscribe(
         response => {
           console.log(response[0])
-          // this.student = response[0]
           this.student.group_id = +response[0]['group_id'];
           this.student.gradebook_id = response[0]['gradebook_id'];
           this.student.student_surname = response[0]['student_surname'];

@@ -202,9 +202,14 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   getStartData() {
     this.test_player.testPlayerIdData
       .subscribe(data => {
-        console.log(data);
         this.testPlayerStartData.studentId = data['studentId'];
-        if (data['endUnixTime'] > 0) {
+        // if (+data['studentId'] !== 0)
+        // {
+        //   this.router.navigate(['student/student-main']);
+        // } else
+        if (data['studentId'] === 0) {
+          this.router.navigate(['student/student-main']);
+        } else if (data['endUnixTime'] > 0) {
           this.testPlayerStartData.endUnixTime = data['endUnixTime'];
           this.testPlayerStartData.testId = data['testId'];
           this.testDuration = +data.testDuration;
