@@ -197,6 +197,7 @@ export class StudentsMainPageComponent implements OnInit {
         if (+time['endTime'] > 0) {
           this.testIdData.testId = time['testId'];
           this.testIdData.endUnixTime = time['endTime'];
+          this.testIdData.testDuration = time['testDuration']
           this.testPlayer.addIdData(this.testIdData);
           this.router.navigate(['./student/test-player']);
         } else if (time['response'] === 'Empty set') {

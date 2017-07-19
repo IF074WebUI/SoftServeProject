@@ -153,7 +153,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   ngOnInit() {
     this.getStartData();
     this.createForm();
-
+console.log(this.testPlayerStartData.endUnixTime )
     if (this.testPlayerStartData.endUnixTime > 0) {
       this.questionsIds = [];
       this.test_player.getData().map(resp => {
@@ -163,7 +163,8 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
           let a: number = obj['question_id'];
           this.questionsIds.push(a);
         });
-        console.log(this.questionsIds);
+        // console.log(this.questionsIds);
+        this.startTimer();
         return this.questionsIds;
       }).subscribe(resp => {
         for (let i in this.questionsIds) {
@@ -172,16 +173,13 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
         this.showQuestions(0);
       });
       this.start = true;
-      this.startTimer();
     } else {
       localStorage.clear();
-      // this.getStartData();
       this.getTestDetails();
       this.testService.getTestById(this.testPlayerStartData.testId)
         .subscribe(
           resp => {
             this.testName = resp[0]['test_name'];
-            this.startTimer();
           },
           error => {
             this.msg = error;
@@ -211,17 +209,17 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   getStartData() {
     this.test_player.testPlayerIdData
       .subscribe(data => {
+        console.log(data)
         this.testPlayerStartData.studentId = data['studentId'];
         if (data['endUnixTime'] > 0) {
           this.testPlayerStartData.endUnixTime = data['endUnixTime'];
           this.testPlayerStartData.testId = data['testId'];
-          // this.startTimer();
+          this.testDuration = +data.testDuration;
+          // debugger;
         } else {
-
           this.testPlayerStartData.studentId = +data.studentId;
           this.testPlayerStartData.testId = +data.testId;
           this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * 10;
-          // this.startTimer();
 
         }
       });
