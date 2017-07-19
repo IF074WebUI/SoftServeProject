@@ -118,7 +118,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   CLOSE_MODAL = 'Закрити';
   ATTANTION = 'Увага!';
   PRIMARY_VIOLET_COLOR = '#7e8bfe';
- // PRIMARY_VIOLET_BRIGHT_COLOR = '#fff';
+  // PRIMARY_VIOLET_BRIGHT_COLOR = '#fff';
 
 
   TypeOfAnswers = {
@@ -172,13 +172,19 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
         this.showQuestions(0);
       });
       this.start = true;
+      this.startTimer();
     } else {
+      localStorage.clear();
       // this.getStartData();
       this.getTestDetails();
       this.testService.getTestById(this.testPlayerStartData.testId)
         .subscribe(
-          resp => this.testName = resp[0]['test_name'],
+          resp => {
+            this.testName = resp[0]['test_name'];
+            this.startTimer();
+          },
           error => {
+            this.msg = error;
             this.msg = error;
             this.openModal();
           }
@@ -191,10 +197,10 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
     let n = this.numberOfQuestion - 1;
     if (this.marked[n]) {
       this.marked[n] = false;
-      $('.number-box').eq(n).css({'backgroundColor': ''});
+      $('.number-box').eq(n).css({'border-color': ''});
     } else {
       this.marked[n] = true;
-      $('.number-box').eq(n).css({'backgroundColor': 'red'});
+      $('.number-box').eq(n).css({'border-color': 'red'});
     }
   }
 
@@ -209,11 +215,14 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
         if (data['endUnixTime'] > 0) {
           this.testPlayerStartData.endUnixTime = data['endUnixTime'];
           this.testPlayerStartData.testId = data['testId'];
+          // this.startTimer();
         } else {
 
           this.testPlayerStartData.studentId = +data.studentId;
           this.testPlayerStartData.testId = +data.testId;
           this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * 10;
+          // this.startTimer();
+
         }
       });
   }
@@ -360,6 +369,9 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   }
 
   finishTest() {
+    this.test_player.getData()
+      .flatMap(resp => this.test_player.checkResults(resp))
+      .subscribe(resp => this.marks = resp);
     this.stopTimer();
     this.answersFrom.reset();
     localStorage.clear();
@@ -378,9 +390,6 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   saveResults() {
     this.saveCurrentAnswer(this.question);
     this.finish = true;
-    this.test_player.getData()
-      .flatMap(resp => this.test_player.checkResults(resp))
-      .subscribe(resp => this.marks = resp);
   }
 
   backToTest() {

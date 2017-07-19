@@ -41,7 +41,6 @@
   <div class="questionsField">
 
     <ng-container *ngIf="!start && !finish">
-      {{msg}}
       <div class="table-responsive">
         <table class="table">
           <tr>
@@ -96,7 +95,7 @@
           <ng-container *ngIf="question['type'] == 3">
             <div class="form-input" class="input-field">
               <label>{{ENTER_ANSWER}}
-                <input formControlName="inputfield"
+                <input autofocus  id="input"  formControlName="inputfield"
                        type="text"
                        maxlength="100"/>
               </label>
