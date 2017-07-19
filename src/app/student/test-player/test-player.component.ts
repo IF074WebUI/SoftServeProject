@@ -118,7 +118,6 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   CLOSE_MODAL = 'Закрити';
   ATTANTION = 'Увага!';
   PRIMARY_VIOLET_COLOR = '#7e8bfe';
-  // PRIMARY_VIOLET_BRIGHT_COLOR = '#fff';
 
 
   TypeOfAnswers = {
@@ -153,17 +152,15 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   ngOnInit() {
     this.getStartData();
     this.createForm();
-console.log(this.testPlayerStartData.endUnixTime )
+    console.log(this.testPlayerStartData.endUnixTime);
     if (this.testPlayerStartData.endUnixTime > 0) {
       this.questionsIds = [];
       this.test_player.getData().map(resp => {
         let data: Array<any> = JSON.parse(resp);
         this.questionsIds = [];
         data.forEach(obj => {
-          let a: number = obj['question_id'];
-          this.questionsIds.push(a);
+          this.questionsIds.push(+obj['question_id']);
         });
-        // console.log(this.questionsIds);
         this.startTimer();
         return this.questionsIds;
       }).subscribe(resp => {
@@ -176,13 +173,12 @@ console.log(this.testPlayerStartData.endUnixTime )
     } else {
       localStorage.clear();
       this.getTestDetails();
-      this.testService.getTestById(this.testPlayerStartData.testId)
+      this.testService.getTestById(this.testPlayerStartData.testId) // special for Mykola! Please use your subject for sending me this testName!
         .subscribe(
           resp => {
             this.testName = resp[0]['test_name'];
           },
           error => {
-            this.msg = error;
             this.msg = error;
             this.openModal();
           }
@@ -202,14 +198,11 @@ console.log(this.testPlayerStartData.endUnixTime )
     }
   }
 
-  ngAfterContentChecked() {
-
-  };
 
   getStartData() {
     this.test_player.testPlayerIdData
       .subscribe(data => {
-        console.log(data)
+        console.log(data);
         this.testPlayerStartData.studentId = data['studentId'];
         if (data['endUnixTime'] > 0) {
           this.testPlayerStartData.endUnixTime = data['endUnixTime'];
@@ -228,7 +221,7 @@ console.log(this.testPlayerStartData.endUnixTime )
   createForm() {
     this.answersFrom = this.fb.group({
       singlechoise: '',
-      multichoise: '',
+      multichoise: false,
       inputfield: ''
     });
   }
@@ -278,7 +271,7 @@ console.log(this.testPlayerStartData.endUnixTime )
           this.openModal();
         });
   }
-  ;
+
 
   prepareQuestionForTest(questions: Array<number[]>): Array<number> {
     let tempArr: Array<number> = [];
@@ -294,40 +287,57 @@ console.log(this.testPlayerStartData.endUnixTime )
     this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
       .map(resp => resp[0]).do(resp => {
       this.question = resp;
-      let data = localStorage.getItem(String(this.question['question_id']));
+      let currentAnswers = localStorage.getItem(String(this.question['question_id']));
       console.log(this.selectedAnswers);
-      // if (this.question['type'] == '2' && data) {
-      //   let array = data.split(',');
-      //   for (let k of array) {
-      //     console.log(k);
-      //     this.answersFrom.controls['multichoise'].setValue(false);
-      //   }
-      // }
-      // this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(data);
-      this.answersFrom.controls[this.TypeOfAnswers['1']].setValue(data); // temporary
-
+      if (this.question['type'] === '2' && currentAnswers) {
+        let array = currentAnswers.split(',');
+          for (let k of array) {
+       //  this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]][k].setValue(true);
+          }
+      } else {
+        this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers);
+      }
     }).filter(question => question['type'] !== '3')
       .flatMap(resp => this.test_player.getAnswersById(resp['question_id']))
       .subscribe(resp => {
         this.question['answers'] = resp;
       }, error => {
-        //    this.toastr.error(error);
         this.msg = error;
         this.openModal();
       });
     this.selectedAnswers = [];
   }
 
+  ngAfterContentChecked() {
+    // let currentAnswers = localStorage.getItem(String(this.question['question_id']));
+    // if (this.question['type'] === '2' && currentAnswers) {
+    //   let array = currentAnswers.split(',');
+    //   for (let k of array) {
+    //   }
+    // }
+  }
+
   toggleMultiSelect(event, val) {
     event.preventDefault();
     if (!event.target.checked) {
-      if (this.selectedAnswers.indexOf(val) != -1) {
-        this.selectedAnswers.splice(this.selectedAnswers.indexOf(val), 1)
+      if (this.selectedAnswers.indexOf(val) !== -1) {
+        this.selectedAnswers.splice(this.selectedAnswers.indexOf(val), 1);
       }
     } else {
       this.selectedAnswers.push(+val);
     }
-    ;
+    //   this.options = [
+    //     {name:'OptionA', value:'first_opt', checked:true},
+    //     {name:'OptionB', value:'second_opt', checked:false},
+    //     {name:'OptionC', value:'third_opt', checked:true}
+    //   ];
+    //   this.getselectedOptions = function() {
+    //     alert(this.options
+    //       .filter(opt => opt.checked)
+    //       .map(opt => opt.value));
+    //   }
+    // }
+
   }
 
   saveCurrentAnswer(question ?: Question, questionId ?: number) {
@@ -369,14 +379,17 @@ console.log(this.testPlayerStartData.endUnixTime )
   finishTest() {
     this.test_player.getData()
       .flatMap(resp => this.test_player.checkResults(resp))
-      .subscribe(resp => this.marks = resp);
-    this.stopTimer();
-    this.answersFrom.reset();
-    localStorage.clear();
-    let data = new InitialRezults(this.marks['full_mark'], this.marks['number_of_true_answers'], 5000, 10000, this.testName);
-    this.test_player.sendRezults(data);
+      .map(resp => {
+        let data = new InitialRezults(resp['full_mark'], resp['number_of_true_answers'], 5000, 10000, this.testName);
+        return data;
+      }).subscribe(resp => {
+      this.stopTimer();
+      this.answersFrom.reset();
+      localStorage.clear();
+      this.resetSessionData();
+      this.test_player.sendRezults(resp);
+    });
     this.router.navigate(['student/test-rezults']);
-    this.resetSessionData();
   }
 
   resetSessionData() {
