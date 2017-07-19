@@ -200,16 +200,23 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
 
 
   getStartData() {
+    this.test_player.getEndTime()
+      .subscribe(response => {
+        let time = JSON.parse(response);
+        if (time['endTime'] > 0) {
+          this.router.navigate(['student/student-main']);
+        }
+      })
     this.test_player.testPlayerIdData
       .subscribe(data => {
-        this.testPlayerStartData.studentId = data['studentId'];
         // if (+data['studentId'] !== 0)
         // {
         //   this.router.navigate(['student/student-main']);
         // } else
-        if (data['studentId'] === 0) {
-          this.router.navigate(['student/student-main']);
-        } else if (data['endUnixTime'] > 0) {
+        // if (data['studentId'] === 0) {
+        //   this.router.navigate(['student/student-main']);
+        // } else
+          if (data['endUnixTime'] > 0) {
           this.testPlayerStartData.endUnixTime = data['endUnixTime'];
           this.testPlayerStartData.testId = data['testId'];
           this.testDuration = +data.testDuration;
@@ -218,8 +225,8 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
           this.testPlayerStartData.studentId = +data.studentId;
           this.testPlayerStartData.testId = +data.testId;
           this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * 10;
-
         }
+        this.testPlayerStartData.studentId = data['studentId'];
       });
   }
 
