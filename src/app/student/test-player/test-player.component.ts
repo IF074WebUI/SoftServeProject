@@ -206,7 +206,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
         if (time['endTime'] > 0) {
           this.router.navigate(['student/student-main']);
         }
-      })
+      });
     this.test_player.testPlayerIdData
       .subscribe(data => {
         // if (+data['studentId'] !== 0)
@@ -233,7 +233,8 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   createForm() {
     this.answersFrom = this.fb.group({
       singlechoise: '',
-      multichoise: false,
+      multichoise: this.fb.group({
+      }),
       inputfield: ''
     });
   }
@@ -338,18 +339,6 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
     } else {
       this.selectedAnswers.push(+val);
     }
-    //   this.options = [
-    //     {name:'OptionA', value:'first_opt', checked:true},
-    //     {name:'OptionB', value:'second_opt', checked:false},
-    //     {name:'OptionC', value:'third_opt', checked:true}
-    //   ];
-    //   this.getselectedOptions = function() {
-    //     alert(this.options
-    //       .filter(opt => opt.checked)
-    //       .map(opt => opt.value));
-    //   }
-    // }
-
   }
 
   saveCurrentAnswer(question ?: Question, questionId ?: number) {
