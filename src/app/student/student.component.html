@@ -1,19 +1,20 @@
-<ngx-loading [show]="objLoaderStatus"></ngx-loading>
-  <div class="header">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-10">
-          <h1 routerLink="/student/student-main" routerLinkActive="active">dTester</h1>
-        </div>
-        <div class="col-md-2 exit">zz
-          <button class=" btn btn-exit" (click)="logout()">Вихід</button>
-        </div>
+
+<div class="header">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10">
+        <h1 routerLink="/student/student-main" routerLinkActive="active">dTester</h1>
+      </div>
+      <div class="col-md-2 exit">zz
+        <button class=" btn btn-exit" (click)="logout()">Вихід</button>
       </div>
     </div>
   </div>
-  <div class="body">
-    <router-outlet></router-outlet>
-  </div>
-  <div class="footer">
-    <p>&copy; 2017 IT academy</p>
-  </div>
+</div>
+<div class="body">
+  <router-outlet></router-outlet>
+</div>
+<div class="footer">
+  <p>&copy; 2017 IT academy</p>
+</div>
+<ngx-loading *ngIf="objLoaderStatus" [show]="true"></ngx-loading>

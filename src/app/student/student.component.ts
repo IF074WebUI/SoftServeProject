@@ -22,6 +22,7 @@ export class StudentComponent implements OnInit {
 
   ) {
     this.toastr.setRootViewContainerRef(vRef);
+    this.objLoaderStatus = false;
 
   }
 
@@ -29,7 +30,6 @@ export class StudentComponent implements OnInit {
     this.spinner.loaderStatus.subscribe((val: boolean) => {
       this.objLoaderStatus = val;
     });
-
   }
   logout() {
     this.loginService.logout().subscribe(() => {

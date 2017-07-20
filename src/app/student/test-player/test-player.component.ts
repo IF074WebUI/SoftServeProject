@@ -8,7 +8,9 @@ import {TestDetail} from '../../admin/test-detail/testDetail';
 import {ToastsManager} from 'ng2-toastr';
 import {TestsService} from '../../admin/services/tests.service';
 import {FormGroup} from '@angular/forms/src/model';
-import {FormBuilder} from '@angular/forms';
+import {FormArray, FormBuilder} from '@angular/forms';
+import {TestDetailService} from '../../admin/test-detail/test-detail.service';
+
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
@@ -17,6 +19,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
+import {TestPlayerData} from "../student-profile/TestPlayerData";
 
 declare var $: any;
 
@@ -89,7 +92,7 @@ export class TestPlayerComponent implements OnInit {
   unixTimeLeft: number;
   MILLISECONDS_IN_SECOND: number;
   timer: any;
-  testPlayerStartData: any;
+  testPlayerStartData: TestPlayerData = new TestPlayerData;
   dataForSave: Array<CheckAnswers> = [];
   statusTimer: string;
   PERSENT: number;
@@ -138,20 +141,12 @@ export class TestPlayerComponent implements OnInit {
     this.MILLISECONDS_IN_SECOND = 100;
     this.PERSENT = 100;
     this.DANGER_STATUS = 18;
-    this.testPlayerStartData = {
-      studentId: 0,
-      testId: 0,
-      testDuration: 0,
-      startLogTime: 0,
-      testLogId: 0,
-      testLogDuration: 0,
-      endUnixTime: 0
-    };
   }
 
   ngOnInit() {
     this.getStartData();
     this.createForm();
+    this.getMarks();
     console.log(this.testPlayerStartData.endUnixTime);
     if (this.testPlayerStartData.endUnixTime > 0) {
       this.questionsIds = [];
@@ -172,21 +167,23 @@ export class TestPlayerComponent implements OnInit {
       this.start = true;
     } else {
       localStorage.clear();
-      this.getTestDetails();
-      this.testService.getTestById(this.testPlayerStartData.testId) // special for Mykola! Please use your subject for sending me this testName!
-        .subscribe(
-          resp => {
-            this.testName = resp[0]['test_name'];
-          },
-          error => {
-            this.msg = error;
-            this.openModal();
-          }
-        );
+      // this.getTestDetails();
+
     }
   }
-
-
+  getTestName () {
+    this.testService.getTestById(this.testPlayerStartData.testId) // special for Mykola! Please use your subject for sending me this testName!
+      .subscribe(
+        resp => {
+          this.testName = resp[0]['test_name'];
+          this.testPlayerStartData.testName = this.testName;
+        },
+        error => {
+          this.msg = error;
+          this.openModal();
+        }
+      );
+  }
   onSelect() {
     let n = this.numberOfQuestion - 1;
     if (this.marked[n]) {
@@ -200,16 +197,20 @@ export class TestPlayerComponent implements OnInit {
 
 
   getStartData() {
+
     this.test_player.testPlayerIdData
-      .subscribe(data => {
-        console.log(data);
-        this.testPlayerStartData.studentId = data['studentId'];
-        if (data['endUnixTime'] > 0) {
-          this.testPlayerStartData.endUnixTime = data['endUnixTime'];
-          this.testPlayerStartData.testId = data['testId'];
-          this.testDuration = +data.testDuration;
+      .subscribe(data => {        this.testPlayerStartData.studentId = data['studentId'];
+        console.log(this.testPlayerStartData.studentId)
+        if (this.testPlayerStartData.studentId === undefined) {
+          this.router.navigate(['student/student-main']);
+        } else if (data['endUnixTime'] > 0) {
           // debugger;
+          this.testName = data.testName;
+          this.testPlayerStartData.endUnixTime = data.endUnixTime;
+          this.testPlayerStartData.testId = data.testId;
+          this.testDuration = +data.testDuration;
         } else {
+          this.getTestName();
           this.testPlayerStartData.studentId = +data.studentId;
           this.testPlayerStartData.testId = +data.testId;
           this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * 10;
@@ -217,23 +218,29 @@ export class TestPlayerComponent implements OnInit {
       });
   }
 
+
   createForm() {
     this.answersFrom = this.fb.group({
       singlechoise: '',
-      multichoise: false,
+ //     multichoise: false,
       inputfield: ''
     });
   }
 
-  getTestDetails() {
-    this.test_player.getTestDetail(this.testPlayerStartData.testId).subscribe(resp => {
-      this.test_details = resp;
-    }, error => {
-      //  this.toastr.error(error);
-      this.msg = error;
-      this.openModal();
-    });
+  getMarks() {
+    console.log('hi')
   }
+
+  //
+  // getTestDetails() {
+  //   this.test_player.getTestDetail(this.testPlayerStartData.testId).subscribe(resp => {
+  //     this.test_details = resp;
+  //     console.log('test details:' + this.test_details);
+  //   }, error => {
+  //     this.msg = error;
+  //     this.openModal();
+  //   });
+  // }
 
 
   startTest() {
@@ -243,7 +250,12 @@ export class TestPlayerComponent implements OnInit {
           if (resp['response'] === 'ok') {
             this.start = true;
             this.numberOfQuestion = 1;
-            this.test_player.getQuestions(this.test_details)
+            this.test_player.getTestDetail(this.testPlayerStartData.testId)
+              .do((respon: TestDetail[]) => {
+                this.test_details = respon;
+                console.log(this.test_details)
+              })
+              .flatMap((respon: TestDetail[]) => this.test_player.getQuestions(respon))
               .do((questions: Array<number> | any) => {
                 this.questionsIds = this.prepareQuestionForTest(questions);
                 return this.questionsIds;
@@ -292,14 +304,15 @@ export class TestPlayerComponent implements OnInit {
         this.question['answers'] = resp;
         resp.forEach(item => this.answersFrom.addControl(item['answer_id'], this.fb.control(false)));
         let currentAnswers = localStorage.getItem(String(this.question['question_id']));
-        if (this.question['type'] === '2' && currentAnswers) {
+if (currentAnswers) {
+        if (this.question['type'] === '2') {
           let array = currentAnswers.split(',');
           array.forEach(string => this.answersFrom.controls[string].setValue(true)
           );
         } else {
           this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers);
         }
-      }, error => {
+      }}, error => {
         this.msg = error;
         this.openModal();
       });
@@ -320,13 +333,16 @@ export class TestPlayerComponent implements OnInit {
 
   saveCurrentAnswer(question ?: Question, questionId ?: number) {
     let currentQuestion = questionId ? this.test_player.getQuestionById(questionId).subscribe(resp => question = resp) : question;
-    if (
-      currentQuestion['type'] !== '2'
-    ) {
-      this.selectedAnswers = [];
-      let value = this.answersFrom.controls[this.TypeOfAnswers[currentQuestion['type']]].value;
-      value != null ? this.selectedAnswers.push(value) : this.selectedAnswers = [];
-    }
+console.log(this.answersFrom.controls);
+if (question['type'] === '2') {
+
+} else {
+  let value = this.answersFrom.controls[this.TypeOfAnswers[currentQuestion['type']]].value;
+  value != null ? this.selectedAnswers.push(value) : this.selectedAnswers = [];
+
+}
+     // this.selectedAnswers = [];
+
     let currentQuestionId = +(currentQuestion['question_id']);
     let questionIndex = this.questionsIds.indexOf(currentQuestionId);
     this.allAnswers = new CheckAnswers(currentQuestionId, this.selectedAnswers);
@@ -376,10 +392,23 @@ export class TestPlayerComponent implements OnInit {
     });
   }
 
-  saveResults() {
-    this.saveCurrentAnswer(this.question);
-    this.finish = true;
-  }
+  // sum: number;
+  //
+  // saveResults() {
+  //   this.saveCurrentAnswer(this.question);
+  //   this.finish = true;
+  //
+  //
+  //   let array = this.test_details.map(detail => {
+  //     console.log(detail['task']);
+  //     return detail['task'];
+  //   });
+  //   debugger;
+  //   let allTasks: number = array.reduce((sum, current) => {
+  //     return sum + current;
+  //   });
+  //   console.log('number of tasks' + allTasks);
+  // }
 
   backToTest() {
     this.finish = false;
@@ -471,7 +500,7 @@ export class TestPlayerComponent implements OnInit {
       console.log('you have unfinished test');
     } else {
 
-      this.test_player.saveEndTime(this.endUnixTime, this.testPlayerStartData.testId, this.testDuration)
+      this.test_player.saveEndTime(this.endUnixTime, this.testPlayerStartData.testId, this.testDuration, this.testPlayerStartData.testName)
         .subscribe(res => console.log(res));
     }
   }
