@@ -1,4 +1,4 @@
-import {AfterContentChecked, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TestPlayerService} from './test-player.service';
 import {Router} from '@angular/router';
 import {Test} from '../../admin/tests/test';
@@ -69,7 +69,7 @@ export class Question {
   providers: [GetTestsBySubjectService],
 })
 
-export class TestPlayerComponent implements OnInit, AfterContentChecked {
+export class TestPlayerComponent implements OnInit {
   testDuration: number;
   test_id: number;
   test: Test;
@@ -287,20 +287,20 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
     this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
       .map(resp => resp[0]).do(resp => {
       this.question = resp;
-      let currentAnswers = localStorage.getItem(String(this.question['question_id']));
-      console.log(this.selectedAnswers);
-      if (this.question['type'] === '2' && currentAnswers) {
-        let array = currentAnswers.split(',');
-          for (let k of array) {
-       //  this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]][k].setValue(true);
-          }
-      } else {
-        this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers);
-      }
     }).filter(question => question['type'] !== '3')
       .flatMap(resp => this.test_player.getAnswersById(resp['question_id']))
       .subscribe(resp => {
         this.question['answers'] = resp;
+        resp.forEach(item => this.answersFrom.addControl(item['answer_id'], this.fb.control(false)));
+        let currentAnswers = localStorage.getItem(String(this.question['question_id']));
+        if (this.question['type'] === '2' && currentAnswers) {
+          let array = currentAnswers.split(',');
+          console.log(array);
+          array.forEach(string => this.answersFrom.controls[string].setValue(true)
+          );
+        } else {
+          this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers);
+        }
       }, error => {
         this.msg = error;
         this.openModal();
@@ -308,14 +308,6 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
     this.selectedAnswers = [];
   }
 
-  ngAfterContentChecked() {
-    // let currentAnswers = localStorage.getItem(String(this.question['question_id']));
-    // if (this.question['type'] === '2' && currentAnswers) {
-    //   let array = currentAnswers.split(',');
-    //   for (let k of array) {
-    //   }
-    // }
-  }
 
   toggleMultiSelect(event, val) {
     event.preventDefault();
@@ -326,18 +318,6 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
     } else {
       this.selectedAnswers.push(+val);
     }
-    //   this.options = [
-    //     {name:'OptionA', value:'first_opt', checked:true},
-    //     {name:'OptionB', value:'second_opt', checked:false},
-    //     {name:'OptionC', value:'third_opt', checked:true}
-    //   ];
-    //   this.getselectedOptions = function() {
-    //     alert(this.options
-    //       .filter(opt => opt.checked)
-    //       .map(opt => opt.value));
-    //   }
-    // }
-
   }
 
   saveCurrentAnswer(question ?: Question, questionId ?: number) {
