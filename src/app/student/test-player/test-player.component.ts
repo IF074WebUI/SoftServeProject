@@ -165,20 +165,22 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
     } else {
       localStorage.clear();
       this.getTestDetails();
-      this.testService.getTestById(this.testPlayerStartData.testId) // special for Mykola! Please use your subject for sending me this testName!
-        .subscribe(
-          resp => {
-            this.testName = resp[0]['test_name'];
-          },
-          error => {
-            this.msg = error;
-            this.openModal();
-          }
-        );
+
     }
   }
-
-
+  getTestName () {
+    this.testService.getTestById(this.testPlayerStartData.testId) // special for Mykola! Please use your subject for sending me this testName!
+      .subscribe(
+        resp => {
+          this.testName = resp[0]['test_name'];
+          this.testPlayerStartData.testName = this.testName;
+        },
+        error => {
+          this.msg = error;
+          this.openModal();
+        }
+      );
+  }
   onSelect() {
     let n = this.numberOfQuestion - 1;
     if (this.marked[n]) {
@@ -192,29 +194,20 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
 
 
   getStartData() {
-    // this.test_player.getEndTime()
-    //   .subscribe(response => {
-    //     let time = JSON.parse(response);
-    //     if (time['endTime'] > 0) {
-    //       this.router.navigate(['student/student-main']);
-    //     }
-    //   })
+
     this.test_player.testPlayerIdData
       .subscribe(data => {        this.testPlayerStartData.studentId = data['studentId'];
-        // if (+data['studentId'] !== 0)
-        // {
-        //   this.router.navigate(['student/student-main']);
-        // } else
-        if (data['studentId'] === 0) {
+        console.log(this.testPlayerStartData.studentId)
+        if (this.testPlayerStartData.studentId === undefined) {
           this.router.navigate(['student/student-main']);
-        } else
-
-        if (data['endUnixTime'] > 0) {
+        } else if (data['endUnixTime'] > 0) {
           // debugger;
-          this.testPlayerStartData.endUnixTime = data['endUnixTime'];
-          this.testPlayerStartData.testId = data['testId'];
+          this.testName = data.testName;
+          this.testPlayerStartData.endUnixTime = data.endUnixTime;
+          this.testPlayerStartData.testId = data.testId;
           this.testDuration = +data.testDuration;
         } else {
+          this.getTestName();
           this.testPlayerStartData.studentId = +data.studentId;
           this.testPlayerStartData.testId = +data.testId;
           this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * 10;
@@ -497,7 +490,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
       console.log('you have unfinished test');
     } else {
 
-      this.test_player.saveEndTime(this.endUnixTime, this.testPlayerStartData.testId, this.testDuration)
+      this.test_player.saveEndTime(this.endUnixTime, this.testPlayerStartData.testId, this.testDuration, this.testPlayerStartData.testName)
         .subscribe(res => console.log(res));
     }
   }

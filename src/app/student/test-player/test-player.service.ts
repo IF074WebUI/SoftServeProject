@@ -148,8 +148,8 @@ export class TestPlayerService {
       .catch(this.handleError);
   }
 
-  saveEndTime(endTime: number, testId: number, testDuration: number) {
-    let body = JSON.stringify({'endTime': endTime, 'testId': testId, 'testDuration': testDuration});
+  saveEndTime(endTime: number, testId: number, testDuration: number, testName: string) {
+    let body = JSON.stringify({'endTime': endTime, 'testId': testId, 'testDuration': testDuration, testName: testName});
     return this.http.post(HOST_PROTOCOL + HOST + '/TestPlayer/saveEndTime', JSON.stringify(body))
       .map((resp: Response) => resp.json())
       .catch(this.handleError);

@@ -186,10 +186,12 @@ export class StudentsMainPageComponent implements OnInit {
     this.testPlayer.getEndTime()
       .subscribe(res => {
         let time = JSON.parse(res);
-        if (+time['endTime'] > 0) {
-          this.testIdData.testId = time['testId'];
-          this.testIdData.endUnixTime = time['endTime'];
-          this.testIdData.testDuration = time['testDuration']
+        console.log(time)
+        if (+time['endTime'] != undefined) {
+          this.testIdData.testId = time.testId;
+          this.testIdData.endUnixTime = time.endTime;
+          this.testIdData.testDuration = time.testDuration;
+          this.testIdData.testName = time.testName;
           this.testPlayer.addIdData(this.testIdData);
           this.router.navigate(['./student/test-player']);
         } else if (time['response'] === 'Empty set') {

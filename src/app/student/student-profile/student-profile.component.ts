@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {Student} from '../../admin/students/student';
-import {StudentsService} from '../../admin/students/students.service';
-import {GroupService} from '../../admin/group/group.service';
-import {Group} from '../../admin/group/group';
-import {ToastsManager} from 'ng2-toastr';
-import {ActivatedRoute} from '@angular/router';
-import {TestPlayerService} from "../test-player/test-player.service";
+import { Student } from '../../admin/students/student';
+import { StudentsService } from '../../admin/students/students.service';
+import { GroupService } from '../../admin/group/group.service';
+import { Group } from '../../admin/group/group';
+import { ToastsManager } from 'ng2-toastr';
+import { ActivatedRoute } from '@angular/router';
+import { TestPlayerService } from '../test-player/test-player.service';
 
 @Component({
   selector: 'dtester-student-profile',
@@ -17,7 +17,7 @@ export class StudentProfileComponent implements OnInit {
   student: Student;
   group: Group;
   studentId: number;
-  FULL_NAME: 'ПІБ'
+  FULL_NAME: 'ПІБ';
   constructor(
     private route: ActivatedRoute,
     private studentService: StudentsService,
