@@ -99,7 +99,7 @@ export class TestPlayerComponent implements OnInit {
   answersFrom: FormGroup;
   selectedAnswers: Array<number> = [];
   numberOfQuestion: number;
-  marks: any;
+ // marks: any;
   questionsIds: Array<number> = [];
   marked: Array<boolean> = [];
 
@@ -213,7 +213,6 @@ export class TestPlayerComponent implements OnInit {
           this.testPlayerStartData.studentId = +data.studentId;
           this.testPlayerStartData.testId = +data.testId;
           this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * 10;
-
         }
       });
   }
@@ -295,7 +294,6 @@ export class TestPlayerComponent implements OnInit {
         let currentAnswers = localStorage.getItem(String(this.question['question_id']));
         if (this.question['type'] === '2' && currentAnswers) {
           let array = currentAnswers.split(',');
-          console.log(array);
           array.forEach(string => this.answersFrom.controls[string].setValue(true)
           );
         } else {
