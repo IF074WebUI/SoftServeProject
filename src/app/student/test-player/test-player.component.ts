@@ -19,7 +19,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
-import {TestPlayerData} from "../student-profile/TestPlayerData";
+import {TestPlayerData} from '../student-profile/TestPlayerData';
 
 declare var $: any;
 
@@ -107,6 +107,7 @@ export class TestPlayerComponent implements OnInit {
   marked: Array<boolean> = [];
 
 
+
   NEXT_QUESTION = 'Наступне питання';
   ENTER_ANSWER = 'Ввести відповідь';
   MARKED = 'Marked for review';
@@ -121,6 +122,10 @@ export class TestPlayerComponent implements OnInit {
   CLOSE_MODAL = 'Закрити';
   ATTANTION = 'Увага!';
   PRIMARY_VIOLET_COLOR = '#7e8bfe';
+  TIMER_DIVIDER = 10;
+  RGB_PERSENT = 2.55;
+  RGB_TIMER_STATUS_COLOR = 'rgb(188, 0, ';
+  TIMER_SYNHRONIZATION = 100;
 
 
   TypeOfAnswers = {
@@ -213,7 +218,7 @@ export class TestPlayerComponent implements OnInit {
           this.getTestName();
           this.testPlayerStartData.studentId = +data.studentId;
           this.testPlayerStartData.testId = +data.testId;
-          this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * 10;
+          this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * this.TIMER_DIVIDER;
         }
       });
   }
@@ -228,7 +233,7 @@ export class TestPlayerComponent implements OnInit {
   }
 
   getMarks() {
-    console.log('hi')
+    console.log('hi');
   }
 
   //
@@ -431,10 +436,10 @@ export class TestPlayerComponent implements OnInit {
       .subscribe(res => {
           if (this.testPlayerStartData.endUnixTime > 0) {
             this.endUnixTime = this.testPlayerStartData.endUnixTime * this.SECONDS_IN_MINUTE;
-            this.unixTimeLeft = this.testPlayerStartData.endUnixTime - (+res['unix_timestamp'] * 10);
+            this.unixTimeLeft = this.testPlayerStartData.endUnixTime - (+res['unix_timestamp'] * this.TIMER_DIVIDER);
             this.showTimer();
           } else {
-            this.startunixTime = +res['unix_timestamp'] * 10;
+            this.startunixTime = +res['unix_timestamp'] * this.TIMER_DIVIDER;
             this.unixTimeLeft = this.testDuration;
             this.endUnixTime = this.startunixTime + this.testDuration;
             this.showTimer();
@@ -450,9 +455,9 @@ export class TestPlayerComponent implements OnInit {
     console.log(this.testDuration);
     let timer = setInterval(() => {
       if (this.unixTimeLeft >= 0) {
-        this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / 10) % 60));
+        this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / this.TIMER_DIVIDER) % this.SECONDS_IN_MINUTE));
         this.statusTimer = (this.unixTimeLeft / (this.testDuration / this.PERSENT)).toFixed(2) + '%';
-        this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / 600));
+        this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / (this.TIMER_DIVIDER * this.SECONDS_IN_MINUTE)));
 
         this.unixTimeLeft = this.unixTimeLeft - 1;
       } else {
@@ -460,20 +465,9 @@ export class TestPlayerComponent implements OnInit {
         clearInterval(timer);
         this.finishTest();
       }
-    }, 100);
+    }, this.TIMER_SYNHRONIZATION);
   }
 
-  checkUnixTime() {
-
-    this.test_player.getCurrentTime()
-      .subscribe(res => {
-        if (+res['unix_timestamp'] * 10 < this.endUnixTime) {
-          this.unixTimeLeft = (this.endUnixTime - (+res['unix_timestamp'] * 10));
-        } else if (+res['unix_timestamp'] * 10 > this.endUnixTime) {
-          this.finishTest();
-        }
-      });
-  }
 
   stopTimer() {
     clearInterval(this.timer);
@@ -485,8 +479,8 @@ export class TestPlayerComponent implements OnInit {
   };
 
   checkProgresColor() {
-    let status = Math.floor(parseInt(this.statusTimer, 0) * 2.55);
-    return 'rgb(' + '188, 0, ' + status;
+    let status = Math.floor(parseInt(this.statusTimer, 0) * this.RGB_PERSENT);
+    return this.RGB_TIMER_STATUS_COLOR + status;
   };
 
   saveEndTime() {
