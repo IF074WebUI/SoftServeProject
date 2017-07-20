@@ -9,6 +9,8 @@ import {ToastsManager} from 'ng2-toastr';
 import {TestsService} from '../../admin/services/tests.service';
 import {FormGroup} from '@angular/forms/src/model';
 import {FormArray, FormBuilder} from '@angular/forms';
+import {TestDetailService} from '../../admin/test-detail/test-detail.service';
+
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
@@ -69,7 +71,7 @@ export class Question {
   providers: [GetTestsBySubjectService],
 })
 
-export class TestPlayerComponent implements OnInit, AfterContentChecked {
+export class TestPlayerComponent implements OnInit {
   testDuration: number;
   test_id: number;
   test: Test;
@@ -130,7 +132,8 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
               private toastr: ToastsManager,
               private testService: TestsService,
               private fb: FormBuilder,
-              private router: Router) {
+              private router: Router,
+  private details: TestDetailService) {
     this.ticks = 0;
     this.minutesDisplay = '00';
     this.secondsDisplay = '00';
@@ -176,6 +179,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
       this.testService.getTestById(this.testPlayerStartData.testId) // special for Mykola! Please use your subject for sending me this testName!
         .subscribe(
           resp => {
+            console.log(resp);
             this.testName = resp[0]['test_name'];
           },
           error => {
@@ -213,12 +217,11 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
         // {
         //   this.router.navigate(['student/student-main']);
         // } else
-        if (data['studentId'] === 0) {
-          this.router.navigate(['student/student-main']);
-        } else
+        // if (data['studentId'] === 0) {
+        //   this.router.navigate(['student/student-main']);
+        // } else
 
         if (data['endUnixTime'] > 0) {
-          // debugger;
           this.testPlayerStartData.endUnixTime = data['endUnixTime'];
           this.testPlayerStartData.testId = data['testId'];
           this.testDuration = +data.testDuration;
@@ -230,31 +233,21 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
       });
   }
 
- // get multichoise() { return this.answersFrom.get('multichoise'); }
 
   createForm() {
     this.answersFrom = this.fb.group({
       singlechoise: '',
-      multichoise:  this.fb.array(['']),
+      multichoise:  false,
       inputfield: ''
     });
-
-    for (let i = 0; i < 10; ++i) {
-      this.addProduct();
-    }
-    console.log(this.answersFrom.controls['checkbox'].value);
   }
 
-  addProduct() {
-    let array = <FormArray>this.answersFrom.controls['multichoise'];
-    array.push(this.fb.control(''));
-  }
 
   getTestDetails() {
     this.test_player.getTestDetail(this.testPlayerStartData.testId).subscribe(resp => {
       this.test_details = resp;
+      console.log(resp);
     }, error => {
-      //  this.toastr.error(error);
       this.msg = error;
       this.openModal();
     });
@@ -276,10 +269,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
               .subscribe(respon => {
                   for (let i in this.questionsIds) {
                     this.dataForSave[i] = new CheckAnswers(this.questionsIds[i], []);
-                  };
-
-              //    this.answersFrom.controls['checkbox'].
-
+                  }
                   this.showQuestions(0);
                 },
                 error => {
@@ -317,10 +307,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
       let currentAnswers = localStorage.getItem(String(this.question['question_id']));
       console.log(this.selectedAnswers);
       if (this.question['type'] === '2' && currentAnswers) {
-        let array = currentAnswers.split(',');
-          for (let k of array) {
-       //  this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]][k].setValue(true);
-          }
+         this.answersFrom.controls['multichoise'].setValue(false);
       } else {
         this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers);
       }
@@ -335,14 +322,6 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
     this.selectedAnswers = [];
   }
 
-  ngAfterContentChecked() {
-    // let currentAnswers = localStorage.getItem(String(this.question['question_id']));
-    // if (this.question['type'] === '2' && currentAnswers) {
-    //   let array = currentAnswers.split(',');
-    //   for (let k of array) {
-    //   }
-    // }
-  }
 
   toggleMultiSelect(event, val) {
     event.preventDefault();
@@ -416,6 +395,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   saveResults() {
     this.saveCurrentAnswer(this.question);
     this.finish = true;
+    // this.getTestDetails();
   }
 
   backToTest() {
