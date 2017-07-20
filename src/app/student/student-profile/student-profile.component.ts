@@ -4,7 +4,7 @@ import { StudentsService } from '../../admin/students/students.service';
 import { GroupService } from '../../admin/group/group.service';
 import { Group } from '../../admin/group/group';
 import { ToastsManager } from 'ng2-toastr';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { TestPlayerService } from '../test-player/test-player.service';
 
 @Component({
@@ -23,13 +23,12 @@ export class StudentProfileComponent implements OnInit {
     private studentService: StudentsService,
     private groupService: GroupService,
     private toastr: ToastsManager,
-    private test_player: TestPlayerService
+    private test_player: TestPlayerService,
+    private router: Router,
   ) {
   }
 
   ngOnInit() {
-// this.getStudentId();
-//     this.getStudent(this.studentId);
   this.getStudentData();
   }
   getStudentId () {
@@ -39,12 +38,16 @@ export class StudentProfileComponent implements OnInit {
   getStudentData() {
     this.test_player.getStudentData()
       .subscribe( data => {
-        this.student = data;
-        this.groupService.getGroupById(this.student.group_id)
-          .subscribe(response => {
-            console.log(response)
-            this.student.group_name = response[0].group_name;
-          }, error => this.toastr.error(error));
+        if (data.student_name === undefined) {
+          this.router.navigate(['student/student-main']);
+        } else {
+          this.student = data;
+          this.groupService.getGroupById(this.student.group_id)
+            .subscribe(response => {
+              console.log(response)
+              this.student.group_name = response[0].group_name;
+            }, error => this.toastr.error(error));
+        }
       });
   }
 
