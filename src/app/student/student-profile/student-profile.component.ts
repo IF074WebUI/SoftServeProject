@@ -17,6 +17,7 @@ export class StudentProfileComponent implements OnInit {
   student: Student;
   group: Group;
   studentId: number;
+  FULL_NAME: 'ПІБ'
   constructor(
     private route: ActivatedRoute,
     private studentService: StudentsService,
