@@ -83,13 +83,17 @@
 
           <ng-container *ngIf="question['type'] == 2">
             <div *ngIf="question['answers']" class="flex-container">
-              <div  [formGroup]='multichoise'>
-              <label *ngFor="let answer of question['answers']; let i = index" class="flex-box">
-                <input formControlName="i" type="checkbox" [value]="answer['answer_id']"
+              <div  formArrayName='multichoise'>
+                <!--<div  *ngFor="let answer of question['answers']; let i = index">-->
+                <div  *ngFor="let answer of answersFrom.controls['multichoise']; let i = index">
+
+                <label class="flex-box">  {{answer['answer_text']}}
+                <input [formControlName]="i" type="checkbox" [value]="answer['answer_id']"
                          (change)="toggleMultiSelect($event, answer['answer_id'])">
-                {{answer['answer_text']}}
                 <span  *ngIf="answer['attachment']">  <img class="answers-img" [src]="answer['attachment']"></span>
               </label>
+
+                </div>
               </div>
             </div>
           </ng-container>

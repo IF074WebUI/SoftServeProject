@@ -94,10 +94,10 @@ export class StudentsMainPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getTime();
     this.spinner.loaderStatus.subscribe((val: boolean) => {
       this.objLoaderStatus = val;
     });
-    this.getTime();
     this.getTestForStudent();
   }
 
@@ -105,7 +105,7 @@ export class StudentsMainPageComponent implements OnInit {
     clearInterval(this.clock);
   }
   getTime() {
-    this.testPlayer.getCurrentTime().subscribe(res => { this.unixTime = res['curtime']; } );
+    this.testPlayer.getCurrentTime().subscribe(res => { this.unixTime = res['curtime'] * 10; } );
   }
   getTestForStudent() {
     this.getEndTime();

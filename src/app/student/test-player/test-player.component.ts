@@ -8,7 +8,7 @@ import {TestDetail} from '../../admin/test-detail/testDetail';
 import {ToastsManager} from 'ng2-toastr';
 import {TestsService} from '../../admin/services/tests.service';
 import {FormGroup} from '@angular/forms/src/model';
-import {FormBuilder} from '@angular/forms';
+import {FormArray, FormBuilder} from '@angular/forms';
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
@@ -200,43 +200,54 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
 
 
   getStartData() {
-    this.test_player.getEndTime()
-      .subscribe(response => {
-        let time = JSON.parse(response);
-        if (time['endTime'] > 0) {
-          this.router.navigate(['student/student-main']);
-        }
-      });
+    // this.test_player.getEndTime()
+    //   .subscribe(response => {
+    //     let time = JSON.parse(response);
+    //     if (time['endTime'] > 0) {
+    //       this.router.navigate(['student/student-main']);
+    //     }
+    //   })
     this.test_player.testPlayerIdData
-      .subscribe(data => {
+      .subscribe(data => {        this.testPlayerStartData.studentId = data['studentId'];
         // if (+data['studentId'] !== 0)
         // {
         //   this.router.navigate(['student/student-main']);
         // } else
-        // if (data['studentId'] === 0) {
-        //   this.router.navigate(['student/student-main']);
-        // } else
-          if (data['endUnixTime'] > 0) {
+        if (data['studentId'] === 0) {
+          this.router.navigate(['student/student-main']);
+        } else
+
+        if (data['endUnixTime'] > 0) {
+          // debugger;
           this.testPlayerStartData.endUnixTime = data['endUnixTime'];
           this.testPlayerStartData.testId = data['testId'];
           this.testDuration = +data.testDuration;
-          // debugger;
         } else {
           this.testPlayerStartData.studentId = +data.studentId;
           this.testPlayerStartData.testId = +data.testId;
           this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * 10;
         }
-        this.testPlayerStartData.studentId = data['studentId'];
       });
   }
+
+ // get multichoise() { return this.answersFrom.get('multichoise'); }
 
   createForm() {
     this.answersFrom = this.fb.group({
       singlechoise: '',
-      multichoise: this.fb.group({
-      }),
+      multichoise:  this.fb.array(['']),
       inputfield: ''
     });
+
+    for (let i = 0; i < 10; ++i) {
+      this.addProduct();
+    }
+    console.log(this.answersFrom.controls['checkbox'].value);
+  }
+
+  addProduct() {
+    let array = <FormArray>this.answersFrom.controls['multichoise'];
+    array.push(this.fb.control(''));
   }
 
   getTestDetails() {
@@ -265,7 +276,10 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
               .subscribe(respon => {
                   for (let i in this.questionsIds) {
                     this.dataForSave[i] = new CheckAnswers(this.questionsIds[i], []);
-                  }
+                  };
+
+              //    this.answersFrom.controls['checkbox'].
+
                   this.showQuestions(0);
                 },
                 error => {
