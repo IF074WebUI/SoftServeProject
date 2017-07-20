@@ -31,10 +31,6 @@ export class StudentProfileComponent implements OnInit {
   ngOnInit() {
   this.getStudentData();
   }
-  getStudentId () {
-    this.test_player.testPlayerIdData
-      .subscribe(response => this.studentId = +response.studentId);
-  }
   getStudentData() {
     this.test_player.getStudentData()
       .subscribe( data => {

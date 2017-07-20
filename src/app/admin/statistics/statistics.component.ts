@@ -57,7 +57,7 @@ export class StatisticsComponent implements OnInit {
   };
 
   getData() {
-    // this.spinner.showSpinner();
+    this.spinner.showSpinner();
     for (let index = 0; index < this.entityNames.length; index++) {
       this.statistics.getCountRecords(this.entityNames[index]).subscribe(
         (res) => {
@@ -69,6 +69,9 @@ export class StatisticsComponent implements OnInit {
           this.toastr.error(error);
         },
       );
+      if (index === this.entityNames.length - 1) {
+        this.spinner.hideSpinner();
+      }
     }
   }
 
@@ -120,6 +123,7 @@ export class StatisticsComponent implements OnInit {
     }
   }
   showDataOnGraph() {
+    this.spinner.showSpinner();
     for (let i = 0; i < this.graphData.length; i++) {
       if (this.selectedEntity === 'default') {
         this.data.labels = this.entityDataName;
@@ -127,7 +131,7 @@ export class StatisticsComponent implements OnInit {
       this.data.datasets[0].data[i] = this.graphData[i].value;
     }
     this.chart.reinit();
-
+    this.spinner.hideSpinner();
     let series = [];
     for (const dataValue of this.data.datasets[0].data){
       series.push({
