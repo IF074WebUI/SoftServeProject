@@ -167,7 +167,7 @@ export class TestPlayerComponent implements OnInit {
       this.start = true;
     } else {
       localStorage.clear();
-      this.getTestDetails();
+      // this.getTestDetails();
 
     }
   }
