@@ -65,14 +65,11 @@ export class StudentsMainPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.spinner.loaderStatus.subscribe((val: boolean) => {
-      this.objLoaderStatus = val;
-    });
     this.getTestForStudent();
   }
 
   getTestForStudent() {
-    this.spinner.showSpinner();
+    // this.spinner.showSpinner();
     this.getEndTime();
     this.loginService.checkLogged()
       .flatMap(loginResponse => this.studentId = loginResponse['id']);
@@ -90,7 +87,7 @@ export class StudentsMainPageComponent implements OnInit {
                 .subscribe(timeTableRes => {
                   if (timeTableRes['response'] === this.noRecordsResponce) {
                     this.checkTestAvailability = true;
-                    this.spinner.hideSpinner();
+                    // this.spinner.hideSpinner();
                   } else {
                     this.result.timeTable = timeTableRes;
                     for (const timeTable of this.result.timeTable) {
@@ -98,10 +95,10 @@ export class StudentsMainPageComponent implements OnInit {
                         .subscribe(testsRes => {
                             if (testsRes['response'] === this.noRecordsResponce) {
                               this.checkTestAvailability = true;
-                              this.spinner.hideSpinner();
+                              // this.spinner.hideSpinner();
                             } else {
                               this.result.tests = testsRes;
-                              this.spinner.hideSpinner();
+                              // this.spinner.hideSpinner();
                             }
                           }, error => this.toastr.error(error)
                         );
@@ -125,7 +122,7 @@ export class StudentsMainPageComponent implements OnInit {
   }
 
   getEndTime() {
-    this.spinner.showSpinner();
+    // this.spinner.showSpinner();
     this.testPlayer.getEndTime()
       .subscribe(res => {
         let time = JSON.parse(res);

@@ -22,8 +22,6 @@ export class StudentComponent implements OnInit {
 
   ) {
     this.toastr.setRootViewContainerRef(vRef);
-    this.objLoaderStatus = false;
-
   }
 
   ngOnInit() {
