@@ -1,4 +1,4 @@
-import {AfterContentChecked, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TestPlayerService} from './test-player.service';
 import {Router} from '@angular/router';
 import {Test} from '../../admin/tests/test';
@@ -102,7 +102,7 @@ export class TestPlayerComponent implements OnInit {
   answersFrom: FormGroup;
   selectedAnswers: Array<number> = [];
   numberOfQuestion: number;
-  marks: any;
+  // marks: any;
   questionsIds: Array<number> = [];
   marked: Array<boolean> = [];
 
@@ -176,7 +176,8 @@ export class TestPlayerComponent implements OnInit {
 
     }
   }
-  getTestName () {
+
+  getTestName() {
     this.testService.getTestById(this.testPlayerStartData.testId) // special for Mykola! Please use your subject for sending me this testName!
       .subscribe(
         resp => {
@@ -189,6 +190,7 @@ export class TestPlayerComponent implements OnInit {
         }
       );
   }
+
   onSelect() {
     let n = this.numberOfQuestion - 1;
     if (this.marked[n]) {
@@ -204,7 +206,8 @@ export class TestPlayerComponent implements OnInit {
   getStartData() {
 
     this.test_player.testPlayerIdData
-      .subscribe(data => {        this.testPlayerStartData.studentId = data['studentId'];
+      .subscribe(data => {
+        this.testPlayerStartData.studentId = data['studentId'];
         console.log(this.testPlayerStartData.studentId)
         if (this.testPlayerStartData.studentId === undefined) {
           this.router.navigate(['student/student-main']);
@@ -227,7 +230,7 @@ export class TestPlayerComponent implements OnInit {
   createForm() {
     this.answersFrom = this.fb.group({
       singlechoise: '',
-      multichoise: false,
+      //     multichoise: false,
       inputfield: ''
     });
   }
@@ -303,17 +306,25 @@ export class TestPlayerComponent implements OnInit {
     this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
       .map(resp => resp[0]).do(resp => {
       this.question = resp;
-      let currentAnswers = localStorage.getItem(String(this.question['question_id']));
-      console.log(this.selectedAnswers);
-      if (this.question['type'] === '2' && currentAnswers) {
-        this.answersFrom.controls['multichoise'].setValue(false);
-      } else {
+      if (this.question['type'] === '3') {
+        let currentAnswers = localStorage.getItem(String(this.question['question_id']));
         this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers);
       }
     }).filter(question => question['type'] !== '3')
       .flatMap(resp => this.test_player.getAnswersById(resp['question_id']))
       .subscribe(resp => {
         this.question['answers'] = resp;
+        resp.forEach(item => this.answersFrom.addControl(item['answer_id'], this.fb.control(false)));
+        let currentAnswers = localStorage.getItem(String(this.question['question_id']));
+        if (currentAnswers) {
+          if (this.question['type'] === '2') {
+            let array = currentAnswers.split(',');
+            array.forEach(string => this.answersFrom.controls[string].setValue(true)
+            );
+          } else {
+            this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers);
+          }
+        }
       }, error => {
         this.msg = error;
         this.openModal();
@@ -322,26 +333,20 @@ export class TestPlayerComponent implements OnInit {
   }
 
 
-  toggleMultiSelect(event, val) {
-    event.preventDefault();
-    if (!event.target.checked) {
-      if (this.selectedAnswers.indexOf(val) !== -1) {
-        this.selectedAnswers.splice(this.selectedAnswers.indexOf(val), 1);
-      }
-    } else {
-      this.selectedAnswers.push(+val);
-    }
-  }
 
   saveCurrentAnswer(question ?: Question, questionId ?: number) {
     let currentQuestion = questionId ? this.test_player.getQuestionById(questionId).subscribe(resp => question = resp) : question;
-    if (
-      currentQuestion['type'] !== '2'
-    ) {
-      this.selectedAnswers = [];
+    if (question['type'] === '2') {
+      question['answers'].map(answer => {return answer['answer_id']; }).forEach(id => {
+        let value = this.answersFrom.controls[id].value;
+        if (value) {this.selectedAnswers.push(id); }
+      });
+    } else {
       let value = this.answersFrom.controls[this.TypeOfAnswers[currentQuestion['type']]].value;
       value != null ? this.selectedAnswers.push(value) : this.selectedAnswers = [];
+
     }
+
     let currentQuestionId = +(currentQuestion['question_id']);
     let questionIndex = this.questionsIds.indexOf(currentQuestionId);
     this.allAnswers = new CheckAnswers(currentQuestionId, this.selectedAnswers);
