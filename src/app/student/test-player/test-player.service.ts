@@ -26,7 +26,7 @@ export class TestPlayerService {
   questions: Array<number> = [];
   answers: Answer[] = [];
   options: RequestOptions;
-  public testPlayerIdData = new BehaviorSubject<TestPlayerData>(new TestPlayerData(0, 0, 0, 0, 0, 0 , 0, ''));
+  public testPlayerIdData = new BehaviorSubject<TestPlayerData>(new TestPlayerData);
   private studentData = new BehaviorSubject<Student>(new Student);
   private testRezults = new BehaviorSubject<InitialRezults>(new InitialRezults(0, 0, 0, 0, NaN));
 

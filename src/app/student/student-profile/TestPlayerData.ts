@@ -10,14 +10,14 @@ export class TestPlayerData {
   testLogDuration: number;
   endUnixTime: number;
   testName: string;
-  constructor (studentId, testId, testDuration, startLogTime, testLogId, testLogDuration, endUnixTime, testName) {
-    this.studentId = studentId;
-    this.testId = testId;
-    this.testDuration = testDuration;
-    this.startLogTime = startLogTime;
-    this.testLogId = testLogId;
-    this.testLogDuration = testLogDuration;
-    this.endUnixTime = endUnixTime;
-    this.testName = testName;
-  }
+  // constructor (studentId, testId, testDuration, startLogTime, testLogId, testLogDuration, endUnixTime, testName) {
+  //   this.studentId = studentId;
+  //   this.testId = testId;
+  //   this.testDuration = testDuration;
+  //   this.startLogTime = startLogTime;
+  //   this.testLogId = testLogId;
+  //   this.testLogDuration = testLogDuration;
+  //   this.endUnixTime = endUnixTime;
+  //   this.testName = testName;
+  // }
 }

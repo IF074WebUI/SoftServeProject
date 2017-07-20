@@ -46,7 +46,7 @@ export class StudentsMainPageComponent implements OnInit {
   GREATINGS: string;
   OPEN_TESTS: string;
   PROFILE: string;
-  testIdData: TestPlayerData = new TestPlayerData(0, 0, 0, 0, 0, 0 , 0, '');
+  testIdData: TestPlayerData = new TestPlayerData;
   unfinishedTests: any;
   logTime: number;
   logTest: number;

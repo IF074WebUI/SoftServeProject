@@ -90,7 +90,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   unixTimeLeft: number;
   MILLISECONDS_IN_SECOND: number;
   timer: any;
-  testPlayerStartData: TestPlayerData = new TestPlayerData(0, 0, 0, 0, 0, 0 , 0, '');
+  testPlayerStartData: TestPlayerData = new TestPlayerData;
   dataForSave: Array<CheckAnswers> = [];
   statusTimer: string;
   PERSENT: number;
