@@ -8,7 +8,9 @@ import {TestDetail} from '../../admin/test-detail/testDetail';
 import {ToastsManager} from 'ng2-toastr';
 import {TestsService} from '../../admin/services/tests.service';
 import {FormGroup} from '@angular/forms/src/model';
-import {FormBuilder} from '@angular/forms';
+import {FormArray, FormBuilder} from '@angular/forms';
+import {TestDetailService} from '../../admin/test-detail/test-detail.service';
+
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
@@ -70,7 +72,7 @@ export class Question {
   providers: [GetTestsBySubjectService],
 })
 
-export class TestPlayerComponent implements OnInit, AfterContentChecked {
+export class TestPlayerComponent implements OnInit {
   testDuration: number;
   test_id: number;
   test: Test;
@@ -144,6 +146,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   ngOnInit() {
     this.getStartData();
     this.createForm();
+    this.getMarks();
     console.log(this.testPlayerStartData.endUnixTime);
     if (this.testPlayerStartData.endUnixTime > 0) {
       this.questionsIds = [];
@@ -215,6 +218,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
       });
   }
 
+
   createForm() {
     this.answersFrom = this.fb.group({
       singlechoise: '',
@@ -223,15 +227,20 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  getTestDetails() {
-    this.test_player.getTestDetail(this.testPlayerStartData.testId).subscribe(resp => {
-      this.test_details = resp;
-    }, error => {
-      //  this.toastr.error(error);
-      this.msg = error;
-      this.openModal();
-    });
+  getMarks() {
+    console.log('hi')
   }
+
+  //
+  // getTestDetails() {
+  //   this.test_player.getTestDetail(this.testPlayerStartData.testId).subscribe(resp => {
+  //     this.test_details = resp;
+  //     console.log('test details:' + this.test_details);
+  //   }, error => {
+  //     this.msg = error;
+  //     this.openModal();
+  //   });
+  // }
 
 
   startTest() {
@@ -241,7 +250,12 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
           if (resp['response'] === 'ok') {
             this.start = true;
             this.numberOfQuestion = 1;
-            this.test_player.getQuestions(this.test_details)
+            this.test_player.getTestDetail(this.testPlayerStartData.testId)
+              .do((respon: TestDetail[]) => {
+                this.test_details = respon;
+                console.log(this.test_details)
+              })
+              .flatMap((respon: TestDetail[]) => this.test_player.getQuestions(respon))
               .do((questions: Array<number> | any) => {
                 this.questionsIds = this.prepareQuestionForTest(questions);
                 return this.questionsIds;
@@ -287,10 +301,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
       let currentAnswers = localStorage.getItem(String(this.question['question_id']));
       console.log(this.selectedAnswers);
       if (this.question['type'] === '2' && currentAnswers) {
-        let array = currentAnswers.split(',');
-          for (let k of array) {
-       //  this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]][k].setValue(true);
-          }
+        this.answersFrom.controls['multichoise'].setValue(false);
       } else {
         this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers);
       }
@@ -305,14 +316,6 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
     this.selectedAnswers = [];
   }
 
-  ngAfterContentChecked() {
-    // let currentAnswers = localStorage.getItem(String(this.question['question_id']));
-    // if (this.question['type'] === '2' && currentAnswers) {
-    //   let array = currentAnswers.split(',');
-    //   for (let k of array) {
-    //   }
-    // }
-  }
 
   toggleMultiSelect(event, val) {
     event.preventDefault();
@@ -323,18 +326,6 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
     } else {
       this.selectedAnswers.push(+val);
     }
-    //   this.options = [
-    //     {name:'OptionA', value:'first_opt', checked:true},
-    //     {name:'OptionB', value:'second_opt', checked:false},
-    //     {name:'OptionC', value:'third_opt', checked:true}
-    //   ];
-    //   this.getselectedOptions = function() {
-    //     alert(this.options
-    //       .filter(opt => opt.checked)
-    //       .map(opt => opt.value));
-    //   }
-    // }
-
   }
 
   saveCurrentAnswer(question ?: Question, questionId ?: number) {
@@ -395,10 +386,23 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  saveResults() {
-    this.saveCurrentAnswer(this.question);
-    this.finish = true;
-  }
+  // sum: number;
+  //
+  // saveResults() {
+  //   this.saveCurrentAnswer(this.question);
+  //   this.finish = true;
+  //
+  //
+  //   let array = this.test_details.map(detail => {
+  //     console.log(detail['task']);
+  //     return detail['task'];
+  //   });
+  //   debugger;
+  //   let allTasks: number = array.reduce((sum, current) => {
+  //     return sum + current;
+  //   });
+  //   console.log('number of tasks' + allTasks);
+  // }
 
   backToTest() {
     this.finish = false;
