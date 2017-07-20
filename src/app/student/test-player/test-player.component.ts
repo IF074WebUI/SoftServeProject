@@ -17,6 +17,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
+import {TestPlayerData} from "../student-profile/TestPlayerData";
 
 declare var $: any;
 
@@ -89,7 +90,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   unixTimeLeft: number;
   MILLISECONDS_IN_SECOND: number;
   timer: any;
-  testPlayerStartData: any;
+  testPlayerStartData: TestPlayerData = new TestPlayerData(0, 0, 0, 0, 0, 0 , 0, '');
   dataForSave: Array<CheckAnswers> = [];
   statusTimer: string;
   PERSENT: number;
@@ -138,15 +139,6 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
     this.MILLISECONDS_IN_SECOND = 100;
     this.PERSENT = 100;
     this.DANGER_STATUS = 18;
-    this.testPlayerStartData = {
-      studentId: 0,
-      testId: 0,
-      testDuration: 0,
-      startLogTime: 0,
-      testLogId: 0,
-      testLogDuration: 0,
-      endUnixTime: 0
-    };
   }
 
   ngOnInit() {

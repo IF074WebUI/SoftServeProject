@@ -18,6 +18,7 @@ import {DeleteRecordByIdService} from '../../admin/services/delete-record-by-id.
 import {TestPlayerService} from '../test-player/test-player.service';
 import {Test} from "../../admin/tests/test";
 import {Student} from "../../admin/students/student";
+import {TestPlayerData} from "../student-profile/TestPlayerData";
 @Component({
   selector: 'dtester-students-main-page',
   templateUrl: './students-main-page.component.html',
@@ -45,7 +46,7 @@ export class StudentsMainPageComponent implements OnInit {
   GREATINGS: string;
   OPEN_TESTS: string;
   PROFILE: string;
-  testIdData: any;
+  testIdData: TestPlayerData = new TestPlayerData(0, 0, 0, 0, 0, 0 , 0, '');
   unfinishedTests: any;
   logTime: number;
   logTest: number;
@@ -68,6 +69,7 @@ export class StudentsMainPageComponent implements OnInit {
               private testPlayer: TestPlayerService,
               private route: ActivatedRoute,
   ) {
+
     this.objLoaderStatus = false;
     this.GREATINGS = 'Доброго дня';
     this.OPEN_TESTS = 'Доступні до здачі тести';
@@ -78,15 +80,6 @@ export class StudentsMainPageComponent implements OnInit {
     this.tableHeaders = ['#', 'Назва тесту', 'Кількість завданнь', 'Тривалість', ''];
     this.logTime = 0;
     this.logTest = 0;
-    this.testIdData = {
-      studentId: 0 ,
-      testId: 0,
-      testDuration: 0,
-      startLogTime: 0,
-      testLogId: 0,
-      testLogDuration: 0,
-      endUnixTime: 0
-    };
     this.unfinishedTests = {
       test: [],
       startingTime: 0
@@ -114,7 +107,8 @@ export class StudentsMainPageComponent implements OnInit {
         return this.loginService.checkLogged()
           .subscribe(result => {
             this.studentId = +result['id'];
-            this.testIdData.studentId = +this.studentId;
+            console.log(+result['id'])
+            this.testIdData.studentId = +result['id'];
             this.testPlayer.addIdData(this.testIdData);
             this.studentService.getStudentById(+result['id'])
             .subscribe(res => {

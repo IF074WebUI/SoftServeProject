@@ -19,22 +19,14 @@ import {Subject} from 'rxjs/Subject';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Router} from "@angular/router";
 import {Student} from "../../admin/students/student";
+import {TestPlayerData} from "../student-profile/TestPlayerData";
 
 @Injectable()
 export class TestPlayerService {
   questions: Array<number> = [];
   answers: Answer[] = [];
   options: RequestOptions;
-  public testPlayerIdData = new BehaviorSubject<any>({
-    studentId: 0,
-    testId: 0,
-    testDuration: 0,
-    startLogTime: 0,
-    testLogId: 0,
-    testLogDuration: 0,
-    endUnixTime: 0
-
-  });
+  public testPlayerIdData = new BehaviorSubject<TestPlayerData>(new TestPlayerData(0, 0, 0, 0, 0, 0 , 0, ''));
   private studentData = new BehaviorSubject<Student>(new Student);
   private testRezults = new BehaviorSubject<InitialRezults>(new InitialRezults(0, 0, 0, 0, NaN));
 
@@ -146,7 +138,7 @@ export class TestPlayerService {
     return this.http.post(HOST_PROTOCOL + HOST + TEST_PLAYER_CHECK_ANSWERS, allAnswers, this.options).map((resp: Response) => resp.json()).catch(this.handleError);
   }
 
-  addIdData(data: any) {
+  addIdData(data: TestPlayerData) {
     this.testPlayerIdData.next(data);
   }
 
