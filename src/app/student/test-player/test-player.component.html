@@ -85,7 +85,7 @@
             <div *ngIf="question['answers']" class="flex-container">
               <label *ngFor="let answer of question['answers']" class="flex-box">
                 <input type="checkbox" [formControlName]="answer['answer_id']"
-                       [value]="answer['answer_id']"  (change)="toggleMultiSelect($event, answer['answer_id'])">
+                       [value]="answer['answer_id']">
                 {{answer['answer_text']}}
                 <span  *ngIf="answer['attachment']">  <img class="answers-img" [src]="answer['attachment']"></span>
               </label>
