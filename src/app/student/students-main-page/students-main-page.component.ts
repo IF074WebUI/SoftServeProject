@@ -119,6 +119,7 @@ export class StudentsMainPageComponent implements OnInit {
             this.studentService.getStudentById(+result['id'])
             .subscribe(res => {
               this.result.student = res[0];
+              this.testPlayer.setStudentData(res[0])
               this.timeTable.getTimeTablesForGroup(this.result.student['group_id'])
                 .subscribe(timeTableRes => {
                   if (timeTableRes['response'] === this.noRecordsResponce) {

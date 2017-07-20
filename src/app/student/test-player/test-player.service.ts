@@ -18,6 +18,7 @@ import 'rxjs/add/operator/switchMap';
 import {Subject} from 'rxjs/Subject';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Router} from "@angular/router";
+import {Student} from "../../admin/students/student";
 
 @Injectable()
 export class TestPlayerService {
@@ -34,6 +35,7 @@ export class TestPlayerService {
     endUnixTime: 0
 
   });
+  private studentData = new BehaviorSubject<Student>(new Student);
   private testRezults = new BehaviorSubject<InitialRezults>(new InitialRezults(0, 0, 0, 0, NaN));
 
   constructor(private http: Http,  private router: Router) {
@@ -69,6 +71,12 @@ export class TestPlayerService {
 
   getRezults(): Observable<any> {
     return this.testRezults.asObservable();
+  }
+  setStudentData(data: Student) {
+    this.studentData.next(data);
+  }
+  getStudentData() {
+    return this.studentData.asObservable();
   }
 
   getCurrentTime() {

@@ -27,35 +27,24 @@ export class StudentProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-this.getStudentId();
-    this.getStudent(this.studentId);
+// this.getStudentId();
+//     this.getStudent(this.studentId);
+  this.getStudentData();
   }
   getStudentId () {
     this.test_player.testPlayerIdData
       .subscribe(response => this.studentId = +response.studentId);
   }
-  getStudent(studentId: number) {
-    this.studentService.getStudentById(studentId)
-      .subscribe(
-        response => {
-          console.log(response[0])
-          this.student.group_id = +response[0]['group_id'];
-          this.student.gradebook_id = response[0]['gradebook_id'];
-          this.student.student_surname = response[0]['student_surname'];
-          this.student.student_fname = response[0]['student_fname'];
-          this.student.student_name = response[0]['student_name'];
-          this.groupService.getGroupById(this.student.group_id)
-            .subscribe(
-              groupResponce => {
-                this.student.group_name = groupResponce[0].group_name;
-                this.studentService.getAdminUser(this.student.user_id)
-                  .subscribe(response => console.log(response));
-                },
-              error => this.toastr.error(error)
-            );
-        }, error => this.toastr.error(error)
-        );
-
+  getStudentData() {
+    this.test_player.getStudentData()
+      .subscribe( data => {
+        this.student = data;
+        this.groupService.getGroupById(this.student.group_id)
+          .subscribe(response => {
+            console.log(response)
+            this.student.group_name = response[0].group_name;
+          }, error => this.toastr.error(error));
+      });
   }
 
 }
