@@ -1,5 +1,11 @@
 @import "../universal/styles/const";
 
+.d-tester-pink{
+  background: darkmagenta;
+  .btn-pink{
+    background: rebeccapurple;
+  }
+}
 li:hover{
   background-color: lightblue;
   color: white;

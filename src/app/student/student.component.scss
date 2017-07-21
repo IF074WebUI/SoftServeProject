@@ -33,7 +33,9 @@ $hover-border-transition: 3px solid white;
   }
   background-color: $primary-violet-color;
 }
-
+.footer-wrapper{
+  position: relative;
+}
 .footer {
   position:fixed;
   bottom:0;
@@ -43,10 +45,39 @@ $hover-border-transition: 3px solid white;
   color: white;
   display: flex;
   justify-content: center;
-
-  div {
-
+}
+.pink{
+  background: deeppink;
+  .btn{
+    background: purple;
+  }
+}
+.pinkTheme{
+  background: purple;
+  .btn{
+    background: yellow;
+  }
+}
+.orangeTheme{
+  background: orange;
+  .btn2{
+    background: green;
+  }
+}
+.redTheme{
+  color: darkred;
+  .btn2{
+    color: red;
   }
 }
 
 
+.tabs-selection {
+  background-color: #0f0;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: row;
+  padding-left: 16px;
+  padding-right: 16px;
+  width: 100%;
+}

@@ -18,8 +18,8 @@ import {Question} from "../questions/question";
 export class AnswersComponent implements OnInit {
   HEADING_ANSWERS = 'Відповіді';
   title = 'Відповіді';
-   answersOnPage: Answer[];
-   pageNumber = 1;
+  answersOnPage: Answer[];
+  pageNumber = 1;
   recordsPerPage = 5;
   countRecords: number;
   headers: string[];

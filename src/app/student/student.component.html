@@ -1,19 +1,131 @@
 <ngx-loading [show]="objLoaderStatus"></ngx-loading>
+<div [ngClass]=[{{color}}]>
+  <button class="btn">btn-btn</button>
+</div>
   <div class="header">
     <div class="container">
       <div class="row">
         <div class="col-md-10">
           <h1 routerLink="/student/student-main" routerLinkActive="active">dTester</h1>
-        </div>
-        <div class="col-md-2 exit">zz
-          <button class=" btn btn-exit" (click)="logout()">Вихід</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="body">
+          <!--<button class="btn-pink">pink me</button>-->
+          <!--<button class="btn-pink">pink me2</button>-->
+
+
+          <!--{{colorTheme}}<div [className]="'d-tester-{{colorTheme}}'"> I would be classed using classname PINK-->
+<!--<button class="btn">hello</button>-->
+            <!--&lt;!&ndash;-class binding for ClassName &ndash;&gt;-->
+            <!--<h2>Class Binding using 'className' directive and variable</h2>-->
+
+            <!--&lt;!&ndash;call the ngclass object to add a class name to it. &ndash;&gt;-->
+            <!--<div [className]="my_Class"> I would be classed using classname-->
+            <!--<button class="btn">hello</button></div>-->
+
+            <!--&lt;!&ndash;button to change the class &ndash;&gt;-->
+            <!--<button (click)="toggle_class()">Toggle_class</button>-->
+            <!--<div [className]="my_Class2"> I would be classed using classname-->
+              <!--<button class="btn2">hello</button></div>-->
+
+            <!--&lt;!&ndash;button to change the class &ndash;&gt;-->
+            <!--<button (click)="toggle_class2()">Toggle_class</button>-->
+
+
+            <!--<div [className]="my_Class3"> I would be classed using classname-->
+              <!--<button class="btn3">hello</button></div>-->
+            <!--<button (click)="getTheme('redTheme')">red</button>-->
+
+
+
+            <!--<div [ngStyle]="{ 'color': getColor(), 'font-size': font_size, 'background-color': background_color }"> I would be styled with different colors dynamically </div>-->
+
+            <!--attach a click function to this button to set the style dynamically -->
+            <!--<input type="text" [(ngModel)]="background_color" placeholder="background_color">-->
+            <!--<input type="text" [(ngModel)]="font_size" placeholder="font_size">-->
+            <!--<select name="color-color" id="c" [(ngModel)]="background_color">-->
+              <!--<option value="red" selected>red</option>-->
+              <!--<option value="yellow">yellow</option>-->
+              <!--<option value="blue">blue</option>-->
+            <!--</select>-->
+
+
+            <!--<div [ngClass] = "{ 'colorTheme': colorTheme }">div with changing class</div>-->
+            <!--<select name="color-col" id="c" [(ngModel)]="colorTheme">-->
+              <!--<option value="orangeTheme" class="orangeTheme" selected>orange</option>-->
+              <!--<option value="redTheme" class="redTheme">red</option>-->
+              <!--<option value="pinkTheme" class="pinkTheme">pink</option>-->
+            <!--</select>-->
+
+
+
+          <!--<div [ngSwitch]="theme.color">-->
+            <!--<div *ngSwitchCase="'red'"    [di]="theme"></div>-->
+            <!--<div *ngSwitchCase="'blue'"      [di]="theme"></div>-->
+            <!--<div *ngSwitchCase="'green'" [di]="theme"></div>-->
+            <!--<div  *ngSwitchDefault           [di]="theme"></div>-->
+          <!--</div>-->
+
+
+
+          <!--<div [ngClass] = "'colorTheme'">MY favourite div</div>-->
+          <!--<button (click)="setTheme('red')">Btn</button>-->
+        <!--</div>-->
+        <!--<div class="col-md-2 exit">zz-->
+          <!--<button class=" btn btn-exit" (click)="logout()">Вихід</button>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<div class="body">-->
+
+
+
+
+
+
+
+          <!---->
+    <!--<div *ngIf="users">-->
+      <!--<ul class="list-group users-list">-->
+        <!--<li class="list-group-item"-->
+            <!--*ngFor="let user of users"-->
+            <!--(click)="selectUser(user)"-->
+            <!--[class.active]="user === activeUser">-->
+          <!--{{ user.name }} ({{ user.username }})-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</div>-->
+
+
+
+    <!--<div [user]="activeUser"></div>-->
+
+    <!--<div class="jumbotron" *ngIf="!activeUser">-->
+      <!--<span class="glyphicon glyphicon-hand-left"></span>-->
+      <!--<h2>Choose a User</h2>-->
+    <!--</div>-->
     <router-outlet></router-outlet>
+
+
+
+
+
+
+    <!--<div [ngClass]="'pinkTheme'">pinkTheme</div>-->
+
+    <!--<div class="tabs-selection">-->
+      <!--<div [active]="isSelected('pinkTheme')" (click)="setTheme('pinkTheme')">pinkTheme</div>-->
+      <!--<div [active]="isSelected('red')" (click)="setTheme('red')">red</div>-->
+      <!--<div [active]="isSelected('3')" (click)="setTheme('3')">Tab 3</div>-->
+    <!--</div>-->
+
+    <!--<div [ngSwitch]="tab">-->
+      <!--<span *ngSwitchCase="'pinkTheme'" [ngClass]="'pinkTheme'">pinkTheme</span>-->
+      <!--<span *ngSwitchCase="'red'">red</span>-->
+      <!--<span *ngSwitchCase="'3'">TAB 3</span>-->
+      <!--<span *ngSwitchDefault>Select a tab</span>-->
+    <!--</div>-->
   </div>
-  <div class="footer">
-    <p>&copy; 2017 IT academy</p>
-  </div>
+  <div class="footer-wrapper">
+    <div class="footer">&copy; 2017 IT academy</div>
+    </div>
+<!--</div>-->
+<!--</div>-->
