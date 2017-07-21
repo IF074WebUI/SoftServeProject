@@ -58,7 +58,7 @@ table {
   tr:first-of-type{
     box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
   }
-  @extend table
+  @extend table;
 }
 
 .navbar {
