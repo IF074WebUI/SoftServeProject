@@ -108,9 +108,9 @@ export class TestPlayerComponent implements OnInit {
 
 
 
-  NEXT_QUESTION = 'Наступне питання';
+  NEXT_QUESTION = 'Перейти на наступне питання';
   ENTER_ANSWER = 'Ввести відповідь';
-  MARKED = 'Marked for review';
+  MARKED = 'Відмітити питання';
   FINISH = 'Завершити тест';
   START = 'Почати тест';
   QUESTION = 'Питання №';
@@ -193,6 +193,8 @@ export class TestPlayerComponent implements OnInit {
     } else {
       this.marked[n] = true;
       $('.number-box').eq(n).css({'border-color': 'red'});
+      // $('.number-box').eq(n).addClass('flag');
+
     }
   }
 
@@ -345,6 +347,7 @@ export class TestPlayerComponent implements OnInit {
     localStorage.setItem(String(currentQuestionId), this.selectedAnswers.toString());
     if (this.allAnswers['answer_ids'].length === 0) {
       $('.number-box').eq(questionIndex).css({'backgroundColor': ''});
+
     } else {
       $('.number-box').eq(questionIndex).css({'backgroundColor': this.PRIMARY_VIOLET_COLOR});
     }
@@ -410,7 +413,6 @@ export class TestPlayerComponent implements OnInit {
 
   closeModal() {
     $('#message').modal('hide');
-    $('#message').dismiss();
     this.router.navigate(['./student']);
 
   }

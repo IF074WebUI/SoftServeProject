@@ -10,7 +10,7 @@
       <ng-container *ngIf="!start">
       </ng-container>
       <ng-container *ngIf="start && !finish">
-        <button class=" btn btn-exit btn-close-test" (click)="saveResults()"> {{FINISH}}</button>
+        <button class="btn btn-exit btn-close-test" (click)="saveResults()"> {{FINISH}}</button>
       </ng-container>
     </div>
 
@@ -33,6 +33,7 @@
       <ul *ngIf="questionsIds" class="number-container">
         <li class="number-box" *ngFor="let number of getArrayOfNumbers(questionsIds)" (click)="goToQuestion(number - 1)">
           {{number}}
+          <!--<div class="flag"> </div>-->
         </li>
       </ul>
     </div>
@@ -43,16 +44,18 @@
     <ng-container *ngIf="!start && !finish">
       <div class="table-responsive">
         <table class="table">
-          <tr>
+          <thead>
             <td>{{TEST_NAME}}</td>
-            <td>{{testName}}</td>
-          </tr>
-          <tr>
             <td>{{TEST_DURATION}}</td>
-            <td>{{testPlayerStartData['testDuration']}} {{HV}}</td>
+          </thead>
+          <tr>
+            <td>{{testName}}</td>
+            <td>{{this.testDuration}} {{HV}}</td>
           </tr>
         </table>
-        <button type="button" class=" btn btn-lg btn-exit btn-close-test" (click)="startTest()">{{START}}</button>
+        <div class="start-test">
+        <button type="button" class=" btn btn-lg btn-exittest" (click)="startTest()">{{START}}</button>
+        </div>
       </div>
     </ng-container>
 
@@ -107,7 +110,7 @@
       </div>
       <div class="navbar">
         <ul class="nav navbar-nav navbar-toggler-right">
-          <li><a (click)="onSelect()"> {{MARKED}}</a></li>
+          <li class="marked"><span (click)="onSelect()"> {{MARKED}}</span><img height="30px" src="../../../assets/flag.png"></li>
           <li><a (click)="next(question)">{{NEXT_QUESTION}}</a></li>
         </ul>
       </div>
@@ -145,7 +148,7 @@
         {{msg}}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="closeModal()">{{CLOSE_MODAL}}</button>
+        <button type="button" class="btn btn-exit btn-close-test" (click)="closeModal()">{{CLOSE_MODAL}}</button>
       </div>
     </div>
 
