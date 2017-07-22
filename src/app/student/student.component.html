@@ -1,116 +1,29 @@
-<!--<select [(ngModel)]="selectedValue">-->
-<!--<option *ngFor="let item of items;" [value]="item.name">{{item.name}}</option>-->
-<!--</select>-->
-<!--<div class='row' [ngSwitch]="selectedValue">-->
-<!--<div *ngSwitchCase="'One'" class="pinkTheme">One is Pressed-->
-<!--<button class="btn">fygegbf</button>-->
-<!--</div>-->
-<!--<div *ngSwitchCase="'Two'" class="orangeTheme">Two is Selected-->
-<!--<button class="btn">grfsj</button>-->
-<!--</div>-->
-<!--<div *ngSwitchCase="'Three'" class="redTheme">Two is Selected-->
-<!--<button class="btn">grfsj</button>-->
-<!--</div>-->
-<!--<div *ngSwitchDefault class="redTheme">-->
-<!--<button class="btn">btn</button></div>-->
-<!--</div>-->
-
 <ngx-loading [show]="objLoaderStatus"></ngx-loading>
-<div class="d-tester-theme" [ngSwitch]="selectedValue">
-  <div *ngSwitchCase="'One'" class="pinkTheme">
-            <div class="header">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-10">
-                  <h1 routerLink="/student/student-main" routerLinkActive="active">dTester</h1>
-                </div>
-                <div class="col-md-2 exit">
-                  <select [(ngModel)]="selectedValue">
-                    <option *ngFor="let item of items;" [value]="item.name">{{item.name}}</option>
-                  </select>
-                  <button class=" btn btn-exit" (click)="logout()">Вихід</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="body">
-            <router-outlet></router-outlet>
-          </div>
-    <div class="footer-wrapper">
-    <div class="footer">&copy; 2017 IT academy</div>
-    </div>
-
-  </div>
-  <div *ngSwitchCase="'Two'" class="orangeTheme">
-    <div class="header">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-10">
-            <h1 routerLink="/student/student-main" routerLinkActive="active">dTester</h1>
-          </div>
-          <div class="col-md-2 exit">
-            <select [(ngModel)]="selectedValue">
-              <option *ngFor="let item of items;" [value]="item.name">{{item.name}}</option>
-            </select>
-            <button class=" btn btn-exit" (click)="logout()">Вихід</button>
-          </div>
-        </div>
+<div class="d-tester-theme">
+  <div class="container header">
+    <div class="row">
+      <div class="col-md-10">
+        <h1 routerLink="/student/student-main" routerLinkActive="active">dTester</h1>
+      </div>
+      <div class="col-md-2 exit">
+        <button class=" btn btn-exit" (click)="logout()">Вихід</button>
       </div>
     </div>
-    <div class="body">
-      <router-outlet></router-outlet>
-    </div>
-    <div class="footer-wrapper">
-      <div class="footer">&copy; 2017 IT academy</div>
-    </div>
   </div>
-  <div *ngSwitchCase="'Three'" class="redTheme">
-    <div class="header">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-10">
-            <h1 routerLink="/student/student-main" routerLinkActive="active">dTester</h1>
-          </div>
-          <div class="col-md-2 exit">
-            <select [(ngModel)]="selectedValue">
-              <option *ngFor="let item of items;" [value]="item.name">{{item.name}}</option>
-            </select>
-            <button class=" btn btn-exit" (click)="logout()">Вихід</button>
-          </div>
-        </div>
+  <div class="container body">
+    <div class="row">
+      <div class="col-md-12">
+        <router-outlet></router-outlet>
       </div>
     </div>
-    <div class="body">
-      <router-outlet></router-outlet>
-    </div>
-    <div class="footer-wrapper">
-      <div class="footer">&copy; 2017 IT academy</div>
-    </div>
   </div>
-  <div *ngSwitchDefault>
-    <div class="header">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-10">
-            <h1 routerLink="/student/student-main" routerLinkActive="active">dTester</h1>
-          </div>
-          <div class="col-md-2 exit">
-            <select [(ngModel)]="selectedValue">
-              <option *ngFor="let item of items;" [value]="item.name">{{item.name}}</option>
-            </select>
-            <button class=" btn btn-exit" (click)="logout()">Вихід</button>
-          </div>
-        </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 footer-wrapper">
+        <div class="footer">&copy; 2017 IT academy</div>
       </div>
     </div>
-    <div class="body">
-      <router-outlet></router-outlet>
-    </div>
-    <div class="footer-wrapper">
-      <div class="footer">&copy; 2017 IT academy</div>
-    </div>
   </div>
-
 </div>
 
 
