@@ -424,7 +424,7 @@ console.log(this.testPlayerStartData.endUnixTime )
             this.unixTimeLeft = this.testDuration;
             this.endUnixTime = this.startunixTime + this.testDuration;
             this.showTimer();
-            this.saveEndTime();
+          //  this.saveEndTime();
           }
         },
         error => {
@@ -475,15 +475,9 @@ console.log(this.testPlayerStartData.endUnixTime )
     return 'rgb(' + '188, 0, ' + status;
   };
 
-  saveEndTime() {
-    if (this.testPlayerStartData.endUnixTime > 0) {
-      console.log('you have unfinished test');
-    } else {
-
-      this.test_player.saveEndTime(this.endUnixTime, this.testPlayerStartData.testId, this.testDuration)
-        .subscribe(res => console.log(res));
-    }
-  }
+  // saveEndTime() {
+  //   document.getElementsByClassName('.orangeTheme').style.backgroundColor = "red";
+  // }
 
   getEndTime() {
     this.test_player.getEndTime()

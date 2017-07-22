@@ -46,28 +46,30 @@ $hover-border-transition: 3px solid white;
   display: flex;
   justify-content: center;
 }
-.pink{
-  background: deeppink;
-  .btn{
-    background: purple;
-  }
-}
+
+
 .pinkTheme{
   background: purple;
+  .header{
+    background: #ff6ff0;
+  }
   .btn{
     background: yellow;
   }
 }
 .orangeTheme{
   background: orange;
-  .btn2{
+  .header{
+    background: yellow;
+  }
+  .btn{
     background: green;
   }
 }
 .redTheme{
-  color: darkred;
-  .btn2{
-    color: red;
+  background: darkred;
+  .btn{
+    background: deepskyblue;
   }
 }
 
