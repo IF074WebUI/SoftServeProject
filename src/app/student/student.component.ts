@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import {ToastsManager} from 'ng2-toastr';
 import {SpinnerService} from '../admin/universal/spinner/spinner.service';
 import {ViewContainerRef} from '@angular/core';
+import {ColorPickerService} from "angular4-color-picker/lib/color-picker.service";
 
 @Component({
   templateUrl: './student.component.html',
@@ -14,12 +15,15 @@ import {ViewContainerRef} from '@angular/core';
 
 export class StudentComponent implements OnInit {
   objLoaderStatus: boolean;
+  private color: string = "#9f77b9";
+  show: boolean = false;
 
   constructor(private loginService: LoginService,
               private router: Router,
               private spinner: SpinnerService,
               public  vRef: ViewContainerRef,
               private toastr: ToastsManager,
+              private cpService: ColorPickerService
 
 
   ) {

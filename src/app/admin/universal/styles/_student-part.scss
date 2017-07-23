@@ -1,0 +1,35 @@
+.d-tester-color{
+  .header{
+    height:100px;
+    background: inherit;
+    box-shadow:0 0 0 128px rgba(0, 0, 0, 0.5) inset;
+    color:#fff;
+  }
+  .footer{
+    @extend .header;
+  }
+  #timer-background{
+    background: inherit;
+    //box-shadow:0 0 0 128px rgba(0, 0, 0, 0.5) inset;
+    color:#fff;
+  }
+  main{
+    background: inherit;
+    box-shadow:0 0 0 128px rgba(0, 0, 0, 0.5) inset;
+  }
+  .profile{
+    background: inherit;
+    box-shadow:0 0 0 128px rgba(0, 0, 0, 0.5) inset;
+  }
+  .headers{
+    background: inherit;
+  h3{
+    background: inherit;
+  }
+
+  }
+
+}
+
+
+//box-shadow:0 0 0 128px rgba(255,255,255,0.5) inset;

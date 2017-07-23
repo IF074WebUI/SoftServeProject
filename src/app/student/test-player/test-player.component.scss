@@ -1,14 +1,14 @@
-@import "../../admin/universal/styles/const";
 @import "../../admin/universal/styles/table";
-@import "../../admin/universal/styles/button";
-@import "../../admin/universal/styles/const";
+//@import "../../admin/universal/styles/button";
+//@import "../../admin/universal/styles/const";
+@import "../../admin/universal/styles/student-part";
 
 @import "../../admin/universal/dynamic-form/styles/form-control";
 
 .header {
   color: $primary-viole-super-bright;
   height: 100px;
-  background-color: $primary-violet-color;
+  // background-color: $primary-violet-color;
   .finish {
     float: right;
   }
@@ -27,9 +27,9 @@
   background-color: $timer-progress-color;
 }
 
-#timer-background {
-  background-color: $timer-background-color;
-}
+//#timer-background {
+//  background-color: $timer-background-color;
+//}
 
 .content {
   float: right;

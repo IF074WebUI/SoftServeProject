@@ -24,6 +24,8 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.26",
+    "angular2-color-picker": "^1.3.1",
+    "angular4-color-picker": "^1.4.2",
     "bootstrap": "^4.0.0-alpha.6",
     "chart.js": "^2.6.0",
     "core-js": "^2.4.1",

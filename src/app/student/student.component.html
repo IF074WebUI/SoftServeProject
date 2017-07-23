@@ -1,27 +1,44 @@
-<ngx-loading [show]="objLoaderStatus"></ngx-loading>
-<div class="d-tester-theme">
-  <div class="container header">
+<!--<ngx-loading [show]="objLoaderStatus"></ngx-loading>-->
+<div class="d-tester-color"
+     [(colorPicker)]="color"
+     [cpPosition]="'bottom'"
+     [style.background]="color"
+     [cpPositionOffset]="'50%'"
+     [cpPositionRelativeToArrow]="true">
+  <div class="header">
+  <div class="container">
     <div class="row">
       <div class="col-md-10">
         <h1 routerLink="/student/student-main" routerLinkActive="active">dTester</h1>
       </div>
       <div class="col-md-2 exit">
+        <input *ngIf="show" [colorPicker]="color" (colorPickerChange)="color=$event" [style.background]="color" [value]="color"/>
+        <button class="settings" (click)="show = !show"><i class="fa fa-cogs" aria-hidden="true"></i></button>
         <button class=" btn btn-exit" (click)="logout()">Вихід</button>
       </div>
     </div>
   </div>
-  <div class="container body">
-    <div class="row">
-      <div class="col-md-12">
-        <router-outlet></router-outlet>
-      </div>
-    </div>
   </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 footer-wrapper">
-        <div class="footer">&copy; 2017 IT academy</div>
-      </div>
-    </div>
+  <div class="body">
+    <router-outlet></router-outlet>
   </div>
+
+    <div class="footer">&copy; 2017 IT academy</div>
+
 </div>
+
+
+<!--<div class="container body">-->
+  <!--<div class="row">-->
+    <!--<div class="col-md-12">-->
+      <!--<router-outlet></router-outlet>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+<!--<div class="container">-->
+  <!--<div class="row">-->
+    <!--<div class="col-md-12 footer-wrapper">-->
+      <!--<div class="footer">&copy; 2017 IT academy</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->

@@ -1,6 +1,7 @@
-@import "../../admin/universal/styles/const";
+// @import "../../admin/universal/styles/const";
 @import "../../admin/universal/styles/button";
 @import "../../admin/universal/entities-table/entities-table.component";
+@import "../../admin/universal/styles/student-part";
 $hover-border-transition: 3px solid white;
 :host {
   font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -22,21 +23,20 @@ main {
       h3 {
         height: inherit;
         text-align: center;
-        //align-items: ;
       }
       align-items: center;
       display: flex;
       justify-content: center;
       text-align: center;
       color: white;
-      background-color: $pink-colo;
+     // background-color: $pink-colo;
     }
     .profile:hover {
       background-color: $primary-violet-color;
     }
     .profile {
       position: relative;
-      background-color: $primary-violet-color;
+     // background-color: $primary-violet-color;
       color: white;
       font-size: larger;
     }

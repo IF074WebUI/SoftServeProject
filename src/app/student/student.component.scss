@@ -1,21 +1,36 @@
-@import "../admin/universal/styles/const";
-@import "../admin/universal/styles/button";
+//@import "../admin/universal/styles/const";
+//@import "../admin/universal/styles/button";
 @import "../admin/universal/entities-table/entities-table.component";
+@import "../admin/universal/styles/student-part";
 $hover-border-transition: 3px solid white;
+
+
+//.d-tester-color{
+//  .header, .footer{
+//    width:200px;
+//    height:100px;
+//    background: inherit;
+//    box-shadow:0 0 0 128px rgba(0, 0, 0, 0.5) inset;
+//    color:#fff;
+//  }
+//
+//}
+
 :host {
   position: relative;
   font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
-.main {
-  min-height:100%;
-  position:relative;
+.body{
+  background: #f5f5f5;;
 }
-.body {
-  padding:10px;
-  padding-bottom:60px;
-}
+//.main {
+//  min-height:100%;
+//}
+//.body {
+//  padding:10px;
+//  padding-bottom:60px;
+//}
 .header {
-  margin-bottom: 20px;
   .container {
     .row{
       .col-md-2, .col-md-10 {
@@ -31,17 +46,14 @@ $hover-border-transition: 3px solid white;
   h1 {
     color: white;
   }
-  background-color: $primary-violet-color;
 }
-.footer-wrapper{
-  position: relative;
-}
+
 .footer {
   position:fixed;
   bottom:0;
+  margin-bottom:0;
   width:100%;
   height:40px;
-  background: $primary-violet-color;
   color: white;
   display: flex;
   justify-content: center;

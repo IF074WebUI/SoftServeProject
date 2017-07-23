@@ -24,6 +24,7 @@ import {ToastModule} from 'ng2-toastr';
 import {StudentProfileComponent} from './student-profile/student-profile.component';
 import {GroupService} from '../admin/group/group.service';
 import { TestRezultsComponent } from './test-rezults/test-rezults.component';
+import {ColorPickerModule} from "angular4-color-picker/lib/color-picker.module";
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { TestRezultsComponent } from './test-rezults/test-rezults.component';
     LoadingModule,
     ToastModule.forRoot(),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ColorPickerModule
   ],
   providers: [
     TestPlayerService,

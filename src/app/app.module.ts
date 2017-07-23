@@ -18,6 +18,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastModule } from 'ng2-toastr';
 import { LoadingModule } from 'ngx-loading';
 import { DndModule } from 'ng2-dnd';
+import {ColorPickerModule} from "angular4-color-picker/lib/color-picker.module";
 
 
 
@@ -38,7 +39,8 @@ import { DndModule } from 'ng2-dnd';
     NgbModule.forRoot(),
     BrowserAnimationsModule,
     LoadingModule,
-    DndModule.forRoot()
+    DndModule.forRoot(),
+    ColorPickerModule
   ],
   providers: [LoginService, AdminGuard, StudentGuard, LoginGuard],
   bootstrap: [AppComponent]
