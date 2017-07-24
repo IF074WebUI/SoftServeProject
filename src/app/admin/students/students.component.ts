@@ -201,7 +201,6 @@ export class StudentsComponent implements OnInit {
         student.group_name = StudentData[0].group_name;
       });
     }
-    console.log(this.students);
   }
 
   getGroups() {
@@ -218,7 +217,6 @@ export class StudentsComponent implements OnInit {
   }
 
   goToStudentProfile(student: Student) {
-    console.log(student.user_id);
     this.router.navigate(['students', student.user_id], {relativeTo: this.activatedRoute.parent});
   }
 

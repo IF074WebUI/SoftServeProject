@@ -412,16 +412,12 @@ export class TestPlayerComponent implements OnInit {
 
   saveEndTime() {
     if (this.testPlayerStartData.endUnixTime > 0) {
+      console.log('you have unfinished test');
     } else {
 
       this.test_player.saveEndTime(this.endUnixTime, this.testPlayerStartData.testId, this.testDuration, this.testPlayerStartData.testName)
-        .subscribe(res => console.log(res));
+        .subscribe(res => res);
     }
   }
 
-  getEndTime() {
-    this.test_player.getEndTime()
-      .subscribe(res => console.log(res),
-        error => this.toastr.error(error));
-  }
 }
