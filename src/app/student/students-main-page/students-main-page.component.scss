@@ -7,18 +7,27 @@ $hover-border-transition: 3px solid white;
 }
 
 main {
-  div {
     div {
       border: 3px solid transparent;
     }
-    div:hover {
+    .profile:hover, .headers:hover {
       border: $hover-border-transition;
       transition: 400ms;
+      cursor: pointer;
     }
     .headers:hover {
       background-color: $primary-violet-bright-color;
     }
     .headers {
+      h3 {
+        height: inherit;
+        text-align: center;
+        //align-items: ;
+      }
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      text-align: center;
       color: white;
       background-color: $pink-colo;
     }
@@ -26,22 +35,16 @@ main {
       background-color: $primary-violet-color;
     }
     .profile {
-      .icon {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%)
-      }
-      .icon:hover {
-        cursor: pointer;
-      }
       position: relative;
-      background-color: rgba(64, 30, 70, 0.75);
+      background-color: $primary-violet-color;
       color: white;
       font-size: larger;
     }
-  }
+    h4 {
+      color: $primary-violet-color;
+      text-align: center;
+      margin-top: 30px;
+    }
 }
 .exit {
   margin: auto auto;
@@ -50,5 +53,5 @@ button {
   align-items: center;
 }
 .table-row {
-  margin: 50px;
+  margin: 25px;
 }

@@ -2,6 +2,7 @@
 @import "../../admin/universal/styles/table";
 @import "../../admin/universal/styles/button";
 @import "../../admin/universal/styles/const";
+
 @import "../../admin/universal/dynamic-form/styles/form-control";
 
 .header {
@@ -33,7 +34,16 @@
 .content {
   float: right;
   width: 100%;
+}
 
+.start-test {
+  display: flex;
+  justify-content: center;
+  button {
+    margin-top: 30px;
+    color: $primary-viole-super-bright;
+
+  }
 }
 
 table {
@@ -45,7 +55,7 @@ table {
   font-size: large;
   color: black;
   td {
-  //  box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
+    //  box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
     text-align: center;
     img {
       margin: auto;
@@ -55,10 +65,10 @@ table {
   #image > td {
     background-color: $background-color;
   }
-  tr:first-of-type{
+  tr:first-of-type {
     box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
   }
-  @extend table
+  @extend table;
 }
 
 .navbar {
@@ -162,6 +172,10 @@ table {
   }
 }
 
+.selected {
+  color: red !important;
+}
+
 .markedQuestion {
   background-color: red !important;
 
@@ -220,7 +234,17 @@ h1 {
   width: 150px;
 }
 
-#input{
-    box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
-  }
+#input {
+  box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
+}
+.marked{
+  cursor: pointer;
+}
 
+
+.flag {
+  height: 50px;
+  position: relative;
+  border-top: 25px solid red!important;
+  border-right: 50px solid transparent!important;
+}

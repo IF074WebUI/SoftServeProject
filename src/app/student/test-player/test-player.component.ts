@@ -1,4 +1,4 @@
-import {AfterContentChecked, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TestPlayerService} from './test-player.service';
 import {Router} from '@angular/router';
 import {Test} from '../../admin/tests/test';
@@ -9,14 +9,15 @@ import {ToastsManager} from 'ng2-toastr';
 import {TestsService} from '../../admin/services/tests.service';
 import {FormGroup} from '@angular/forms/src/model';
 import {FormBuilder} from '@angular/forms';
+import {TestPlayerData} from '../student-profile/TestPlayerData';
 
-import 'rxjs/add/operator/switchMap';
+// import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
+// filterimport 'rxjs/add/operator/debounceTime';
+// import 'rxjs/add/observable/of';
+// import 'rxjs/add/observable/throw';
+// import 'rxjs/add/operator/catch';
 
 declare var $: any;
 
@@ -69,7 +70,7 @@ export class Question {
   providers: [GetTestsBySubjectService],
 })
 
-export class TestPlayerComponent implements OnInit, AfterContentChecked {
+export class TestPlayerComponent implements OnInit {
   testDuration: number;
   test_id: number;
   test: Test;
@@ -78,7 +79,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   start: boolean;
   finish: boolean;
   user_id: number;
-  test_details: TestDetail[] = [];
+ // test_details: TestDetail[] = [];
   answers: Answer[];
   ticks: number;
   minutesDisplay: string;
@@ -89,7 +90,7 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   unixTimeLeft: number;
   MILLISECONDS_IN_SECOND: number;
   timer: any;
-  testPlayerStartData: any;
+  testPlayerStartData: TestPlayerData = new TestPlayerData;
   dataForSave: Array<CheckAnswers> = [];
   statusTimer: string;
   PERSENT: number;
@@ -99,14 +100,17 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   answersFrom: FormGroup;
   selectedAnswers: Array<number> = [];
   numberOfQuestion: number;
-  marks: any;
+  // marks: any;
   questionsIds: Array<number> = [];
   marked: Array<boolean> = [];
+  maxMarks: number;
+  numberOfTasks: number;
 
 
-  NEXT_QUESTION = 'Наступне питання';
+
+  NEXT_QUESTION = 'Перейти на наступне питання';
   ENTER_ANSWER = 'Ввести відповідь';
-  MARKED = 'Marked for review';
+  MARKED = 'Відмітити питання';
   FINISH = 'Завершити тест';
   START = 'Почати тест';
   QUESTION = 'Питання №';
@@ -118,7 +122,10 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
   CLOSE_MODAL = 'Закрити';
   ATTANTION = 'Увага!';
   PRIMARY_VIOLET_COLOR = '#7e8bfe';
-  // PRIMARY_VIOLET_BRIGHT_COLOR = '#fff';
+  TIMER_DIVIDER = 10;
+  RGB_PERSENT = 2.55;
+  RGB_TIMER_STATUS_COLOR = 'rgb(188, 0, ';
+  TIMER_SYNHRONIZATION = 100;
 
 
   TypeOfAnswers = {
@@ -139,31 +146,19 @@ export class TestPlayerComponent implements OnInit, AfterContentChecked {
     this.MILLISECONDS_IN_SECOND = 100;
     this.PERSENT = 100;
     this.DANGER_STATUS = 18;
-    this.testPlayerStartData = {
-      studentId: 0,
-      testId: 0,
-      testDuration: 0,
-      startLogTime: 0,
-      testLogId: 0,
-      testLogDuration: 0,
-      endUnixTime: 0
-    };
   }
 
   ngOnInit() {
     this.getStartData();
     this.createForm();
-console.log(this.testPlayerStartData.endUnixTime )
     if (this.testPlayerStartData.endUnixTime > 0) {
       this.questionsIds = [];
       this.test_player.getData().map(resp => {
         let data: Array<any> = JSON.parse(resp);
         this.questionsIds = [];
         data.forEach(obj => {
-          let a: number = obj['question_id'];
-          this.questionsIds.push(a);
+          this.questionsIds.push(+obj['question_id']);
         });
-        // console.log(this.questionsIds);
         this.startTimer();
         return this.questionsIds;
       }).subscribe(resp => {
@@ -173,23 +168,22 @@ console.log(this.testPlayerStartData.endUnixTime )
         this.showQuestions(0);
       });
       this.start = true;
-    } else {
-      localStorage.clear();
-      this.getTestDetails();
-      this.testService.getTestById(this.testPlayerStartData.testId)
-        .subscribe(
-          resp => {
-            this.testName = resp[0]['test_name'];
-          },
-          error => {
-            this.msg = error;
-            this.msg = error;
-            this.openModal();
-          }
-        );
     }
   }
 
+  getTestName() {
+    this.testService.getTestById(this.testPlayerStartData.testId) // special for Mykola! Please use your subject for sending me this testName!
+      .subscribe(
+        resp => {
+          this.testName = resp[0]['test_name'];
+          this.testPlayerStartData.testName = this.testName;
+        },
+        error => {
+          this.msg = error;
+          this.openModal();
+        }
+      );
+  }
 
   onSelect() {
     let n = this.numberOfQuestion - 1;
@@ -199,45 +193,52 @@ console.log(this.testPlayerStartData.endUnixTime )
     } else {
       this.marked[n] = true;
       $('.number-box').eq(n).css({'border-color': 'red'});
+      // $('.number-box').eq(n).addClass('flag');
+
     }
   }
 
-  ngAfterContentChecked() {
-
-  };
 
   getStartData() {
+
     this.test_player.testPlayerIdData
       .subscribe(data => {
-        console.log(data)
         this.testPlayerStartData.studentId = data['studentId'];
-        if (data['endUnixTime'] > 0) {
-          this.testPlayerStartData.endUnixTime = data['endUnixTime'];
-          this.testPlayerStartData.testId = data['testId'];
-          this.testDuration = +data.testDuration;
+        console.log(this.testPlayerStartData.studentId);
+        if (this.testPlayerStartData.studentId === undefined) {
+          this.router.navigate(['student/student-main']);
+        } else if (data['endUnixTime'] > 0) {
           // debugger;
+          this.testName = data.testName;
+          this.testPlayerStartData.endUnixTime = data.endUnixTime;
+          this.testPlayerStartData.testId = data.testId;
+          this.testDuration = +data.testDuration;
         } else {
+          this.getTestName();
           this.testPlayerStartData.studentId = +data.studentId;
           this.testPlayerStartData.testId = +data.testId;
-          this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * 10;
-
+          this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * this.TIMER_DIVIDER;
         }
       });
   }
 
+
   createForm() {
     this.answersFrom = this.fb.group({
       singlechoise: '',
-      multichoise: '',
       inputfield: ''
     });
   }
 
-  getTestDetails() {
-    this.test_player.getTestDetail(this.testPlayerStartData.testId).subscribe(resp => {
-      this.test_details = resp;
+  getMaxMarks() {
+    this.test_player.getTestDetail(this.testPlayerStartData.testId)
+      .subscribe((resp: TestDetail[]) => {
+      let arrayAllTasks: Array<number> = resp.map(obj => {return obj['tasks']; });
+      this.numberOfTasks = arrayAllTasks.reduce((sum, cur) => {return +sum + +cur; });
+
+        let arrayMaxMarks: Array<number> = resp.map(obj => {return obj['tasks'] * obj['rate']; });
+       this.maxMarks = arrayMaxMarks.reduce((sum, cur) => {return +sum + +cur; });
     }, error => {
-      //  this.toastr.error(error);
       this.msg = error;
       this.openModal();
     });
@@ -251,7 +252,9 @@ console.log(this.testPlayerStartData.endUnixTime )
           if (resp['response'] === 'ok') {
             this.start = true;
             this.numberOfQuestion = 1;
-            this.test_player.getQuestions(this.test_details)
+            localStorage.clear();
+            this.test_player.getTestDetail(this.testPlayerStartData.testId)
+              .flatMap((respon: TestDetail[]) => this.test_player.getQuestions(respon))
               .do((questions: Array<number> | any) => {
                 this.questionsIds = this.prepareQuestionForTest(questions);
                 return this.questionsIds;
@@ -278,7 +281,7 @@ console.log(this.testPlayerStartData.endUnixTime )
           this.openModal();
         });
   }
-  ;
+
 
   prepareQuestionForTest(questions: Array<number[]>): Array<number> {
     let tempArr: Array<number> = [];
@@ -294,60 +297,57 @@ console.log(this.testPlayerStartData.endUnixTime )
     this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
       .map(resp => resp[0]).do(resp => {
       this.question = resp;
-      let data = localStorage.getItem(String(this.question['question_id']));
-      console.log(this.selectedAnswers);
-      // if (this.question['type'] == '2' && data) {
-      //   let array = data.split(',');
-      //   for (let k of array) {
-      //     console.log(k);
-      //     this.answersFrom.controls['multichoise'].setValue(false);
-      //   }
-      // }
-      // this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(data);
-      this.answersFrom.controls[this.TypeOfAnswers['1']].setValue(data); // temporary
-
+      if (this.question['type'] === '3') {
+        let currentAnswers = localStorage.getItem(String(this.question['question_id']));
+        this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers);
+      }
     }).filter(question => question['type'] !== '3')
       .flatMap(resp => this.test_player.getAnswersById(resp['question_id']))
       .subscribe(resp => {
         this.question['answers'] = resp;
+        resp.forEach(item => this.answersFrom.addControl(item['answer_id'], this.fb.control(false)));
+        let currentAnswers = localStorage.getItem(String(this.question['question_id']));
+        if (currentAnswers) {
+          if (this.question['type'] === '2') {
+            let array = currentAnswers.split(',');
+            array.forEach(string => this.answersFrom.controls[string].setValue(true)
+            );
+          } else {
+            this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers);
+          }
+        }
       }, error => {
-        //    this.toastr.error(error);
         this.msg = error;
         this.openModal();
       });
     this.selectedAnswers = [];
   }
 
-  toggleMultiSelect(event, val) {
-    event.preventDefault();
-    if (!event.target.checked) {
-      if (this.selectedAnswers.indexOf(val) != -1) {
-        this.selectedAnswers.splice(this.selectedAnswers.indexOf(val), 1)
-      }
-    } else {
-      this.selectedAnswers.push(+val);
-    }
-    ;
-  }
 
   saveCurrentAnswer(question ?: Question, questionId ?: number) {
     let currentQuestion = questionId ? this.test_player.getQuestionById(questionId).subscribe(resp => question = resp) : question;
-    if (
-      currentQuestion['type'] !== '2'
-    ) {
-      this.selectedAnswers = [];
+    if (question['type'] === '2') {
+      question['answers'].map(answer => {
+        return answer['answer_id'];
+      }).forEach(id => {
+        let value = this.answersFrom.controls[id].value;
+        if (value) {
+          this.selectedAnswers.push(id);
+        }
+      });
+    } else {
       let value = this.answersFrom.controls[this.TypeOfAnswers[currentQuestion['type']]].value;
       value != null ? this.selectedAnswers.push(value) : this.selectedAnswers = [];
     }
+
     let currentQuestionId = +(currentQuestion['question_id']);
     let questionIndex = this.questionsIds.indexOf(currentQuestionId);
     this.allAnswers = new CheckAnswers(currentQuestionId, this.selectedAnswers);
     this.dataForSave[questionIndex] = this.allAnswers;
     localStorage.setItem(String(currentQuestionId), this.selectedAnswers.toString());
-    console.log(this.selectedAnswers);
-    console.log(this.dataForSave[questionIndex]['answer_ids']);
     if (this.allAnswers['answer_ids'].length === 0) {
       $('.number-box').eq(questionIndex).css({'backgroundColor': ''});
+
     } else {
       $('.number-box').eq(questionIndex).css({'backgroundColor': this.PRIMARY_VIOLET_COLOR});
     }
@@ -366,17 +366,21 @@ console.log(this.testPlayerStartData.endUnixTime )
     this.showQuestions(number);
   }
 
+
   finishTest() {
     this.test_player.getData()
       .flatMap(resp => this.test_player.checkResults(resp))
-      .subscribe(resp => this.marks = resp);
-    this.stopTimer();
-    this.answersFrom.reset();
-    localStorage.clear();
-    let data = new InitialRezults(this.marks['full_mark'], this.marks['number_of_true_answers'], 5000, 10000, this.testName);
-    this.test_player.sendRezults(data);
+      .map(resp => {
+        let data = new InitialRezults(resp['full_mark'], resp['number_of_true_answers'], this.numberOfTasks, this.maxMarks, this.testName);
+        return data;
+      }).subscribe(resp => {
+      this.stopTimer();
+      this.answersFrom.reset();
+      localStorage.clear();
+      this.resetSessionData();
+      this.test_player.sendRezults(resp);
+    });
     this.router.navigate(['student/test-rezults']);
-    this.resetSessionData();
   }
 
   resetSessionData() {
@@ -388,6 +392,7 @@ console.log(this.testPlayerStartData.endUnixTime )
   saveResults() {
     this.saveCurrentAnswer(this.question);
     this.finish = true;
+    this.getMaxMarks();
   }
 
   backToTest() {
@@ -417,14 +422,14 @@ console.log(this.testPlayerStartData.endUnixTime )
       .subscribe(res => {
           if (this.testPlayerStartData.endUnixTime > 0) {
             this.endUnixTime = this.testPlayerStartData.endUnixTime * this.SECONDS_IN_MINUTE;
-            this.unixTimeLeft = this.testPlayerStartData.endUnixTime - (+res['unix_timestamp'] * 10);
+            this.unixTimeLeft = this.testPlayerStartData.endUnixTime - (+res['unix_timestamp'] * this.TIMER_DIVIDER);
             this.showTimer();
           } else {
-            this.startunixTime = +res['unix_timestamp'] * 10;
+            this.startunixTime = +res['unix_timestamp'] * this.TIMER_DIVIDER;
             this.unixTimeLeft = this.testDuration;
             this.endUnixTime = this.startunixTime + this.testDuration;
             this.showTimer();
-          //  this.saveEndTime();
+            this.saveEndTime();
           }
         },
         error => {
@@ -436,9 +441,9 @@ console.log(this.testPlayerStartData.endUnixTime )
     console.log(this.testDuration);
     let timer = setInterval(() => {
       if (this.unixTimeLeft >= 0) {
-        this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / 10) % 60));
+        this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / this.TIMER_DIVIDER) % this.SECONDS_IN_MINUTE));
         this.statusTimer = (this.unixTimeLeft / (this.testDuration / this.PERSENT)).toFixed(2) + '%';
-        this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / 600));
+        this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / (this.TIMER_DIVIDER * this.SECONDS_IN_MINUTE)));
 
         this.unixTimeLeft = this.unixTimeLeft - 1;
       } else {
@@ -446,20 +451,9 @@ console.log(this.testPlayerStartData.endUnixTime )
         clearInterval(timer);
         this.finishTest();
       }
-    }, 100);
+    }, this.TIMER_SYNHRONIZATION);
   }
 
-  checkUnixTime() {
-
-    this.test_player.getCurrentTime()
-      .subscribe(res => {
-        if (+res['unix_timestamp'] * 10 < this.endUnixTime) {
-          this.unixTimeLeft = (this.endUnixTime - (+res['unix_timestamp'] * 10));
-        } else if (+res['unix_timestamp'] * 10 > this.endUnixTime) {
-          this.finishTest();
-        }
-      });
-  }
 
   stopTimer() {
     clearInterval(this.timer);
@@ -471,13 +465,19 @@ console.log(this.testPlayerStartData.endUnixTime )
   };
 
   checkProgresColor() {
-    let status = Math.floor(parseInt(this.statusTimer, 0) * 2.55);
-    return 'rgb(' + '188, 0, ' + status;
+    let status = Math.floor(parseInt(this.statusTimer, 0) * this.RGB_PERSENT);
+    return this.RGB_TIMER_STATUS_COLOR + status;
   };
 
-  // saveEndTime() {
-  //   document.getElementsByClassName('.orangeTheme').style.backgroundColor = "red";
-  // }
+  saveEndTime() {
+    if (this.testPlayerStartData.endUnixTime > 0) {
+      console.log('you have unfinished test');
+    } else {
+
+      this.test_player.saveEndTime(this.endUnixTime, this.testPlayerStartData.testId, this.testDuration, this.testPlayerStartData.testName)
+        .subscribe(res => console.log(res));
+    }
+  }
 
   getEndTime() {
     this.test_player.getEndTime()

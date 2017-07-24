@@ -1,5 +1,6 @@
+<ngx-loading *ngIf="objLoaderStatus" [show]="true"></ngx-loading>
 <div class="wrapper-admin">
-<div class="container-fluid header-top">
+  <div class="container-fluid header-top">
   <div class="row">
     <div class="col-xs-3 col-sm-3 col-md-4 col-lg-3 logo">
       <button class="fa fa-bars menu-btn hamburger" (click)="toggleMove()">
@@ -12,7 +13,6 @@
     </div>
   </div>
 </div>
-<!--<ngx-loading *ngIf="objLoaderStatus" [show]="true"></ngx-loading>-->
 <div class="container-fluid">
   <div class="row">
     <div class="col-xs-3 col-sm-3 col-md-4 col-lg-3 menu-admin menu-admin">
