@@ -69,14 +69,13 @@ export class StudentsMainPageComponent implements OnInit {
   }
 
   getTestForStudent() {
-    // this.spinner.showSpinner();
+    this.spinner.showSpinner();
     this.getEndTime();
     this.loginService.checkLogged()
       .flatMap(loginResponse => this.studentId = loginResponse['id']);
         return this.loginService.checkLogged()
           .subscribe(result => {
             this.studentId = +result['id'];
-            console.log(+result['id'])
             this.testIdData.studentId = +result['id'];
             this.testPlayer.addIdData(this.testIdData);
             this.studentService.getStudentById(+result['id'])
@@ -87,7 +86,7 @@ export class StudentsMainPageComponent implements OnInit {
                 .subscribe(timeTableRes => {
                   if (timeTableRes['response'] === this.noRecordsResponce) {
                     this.checkTestAvailability = true;
-                    // this.spinner.hideSpinner();
+                    this.spinner.hideSpinner();
                   } else {
                     this.result.timeTable = timeTableRes;
                     for (const timeTable of this.result.timeTable) {
@@ -95,10 +94,10 @@ export class StudentsMainPageComponent implements OnInit {
                         .subscribe(testsRes => {
                             if (testsRes['response'] === this.noRecordsResponce) {
                               this.checkTestAvailability = true;
-                              // this.spinner.hideSpinner();
+                              this.spinner.hideSpinner();
                             } else {
                               this.result.tests = testsRes;
-                              // this.spinner.hideSpinner();
+                              this.spinner.hideSpinner();
                             }
                           }, error => this.toastr.error(error)
                         );
@@ -122,11 +121,9 @@ export class StudentsMainPageComponent implements OnInit {
   }
 
   getEndTime() {
-    // this.spinner.showSpinner();
     this.testPlayer.getEndTime()
       .subscribe(res => {
         let time = JSON.parse(res);
-        console.log(time)
         if (+time['endTime'] !== undefined) {
           this.testIdData.testId = time.testId;
           this.testIdData.endUnixTime = time.endTime;
@@ -135,9 +132,8 @@ export class StudentsMainPageComponent implements OnInit {
           this.testPlayer.addIdData(this.testIdData);
           this.router.navigate(['./student/test-player']);
         } else if (time['response'] === 'Empty set') {
-          console.log(time);
         }
-      }, err => console.log(err));
+      }, err => this.toastr.error(err));
   }
 
 }

@@ -203,12 +203,7 @@ export class TestPlayerComponent implements OnInit {
 
     this.test_player.testPlayerIdData
       .subscribe(data => {
-        this.testPlayerStartData.studentId = data['studentId'];
-        console.log(this.testPlayerStartData.studentId);
-        if (this.testPlayerStartData.studentId === undefined) {
-          this.router.navigate(['student/student-main']);
-        } else if (data['endUnixTime'] > 0) {
-          // debugger;
+          if (data['endUnixTime'] > 0) {
           this.testName = data.testName;
           this.testPlayerStartData.endUnixTime = data.endUnixTime;
           this.testPlayerStartData.testId = data.testId;
@@ -438,7 +433,6 @@ export class TestPlayerComponent implements OnInit {
   }
 
   showTimer() {
-    console.log(this.testDuration);
     let timer = setInterval(() => {
       if (this.unixTimeLeft >= 0) {
         this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / this.TIMER_DIVIDER) % this.SECONDS_IN_MINUTE));

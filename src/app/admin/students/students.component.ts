@@ -146,7 +146,6 @@ export class StudentsComponent implements OnInit {
     this.spinner.showSpinner();
     this.studentsService.getAdminUser(this.user_id).subscribe(resp => {
       this.AdminUser = resp[0];
-      console.log(resp);
       this.spinner.hideSpinner();
     });
   }
@@ -158,7 +157,6 @@ export class StudentsComponent implements OnInit {
           userResponse => {
             student.email = userResponse[0]['email'],
             student.username = userResponse[0]['username']
-            // console.log(userResponse);
           }
         );
     }
