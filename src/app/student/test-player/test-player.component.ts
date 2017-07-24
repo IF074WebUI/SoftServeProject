@@ -10,58 +10,11 @@ import {TestsService} from '../../admin/services/tests.service';
 import {FormGroup} from '@angular/forms/src/model';
 import {FormBuilder} from '@angular/forms';
 import {TestPlayerData} from '../student-profile/TestPlayerData';
-
-// import 'rxjs/add/operator/switchMap';
+import {CheckAnswers, InitialRezults, Question} from '../classes';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
-// filterimport 'rxjs/add/operator/debounceTime';
-// import 'rxjs/add/observable/of';
-// import 'rxjs/add/observable/throw';
-// import 'rxjs/add/operator/catch';
 
 declare var $: any;
-
-export class GetMarks {
-  'full_mark': number;
-  'number_of_true_answers': number;
-}
-
-export class CheckAnswers {
-  question_id: number;
-  answer_ids: Array<number>;
-
-  constructor(question_id, answer_ids) {
-    this.question_id = question_id;
-    this.answer_ids = answer_ids;
-  }
-}
-
-export class InitialRezults {
-  number_of_true_answers: number;
-  number_of_all_answers: number;
-  full_mark: number;
-  max_mark: number;
-  test_name: string;
-
-  constructor(full_mark, number_of_true_answers, max_mark, number_of_all_answers, test_name) {
-    this.full_mark = full_mark;
-    this.number_of_true_answers = number_of_true_answers;
-    this.max_mark = max_mark;
-    this.number_of_all_answers = number_of_all_answers;
-    this.test_name = test_name;
-  }
-}
-
-export class Question {
-  question_id: number;
-  test_id: string;
-  question_text: string;
-  level: string;
-  type: string;
-  attachment?: any;
-  answers: Answer[];
-  true_answer: boolean;
-}
 
 @Component({
   selector: 'dtester-test-player',
@@ -79,7 +32,6 @@ export class TestPlayerComponent implements OnInit {
   start: boolean;
   finish: boolean;
   user_id: number;
- // test_details: TestDetail[] = [];
   answers: Answer[];
   ticks: number;
   minutesDisplay: string;
@@ -100,7 +52,6 @@ export class TestPlayerComponent implements OnInit {
   answersFrom: FormGroup;
   selectedAnswers: Array<number> = [];
   numberOfQuestion: number;
-  // marks: any;
   questionsIds: Array<number> = [];
   marked: Array<boolean> = [];
   maxMarks: number;
@@ -172,7 +123,7 @@ export class TestPlayerComponent implements OnInit {
   }
 
   getTestName() {
-    this.testService.getTestById(this.testPlayerStartData.testId) // special for Mykola! Please use your subject for sending me this testName!
+    this.testService.getTestById(this.testPlayerStartData.testId)
       .subscribe(
         resp => {
           this.testName = resp[0]['test_name'];
@@ -193,14 +144,11 @@ export class TestPlayerComponent implements OnInit {
     } else {
       this.marked[n] = true;
       $('.number-box').eq(n).css({'border-color': 'red'});
-      // $('.number-box').eq(n).addClass('flag');
-
     }
   }
 
 
   getStartData() {
-
     this.test_player.testPlayerIdData
       .subscribe(data => {
         this.testPlayerStartData.studentId = data['studentId'];
@@ -208,13 +156,12 @@ export class TestPlayerComponent implements OnInit {
         if (this.testPlayerStartData.studentId === undefined) {
           this.router.navigate(['student/student-main']);
         } else if (data['endUnixTime'] > 0) {
-          // debugger;
           this.testName = data.testName;
           this.testPlayerStartData.endUnixTime = data.endUnixTime;
           this.testPlayerStartData.testId = data.testId;
           this.testDuration = +data.testDuration;
         } else {
-          this.getTestName();
+         this.getTestName();
           this.testPlayerStartData.studentId = +data.studentId;
           this.testPlayerStartData.testId = +data.testId;
           this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * this.TIMER_DIVIDER;

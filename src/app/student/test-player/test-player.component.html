@@ -33,7 +33,6 @@
       <ul *ngIf="questionsIds" class="number-container">
         <li class="number-box" *ngFor="let number of getArrayOfNumbers(questionsIds)" (click)="goToQuestion(number - 1)">
           {{number}}
-          <!--<div class="flag"> </div>-->
         </li>
       </ul>
     </div>
@@ -137,8 +136,6 @@
 <!-- Modal -->
 <div id="message" class="modal fade" role="dialog">
   <div class="modal-dialog">
-
-    <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">{{ATTANTION}}</h4>
@@ -151,6 +148,5 @@
         <button type="button" class="btn btn-exit btn-close-test" (click)="closeModal()">{{CLOSE_MODAL}}</button>
       </div>
     </div>
-
   </div>
 </div>
