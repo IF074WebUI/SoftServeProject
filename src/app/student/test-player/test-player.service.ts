@@ -1,5 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Http, RequestOptions, Response, Headers} from '@angular/http';
+import {InitialRezults} from '../classes';
+import {Answer} from '../../admin/answers/answer';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Student} from '../../admin/students/student';
+import {TestPlayerData} from '../student-profile/TestPlayerData';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/switchMap';
 import {
   HOST, HOST_PROTOCOL, TEST_PLAYER_GET_ANSWER_BY_QUESTION, TEST_PLAYER_GET_DATA,
   TEST_PLAYER_GET_TEST_DETAILS_BY_TEST,
@@ -7,19 +16,6 @@ import {
   TEST_PLAYER_START_TEST, TEST_PLAYER_CHECK_ANSWERS, TEST_PLAYER_GET_QUESTIONS_IDS_BY_LEVEL_RAND,
   TEST_PLAYER_GET_QUESTION_BY_ID, TEST_PLAYER_GET_ANSWER_BY_ID
 } from '../../constants';
-import {GetMarks, InitialRezults, Question} from './test-player.component';
-import {Answer} from '../../admin/answers/answer';
-
-
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/switchMap';
-import {Subject} from 'rxjs/Subject';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Router} from "@angular/router";
-import {Student} from "../../admin/students/student";
-import {TestPlayerData} from "../student-profile/TestPlayerData";
 
 @Injectable()
 export class TestPlayerService {
@@ -30,7 +26,7 @@ export class TestPlayerService {
   private studentData = new BehaviorSubject<Student>(new Student);
   private testRezults = new BehaviorSubject<InitialRezults>(new InitialRezults(0, 0, 0, 0, NaN));
 
-  constructor(private http: Http,  private router: Router) {
+  constructor(private http: Http) {
     const headers: Headers = new Headers({'Content-Type': 'application/json'});
     this.options = new RequestOptions({headers: headers});
   }
@@ -47,15 +43,6 @@ export class TestPlayerService {
     }
     return Observable.throw(errMsg);
   }
-  //
-  // handleError (error: Response|any) {
-  //   if (error.status == 403) {
-  //     this.router.navigate(['/path_to_login_page']);
-  //     return error.status;
-  //   }
-  //
-  //   return Observable.throw(new Error(error));
-  // }
 
   sendRezults(rezults: InitialRezults) {
     this.testRezults.next(rezults);
@@ -88,9 +75,6 @@ export class TestPlayerService {
   }
 
   getQuestions(testDetails: any[]) {
-
-
-    this.questions = [];
     let forkJoinBatch: Observable<any>[] = testDetails.map(item => {
       return this.getQuestionsIdsByLevelRandom(item.test_id, item.level, item.tasks);
     });
@@ -99,20 +83,6 @@ export class TestPlayerService {
 
   getQuestionById(id: number){
     return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_QUESTION_BY_ID + id).map(resp => resp.json()).catch(this.handleError);
-  }
-
-  getAnswers(questions: Question[]) {
-    let forkJoinBatch: Observable<any>[] = questions.filter(item => item['type'] !== '3')
-      .map(question => {
-        return this.getAnswersById(question['question_id']);
-      });
-
-    return Observable.forkJoin(forkJoinBatch)
-      .do((answers: Answer[][] | any) => {
-        answers.map((answer, i) => {
-          questions[i]['answers'] = answer;
-        });
-      }).catch(this.handleError);
   }
 
   resetSessionData() {
@@ -134,7 +104,6 @@ export class TestPlayerService {
   }
 
   checkResults(allAnswers: any) {
-    // [{question_id: 10, answer_ids: [1,2,3,4]}, {question_id: 18, answer_ids:[10]}, ...]
     return this.http.post(HOST_PROTOCOL + HOST + TEST_PLAYER_CHECK_ANSWERS, allAnswers, this.options).map((resp: Response) => resp.json()).catch(this.handleError);
   }
 
