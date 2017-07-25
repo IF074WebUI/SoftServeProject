@@ -59,7 +59,6 @@ import { AnswersComponent } from './answers/answers.component';
 import { ModalImgComponent } from './modal-img/modal-img.component';
 import { FacultyService } from './services/faculty.service';
 import { RadioButtonModule } from 'primeng/primeng';
-import { ButtonsDirective } from './universal/directives/buttons.directive';
 import { DndModule } from 'ng2-dnd';
 
 
@@ -94,7 +93,6 @@ import { DndModule } from 'ng2-dnd';
     StudentProfileComponent,
     AdminUserComponent,
     SubjectComponent,
-    ButtonsDirective,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

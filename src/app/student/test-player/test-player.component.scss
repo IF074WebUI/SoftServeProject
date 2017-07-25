@@ -2,7 +2,6 @@
 @import "../../admin/universal/styles/table";
 @import "../../admin/universal/styles/button";
 @import "../../admin/universal/styles/const";
-
 @import "../../admin/universal/dynamic-form/styles/form-control";
 
 .header {
@@ -42,7 +41,6 @@
   button {
     margin-top: 30px;
     color: $primary-viole-super-bright;
-
   }
 }
 
@@ -55,7 +53,6 @@ table {
   font-size: large;
   color: black;
   td {
-    //  box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
     text-align: center;
     img {
       margin: auto;
@@ -108,7 +105,6 @@ table {
 .flex-container {
   @extend .wrapper;
   width: 100px;
-  // max-height: 200px;
   flex-wrap: wrap;
   align-content: center;
   font-size: large;
@@ -185,8 +181,6 @@ table {
   background-color: $primary-violet-bright-color;
   padding-left: 20px;
   .row {
-    h3 {
-    }
     .col-md-2, .col-md-10 {
       display: flex;
       height: inherit;
@@ -237,14 +231,14 @@ h1 {
 #input {
   box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
 }
-.marked{
+
+.marked {
   cursor: pointer;
 }
-
 
 .flag {
   height: 50px;
   position: relative;
-  border-top: 25px solid red!important;
-  border-right: 50px solid transparent!important;
+  border-top: 25px solid red !important;
+  border-right: 50px solid transparent !important;
 }

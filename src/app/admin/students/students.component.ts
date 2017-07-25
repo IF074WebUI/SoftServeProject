@@ -146,7 +146,6 @@ export class StudentsComponent implements OnInit {
     this.spinner.showSpinner();
     this.studentsService.getAdminUser(this.user_id).subscribe(resp => {
       this.AdminUser = resp[0];
-      console.log(resp);
       this.spinner.hideSpinner();
     });
   }
@@ -158,7 +157,6 @@ export class StudentsComponent implements OnInit {
           userResponse => {
             student.email = userResponse[0]['email'],
             student.username = userResponse[0]['username']
-            // console.log(userResponse);
           }
         );
     }
@@ -203,7 +201,6 @@ export class StudentsComponent implements OnInit {
         student.group_name = StudentData[0].group_name;
       });
     }
-    console.log(this.students);
   }
 
   getGroups() {
@@ -220,7 +217,6 @@ export class StudentsComponent implements OnInit {
   }
 
   goToStudentProfile(student: Student) {
-    console.log(student.user_id);
     this.router.navigate(['students', student.user_id], {relativeTo: this.activatedRoute.parent});
   }
 

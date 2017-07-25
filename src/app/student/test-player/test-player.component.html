@@ -1,6 +1,3 @@
-<button (click)="saveEndTime()">savetime</button>
-<button (click)="getEndTime()">gettime</button>
-<button (click)="resetSessionData()">reset</button>
 <div id="container">
   <div class="row">
     <div id="testName" class="col-md-10">
@@ -33,7 +30,6 @@
       <ul *ngIf="questionsIds" class="number-container">
         <li class="number-box" *ngFor="let number of getArrayOfNumbers(questionsIds)" (click)="goToQuestion(number - 1)">
           {{number}}
-          <!--<div class="flag"> </div>-->
         </li>
       </ul>
     </div>
@@ -50,7 +46,7 @@
           </thead>
           <tr>
             <td>{{testName}}</td>
-            <td>{{this.testDuration}} {{HV}}</td>
+            <td>{{this.testDuration / this.TIMER_DIVIDER / this.SECONDS_IN_MINUTE}} {{HV}}</td>
           </tr>
         </table>
         <div class="start-test">
@@ -137,8 +133,6 @@
 <!-- Modal -->
 <div id="message" class="modal fade" role="dialog">
   <div class="modal-dialog">
-
-    <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">{{ATTANTION}}</h4>
@@ -151,6 +145,5 @@
         <button type="button" class="btn btn-exit btn-close-test" (click)="closeModal()">{{CLOSE_MODAL}}</button>
       </div>
     </div>
-
   </div>
 </div>

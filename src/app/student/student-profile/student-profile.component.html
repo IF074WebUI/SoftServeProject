@@ -1,17 +1,26 @@
-
-    <img class="img-thumbnail photo" *ngIf="student?.photo" [src]="student?.photo">
-
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3 text-center ">
+      <img class="img-responsive" *ngIf="student?.photo" [src]="student?.photo">
+    </div>
+    <div class="col-lg-9">
       <table>
         <tr>
           <td>{{FULL_NAME}}:</td>
           <td>{{student.student_surname}} {{student.student_name}} {{student.student_fname}}</td>
         </tr>
         <tr>
-          <td>№ заліковки:</td>
+          <td>{{GRADEBOOK}}:</td>
           <td>{{student.gradebook_id}}</td>
         </tr>
         <tr>
-          <td>Група:</td>
+          <td>{{GROUP_NAME}}:</td>
           <td >{{student.group_name}}</td>
         </tr>
       </table>
+    </div>
+  </div>
+</div>
+
+
+

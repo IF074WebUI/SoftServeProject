@@ -17,7 +17,9 @@ export class StudentProfileComponent implements OnInit {
   student: Student;
   group: Group;
   studentId: number;
-  FULL_NAME: 'ПІБ';
+  FULL_NAME =  'ПІБ';
+  GROUP_NAME = 'Група';
+  GRADEBOOK = 'Номар заліковки';
   constructor(
     private route: ActivatedRoute,
     private studentService: StudentsService,
@@ -40,7 +42,6 @@ export class StudentProfileComponent implements OnInit {
           this.student = data;
           this.groupService.getGroupById(this.student.group_id)
             .subscribe(response => {
-              console.log(response)
               this.student.group_name = response[0].group_name;
             }, error => this.toastr.error(error));
         }
