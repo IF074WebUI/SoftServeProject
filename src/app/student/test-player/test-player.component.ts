@@ -58,7 +58,6 @@ export class TestPlayerComponent implements OnInit {
   numberOfTasks: number;
 
 
-
   NEXT_QUESTION = 'Перейти на наступне питання';
   ENTER_ANSWER = 'Ввести відповідь';
   MARKED = 'Відмітити питання';
@@ -69,7 +68,7 @@ export class TestPlayerComponent implements OnInit {
   BACK = 'Повернутися до тесту';
   TEST_NAME = 'Назва тесту';
   TEST_DURATION = 'Тривалість тесту';
-  HV = 'хвилин';
+  HV = 'хв';
   CLOSE_MODAL = 'Закрити';
   ATTANTION = 'Увага!';
   PRIMARY_VIOLET_COLOR = '#7e8bfe';
@@ -151,13 +150,13 @@ export class TestPlayerComponent implements OnInit {
   getStartData() {
     this.test_player.testPlayerIdData
       .subscribe(data => {
-          if (data['endUnixTime'] > 0) {
+        if (data['endUnixTime'] > 0) {
           this.testName = data.testName;
           this.testPlayerStartData.endUnixTime = data.endUnixTime;
           this.testPlayerStartData.testId = data.testId;
           this.testDuration = +data.testDuration;
         } else {
-         this.getTestName();
+          this.getTestName();
           this.testPlayerStartData.studentId = +data.studentId;
           this.testPlayerStartData.testId = +data.testId;
           this.testDuration = +data.testDuration * this.SECONDS_IN_MINUTE * this.TIMER_DIVIDER;
@@ -176,15 +175,23 @@ export class TestPlayerComponent implements OnInit {
   getMaxMarks() {
     this.test_player.getTestDetail(this.testPlayerStartData.testId)
       .subscribe((resp: TestDetail[]) => {
-      let arrayAllTasks: Array<number> = resp.map(obj => {return obj['tasks']; });
-      this.numberOfTasks = arrayAllTasks.reduce((sum, cur) => {return +sum + +cur; });
+        let arrayAllTasks: Array<number> = resp.map(obj => {
+          return obj['tasks'];
+        });
+        this.numberOfTasks = arrayAllTasks.reduce((sum, cur) => {
+          return +sum + +cur;
+        });
 
-        let arrayMaxMarks: Array<number> = resp.map(obj => {return obj['tasks'] * obj['rate']; });
-       this.maxMarks = arrayMaxMarks.reduce((sum, cur) => {return +sum + +cur; });
-    }, error => {
-      this.msg = error;
-      this.openModal();
-    });
+        let arrayMaxMarks: Array<number> = resp.map(obj => {
+          return obj['tasks'] * obj['rate'];
+        });
+        this.maxMarks = arrayMaxMarks.reduce((sum, cur) => {
+          return +sum + +cur;
+        });
+      }, error => {
+        this.msg = error;
+        this.openModal();
+      });
   }
 
 

@@ -3,54 +3,56 @@
 .btn {
   border-radius: 2px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
-
   background-color: $red-color;
   color: $line-color;
-
   transition: background-color .3s;
+  &:hover, &:focus {
+    cursor: pointer;
+  }
 }
+
 .btn-exit {
   padding: 3px 5px;
   height: 35px;
-  background-color:$primary-violet-color;
+  background-color: $primary-violet-color;
   color: white;
   box-shadow: 0 1px 4px $primary-violet-color;
+  &:hover {
+    text-decoration: underline;
+    transition: 600ms;
+  }
 }
-.btn-exit:hover {
-  text-decoration: underline;
-  transition: 600ms;
-}
+
 .btn-test-list {
   color: white;
   transition: 400ms;
   background-color: $primary-violet-bright-color;
 }
+
 .btn-close-test {
   background-color: red;
 }
 
-.btn:hover, .btn:focus {
-  cursor: pointer;
-}
 .btn-add {
-    justify-content: space-between;
-    width: 35px;
-    height: 35px;
-    background-color: $red-color;
-    border-radius: 50%;
-    box-shadow: 0 2px 2px 0 #666;
-    display: inline-block;
-    font-size: 25px;
-    line-height: 35px;
-    color: white;
-    text-align: center;
-    transition: all 0.1s ease-in-out;
-  }
+  justify-content: space-between;
+  width: 35px;
+  height: 35px;
+  background-color: $red-color;
+  border-radius: 50%;
+  box-shadow: 0 2px 2px 0 #666;
+  display: inline-block;
+  font-size: 25px;
+  line-height: 35px;
+  color: white;
+  text-align: center;
+  transition: all 0.1s ease-in-out;
 
-  .btn-add:hover {
+&:hover {
     box-shadow: 0 6px 4px 0 #666;
     transform: scale(1.05);
   }
+}
+
 
 .btn-test-player {
   border-radius: 2px;
@@ -62,16 +64,16 @@
   transition: background-color .3s;
   &:hover {
     cursor: pointer;
-    background-color:  $primary-violet-bright-color;
+    background-color: $primary-violet-bright-color;
     color: $primary-viole-super-bright;
-
   }
   &:disabled {
     cursor: not-allowed;
 
   }
 }
-.btn-success, .btn-danger, .btn-warning{
+
+.btn-success, .btn-danger, .btn-warning {
   background: $primary-violet-bright-color;
   padding: .5rem .75rem;
   margin-right: 10px;
@@ -81,7 +83,7 @@
   box-shadow: 0;
   color: #fff;
   outline: none;
-  &:hover{
+  &:hover {
     background: $primary-violet-color;
     transition: 0.3s;
   }

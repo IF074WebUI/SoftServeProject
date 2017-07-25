@@ -70,6 +70,18 @@ table {
 
 .navbar {
   height: 30px;
+  div {
+    display: block;
+    div {
+      &:hover {
+        font-weight: 600;
+        box-sizing: border-box;
+      }
+      a {
+        cursor: pointer
+      }
+    }
+  }
 }
 
 #footer {
