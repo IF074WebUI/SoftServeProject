@@ -2,9 +2,7 @@
 
 <div class="top-panel" role="alert">
   <div class="btn-add" (click)="add()">+</div>
-  <button class="btn-toggle" (click)="show = !show">Перемикач</button>
-  <!--{{show ? 'hide' : 'show'}}-->
-  <!--show = {{show}}-->
+  <button class="btn-toggle" (click)="show = !show">Вигляд</button>
   <dtester-search (searchCriteria)="searchStudent($event)">
   </dtester-search>
 
@@ -13,21 +11,6 @@
   </dtester-items-per-page>
 </div>
 <div>
-  <div>
-    <div class="panel panel-default box-for-del-stud">
-      <div class="panel-body" dnd-sortable-container [dropZones]="['delete-dropZone']" [sortableData]="listRecycled">
-        <i class="fa fa-trash-o" aria-hidden="true"></i>
-
-        Recycle bin: Drag into me to delete it<br/>
-      </div>
-    </div>
-    <div *ngIf="listRecycled.length">
-      <div>
-        <b>You have just deleted:</b> <span>{{listRecycled.toString()}} </span></div>
-    </div>
-  </div>
-
-
 <div *ngIf ="show; else dragdrop" class="panel-body wrapper-student-profile" dnd-sortable-container [sortableData]="students" [dropZones]="['delete-dropZone']">
   <table  *ngFor = "let AdminUser of students; let student of students; let i = index" class="list-group-item"
           dnd-sortable [sortableIndex]="i">
