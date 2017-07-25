@@ -17,9 +17,7 @@ export class StudentComponent implements OnInit {
               private router: Router,
               private spinner: SpinnerService,
               public  vRef: ViewContainerRef,
-              private toastr: ToastsManager,
-
-
+              private toastr: ToastsManager
   ) {
     this.toastr.setRootViewContainerRef(vRef);
   }
@@ -30,9 +28,8 @@ export class StudentComponent implements OnInit {
     });
   }
   logout() {
-    this.loginService.logout().subscribe(() => {
-      this.router.navigate(['/login']);
-    });
+          this.loginService.logout().subscribe(() => {
+            this.router.navigate(['/login']);
+          });
   }
-
 }
