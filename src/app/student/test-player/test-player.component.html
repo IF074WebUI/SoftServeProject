@@ -105,10 +105,11 @@
 
       </div>
       <div class="navbar">
-        <ul class="nav navbar-nav navbar-toggler-right">
-          <li class="marked"><span (click)="onSelect()"> {{MARKED}}</span><img height="30px" src="../../../assets/flag.png"></li>
-          <li><a (click)="next(question)">{{NEXT_QUESTION}}</a></li>
-        </ul>
+        <div class="nav navbar-nav navbar-toggler-right">
+          <div class="marked"><span (click)="onSelect()"></span><img height="30px" src="../../../assets/flag.png"> {{MARKED}}</div>
+          <div></div>
+          <div><a (click)="next(question)">{{NEXT_QUESTION}}</a></div>
+        </div>
       </div>
     </ng-container>
     <ng-container *ngIf="start && finish">
@@ -119,7 +120,7 @@
         </div>
         <div>
           <button type="button" class="btn btn-test-player" (click)="finishTest()">{{FINISH}}</button>
-          <button type="button" class="btn btn-test-player" [disabled]="timeFinish" (click)="backToTest()">{{BACK}}
+          <button type="button" class="btn btn-test-player"  (click)="backToTest()">{{BACK}}
           </button>
         </div>
       </div>
