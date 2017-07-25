@@ -223,7 +223,9 @@ export class TestPlayerComponent implements OnInit {
 
           } else {
             this.msg = resp['response'];
+            this.resetSessionData();
             this.openModal();
+
           }
         },
         error => {
@@ -318,6 +320,7 @@ export class TestPlayerComponent implements OnInit {
 
 
   finishTest() {
+   // this.unixTimeLeft = 0;
     this.test_player.getData()
       .flatMap(resp => this.test_player.checkResults(resp))
       .map(resp => {
