@@ -72,8 +72,6 @@ export class StudentsMainPageComponent implements OnInit {
     this.spinner.showSpinner();
     this.getEndTime();
     this.loginService.checkLogged()
-      .flatMap(loginResponse => this.studentId = loginResponse['id']);
-        return this.loginService.checkLogged()
           .subscribe(result => {
             this.studentId = +result['id'];
             this.testIdData.studentId = +result['id'];
@@ -81,7 +79,7 @@ export class StudentsMainPageComponent implements OnInit {
             this.studentService.getStudentById(+result['id'])
             .subscribe(res => {
               this.result.student = res[0];
-              this.testPlayer.setStudentData(res[0])
+              this.testPlayer.setStudentData(res[0]);
               this.timeTable.getTimeTablesForGroup(this.result.student['group_id'])
                 .subscribe(timeTableRes => {
                   if (timeTableRes['response'] === this.noRecordsResponce) {

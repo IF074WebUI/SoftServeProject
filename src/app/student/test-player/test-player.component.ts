@@ -76,6 +76,7 @@ export class TestPlayerComponent implements OnInit {
   RGB_PERSENT = 2.55;
   RGB_TIMER_STATUS_COLOR = 'rgb(188, 0, ';
   TIMER_SYNHRONIZATION = 100;
+  ERROR_MSG = 'Тест не готовий до здачі. Зверніться до адміністратора';
 
 
   TypeOfAnswers = {
@@ -216,12 +217,13 @@ export class TestPlayerComponent implements OnInit {
                   this.showQuestions(0);
                 },
                 error => {
-                  this.msg = error;
+                  this.msg = this.ERROR_MSG;
                   this.openModal();
                   this.resetSessionData();
                 });
 
           } else {
+            this.stopTimer();
             this.msg = resp['response'];
             this.resetSessionData();
             this.openModal();
@@ -247,7 +249,7 @@ export class TestPlayerComponent implements OnInit {
     this.numberOfQuestion = numberOfQuestion + 1;
     this.answersFrom.reset();
     this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
-      .map(resp => resp[0]).do(resp => {
+      .map(resp =>  resp[0]).do(resp => {
       this.question = resp;
       if (this.question['type'] === '3') {
         let currentAnswers = localStorage.getItem(String(this.question['question_id']));
@@ -320,14 +322,13 @@ export class TestPlayerComponent implements OnInit {
 
 
   finishTest() {
-   // this.unixTimeLeft = 0;
+    this.stopTimer();
     this.test_player.getData()
       .flatMap(resp => this.test_player.checkResults(resp))
       .map(resp => {
         let data = new InitialRezults(resp['full_mark'], resp['number_of_true_answers'], this.numberOfTasks, this.maxMarks, this.testName);
         return data;
       }).subscribe(resp => {
-      this.stopTimer();
       this.answersFrom.reset();
       localStorage.clear();
       this.resetSessionData();
@@ -390,7 +391,7 @@ export class TestPlayerComponent implements OnInit {
   }
 
   showTimer() {
-    let timer = setInterval(() => {
+    this.timer = setInterval(() => {
       if (this.unixTimeLeft >= 0) {
         this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / this.TIMER_DIVIDER) % this.SECONDS_IN_MINUTE));
         this.statusTimer = (this.unixTimeLeft / (this.testDuration / this.PERSENT)).toFixed(2) + '%';
@@ -399,7 +400,7 @@ export class TestPlayerComponent implements OnInit {
         this.unixTimeLeft = this.unixTimeLeft - 1;
       } else {
         this.toastr.error('Час закінчився');
-        clearInterval(timer);
+        clearInterval(this.timer);
         this.finishTest();
       }
     }, this.TIMER_SYNHRONIZATION);
@@ -422,7 +423,7 @@ export class TestPlayerComponent implements OnInit {
 
   saveEndTime() {
     if (this.testPlayerStartData.endUnixTime > 0) {
-      this.toastr.error('you have unfinished test');
+       this.toastr.error('you have unfinished test');
     } else {
 
       this.test_player.saveEndTime(this.endUnixTime, this.testPlayerStartData.testId, this.testDuration, this.testPlayerStartData.testName)
