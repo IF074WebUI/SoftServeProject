@@ -216,12 +216,13 @@ export class TestPlayerComponent implements OnInit {
                   this.showQuestions(0);
                 },
                 error => {
-                  this.msg = error;
+                  this.msg = 'Тест не готовий до здачі. Зверніться до адміністратора';
                   this.openModal();
                   this.resetSessionData();
                 });
 
           } else {
+            this.stopTimer();
             this.msg = resp['response'];
             this.resetSessionData();
             this.openModal();
