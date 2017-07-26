@@ -68,7 +68,7 @@ export class TestPlayerComponent implements OnInit {
   BACK = 'Повернутися до тесту';
   TEST_NAME = 'Назва тесту';
   TEST_DURATION = 'Тривалість тесту';
-  HV = 'хв';
+  MIN = 'хв';
   CLOSE_MODAL = 'Закрити';
   ATTANTION = 'Увага!';
   PRIMARY_VIOLET_COLOR = '#7e8bfe';
