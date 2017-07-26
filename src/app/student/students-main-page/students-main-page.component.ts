@@ -1,24 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginService} from '../../login/login.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Router} from '@angular/router';
 import {StudentsService} from '../../admin/students/students.service';
-import {ResultsService} from '../../admin/services/results.service';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
 import {ToastsManager} from 'ng2-toastr';
 import {SpinnerService} from '../../admin/universal/spinner/spinner.service';
 import {TimetableService} from '../../admin/timetable/timetable.service';
-import {SubjectService} from '../../admin/subject/subject.service';
 import {TestsService} from '../../admin/services/tests.service';
-import {QuestionsService} from '../../admin/services/questions.service';
-import {AnswersService} from '../../admin/services/answers.service';
-import {TestDetailService} from '../../admin/test-detail/test-detail.service';
-import {DeleteRecordByIdService} from '../../admin/services/delete-record-by-id.service';
 import {TestPlayerService} from '../test-player/test-player.service';
-import {Test} from "../../admin/tests/test";
-import {Student} from "../../admin/students/student";
-import {TestPlayerData} from "../student-profile/TestPlayerData";
+import {TestPlayerData} from '../student-profile/TestPlayerData';
 @Component({
   selector: 'dtester-students-main-page',
   templateUrl: './students-main-page.component.html',
@@ -72,24 +63,22 @@ export class StudentsMainPageComponent implements OnInit {
     this.spinner.showSpinner();
     this.getEndTime();
     this.loginService.checkLogged()
-      .flatMap(loginResponse => this.studentId = loginResponse['id']);
-        return this.loginService.checkLogged()
           .subscribe(result => {
             this.studentId = +result['id'];
             this.testIdData.studentId = +result['id'];
             this.testPlayer.addIdData(this.testIdData);
-            this.studentService.getStudentById(+result['id'])
+            this.studentService.getStudentById(+result['id']) // getting student and group;
             .subscribe(res => {
               this.result.student = res[0];
-              this.testPlayer.setStudentData(res[0])
-              this.timeTable.getTimeTablesForGroup(this.result.student['group_id'])
+              this.testPlayer.setStudentData(res[0]);
+              this.timeTable.getTimeTablesForGroup(this.result.student['group_id']) // getting timetable with test;
                 .subscribe(timeTableRes => {
                   if (timeTableRes['response'] === this.noRecordsResponce) {
                     this.checkTestAvailability = true;
                     this.spinner.hideSpinner();
                   } else {
                     this.result.timeTable = timeTableRes;
-                    for (const timeTable of this.result.timeTable) {
+                    for (let timeTable of this.result.timeTable) {
                       this.test.getTestsBySubject(timeTable['subject_id'])
                         .subscribe(testsRes => {
                             if (testsRes['response'] === this.noRecordsResponce) {
