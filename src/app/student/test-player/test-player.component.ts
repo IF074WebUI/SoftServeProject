@@ -247,7 +247,7 @@ export class TestPlayerComponent implements OnInit {
     this.numberOfQuestion = numberOfQuestion + 1;
     this.answersFrom.reset();
     this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
-      .map(resp => resp[0]).do(resp => {
+      .map(resp =>  resp[0]).do(resp => {
       this.question = resp;
       if (this.question['type'] === '3') {
         let currentAnswers = localStorage.getItem(String(this.question['question_id']));
