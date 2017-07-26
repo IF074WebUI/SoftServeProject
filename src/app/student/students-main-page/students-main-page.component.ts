@@ -122,7 +122,7 @@ export class StudentsMainPageComponent implements OnInit {
           this.router.navigate(['./student/test-player']);
         } else if (time['response'] === 'Empty set') {
         }
-      }, err => this.toastr.error(err));
+      }, err => err);
   }
 
 }

@@ -405,11 +405,10 @@ export class TestPlayerComponent implements OnInit {
         this.secondsDisplay = this.digitizeTime(Math.floor((this.unixTimeLeft / this.TIMER_DIVIDER) % this.SECONDS_IN_MINUTE));
         this.statusTimer = (this.unixTimeLeft / (this.testDuration / this.PERSENT)).toFixed(2) + '%';
         this.minutesDisplay = this.digitizeTime(Math.floor(this.unixTimeLeft / (this.TIMER_DIVIDER * this.SECONDS_IN_MINUTE)));
-
         this.unixTimeLeft = this.unixTimeLeft - 1;
       } else {
         this.toastr.error('Час закінчився');
-        this.stopTimer()
+        this.stopTimer();
         this.finishTest();
       }
     }, this.TIMER_SYNHRONIZATION);
