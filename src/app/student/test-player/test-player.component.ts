@@ -76,6 +76,7 @@ export class TestPlayerComponent implements OnInit {
   RGB_PERSENT = 2.55;
   RGB_TIMER_STATUS_COLOR = 'rgb(188, 0, ';
   TIMER_SYNHRONIZATION = 100;
+  ERROR_MSG = 'Тест не готовий до здачі. Зверніться до адміністратора';
 
 
   TypeOfAnswers = {
@@ -216,7 +217,7 @@ export class TestPlayerComponent implements OnInit {
                   this.showQuestions(0);
                 },
                 error => {
-                  this.msg = 'Тест не готовий до здачі. Зверніться до адміністратора';
+                  this.msg = this.ERROR_MSG;
                   this.openModal();
                   this.resetSessionData();
                 });
