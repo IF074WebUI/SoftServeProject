@@ -71,9 +71,6 @@ export class StudentsMainPageComponent implements OnInit {
   getTestForStudent() {
     this.spinner.showSpinner();
     this.getEndTime();
-    // this.loginService.checkLogged()
-    //   .flatMap(loginResponse => this.studentId = loginResponse['id']);
-    //     return
     this.loginService.checkLogged()
           .subscribe(result => {
             this.studentId = +result['id'];

@@ -106,7 +106,7 @@
       </div>
       <div class="navbar">
         <div class="nav navbar-nav navbar-toggler-right">
-          <div class="marked"><span (click)="onSelect()"></span><img height="30px" src="../../../assets/flag.png"> {{MARKED}}</div>
+          <div  (click)="onSelect()" class="marked"><span> </span><img height="30px" src="../../../assets/flag.png"> {{MARKED}}</div>
           <div></div>
           <div><a (click)="next(question)">{{NEXT_QUESTION}}</a></div>
         </div>

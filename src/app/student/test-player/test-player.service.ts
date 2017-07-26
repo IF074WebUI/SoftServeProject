@@ -59,15 +59,18 @@ export class TestPlayerService {
   }
 
   getCurrentTime() {
-    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_TIME_STAMP).map(resp => resp.json()).catch(this.handleError);
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_TIME_STAMP)
+      .map(resp => resp.json()).catch(this.handleError);
   }
 
   getQuestionsIdsByLevelRandom(test_id: number, level: number, number: number) {
-    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_QUESTIONS_IDS_BY_LEVEL_RAND + test_id + '/' + level + '/' + number).map(resp => resp.json()).catch(this.handleError);
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_QUESTIONS_IDS_BY_LEVEL_RAND + test_id + '/'
+      + level + '/' + number).map(resp => resp.json()).catch(this.handleError);
   }
 
   getTestDetail(test_id: number) {
-    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_TEST_DETAILS_BY_TEST + test_id).map(resp => resp.json()).catch(this.handleError);
+    return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_TEST_DETAILS_BY_TEST + test_id).map(resp => resp.json())
+      .catch(this.handleError);
   }
 
   getAnswersById(id: number): Observable<any> {
