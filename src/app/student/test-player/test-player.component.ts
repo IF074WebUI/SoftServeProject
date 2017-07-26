@@ -342,6 +342,7 @@ export class TestPlayerComponent implements OnInit {
       this.resetSessionData();
       this.test_player.sendRezults(resp); // use Subject for sending student current rezults to other component
     });
+    this.stopTimer();
     this.router.navigate(['student/test-rezults']);
   }
 
@@ -408,7 +409,7 @@ export class TestPlayerComponent implements OnInit {
         this.unixTimeLeft = this.unixTimeLeft - 1;
       } else {
         this.toastr.error('Час закінчився');
-        clearInterval(this.timer);
+        this.stopTimer()
         this.finishTest();
       }
     }, this.TIMER_SYNHRONIZATION);
@@ -433,7 +434,6 @@ export class TestPlayerComponent implements OnInit {
     if (this.testPlayerStartData.endUnixTime > 0) {
       this.toastr.error('you have unfinished test');
     } else {
-
       this.test_player.saveEndTime(this.endUnixTime, this.testPlayerStartData.testId, this.testDuration, this.testPlayerStartData.testName)
         .subscribe(res => res);
     }

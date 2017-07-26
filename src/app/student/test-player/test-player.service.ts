@@ -84,7 +84,7 @@ export class TestPlayerService {
     return Observable.forkJoin(forkJoinBatch);
   };
 
-  getQuestionById(id: number){
+  getQuestionById(id: number) {
     return this.http.get(HOST_PROTOCOL + HOST + TEST_PLAYER_GET_QUESTION_BY_ID + id).map(resp => resp.json()).catch(this.handleError);
   }
 
@@ -94,7 +94,7 @@ export class TestPlayerService {
 
   checkSecurity(user_id: number, test_id: number) {
     let body = JSON.stringify({'user_id': user_id, 'test_id': test_id});
-    return this.http.post(HOST_PROTOCOL + HOST + TEST_PLAYER_START_TEST + user_id + '/' + test_id, JSON.stringify(body), this.options).map(resp => resp.json()).catch(this.handleError)
+    return this.http.post(HOST_PROTOCOL + HOST + TEST_PLAYER_START_TEST + user_id + '/' + test_id, JSON.stringify(body), this.options).map(resp => resp.json()).catch(this.handleError);
   }
 
   saveData(allAnswers: any) {
@@ -126,10 +126,22 @@ export class TestPlayerService {
       .map((resp: Response) => resp.json())
       .catch(this.handleError);
   }
+
+  private EndTimehandleError(error: Response | any) {
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    return Observable.throw(errMsg);
+  }
   getEndTime() {
     return this.http.get(HOST_PROTOCOL + HOST + '/TestPlayer/getEndTime')
       .map((resp: Response) => resp.json())
-      .catch(this.handleError);
+      .catch(this.EndTimehandleError);
   }
 }
 

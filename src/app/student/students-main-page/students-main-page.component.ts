@@ -1,24 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginService} from '../../login/login.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Router} from '@angular/router';
 import {StudentsService} from '../../admin/students/students.service';
-import {ResultsService} from '../../admin/services/results.service';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
 import {ToastsManager} from 'ng2-toastr';
 import {SpinnerService} from '../../admin/universal/spinner/spinner.service';
 import {TimetableService} from '../../admin/timetable/timetable.service';
-import {SubjectService} from '../../admin/subject/subject.service';
 import {TestsService} from '../../admin/services/tests.service';
-import {QuestionsService} from '../../admin/services/questions.service';
-import {AnswersService} from '../../admin/services/answers.service';
-import {TestDetailService} from '../../admin/test-detail/test-detail.service';
-import {DeleteRecordByIdService} from '../../admin/services/delete-record-by-id.service';
 import {TestPlayerService} from '../test-player/test-player.service';
-import {Test} from "../../admin/tests/test";
-import {Student} from "../../admin/students/student";
-import {TestPlayerData} from "../student-profile/TestPlayerData";
+import {TestPlayerData} from '../student-profile/TestPlayerData';
 @Component({
   selector: 'dtester-students-main-page',
   templateUrl: './students-main-page.component.html',
