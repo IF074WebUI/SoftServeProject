@@ -132,27 +132,6 @@ export class StatisticsComponent implements OnInit {
     }
     this.chart.reinit();
     this.spinner.hideSpinner();
-    let series = [];
-    for (const dataValue of this.data.datasets[0].data){
-      series.push({
-        name: 'students',
-        data: dataValue
-      });
-    }
-    $('#container').highcharts({
-      chart: {
-        type: 'bar'
-      },
-
-      title: {
-        text: 'Графік успішності по тестах'
-      },
-      xAxis: {
-        categories: this.data.labels
-      },
-
-      series: series
-    });
   }
   checkAndReverseData(criteria: string) {
     if (criteria === 'valueDec' || criteria === 'nameDec') {

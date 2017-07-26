@@ -67,18 +67,18 @@ export class StudentsMainPageComponent implements OnInit {
             this.studentId = +result['id'];
             this.testIdData.studentId = +result['id'];
             this.testPlayer.addIdData(this.testIdData);
-            this.studentService.getStudentById(+result['id'])
+            this.studentService.getStudentById(+result['id']) // getting student and group;
             .subscribe(res => {
               this.result.student = res[0];
               this.testPlayer.setStudentData(res[0]);
-              this.timeTable.getTimeTablesForGroup(this.result.student['group_id'])
+              this.timeTable.getTimeTablesForGroup(this.result.student['group_id']) // getting timetable with test;
                 .subscribe(timeTableRes => {
                   if (timeTableRes['response'] === this.noRecordsResponce) {
                     this.checkTestAvailability = true;
                     this.spinner.hideSpinner();
                   } else {
                     this.result.timeTable = timeTableRes;
-                    for (const timeTable of this.result.timeTable) {
+                    for (let timeTable of this.result.timeTable) {
                       this.test.getTestsBySubject(timeTable['subject_id'])
                         .subscribe(testsRes => {
                             if (testsRes['response'] === this.noRecordsResponce) {
