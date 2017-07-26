@@ -27,7 +27,6 @@ export class GroupComponent implements OnInit {
   headers: string[];            /* array of headers */
   ignoreProperties: string[];
   btnClass: string;
-  CREATING_NEW_GROUP = 'Додати нову групу';
   DISPLAY_PROPERTIES_ORDER: string[] = ['group_name'];
   SORT_PROPERTIES: string[] = ['group_name'];
   displayPropertiesOrder: string[];

@@ -6,10 +6,12 @@ import 'rxjs/add/operator/map';
 import {ToastsManager} from 'ng2-toastr';
 import {SpinnerService} from '../admin/universal/spinner/spinner.service';
 import {ViewContainerRef} from '@angular/core';
+
 @Component({
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.scss']
 })
+
 export class StudentComponent implements OnInit {
   objLoaderStatus: boolean;
 
@@ -22,14 +24,12 @@ export class StudentComponent implements OnInit {
 
   ) {
     this.toastr.setRootViewContainerRef(vRef);
-
   }
 
   ngOnInit() {
     this.spinner.loaderStatus.subscribe((val: boolean) => {
       this.objLoaderStatus = val;
     });
-
   }
   logout() {
     this.loginService.logout().subscribe(() => {

@@ -37,7 +37,7 @@ table {
   tbody {
     tr:hover {
       background-color: $table-bg-hover;
-      font-size: 105%;
+      transition: 300ms;
     }
   }
 }

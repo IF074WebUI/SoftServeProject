@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'dtester-items-per-page',
@@ -17,6 +17,6 @@ export class ItemsPerPageComponent implements OnInit {
   }
   getNumberRecords(numberRecords: number) {
   this.recordsPerPageChanged.emit(numberRecords);
-}
+  }
 
 }

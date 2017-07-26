@@ -53,7 +53,6 @@ describe('FacultyService', () => {
         });
 
         FacultyService.getAllFaculties().subscribe((resp) => {
-          //  expect(resp.id).toEqual('2');
           expect(resp.faculty_name).toEqual('olena');
           expect(resp.faculty_description).toEqual('olenatest');
         });
@@ -73,7 +72,6 @@ describe('FacultyService', () => {
         });
 
         FacultyService.deleteCascade(2).subscribe((resp) => {
-          //  expect(resp.id).toEqual('2');
           expect(resp).toBeFalsy();
         });
 

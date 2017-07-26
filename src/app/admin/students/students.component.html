@@ -2,14 +2,79 @@
 
 <div class="top-panel" role="alert">
   <div class="btn-add" (click)="add()">+</div>
+  <button class="btn-toggle" (click)="show = !show">Вигляд</button>
   <dtester-search (searchCriteria)="searchStudent($event)">
   </dtester-search>
+
   <dtester-items-per-page [numberOfRecords]="count"
                           (recordsPerPageChanged)="changeCountPerPage($event)">
   </dtester-items-per-page>
 </div>
+<div>
+<div *ngIf ="show; else dragdrop" class="panel-body wrapper-student-profile" dnd-sortable-container [sortableData]="students" [dropZones]="['delete-dropZone']">
+  <table  *ngFor = "let AdminUser of students; let student of students; let i = index" class="list-group-item"
+          dnd-sortable [sortableIndex]="i">
+    <div class="container">
+      <div class="row">
 
-<dtester-entities-table [entities]="students"
+        <div class="col">
+          <table>
+            <tr>
+              <td>Студент:</td>
+              <td>{{student?.student_surname}} {{student?.student_name}} {{student?.student_fname}}</td>
+            </tr>
+            <tr>
+              <td>№ заліковки:</td>
+              <td>{{student?.gradebook_id}}</td>
+            </tr>
+            <tr>
+              <td>Група:</td>
+              <td>{{student?.group_name}}</td>
+            </tr>
+            <tr>
+              <td>E-mail:</td>
+              <td>{{AdminUser?.email}}</td>
+            </tr>
+            <tr>
+              <td>Логін:</td>
+              <td>{{AdminUser?.username}}</td>
+            </tr>
+            <tr>
+              <td>Пароль:</td>
+              <td>{{student?.plain_password}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="col">
+          <img class="img-thumbnail photo" *ngIf="!student?.photo" src="../../../assets/default-avatar.png">
+          <img class="img-thumbnail photo" *ngIf="student?.photo" [src]="student?.photo"></div>
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="btn btn-danger" data-toggle="modal" (click)="selectedStudent(student, AdminUser)"
+              data-target="#modalEdit" data-whatever="@mdo" >Редагувати
+      </button>
+      <button class="btn btn-danger" data-toggle="modal" (click)="selectedStudentForDel(student, AdminUser)"
+              data-target="#modalDelete" data-whatever="@mdo" >Delete
+      </button>
+    </div>
+  </table>
+
+  <div class="app">
+    <dynamic-form
+      [config]="configs"
+      (submitted)="formSubmitt($event)"
+      (youCanDelete)="submitDel($event)">
+    </dynamic-form>
+  </div>
+</div>
+  </div>
+
+
+ <ng-template #dragdrop>
+<dtester-entities-table *ngIf ="!show"
+
+                        [entities]="students"
                         [headers]="headers"
                         [page]="page"
                         [itemsPerPage]="countPerPage"
@@ -22,12 +87,14 @@
                         [canDelete]="true"
                         [sortProperties]="sortProperties">
 </dtester-entities-table>
-
+</ng-template>
 <div class="app">
   <dynamic-form [config]="configs"
                 (submitted)="formSubmitted($event)">
   </dynamic-form>
 </div>
+
+
 
 <div class="text-center">
   <dtester-pagination [countRecords]="count"

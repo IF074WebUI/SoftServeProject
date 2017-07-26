@@ -77,6 +77,26 @@ export class StudentsService {
     );
     return this.http.post('http://' + HOST + '/Student/update/' + user_id, body).map(resp => resp.json());
   }
+  delete(studentDelForm, studentDelData, user_id): Observable<Student> {
+    let body = JSON.stringify(
+      {
+        'username': studentDelData.username,
+        'password': studentDelData.password,
+        'password_confirm': studentDelData.password_confirm,
+        'email': studentDelForm.email,
+        'gradebook_id': studentDelForm.gradebook,
+        'student_surname': studentDelForm.student_surname,
+        'student_name': studentDelForm.student_name,
+        'student_fname': studentDelForm.student_fname,
+        'group_id': studentDelForm.group,
+        'plain_password': studentDelData.plain_password,
+        'photo': studentDelForm.photo
+      }
+    );
+    return this.http.get('http://' + HOST + '/Student/del/' + user_id, body)
+      .map(resp => resp.json());
+  }
+
 
   del(user_id: number): Observable<Student> {
     return this.http.delete('http://' + HOST + '/Student/del/' + user_id).map(resp => resp.json());

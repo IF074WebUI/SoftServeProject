@@ -1,6 +1,6 @@
 <ngx-loading [show]="objLoaderStatus"></ngx-loading>
 
-<header>
+<div class="header">
   <div class="container">
     <div class="row">
       <div class="col-md-10">
@@ -11,6 +11,10 @@
       </div>
     </div>
   </div>
-</header>
-
-<router-outlet></router-outlet>
+</div>
+<div class="body">
+  <router-outlet></router-outlet>
+</div>
+<div class="footer">
+  <p>&copy; 2017 IT academy</p>
+</div>

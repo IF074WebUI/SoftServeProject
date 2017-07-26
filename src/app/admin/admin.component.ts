@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import { SpinnerService } from './universal/spinner/spinner.service';
 import {ViewContainerRef} from '@angular/core';
 import {ToastsManager} from 'ng2-toastr';
@@ -32,14 +32,15 @@ import {Router} from "@angular/router";
   ]
 })
 export class AdminComponent implements OnInit {
-  menuMove: string = 'left';
+  menuMove: string = 'right';
   objLoaderStatus: boolean;
 
   constructor(private spinner: SpinnerService,
               private toastr: ToastsManager,
               public  vRef: ViewContainerRef,
               private loginService: LoginService,
-              private router: Router) {
+              private router: Router,
+              private elRef: ElementRef) {
     this.objLoaderStatus = false;
     this.toastr.setRootViewContainerRef(vRef);
   }
@@ -49,7 +50,6 @@ export class AdminComponent implements OnInit {
       this.objLoaderStatus = val;
     });
   }
-
   toggleMove() {
     this.menuMove = this.menuMove === 'left' ? 'right' : 'left';
   }

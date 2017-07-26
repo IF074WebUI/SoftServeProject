@@ -1,0 +1,16 @@
+@import "../../admin/universal/styles/table";
+@import "../../admin/universal/styles/button";
+@import "../../admin/universal/styles/const";
+
+thead{
+  color: $primary-violet-color;
+  font-size: xx-large;
+  span{
+    font-weight: bold;
+  }
+}
+.rezult{
+  font-size: x-large;
+  font-weight: bold;
+  color: $red-color;
+}

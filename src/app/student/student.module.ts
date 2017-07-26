@@ -2,10 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {studentRoutes} from './student.routes';
 import {StudentComponent} from './student.component';
-import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TestPlayerComponent} from './test-player/test-player.component';
 import {LoginService} from '../login/login.service';
 import {SpinnerService} from '../admin/universal/spinner/spinner.service';
@@ -24,18 +21,21 @@ import {StudentsService} from '../admin/students/students.service';
 import {ResultsService} from '../admin/services/results.service';
 import {StudentsMainPageComponent} from './students-main-page/students-main-page.component';
 import {ToastModule} from 'ng2-toastr';
-import { StudentProfileComponent } from './student-profile/student-profile.component';
+import {StudentProfileComponent} from './student-profile/student-profile.component';
 import {GroupService} from '../admin/group/group.service';
+import { TestRezultsComponent } from './test-rezults/test-rezults.component';
 
 
 @NgModule({
 
-  declarations: [StudentComponent, TestPlayerComponent, StudentsMainPageComponent, StudentProfileComponent],
+  declarations: [StudentComponent, TestPlayerComponent, StudentsMainPageComponent, StudentProfileComponent, TestRezultsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(studentRoutes),
     LoadingModule,
-    ToastModule.forRoot()
+    ToastModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     TestPlayerService,

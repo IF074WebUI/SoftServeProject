@@ -30,6 +30,8 @@ export class AnswersComponent implements OnInit {
   questionNameQueryParam: string;
   sortProperties: string[];
 
+  countOfQuestions: number;
+
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
   configs = ANSWER_CONFIG;
@@ -53,20 +55,19 @@ export class AnswersComponent implements OnInit {
       this.questionNameQueryParam = params['question_text'];
       if (this.questionIdQueryParam) {
         this.getAnswersForOneQuestion();
-      } else {
-        this.getAnswers();
       }
     });
   }
+
   getAnswersForOneQuestion() {
     this.spinner.showSpinner();
     this.answersService.getAnswersByQuestion(this.questionIdQueryParam).subscribe(resp => {
       this.answersOnPage = resp;
-      this.countRecords = 0;
+       this.countRecords = 0;
       for (const answer of this.answersOnPage) {
         this.setNameOfQuestion(answer);
       }
-      this.spinner.hideSpinner();
+     this.spinner.hideSpinner();
     });
   }
   setNameOfQuestion(answer: Answer) {
@@ -74,57 +75,6 @@ export class AnswersComponent implements OnInit {
       answer.question_id = resp[0].question_id;
     });
   }
-
-  getAnswers(): void {
-    this.spinner.showSpinner();
-    this.getCountRecords();
-    if (this.countRecords <= (this.pageNumber - 1) * this.recordsPerPage) {
-      --this.pageNumber;
-    }
-    this.answersService.getPaginatedPage(this.pageNumber, this.recordsPerPage).delay(301)
-      .subscribe(resp => { this.answersOnPage = <Answer[]>resp,
-        error => this.router.navigate(['/bad_request']);
-        this.spinner.hideSpinner();
-      });
-  }
-
-  getCountRecords() {
-    this.answersService.getCountAnswers()
-      .subscribe(resp => this.countRecords = resp );
-  }
-
-  changePage(page: number) {
-    this.pageNumber = page;
-    this.getAnswersForOneQuestion();
-  }
-  changeNumberOfRecordsOnPage(numberOfRecords: number) {
-    this.recordsPerPage = numberOfRecords;
-    this.pageNumber = 1;
-    this.getAnswersForOneQuestion();
-  }
-
-  startSearch(criteria: string) {
-    this.spinner.showSpinner();
-    if (criteria === '' || +criteria <= 0 ) {
-      this.getAnswersForOneQuestion();
-    } else {
-      this.answersService.searchByName(criteria)
-        .subscribe(resp => {
-            if (resp['response'] === 'no records') {
-              this.answersOnPage = [];
-              this.countRecords = this.answersOnPage.length;
-              this.spinner.hideSpinner();
-            } else {
-              this.countRecords = 0;
-              this.pageNumber = 2;
-              this.answersOnPage = resp;
-              this.spinner.hideSpinner();
-            }
-          },
-          error => this.router.navigate(['/bad_request']));
-    }
-  }
-
   add() {
     this.popup.sendItem({answer_id: '', question_id:  '', true_answer: '', answer_text: ''}, 'Answer');
     this.popup.showModal();

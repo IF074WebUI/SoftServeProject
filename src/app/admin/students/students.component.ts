@@ -18,16 +18,27 @@ import {isUndefined} from "util";
   styleUrls: ['./students.component.scss'],
   providers: [StudentsService]
 })
+
 export class StudentsComponent implements OnInit {
+  show: boolean = true;
+  listRecycled: Array<string> = [];
+
+
+  student: Student;
+  AdminUser: Student;
+  studentForEdit: Student;
+  studentForDel: Student;
+  studentForAdd: Student;
+  user_id: number;
+  studentDelData = {};
+  studentEditData = {};
+  studentData = {};
+
 
   headers = ['№', 'Прізвище', 'Ім\'я', 'По-батькові', 'Група'];
   ignoreProperties = ['username', 'photo', 'user_id', 'group_id', 'gradebook_id', 'plain_password'];
   displayProperties = ['student_surname', 'student_name', 'student_fname', 'group_name'];
   sortProperties = ['student_surname', 'student_name', 'student_fname', 'group_name'];
-
-  configs = STUDENT_CONFIG;
-
-  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
 
   MAIN_HEADER = 'Студенти';
   MODAL_ADD = 'Додати студента';
@@ -37,6 +48,8 @@ export class StudentsComponent implements OnInit {
   count: number;
   countPerPage = 5;
 
+  @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
+  configs = STUDENT_CONFIG;
 
   constructor(private studentsService: StudentsService,
               private router: Router,
@@ -49,8 +62,10 @@ export class StudentsComponent implements OnInit {
 
   ngOnInit() {
     this.getStudents();
+    this.getAdminUser();
     this.getGroups();
     this.getStudentsForGroup();
+    this.getStudentOne();
   }
 
   getStudentsForGroup() {
@@ -75,9 +90,64 @@ export class StudentsComponent implements OnInit {
     this.studentsService.getPaginated(this.countPerPage, (this.page - 1) * this.countPerPage)
       .subscribe(resp => {
           this.getStudentsWithGroupName(resp);
+        this.getStudentsUserData();
           this.spinner.hideSpinner();
         }, err => this.router.navigate(['/bad_request'])
       );
+  }
+
+
+
+  getStudentOne() {
+    this.spinner.showSpinner();
+    this.studentsService.getStudentById(this.user_id).subscribe((resp: Student) => {
+      this.getStudentOneWithGroupName(resp[0]);
+      this.spinner.hideSpinner();
+    });
+  }
+  selectedStudent(student: Student, AdminUser) {
+    this.studentForEdit = student;
+    this.studentForEdit.username = AdminUser.username;
+    this.studentForEdit.email = AdminUser.email;
+    this.popup.sendItem({
+      'student_name': this.studentForEdit.student_name,
+      'student_surname': this.studentForEdit.student_surname,
+      'student_fname': this.studentForEdit.student_fname,
+      'gradebook': this.studentForEdit.gradebook_id,
+      'email': this.studentForEdit.email,
+      'group': this.studentForEdit.group_name,
+      'group_id': this.studentForEdit.group_id
+    }, 'Student', null, this.studentForEdit.photo);
+    this.popup.showModal();
+  }
+
+
+  selectedStudentForDel(student: Student, AdminUser) {
+    this.studentForDel = student;
+    this.studentForDel.username = AdminUser.username;
+    this.studentForDel.email = AdminUser.email;
+    this.popup.deleteEntity(this.studentForDel);
+  }
+
+
+  getAdminUser() {
+    this.spinner.showSpinner();
+    this.studentsService.getAdminUser(this.user_id).subscribe(resp => {
+      this.AdminUser = resp[0];
+      this.spinner.hideSpinner();
+    });
+  }
+
+  getStudentsUserData() {
+    for (let student of this.students) {
+      this.studentsService.getAdminUser(student.user_id)
+        .subscribe(
+          userResponse => {
+            student.email = userResponse[0]['email'],
+            student.username = userResponse[0]['username']
+          }
+        );
+    }
   }
 
   getCount(): void {
@@ -127,6 +197,13 @@ export class StudentsComponent implements OnInit {
     });
   }
 
+  getStudentOneWithGroupName(data) {
+    this.student = data;
+    this.getRecordsByIdService.getRecordsById('group', this.student.group_id).subscribe((StudentData) => {
+      this.student.group_name = StudentData[0].group_name;
+    });
+  }
+
   goToStudentProfile(student: Student) {
     this.router.navigate(['students', student.user_id], {relativeTo: this.activatedRoute.parent});
   }
@@ -141,14 +218,23 @@ export class StudentsComponent implements OnInit {
     };
   }
 
-  add() {
-    this.popup.sendItem(new Student(), 'Student');
+
+  add(){
+  this.popup.sendItem({
+    'student_name': '',
+  'student_surname': '',
+  'student_fname': '',
+  'gradebook': '',
+  'email': '',
+  'group': '',
+  'group_id': ''
+}, 'Student', null, '');
     this.popup.showModal();
   }
-
   del(student: Student) {
     this.popup.deleteEntity(student);
   }
+
 
   formSubmitted(value) {
     this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
@@ -167,5 +253,42 @@ export class StudentsComponent implements OnInit {
     }, error => {
       this.toastr.error(error);
     });
+  }
+
+
+
+  formSubmitt(value) {
+    this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
+      this.getStudents();
+      this.popup.cancel();
+      this.toastr.success(`Студент ${value['student_name']} ${value['student_surname']} ${value['student_fname']} успішно створений`);
+    }, error2 => {
+      this.toastr.error(error2);
+    });
+
+    this.studentEditData = {
+      'username': this.studentForEdit.username,
+      'password': this.studentForEdit.plain_password,
+      'password_confirm' : this.studentForEdit.plain_password,
+      'plain_password': this.studentForEdit.plain_password,
+    };
+    this.studentsService.update(value, this.studentEditData, this.studentForEdit.user_id)
+      .subscribe(resp => {
+        this.getStudents();
+        this.popup.cancel();
+        this.toastr.success(`Студент ${this.studentForEdit['student_name']} ${this.studentForEdit['student_surname']}
+        ${this.studentForEdit['student_fname']} успішно відредагований`);
+      }, error2 => {
+        this.toastr.error(error2);
+      });
+  }
+
+  submitDel(student: Student) {
+  this.studentsService.deleteCascade(student['user_id']).subscribe(response => {
+  this.getStudents();
+  this.toastr.success(`Студент ${student['student_name']} ${student['student_surname']} ${student['student_fname']} успішно видалений`);
+  }, error2 => {
+  this.toastr.error(error2);
+  });
   }
 }
