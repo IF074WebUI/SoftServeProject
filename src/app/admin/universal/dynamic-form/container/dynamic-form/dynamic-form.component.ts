@@ -99,7 +99,7 @@ export class DynamicFormComponent implements OnInit {
         group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required])));
       }
       if (control.requiredAsync) {
-        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([validateName.bind(this)])));
+        group.addControl(control.name, this.fb.control('', Validators.compose([Validators.required]), Validators.composeAsync([this.validateName.bind(this)])));
       } else {
         group.addControl(control.name, this.fb.control(''));
       }
@@ -200,21 +200,9 @@ export class DynamicFormComponent implements OnInit {
     this.data1 = {};
     $('#add_edit_deletePopup').modal('hide');
   }
-}
 
-// Email and Async validators
 
-export function validateEmail(email: FormControl) {
-  let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
-
-  return EMAIL_REGEXP.test(email.value) ? null : {
-    validateEmail: {
-      valid: false
-    }
-  };
-}
-
-export function validateName(value: FormControl) {
+  validateName(value: FormControl) {
   let name = value.value;
   if (this.entity_name) {
     return this.get_records_by_search.getRecordsBySearch(this.entity_name, name).map((resp) => {
@@ -233,5 +221,19 @@ export function validateName(value: FormControl) {
       return null;
     });
   }
+}
+
+}
+
+// Email and Async validators
+
+export function validateEmail(email: FormControl) {
+  let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+
+  return EMAIL_REGEXP.test(email.value) ? null : {
+    validateEmail: {
+      valid: false
+    }
+  };
 }
 

@@ -23,7 +23,7 @@ import {Router, Routes, RouterModule} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 
 
-describe('FacultyService', () => {
+fdescribe('FacultyService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpModule, FormsModule, CommonModule,
@@ -40,8 +40,8 @@ describe('FacultyService', () => {
       ]
     });
   });
-  describe('getFaculties()', () => {
-    it('This service should show all faculties',
+  fdescribe('getFaculties()', () => {
+    fit('This service should show all faculties',
       inject([FacultyService, XHRBackend], (FacultyService, mockBackend) => {
 
         const mockResponse = {id: 2, faculty_name: 'olena', faculty_description: 'olenatest'};
@@ -60,7 +60,7 @@ describe('FacultyService', () => {
       }));
   });
   describe('deleteCascade()', () => {
-    it('it should delete faculties',
+    fit('it should delete faculties',
       inject([FacultyService, XHRBackend], (FacultyService, mockBackend) => {
 
         const mockResponse = {id: 2, faculty_name: 'olena', faculty_description: 'olenatest'};

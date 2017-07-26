@@ -104,7 +104,9 @@ export class TestPlayerComponent implements OnInit {
   ngOnInit() {
     this.getStartData();
     this.createForm();
-    if (this.testPlayerStartData.endUnixTime > 0) { // when user accidentally closed browser
+    if (this.testPlayerStartData.endUnixTime > 0) {
+      this.start = true;
+      // when user accidentally closed browser
       this.questionsIds = [];
       this.test_player.getData().map(resp => { // fetch questions ids from slot
         let data: Array<any> = JSON.parse(resp);
@@ -120,7 +122,6 @@ export class TestPlayerComponent implements OnInit {
         }
         this.showQuestions(0);
       });
-      this.start = true;
     }
   }
 
@@ -177,29 +178,6 @@ export class TestPlayerComponent implements OnInit {
   }
 
 
-  getMaxMarks() {
-    this.test_player.getTestDetail(this.testPlayerStartData.testId)
-      .subscribe((resp: TestDetail[]) => {
-        let arrayAllTasks: Array<number> = resp.map(obj => {
-          return obj['tasks'];
-        });
-        this.numberOfTasks = arrayAllTasks.reduce((sum, cur) => {
-          return +sum + +cur;
-        });
-
-        let arrayMaxMarks: Array<number> = resp.map(obj => {
-          return obj['tasks'] * obj['rate'];
-        });
-        this.maxMarks = arrayMaxMarks.reduce((sum, cur) => {
-          return +sum + +cur;
-        });
-      }, error => {
-        this.msg = error;
-        this.openModal();
-      });
-  }
-
-
   startTest() {
     this.startTimer();
     this.test_player.checkSecurity(+this.testPlayerStartData.studentId, this.testPlayerStartData.testId)
@@ -218,7 +196,7 @@ export class TestPlayerComponent implements OnInit {
                   for (let i in this.questionsIds) {
                     this.dataForSave[i] = new CheckAnswers(this.questionsIds[i], []); // dataForSave is for saving on a student's slot, later will be send for getting a marks
                   }
-                  this.showQuestions(0); // show first question
+                  this.showQuestions(0);
                 },
                 error => {
                   this.msg = this.ERROR_MSG;
@@ -238,8 +216,8 @@ export class TestPlayerComponent implements OnInit {
         error => {
           this.msg = error;
           this.openModal();
-          // this.stopTimer();
-          // this.resetSessionData();
+          this.resetSessionData();
+          this.stopTimer();
         });
   }
 
@@ -257,7 +235,7 @@ export class TestPlayerComponent implements OnInit {
     this.test_player.getQuestionById(this.questionsIds[numberOfQuestion]) // get question id  by it's number
       .map(resp => resp[0]).do(resp => {
       this.question = resp;
-      if (this.question['type'] === this.INPUT_FIELD_TYPE) { // get student's answer ids from localStorage and for input type "input field" set appropriate value
+      if (this.question['type'] === this.INPUT_FIELD_TYPE) { // set value for input type "inputfield"
         let currentAnswers = localStorage.getItem(String(this.question['question_id']));
         this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers);
       }
@@ -265,15 +243,15 @@ export class TestPlayerComponent implements OnInit {
       .flatMap(resp => this.test_player.getAnswersById(resp['question_id'])) // get all possible answers by current question
       .subscribe(resp => {
         this.question['answers'] = resp;
-        resp.forEach(item => this.answersFrom.addControl(item['answer_id'], this.fb.control(false))); // create dynamically FormControlNames = answer.id for checkbox
+        resp.forEach(item => this.answersFrom.addControl(item['answer_id'], this.fb.control(false))); // create dynamically controls with FormControlNames = answer.id for checkbox
         let currentAnswers = localStorage.getItem(String(this.question['question_id']));
-        if (currentAnswers) { // for input type "checkbox"
+        if (currentAnswers) { // set value for input type "checkbox"
           if (this.question['type'] === this.MULTICHOISE_FIELD_TYPE) {
             let array = currentAnswers.split(',');
             array.forEach(string => this.answersFrom.controls[string].setValue(true)
             );
           } else {
-            this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers); // input type "radiobutton"
+            this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers); // set value for input type "radiobutton"
           }
         }
       }, error => {
@@ -284,8 +262,9 @@ export class TestPlayerComponent implements OnInit {
   }
 
 
-  saveCurrentAnswer(question ?: Question, questionId ?: number) { // for saving given answers at slot and localStorage
-    let currentQuestion = questionId ? this.test_player.getQuestionById(questionId).subscribe(resp => question = resp) : question;
+  saveCurrentAnswer(question ?: Question, questionId ?: number) { // for saving given answers in slot and in localStorage
+    let currentQuestion = questionId ? this.test_player.getQuestionById(questionId)
+      .subscribe(resp => question = resp) : question;
     if (question['type'] === this.MULTICHOISE_FIELD_TYPE) { // in case input type checkbox
       question['answers'].map(answer => {
         return answer['answer_id'];
@@ -330,20 +309,44 @@ export class TestPlayerComponent implements OnInit {
 
   finishTest() {
     this.stopTimer();
-    this.test_player.getData() // fetch all questions and answers ids from student  slot
+    this.test_player.getData() // fetch dataForSave (all questions and answers ids) from student  slot
       .flatMap(resp => this.test_player.checkResults(resp)) // call method for checking answers and getting the mark
       .map(resp => {
         let data = new InitialRezults(resp['full_mark'], resp['number_of_true_answers'],
-          this.numberOfTasks, this.maxMarks, this.testName); // prepare data for sending to student-rezult component
+          this.maxMarks, this.numberOfTasks, this.testName);
         return data;
       }).subscribe(resp => {
       this.answersFrom.reset();
       localStorage.clear();
       this.resetSessionData();
-      this.test_player.sendRezults(resp); // use Subject for sending student current rezults to other component
+      this.test_player.sendRezults(resp); // use Subject  for sending student current rezults to other component
     });
     this.router.navigate(['student/test-rezults']);
   }
+
+
+  getMaxMarks() {
+    this.test_player.getTestDetail(this.testPlayerStartData.testId)
+      .subscribe((resp: TestDetail[]) => {
+        let arrayAllTasks: Array<number> = resp.map(obj => {
+          return obj['tasks'];
+        });
+        this.numberOfTasks = arrayAllTasks.reduce((sum, cur) => {
+          return +sum + +cur;
+        });
+
+        let arrayMaxMarks: Array<number> = resp.map(obj => {
+          return obj['tasks'] * obj['rate'];
+        });
+        this.maxMarks = arrayMaxMarks.reduce((sum, cur) => {
+          return +sum + +cur;
+        });
+      }, error => {
+        this.msg = error;
+        this.openModal();
+      });
+  }
+
 
   resetSessionData() {
     this.test_player.resetSessionData().subscribe(res => {
