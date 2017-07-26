@@ -258,14 +258,13 @@ export class StudentsComponent implements OnInit {
 
 
   formSubmitt(value) {
-    // this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
-    //   this.getStudents();
-    //   this.popup.cancel();
-    //   this.toastr.success(`Студент ${value['student_name']} ${value['student_surname']} ${value['student_fname']} успішно створений`);
-    // }, error2 => {
-    //   this.toastr.error(error2);
-    // });
-
+    this.studentsService.insert(value, this.generateStudentData()).subscribe(resp => {
+      this.getStudents();
+      this.popup.cancel();
+      this.toastr.success(`Студент ${value['student_name']} ${value['student_surname']} ${value['student_fname']} успішно створений`);
+    }, error2 => {
+      this.toastr.error(error2);
+    });
 
     this.studentEditData = {
       'username': this.studentForEdit.username,
