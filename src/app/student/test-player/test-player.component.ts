@@ -77,6 +77,8 @@ export class TestPlayerComponent implements OnInit {
   RGB_TIMER_STATUS_COLOR = 'rgb(188, 0, ';
   TIMER_SYNHRONIZATION = 100;
   ERROR_MSG = 'Тест не готовий до здачі. Зверніться до адміністратора';
+  INPUT_FIELD_TYPE = '3';
+  MULTICHOISE_FIELD_TYPE = '2';
 
 
   TypeOfAnswers = {
@@ -102,9 +104,9 @@ export class TestPlayerComponent implements OnInit {
   ngOnInit() {
     this.getStartData();
     this.createForm();
-    if (this.testPlayerStartData.endUnixTime > 0) {
+    if (this.testPlayerStartData.endUnixTime > 0) { // when user accidentally closed browser
       this.questionsIds = [];
-      this.test_player.getData().map(resp => {
+      this.test_player.getData().map(resp => { // fetch questions ids from slot
         let data: Array<any> = JSON.parse(resp);
         this.questionsIds = [];
         data.forEach(obj => {
@@ -121,6 +123,15 @@ export class TestPlayerComponent implements OnInit {
       this.start = true;
     }
   }
+
+
+  createForm() {
+    this.answersFrom = this.fb.group({
+      singlechoise: '',
+      inputfield: ''
+    });
+  }
+
 
   getTestName() {
     this.testService.getTestById(this.testPlayerStartData.testId)
@@ -166,13 +177,6 @@ export class TestPlayerComponent implements OnInit {
   }
 
 
-  createForm() {
-    this.answersFrom = this.fb.group({
-      singlechoise: '',
-      inputfield: ''
-    });
-  }
-
   getMaxMarks() {
     this.test_player.getTestDetail(this.testPlayerStartData.testId)
       .subscribe((resp: TestDetail[]) => {
@@ -205,24 +209,25 @@ export class TestPlayerComponent implements OnInit {
             this.numberOfQuestion = 1;
             localStorage.clear();
             this.test_player.getTestDetail(this.testPlayerStartData.testId)
-              .flatMap((respon: TestDetail[]) => this.test_player.getQuestions(respon))
+              .flatMap((respon: TestDetail[]) => this.test_player.getQuestions(respon)) // get questions ids generated randomly  due to test details
               .do((questions: Array<number> | any) => {
                 this.questionsIds = this.prepareQuestionForTest(questions);
                 return this.questionsIds;
               })
               .subscribe(respon => {
                   for (let i in this.questionsIds) {
-                    this.dataForSave[i] = new CheckAnswers(this.questionsIds[i], []);
+                    this.dataForSave[i] = new CheckAnswers(this.questionsIds[i], []); // dataForSave is for saving on a student's slot, later will be send for getting a marks
                   }
-                  this.showQuestions(0);
+                  this.showQuestions(0); // show first question
                 },
                 error => {
                   this.msg = this.ERROR_MSG;
                   this.openModal();
                   this.resetSessionData();
+                  this.stopTimer();
                 });
 
-          } else {
+          } else { // if user failed security test
             this.stopTimer();
             this.msg = resp['response'];
             this.resetSessionData();
@@ -233,9 +238,10 @@ export class TestPlayerComponent implements OnInit {
         error => {
           this.msg = error;
           this.openModal();
+          // this.stopTimer();
+          // this.resetSessionData();
         });
   }
-
 
   prepareQuestionForTest(questions: Array<number[]>): Array<number> {
     let tempArr: Array<number> = [];
@@ -246,28 +252,28 @@ export class TestPlayerComponent implements OnInit {
   }
 
   showQuestions(numberOfQuestion: number) {
-    this.numberOfQuestion = numberOfQuestion + 1;
+    this.numberOfQuestion = numberOfQuestion + 1; // for displaying in html
     this.answersFrom.reset();
-    this.test_player.getQuestionById(this.questionsIds[numberOfQuestion])
-      .map(resp =>  resp[0]).do(resp => {
+    this.test_player.getQuestionById(this.questionsIds[numberOfQuestion]) // get question id  by it's number
+      .map(resp => resp[0]).do(resp => {
       this.question = resp;
-      if (this.question['type'] === '3') {
+      if (this.question['type'] === this.INPUT_FIELD_TYPE) { // get student's answer ids from localStorage and for input type "input field" set appropriate value
         let currentAnswers = localStorage.getItem(String(this.question['question_id']));
         this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers);
       }
-    }).filter(question => question['type'] !== '3')
-      .flatMap(resp => this.test_player.getAnswersById(resp['question_id']))
+    }).filter(question => question['type'] !== this.INPUT_FIELD_TYPE) // for questions with type "input field" we mustn't load answers
+      .flatMap(resp => this.test_player.getAnswersById(resp['question_id'])) // get all possible answers by current question
       .subscribe(resp => {
         this.question['answers'] = resp;
-        resp.forEach(item => this.answersFrom.addControl(item['answer_id'], this.fb.control(false)));
+        resp.forEach(item => this.answersFrom.addControl(item['answer_id'], this.fb.control(false))); // create dynamically FormControlNames = answer.id for checkbox
         let currentAnswers = localStorage.getItem(String(this.question['question_id']));
-        if (currentAnswers) {
-          if (this.question['type'] === '2') {
+        if (currentAnswers) { // for input type "checkbox"
+          if (this.question['type'] === this.MULTICHOISE_FIELD_TYPE) {
             let array = currentAnswers.split(',');
             array.forEach(string => this.answersFrom.controls[string].setValue(true)
             );
           } else {
-            this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers);
+            this.answersFrom.controls[this.TypeOfAnswers[this.question['type']]].setValue(currentAnswers); // input type "radiobutton"
           }
         }
       }, error => {
@@ -278,18 +284,18 @@ export class TestPlayerComponent implements OnInit {
   }
 
 
-  saveCurrentAnswer(question ?: Question, questionId ?: number) {
+  saveCurrentAnswer(question ?: Question, questionId ?: number) { // for saving given answers at slot and localStorage
     let currentQuestion = questionId ? this.test_player.getQuestionById(questionId).subscribe(resp => question = resp) : question;
-    if (question['type'] === '2') {
+    if (question['type'] === this.MULTICHOISE_FIELD_TYPE) { // in case input type checkbox
       question['answers'].map(answer => {
         return answer['answer_id'];
       }).forEach(id => {
         let value = this.answersFrom.controls[id].value;
         if (value) {
-          this.selectedAnswers.push(id);
+          this.selectedAnswers.push(id); // push fetched values from form into array
         }
       });
-    } else {
+    } else { // fetch value from other input type
       let value = this.answersFrom.controls[this.TypeOfAnswers[currentQuestion['type']]].value;
       value != null ? this.selectedAnswers.push(value) : this.selectedAnswers = [];
     }
@@ -297,21 +303,22 @@ export class TestPlayerComponent implements OnInit {
     let currentQuestionId = +(currentQuestion['question_id']);
     let questionIndex = this.questionsIds.indexOf(currentQuestionId);
     this.allAnswers = new CheckAnswers(currentQuestionId, this.selectedAnswers);
-    this.dataForSave[questionIndex] = this.allAnswers;
+    this.dataForSave[questionIndex] = this.allAnswers; // fill dataForSave array in given by student answers ids
     localStorage.setItem(String(currentQuestionId), this.selectedAnswers.toString());
-    if (this.allAnswers['answer_ids'].length === 0) {
+    if (this.allAnswers['answer_ids'].length === 0) { // if student gives answer then change color
       $('.number-box').eq(questionIndex).css({'backgroundColor': ''});
 
     } else {
       $('.number-box').eq(questionIndex).css({'backgroundColor': this.PRIMARY_VIOLET_COLOR});
     }
 
-    this.test_player.saveData(this.dataForSave).subscribe(resp => this.toastr.success);
-
+    this.test_player.saveData(this.dataForSave)
+      .subscribe(resp => this.toastr.success); // send  current value of dataForSave to student's slot
   }
 
   next(prevQuestion: Question) {
-    let newIndex = this.questionsIds.indexOf(+prevQuestion['question_id']) === this.questionsIds.length - 1 ? 0 : this.questionsIds.indexOf(+prevQuestion['question_id']) + 1;
+    let newIndex = this.questionsIds.indexOf(+prevQuestion['question_id']) ===
+    this.questionsIds.length - 1 ? 0 : this.questionsIds.indexOf(+prevQuestion['question_id']) + 1;
     this.goToQuestion(newIndex);
   }
 
@@ -323,16 +330,17 @@ export class TestPlayerComponent implements OnInit {
 
   finishTest() {
     this.stopTimer();
-    this.test_player.getData()
-      .flatMap(resp => this.test_player.checkResults(resp))
+    this.test_player.getData() // fetch all questions and answers ids from student  slot
+      .flatMap(resp => this.test_player.checkResults(resp)) // call method for checking answers and getting the mark
       .map(resp => {
-        let data = new InitialRezults(resp['full_mark'], resp['number_of_true_answers'], this.numberOfTasks, this.maxMarks, this.testName);
+        let data = new InitialRezults(resp['full_mark'], resp['number_of_true_answers'],
+          this.numberOfTasks, this.maxMarks, this.testName); // prepare data for sending to student-rezult component
         return data;
       }).subscribe(resp => {
       this.answersFrom.reset();
       localStorage.clear();
       this.resetSessionData();
-      this.test_player.sendRezults(resp);
+      this.test_player.sendRezults(resp); // use Subject for sending student current rezults to other component
     });
     this.router.navigate(['student/test-rezults']);
   }
@@ -423,7 +431,7 @@ export class TestPlayerComponent implements OnInit {
 
   saveEndTime() {
     if (this.testPlayerStartData.endUnixTime > 0) {
-       this.toastr.error('you have unfinished test');
+      this.toastr.error('you have unfinished test');
     } else {
 
       this.test_player.saveEndTime(this.endUnixTime, this.testPlayerStartData.testId, this.testDuration, this.testPlayerStartData.testName)
