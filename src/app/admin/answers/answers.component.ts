@@ -55,11 +55,7 @@ export class AnswersComponent implements OnInit {
       this.questionNameQueryParam = params['question_text'];
       if (this.questionIdQueryParam) {
         this.getAnswersForOneQuestion();
-        // this.getCountOfQuestions();
       }
-      // else {
-      //   this.getAnswers();
-      // }
     });
   }
 
@@ -71,11 +67,6 @@ export class AnswersComponent implements OnInit {
       for (const answer of this.answersOnPage) {
         this.setNameOfQuestion(answer);
       }
-      // this.getCountRecords();
-      // if (this.countRecords <= (this.pageNumber - 1) * this.recordsPerPage) {
-      //   --this.pageNumber;
-      // }
-      // this.getCountOfQuestions();
      this.spinner.hideSpinner();
     });
   }
@@ -84,21 +75,6 @@ export class AnswersComponent implements OnInit {
       answer.question_id = resp[0].question_id;
     });
   }
-
-  // getAnswers(): void {
-  //   this.spinner.showSpinner();
-  //   this.getCountRecords();
-  //   if (this.countRecords <= (this.pageNumber - 1) * this.recordsPerPage) {
-  //     --this.pageNumber;
-  //   }
-  //   this.answersService.getPaginatedPage(this.pageNumber, this.recordsPerPage).delay(301)
-  //     .subscribe(resp => { this.answersOnPage = <Answer[]>resp,
-  //       error => this.router.navigate(['/bad_request']);
-  //       this.spinner.hideSpinner();
-  //     });
-  // }
-
-
   add() {
     this.popup.sendItem({answer_id: '', question_id:  '', true_answer: '', answer_text: ''}, 'Answer');
     this.popup.showModal();

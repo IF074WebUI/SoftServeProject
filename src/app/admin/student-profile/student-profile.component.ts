@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { Student } from '../students/student';
 import { StudentsService } from '../students/students.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +14,6 @@ import {STUDENT_CONFIG} from '../universal/dynamic-form/config';
   selector: 'dtester-student-profile',
   templateUrl: './student-profile.component.html',
   styleUrls: ['./student-profile.component.scss'],
-  // providers: [StudentsService, GetRecordsByIdService, GetAllRecordsService]
 })
 
 export class StudentProfileComponent implements OnInit {

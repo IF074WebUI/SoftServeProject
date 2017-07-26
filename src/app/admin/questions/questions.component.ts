@@ -15,7 +15,6 @@ import {GetRecordsByIdService} from "../services/get-records-by-id.service";
 })
 
 export class QuestionsComponent implements OnInit {
-  HEADING_QUESTIONS = 'Питання';
   title = 'Питання';
   questionsOnPage: Question[];
   pageNumber = 1;
@@ -25,7 +24,6 @@ export class QuestionsComponent implements OnInit {
   ignoreProperties: string[];
   btnClass = 'fa fa-question';
   test_id: number;
-  testIdQueryParam: number;
   limit: number;
 
   @ViewChild(DynamicFormComponent) popup: DynamicFormComponent;
@@ -35,8 +33,7 @@ export class QuestionsComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private spinner: SpinnerService,
-              private toastr: ToastsManager,
-              private getRecordsByIdService: GetRecordsByIdService) {
+              private toastr: ToastsManager) {
   }
 
   ngOnInit() {

@@ -32,7 +32,7 @@ import {Router} from "@angular/router";
   ]
 })
 export class AdminComponent implements OnInit {
-  menuMove: string = 'left';
+  menuMove: string = 'right';
   objLoaderStatus: boolean;
 
   constructor(private spinner: SpinnerService,
