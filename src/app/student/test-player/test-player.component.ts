@@ -333,8 +333,8 @@ export class TestPlayerComponent implements OnInit {
     this.test_player.getData() // fetch all questions and answers ids from student  slot
       .flatMap(resp => this.test_player.checkResults(resp)) // call method for checking answers and getting the mark
       .map(resp => {
-        let data = new InitialRezults(resp['full_mark'], resp['number_of_true_answers'],
-          this.numberOfTasks, this.maxMarks, this.testName); // prepare data for sending to student-rezult component
+        let data = new InitialRezults(resp['full_mark'], resp['number_of_true_answers'], this.maxMarks,
+          this.numberOfTasks,  this.testName); // prepare data for sending to student-rezult component
         return data;
       }).subscribe(resp => {
       this.answersFrom.reset();
