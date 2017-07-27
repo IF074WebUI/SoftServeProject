@@ -43,7 +43,6 @@ export class QuestionsComponent implements OnInit {
     this.headers = ['№', 'Питання', 'Рівень', 'Тип', 'Вкладення'];
     this.ignoreProperties = ['test_id', 'question_id'];
     this.test_id = this.route.snapshot.queryParams['test_id'];
-
        this.getQuestionsByTest();
   }
 
